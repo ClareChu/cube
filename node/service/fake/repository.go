@@ -2,7 +2,7 @@ package fake
 
 import (
 	"github.com/stretchr/testify/mock"
-	miov1alpha1 "hidevops.io/mioclient/pkg/apis/mio/v1alpha1"
+	miov1alpha1 "hidevops.io/mio/pkg/apis/mio/v1alpha1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/watch"
 )

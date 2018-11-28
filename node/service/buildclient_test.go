@@ -8,9 +8,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/mio/node/service/mock"
-	"hidevops.io/mioclient/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mioclient/pkg/client/clientset/versioned/fake"
-	"hidevops.io/mioclient/starter/mio"
+	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
+	"hidevops.io/mio/pkg/client/clientset/versioned/fake"
+	"hidevops.io/mio/pkg/starter/mio"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"testing"
 )

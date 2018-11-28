@@ -12,7 +12,7 @@ import (
 	scmgit "hidevops.io/hioak/starter/scm/git"
 	"hidevops.io/mio/node/protobuf"
 	"hidevops.io/mio/node/types"
-	miov1alpha1 "hidevops.io/mioclient/pkg/apis/mio/v1alpha1"
+	miov1alpha1 "hidevops.io/mio/pkg/apis/mio/v1alpha1"
 	//docker_types "github.com/docker/docker/api/types"
 
 	pkg_utils "hidevops.io/mio/node/utils"

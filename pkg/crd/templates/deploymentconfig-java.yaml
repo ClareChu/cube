@@ -1,0 +1,36 @@
+apiVersion: mio.io/v1alpha1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"mio.io/v1alpha1","kind":"DeploymentConfig","metadata":{"annotations":{},"clusterName":"","creationTimestamp":"2018-10-23T12:42:02Z","generation":0,"name":"java","namespace":"templates","resourceVersion":"107976928","selfLink":"/apis/mio.io/v1alpha1/namespaces/templates/deploymentconfigs/java","uid":"0a11fcd0-d6c1-11e8-a640-005056935c80"},"spec":{"dockerRegistry":"docker-registry.default.svc:5000","env":[{"name":"starter","value":"jav -jar"},{"name":"TZ","value":"Asia/Shanghai"},{"name":"APP_OPTIONS","value":"-Xms128m -Xmx512m -Xss512k"},{"name":"SPRING_PROFILES_ACTIVE","value":"dev"}],"envType":["remoteDeploy","deploy"],"fromRegistry":"docker-registry-default.app.vpclub.io","image":"","livenessProbe":{"exec":{"command":["curl","--silent","--show-error","--fail","http://localhost:8080/health"]},"failureThreshold":3,"initialDelaySeconds":60,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":1},"nodeSelector":{"a":"b","c":"d"},"port":[{"containerPort":8080,"name":"tcp-8080","protocol":"TCP"}],"profile":"dev","readinessProbe":{"exec":{"command":["curl","--silent","--show-error","--fail","http://localhost:8080/health"]},"failureThreshold":3,"initialDelaySeconds":60,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":1}},"status":{"lastVersion":1}}
+  clusterName: ""
+  creationTimestamp: 2018-10-23T12:42:02Z
+  generation: 0
+  name: java
+  namespace: templates
+  resourceVersion: "125814714"
+  selfLink: /apis/mio.io/v1alpha1/namespaces/templates/deploymentconfigs/java
+  uid: 0a11fcd0-d6c1-11e8-a640-005056935c80
+spec:
+  dockerRegistry: docker-registry.default.svc:5000
+  env:
+  - name: starter
+    value: jav -jar
+  - name: TZ
+    value: Asia/Shanghai
+  - name: APP_OPTIONS
+    value: -Xms128m -Xmx512m -Xss512k
+  - name: SPRING_PROFILES_ACTIVE
+    value: dev
+  envType:
+  - remoteDeploy
+  - deploy
+  fromRegistry: docker-registry-default.app.vpclub.io
+  port:
+  - containerPort: 8080
+    name: tcp-8080
+    protocol: TCP
+  profile: dev
+status:
+  lastVersion: 1

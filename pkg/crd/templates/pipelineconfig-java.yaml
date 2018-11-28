@@ -1,0 +1,71 @@
+apiVersion: v1
+items:
+- apiVersion: mio.io/v1alpha1
+  kind: PipelineConfig
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"mio.io/v1alpha1","kind":"PipelineConfig","metadata":{"annotations":{},"clusterName":"","creationTimestamp":"2018-10-15T08:12:49Z","generation":0,"name":"java","namespace":"templates","resourceVersion":"112781928","selfLink":"/apis/mio.io/v1alpha1/namespaces/templates/pipelineconfigs/java","uid":"1b3cbbc0-d052-11e8-b78c-005056935c80"},"spec":{"app":"","dockerRegistry":"","events":[{"eventTypes":"buildPipeline","name":"java"},{"eventTypes":"deploy","name":"java"},{"eventTypes":"service","name":"java"},{"eventTypes":"gateway","name":"java"}],"namespace":"","nodeSelector":"","profile":"dev","project":"","version":"v2"},"status":{}}
+    clusterName: ""
+    creationTimestamp: 2018-10-15T08:12:49Z
+    generation: 0
+    name: java
+    namespace: templates
+    resourceVersion: "125861171"
+    selfLink: /apis/mio.io/v1alpha1/namespaces/templates/pipelineconfigs/java
+    uid: 1b3cbbc0-d052-11e8-b78c-005056935c80
+  spec:
+    app: ""
+    dockerRegistry: ""
+    events:
+    - eventTypes: buildPipeline
+      name: java
+    - eventTypes: deploy
+      name: java
+    - eventTypes: deploy
+      name: java-test
+    - eventTypes: service
+      name: java
+    - eventTypes: gateway
+      name: java
+    namespace: ""
+    nodeSelector: ""
+    profile: dev
+    project: ""
+    version: v2
+  status: {}
+- apiVersion: mio.io/v1alpha1
+  kind: PipelineConfig
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"mio.io/v1alpha1","kind":"PipelineConfig","metadata":{"annotations":{},"name":"nodejs-8","namespace":"templates"},"spec":{"app":"","dockerRegistry":"","events":[{"eventTypes":"buildPipeline","name":"nodejs-8"},{"eventTypes":"deploy","name":"nodejs-8"},{"eventTypes":"service","name":"nodejs-8"},{"eventTypes":"gateway","name":"nodejs-8"}],"namespace":"","nodeSelector":"","profile":"dev","project":"","version":"v2"},"status":{}}
+    clusterName: ""
+    creationTimestamp: 2018-11-05T06:33:44Z
+    name: nodejs-8
+    namespace: templates
+    resourceVersion: "116414582"
+    selfLink: /apis/mio.io/v1alpha1/namespaces/templates/pipelineconfigs/nodejs-8
+    uid: be5fb737-e0c4-11e8-96de-005056935c80
+  spec:
+    app: ""
+    dockerRegistry: ""
+    events:
+    - eventTypes: buildPipeline
+      name: nodejs-8
+    - eventTypes: deploy
+      name: nodejs-8
+    - eventTypes: service
+      name: nodejs-8
+    - eventTypes: gateway
+      name: nodejs-8
+    namespace: ""
+    nodeSelector: ""
+    profile: dev
+    project: ""
+    version: v2
+  status: {}
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

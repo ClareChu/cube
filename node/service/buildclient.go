@@ -3,8 +3,8 @@ package service
 import (
 	"fmt"
 	"hidevops.io/hiboot/pkg/app"
-	miov1alpha1 "hidevops.io/mioclient/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mioclient/starter/mio"
+	miov1alpha1 "hidevops.io/mio/pkg/apis/mio/v1alpha1"
+	"hidevops.io/mio/pkg/starter/mio"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/watch"
 	"time"
