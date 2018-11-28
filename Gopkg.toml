@@ -30,7 +30,7 @@
   unused-packages = true
 
 [[constraint]]
-  version = "v0.11.0"
+  version = "v0.11.1"
   name = "hidevops.io/hiboot"
 
 [[constraint]]
@@ -40,3 +40,4 @@
 [[constraint]]
   name = "hidevops.io/mioclient"
   branch = "master"
+
