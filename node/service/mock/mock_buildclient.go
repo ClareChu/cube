@@ -6,7 +6,7 @@ package mock
 
 import (
 	gomock "github.com/golang/mock/gomock"
-	v1alpha1 "hidevops.io/mioclient/pkg/apis/mio/v1alpha1"
+	v1alpha1 "hidevops.io/mio/pkg/apis/mio/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	watch "k8s.io/apimachinery/pkg/watch"
 	reflect "reflect"

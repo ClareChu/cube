@@ -26,7 +26,7 @@ func TestBuild(t *testing.T) {
 	var cmdList []*protobuf.BuildCommand
 	cmd1 := &protobuf.BuildCommand{
 		CodeType:    "",
-		CommandName: "pwd",
+		CommandName: "pwds",
 		Params:      []string{},
 	}
 
