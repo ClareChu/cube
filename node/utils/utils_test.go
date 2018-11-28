@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"hidevops.io/hiboot/pkg/log"
-	"hidevops.io/mio/node/pkg/protobuf"
+	"hidevops.io/mio/node/protobuf"
 	"io/ioutil"
 	"os"
 	"testing"

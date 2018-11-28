@@ -6,7 +6,7 @@ package mock
 
 import (
 	gomock "github.com/golang/mock/gomock"
-	protobuf "hidevops.io/mio/node/pkg/protobuf"
+	protobuf "hidevops.io/mio/node/protobuf"
 	reflect "reflect"
 )
 

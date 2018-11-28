@@ -3,8 +3,8 @@ package rpc
 import (
 	"context"
 	"hidevops.io/hiboot/pkg/starter/grpc"
-	"hidevops.io/mio/node/pkg/protobuf"
-	"hidevops.io/mio/node/pkg/scheduler"
+	"hidevops.io/mio/node/protobuf"
+	"hidevops.io/mio/node/scheduler"
 )
 
 type BuildServerImpl struct {

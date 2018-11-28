@@ -21,8 +21,8 @@ package main
 import (
 	"hidevops.io/hiboot/pkg/app/web"
 	_ "hidevops.io/hiboot/pkg/starter/actuator"
-	_ "hidevops.io/mio/node/pkg/rpc"
-	_ "hidevops.io/mio/node/pkg/service"
+	_ "hidevops.io/mio/node/rpc"
+	_ "hidevops.io/mio/node/service"
 )
 
 // main

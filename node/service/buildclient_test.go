@@ -7,7 +7,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"hidevops.io/hiboot/pkg/log"
-	"hidevops.io/mio/node/pkg/service/mock"
+	"hidevops.io/mio/node/service/mock"
 	"hidevops.io/mioclient/pkg/apis/mio/v1alpha1"
 	"hidevops.io/mioclient/pkg/client/clientset/versioned/fake"
 	"hidevops.io/mioclient/starter/mio"

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"hidevops.io/hiboot/pkg/log"
 	utilsio "hidevops.io/hiboot/pkg/utils/io"
-	"hidevops.io/mio/node/pkg/protobuf"
+	"hidevops.io/mio/node/protobuf"
 	miov1alpha1 "hidevops.io/mioclient/pkg/apis/mio/v1alpha1"
 	"io"
 	"io/ioutil"
