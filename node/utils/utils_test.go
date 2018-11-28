@@ -91,17 +91,3 @@ func TestStartCmd(t *testing.T) {
 
 	assert.Equal(t, nil, err)
 }
-
-func TestCloneBYCMD(t *testing.T) {
-	sourceCodePullRequest := &protobuf.SourceCodePullRequest{
-		Url:      "http://gitlab.vpclub:8022/wanglulu/clone-test01.git",
-		Branch:   "master",
-		DstDir:   "/Users/mac/.gvm/pkgsets/go1.10/vpcloud/src/hidevops.io/",
-		Username: "",
-		Password: "",
-	}
-
-	_, err := CloneBYCMD(sourceCodePullRequest)
-
-	assert.NotEqual(t, nil, err)
-}
