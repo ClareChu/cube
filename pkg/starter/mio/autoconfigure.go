@@ -139,7 +139,7 @@ func (c *configuration) Tests(restConfig *kube.RestConfig) *Tests {
 	return nil
 }
 
-func (c *configuration) TestConfig(restConfig *kube.RestConfig) *testConfig {
+func (c *configuration) TestConfig(restConfig *kube.RestConfig) *TestConfig {
 	if restConfig != nil {
 		clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
 		if err != nil {
