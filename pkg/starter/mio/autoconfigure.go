@@ -20,109 +20,145 @@ func newConfiguration() *configuration {
 }
 
 func (c *configuration) BuildConfig(restConfig *kube.RestConfig) *BuildConfig {
-	clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
-	if err != nil {
-		log.Errorf("v1alpha1.NewForConfig %v", err)
-		return nil
+	if restConfig != nil {
+		clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
+		if err != nil {
+			log.Errorf("v1alpha1.NewForConfig %v", err)
+			return nil
+		}
+		return NewBuildConfig(clientSet)
 	}
-	return NewBuildConfig(clientSet)
+	return nil
 }
 
 func (c *configuration) Build(restConfig *kube.RestConfig) *Build {
-	clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
-	if err != nil {
-		log.Errorf("v1alpha1.NewForConfig %v", err)
-		return nil
+	if restConfig != nil {
+		clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
+		if err != nil {
+			log.Errorf("v1alpha1.NewForConfig %v", err)
+			return nil
+		}
+		return NewBuild(clientSet)
 	}
-	return NewBuild(clientSet)
+	return nil
 }
 
 func (c *configuration) Pipeline(restConfig *kube.RestConfig) *Pipeline {
-	clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
-	if err != nil {
-		log.Errorf("v1alpha1.NewForConfig %v", err)
-		return nil
+	if restConfig != nil {
+		clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
+		if err != nil {
+			log.Errorf("v1alpha1.NewForConfig %v", err)
+			return nil
+		}
+		return NewPipeline(clientSet)
 	}
-	return NewPipeline(clientSet)
+	return nil
 }
 
 func (c *configuration) PipelineConfig(restConfig *kube.RestConfig) *PipelineConfig {
-	clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
-	if err != nil {
-		log.Errorf("v1alpha1.NewForConfig %v", err)
-		return nil
+	if restConfig != nil {
+		clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
+		if err != nil {
+			log.Errorf("v1alpha1.NewForConfig %v", err)
+			return nil
+		}
+		return NewPipelineConfig(clientSet)
 	}
-	return NewPipelineConfig(clientSet)
+	return nil
 }
 
 func (c *configuration) SourceConfig(restConfig *kube.RestConfig) *SourceConfig {
-	clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
-	if err != nil {
-		log.Errorf("v1alpha1.NewForConfig %v", err)
-		return nil
+	if restConfig != nil {
+		clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
+		if err != nil {
+			log.Errorf("v1alpha1.NewForConfig %v", err)
+			return nil
+		}
+		return NewSourceConfig(clientSet)
 	}
-	return NewSourceConfig(clientSet)
+	return nil
 }
 
 func (c *configuration) DeploymentConfig(restConfig *kube.RestConfig) *DeploymentConfig {
-	clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
-	if err != nil {
-		log.Errorf("v1alpha1.NewForConfig %v", err)
-		return nil
+	if restConfig != nil {
+		clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
+		if err != nil {
+			log.Errorf("v1alpha1.NewForConfig %v", err)
+			return nil
+		}
+		return NewDeploymentConfig(clientSet)
 	}
-	return NewDeploymentConfig(clientSet)
+	return nil
 }
 
 func (c *configuration) GatewayConfig(restConfig *kube.RestConfig) *GatewayConfig {
-	clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
-	if err != nil {
-		log.Errorf("v1alpha1.NewForConfig %v", err)
-		return nil
+	if restConfig != nil {
+		clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
+		if err != nil {
+			log.Errorf("v1alpha1.NewForConfig %v", err)
+			return nil
+		}
+		return NewGatewayConfig(clientSet)
 	}
-	return NewGatewayConfig(clientSet)
+	return nil
 }
 
 func (c *configuration) ServiceConfig(restConfig *kube.RestConfig) *ServiceConfig {
-	clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
-	if err != nil {
-		log.Errorf("v1alpha1.NewForConfig %v", err)
-		return nil
+	if restConfig != nil {
+		clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
+		if err != nil {
+			log.Errorf("v1alpha1.NewForConfig %v", err)
+			return nil
+		}
+		return NewServiceConfig(clientSet)
 	}
-	return NewServiceConfig(clientSet)
+	return nil
 }
 
 func (c *configuration) Deployment(restConfig *kube.RestConfig) *Deployment {
-	clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
-	if err != nil {
-		log.Errorf("v1alpha1.NewForConfig %v", err)
-		return nil
+	if restConfig != nil {
+		clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
+		if err != nil {
+			log.Errorf("v1alpha1.NewForConfig %v", err)
+			return nil
+		}
+		return NewDeployment(clientSet)
 	}
-	return NewDeployment(clientSet)
+	return nil
 }
 
 func (c *configuration) Tests(restConfig *kube.RestConfig) *Tests {
-	clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
-	if err != nil {
-		log.Errorf("v1alpha1.NewForConfig %v", err)
-		return nil
+	if restConfig != nil {
+		clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
+		if err != nil {
+			log.Errorf("v1alpha1.NewForConfig %v", err)
+			return nil
+		}
+		return NewTestses(clientSet)
 	}
-	return NewTestses(clientSet)
+	return nil
 }
 
 func (c *configuration) TestConfig(restConfig *kube.RestConfig) *testConfig {
-	clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
-	if err != nil {
-		log.Errorf("v1alpha1.NewForConfig %v", err)
-		return nil
+	if restConfig != nil {
+		clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
+		if err != nil {
+			log.Errorf("v1alpha1.NewForConfig %v", err)
+			return nil
+		}
+		return NewTestConfig(clientSet)
 	}
-	return NewTestConfig(clientSet)
+	return nil
 }
 
 func (c *configuration) Notify(restConfig *kube.RestConfig) *Notify {
-	clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
-	if err != nil {
-		log.Errorf("v1alpha1.NewForConfig %v", err)
-		return nil
+	if restConfig != nil {
+		clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
+		if err != nil {
+			log.Errorf("v1alpha1.NewForConfig %v", err)
+			return nil
+		}
+		return NewNotify(clientSet)
 	}
-	return NewNotify(clientSet)
+	return nil
 }
