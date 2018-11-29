@@ -1,0 +1,29 @@
+apiVersion: mio.io/v1alpha1
+kind: GatewayConfig
+metadata:
+  clusterName: ""
+  creationTimestamp: 2018-10-26T09:01:51Z
+  generation: 0
+  name: java
+  namespace: templates
+  resourceVersion: "97813107"
+  selfLink: /apis/mio.io/v1alpha1/namespaces/templates/gatewayconfigs/java
+  uid: c6efc1ea-d8fd-11e8-bff0-005056935c80
+spec:
+  eventType: null
+  hosts:
+  - dev.vpclub.cn
+  httpIfTerminated: false
+  httpsOnly: false
+  kongAdminUrl: http://kong-admin-kong-dev.app.vpclub.io
+  preserveHost: true
+  profile: dev
+  retries: "5"
+  stripUri: true
+  upstreamConnectTimeout: 60000
+  upstreamReadTimeout: 60000
+  upstreamSendTimeout: 60000
+  upstreamUrl: ""
+  uris: null
+status:
+  metadata: {}

@@ -74,6 +74,23 @@
   revision = "b565731e1464263de0bda75f2e45d97b54b60110"
 
 [[projects]]
+  digest = "1:511b0e48adf05b1d17e32af772a1e0a047b909f51d401a572caae26fcf0b2950"
+  name = "github.com/coreos/etcd"
+  packages = [
+    "auth/authpb",
+    "clientv3",
+    "etcdserver/api/v3rpc/rpctypes",
+    "etcdserver/etcdserverpb",
+    "mvcc/mvccpb",
+    "pkg/tlsutil",
+    "pkg/transport",
+    "pkg/types",
+  ]
+  pruneopts = "NUT"
+  revision = "27fc7e2296f506182f58ce846e48f36b34fe6842"
+  version = "v3.3.10"
+
+[[projects]]
   digest = "1:ffe9824d294da03b391f44e1ae8281281b4afc1bdaa9588c9097785e3af10cec"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
@@ -88,6 +105,14 @@
   pruneopts = "NUT"
   revision = "cbaa98ba5575e67703b32b4b19f73c91f3c4159e"
   version = "v1.7.1"
+
+[[projects]]
+  digest = "1:7a6852b35eb5bbc184561443762d225116ae630c26a7c4d90546619f1e7d2ad2"
+  name = "github.com/dgrijalva/jwt-go"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
+  version = "v3.2.0"
 
 [[projects]]
   digest = "1:3cabbabc9e0e4aa7e12b882bdc213f41cf8bd2b2ce2a7b5e0aceaf8a6a78049b"
@@ -220,10 +245,12 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:8679b8a64f3613e9749c5640c3535c83399b8e69f67ce54d91dc73f6d77373af"
+  digest = "1:cd4f86461732066e277335465962660cbf02999e18d5bbb5e9285eac4608b970"
   name = "github.com/gogo/protobuf"
   packages = [
+    "gogoproto",
     "proto",
+    "protoc-gen-gogo/descriptor",
     "sortkeys",
   ]
   pruneopts = "NUT"
@@ -288,6 +315,14 @@
   pruneopts = "NUT"
   revision = "7c663266750e7d82587642f65e60bc4083f1f84e"
   version = "v0.2.0"
+
+[[projects]]
+  digest = "1:4a0c072e44da763409da72d41492373a034baf2e6d849c76d239b4abdfbb6c49"
+  name = "github.com/gorilla/websocket"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "66b9c49e59c6c48f0ffce28c2d8b8a5678502c6d"
+  version = "v1.4.0"
 
 [[projects]]
   digest = "1:0b06ffe0c0764e413a6738e3f045d6bb14117359aef80a09f8c60fbff2ecad6b"
@@ -392,6 +427,14 @@
   revision = "987a633949d087ba52207b587792e8c67d65780b"
 
 [[projects]]
+  digest = "1:c7f1bf0478ded47fcbaf52875c4ed3f2355e45d63180a1a9508edd772ef5a6cb"
+  name = "github.com/iris-contrib/middleware"
+  packages = ["jwt"]
+  pruneopts = "NUT"
+  revision = "1060fbb0ce08a72c50c612e8e5bdc8076c28343d"
+  version = "v10"
+
+[[projects]]
   branch = "master"
   digest = "1:62fe3a7ea2050ecbd753a71889026f83d73329337ada66325cbafd5dea5f713d"
   name = "github.com/jbenet/go-context"
@@ -432,7 +475,7 @@
   revision = "03be101463868edc5a81f094fc68a5f6c1b5503a"
 
 [[projects]]
-  digest = "1:8381f306da1767701853c3541aa046176f5af5eb62e8e0e67a8ae7ed984fa793"
+  digest = "1:1f415086ef8f623c89e188bd2ff23e3f605b036fb870dc5a59aa3253a0690027"
   name = "github.com/kataras/iris"
   packages = [
     ".",
@@ -463,6 +506,7 @@
     "middleware/logger",
     "middleware/recover",
     "view",
+    "websocket",
   ]
   pruneopts = "NUT"
   revision = "39b8b1eb00eae9914addee3dee3612ffa785817f"
@@ -490,6 +534,14 @@
   ]
   pruneopts = "NUT"
   revision = "00934ae069eda15df26fa427ac393e67e239380c"
+
+[[projects]]
+  branch = "master"
+  digest = "1:b7ef54edae66eb4b09b681e50017020f44236ca4e6773a4b985bca4596acc00a"
+  name = "github.com/kevholditch/gokong"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "ab1e75d5f714d02463d0fe72f8fa4be079136ad6"
 
 [[projects]]
   digest = "1:29e44e9481a689be0093a0033299b95741d394a97b28e0273c21afe697873a22"
@@ -527,9 +579,12 @@
   version = "v1.0.1"
 
 [[projects]]
-  digest = "1:d244f8666a838fe6ad70ec8fe77f50ebc29fdc3331a2729ba5886bef8435d10d"
+  digest = "1:4244266b65ea535b8ebd109a327720821707b59f9a37bda738946d52ec69442d"
   name = "github.com/magiconair/properties"
-  packages = ["."]
+  packages = [
+    ".",
+    "assert",
+  ]
   pruneopts = "NUT"
   revision = "c2353362d570a7bfa228149c62842019201cfb71"
   version = "v1.8.0"
@@ -607,6 +662,14 @@
   revision = "9ac6cf4d929b2fa8fd2d2e6dec5bb0feb4f4911d"
 
 [[projects]]
+  digest = "1:aa236b5778f70fb400809f622813a2feb01142ea32b95f4ab23f98c5ad3cee18"
+  name = "github.com/parnurzeal/gorequest"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "a578a48e8d6ca8b01a3b18314c43c6716bb5f5a3"
+  version = "v0.2.15"
+
+[[projects]]
   digest = "1:cf254277d898b713195cc6b4a3fac8bf738b9f1121625df27843b52b267eec6c"
   name = "github.com/pelletier/go-buffruneio"
   packages = ["."]
@@ -679,6 +742,14 @@
   version = "v1.2.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:7d62418b0a0e438a72444d7bc4bd7f5c066acfbdf20dfa9e75edc64fe8540621"
+  name = "github.com/sony/sonyflake"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "6d5bd61810093eae37d7d605d0cbdd845969b5b2"
+
+[[projects]]
   digest = "1:330e9062b308ac597e28485699c02223bd052437a6eed32a173c9227dcb9d95a"
   name = "github.com/spf13/afero"
   packages = [
@@ -745,6 +816,14 @@
   pruneopts = "NUT"
   revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
   version = "v1.2.2"
+
+[[projects]]
+  branch = "master"
+  digest = "1:af354641f23332b1a8d5d361d11b5a9171589e412a67d499633706c611acc064"
+  name = "github.com/valyala/bytebufferpool"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "cdfbe9377474227bb42120c1e22fd4433e7f69bf"
 
 [[projects]]
   digest = "1:3148cb3478c26a92b4c1a18abb9428234b281e278af6267840721a24b6cbc6a3"
@@ -857,7 +936,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:3ef3b295c8c808e46563fd21732643fc0c33ad234ce9e7363bf0c75781e4ef88"
+  digest = "1:31c8e37223641395eb81d70bfae394de59ea98dc8cbec5893c7581916804688d"
   name = "golang.org/x/sys"
   packages = [
     "unix",
@@ -866,7 +945,7 @@
     "windows/svc/eventlog",
   ]
   pruneopts = "NUT"
-  revision = "62eef0e2fa9b2c385f7b2778e763486da6880d37"
+  revision = "4ed8d59d0b35e1e29334a206d1b3f38b1e5dfb31"
 
 [[projects]]
   digest = "1:e7071ed636b5422cc51c0e3a6cebc229d6c9fffc528814b519a980641422d619"
@@ -910,7 +989,7 @@
     "internal/gopathwalk",
   ]
   pruneopts = "NUT"
-  revision = "e782529d0ddd4bb872a63766185bebe89c96d1ae"
+  revision = "c5b00d9557fd23dd2a6d9c2f4c80a31d08cac00d"
 
 [[projects]]
   branch = "master"
@@ -1071,7 +1150,7 @@
   version = "v2.2.1"
 
 [[projects]]
-  digest = "1:e4f2b04b838b28c731771c0a1300e28795fe317838f8a24a3135b4edf0ae4d3b"
+  digest = "1:ac2c95b5f08a3e095ca82b2f92c2aa44f6aafd77e26ecf0c2545f1984d46df4c"
   name = "hidevops.io/hiboot"
   packages = [
     "pkg/app",
@@ -1087,10 +1166,14 @@
     "pkg/model",
     "pkg/starter/actuator",
     "pkg/starter/grpc",
+    "pkg/starter/jwt",
+    "pkg/starter/locale",
+    "pkg/starter/websocket",
     "pkg/system",
     "pkg/system/types",
     "pkg/utils/cmap",
     "pkg/utils/copier",
+    "pkg/utils/idgen",
     "pkg/utils/io",
     "pkg/utils/mapstruct",
     "pkg/utils/reflector",
@@ -1103,17 +1186,26 @@
   version = "v0.11.1"
 
 [[projects]]
+  digest = "1:6db22dfed41da05846b975e4f580adfc4113f6e2d70e3d611aa2d7ea8db56eb1"
+  name = "hidevops.io/hiboot-data"
+  packages = ["starter/etcd"]
+  pruneopts = "NUT"
+  revision = "190faf30e4cfcfc36893b1ebc7be390815785d69"
+  version = "v0.2.1"
+
+[[projects]]
   branch = "master"
-  digest = "1:159e98a8174fe4c5e0f8b31414bbc150b175db68609dbf388ace80458fc99013"
+  digest = "1:a0469ffe2cdf18e814d67a57111862d805888eaa88a2ea451871bdc0d19eed73"
   name = "hidevops.io/hioak"
   packages = [
+    "starter",
     "starter/docker",
     "starter/docker/fake",
     "starter/kube",
     "starter/scm/git",
   ]
   pruneopts = "NUT"
-  revision = "cbf6f68534e670cfa6a8115e827f911427a496e1"
+  revision = "e6a61a31945c06d6878461af15a28f245f2d21fb"
 
 [[projects]]
   digest = "1:5ccc5b26e3a61e3ed02776bd67dcd9fb7129696c6aaa2d656281fc23847f40da"
@@ -1222,41 +1314,70 @@
   version = "kubernetes-1.10.4"
 
 [[projects]]
-  digest = "1:a16b9ed0c1f56f99b0de1afb02bfe0fae15df51da0a911a5d190cb8f3d290852"
+  digest = "1:017c55649fba27129712a58dd77f6053a305b10d32d05a1b5e510683082b0ded"
   name = "k8s.io/client-go"
   packages = [
     "discovery",
     "discovery/fake",
     "kubernetes",
+    "kubernetes/fake",
     "kubernetes/scheme",
     "kubernetes/typed/admissionregistration/v1alpha1",
+    "kubernetes/typed/admissionregistration/v1alpha1/fake",
     "kubernetes/typed/admissionregistration/v1beta1",
+    "kubernetes/typed/admissionregistration/v1beta1/fake",
     "kubernetes/typed/apps/v1",
+    "kubernetes/typed/apps/v1/fake",
     "kubernetes/typed/apps/v1beta1",
+    "kubernetes/typed/apps/v1beta1/fake",
     "kubernetes/typed/apps/v1beta2",
+    "kubernetes/typed/apps/v1beta2/fake",
     "kubernetes/typed/authentication/v1",
+    "kubernetes/typed/authentication/v1/fake",
     "kubernetes/typed/authentication/v1beta1",
+    "kubernetes/typed/authentication/v1beta1/fake",
     "kubernetes/typed/authorization/v1",
+    "kubernetes/typed/authorization/v1/fake",
     "kubernetes/typed/authorization/v1beta1",
+    "kubernetes/typed/authorization/v1beta1/fake",
     "kubernetes/typed/autoscaling/v1",
+    "kubernetes/typed/autoscaling/v1/fake",
     "kubernetes/typed/autoscaling/v2beta1",
+    "kubernetes/typed/autoscaling/v2beta1/fake",
     "kubernetes/typed/batch/v1",
+    "kubernetes/typed/batch/v1/fake",
     "kubernetes/typed/batch/v1beta1",
+    "kubernetes/typed/batch/v1beta1/fake",
     "kubernetes/typed/batch/v2alpha1",
+    "kubernetes/typed/batch/v2alpha1/fake",
     "kubernetes/typed/certificates/v1beta1",
+    "kubernetes/typed/certificates/v1beta1/fake",
     "kubernetes/typed/core/v1",
+    "kubernetes/typed/core/v1/fake",
     "kubernetes/typed/events/v1beta1",
+    "kubernetes/typed/events/v1beta1/fake",
     "kubernetes/typed/extensions/v1beta1",
+    "kubernetes/typed/extensions/v1beta1/fake",
     "kubernetes/typed/networking/v1",
+    "kubernetes/typed/networking/v1/fake",
     "kubernetes/typed/policy/v1beta1",
+    "kubernetes/typed/policy/v1beta1/fake",
     "kubernetes/typed/rbac/v1",
+    "kubernetes/typed/rbac/v1/fake",
     "kubernetes/typed/rbac/v1alpha1",
+    "kubernetes/typed/rbac/v1alpha1/fake",
     "kubernetes/typed/rbac/v1beta1",
+    "kubernetes/typed/rbac/v1beta1/fake",
     "kubernetes/typed/scheduling/v1alpha1",
+    "kubernetes/typed/scheduling/v1alpha1/fake",
     "kubernetes/typed/settings/v1alpha1",
+    "kubernetes/typed/settings/v1alpha1/fake",
     "kubernetes/typed/storage/v1",
+    "kubernetes/typed/storage/v1/fake",
     "kubernetes/typed/storage/v1alpha1",
+    "kubernetes/typed/storage/v1alpha1/fake",
     "kubernetes/typed/storage/v1beta1",
+    "kubernetes/typed/storage/v1beta1/fake",
     "pkg/apis/clientauthentication",
     "pkg/apis/clientauthentication/v1alpha1",
     "pkg/version",
@@ -1333,6 +1454,11 @@
     "github.com/golang/glog",
     "github.com/golang/mock/gomock",
     "github.com/golang/protobuf/proto",
+    "github.com/iris-contrib/go.uuid",
+    "github.com/jinzhu/copier",
+    "github.com/kataras/iris/core/errors",
+    "github.com/kevholditch/gokong",
+    "github.com/magiconair/properties/assert",
     "github.com/prometheus/common/log",
     "github.com/stretchr/testify/assert",
     "github.com/stretchr/testify/mock",
@@ -1342,17 +1468,28 @@
     "gopkg.in/src-d/go-git.v4/plumbing",
     "gopkg.in/src-d/go-git.v4/plumbing/transport",
     "gopkg.in/src-d/go-git.v4/plumbing/transport/http",
+    "hidevops.io/hiboot-data/starter/etcd",
     "hidevops.io/hiboot/pkg/app",
     "hidevops.io/hiboot/pkg/app/web",
+    "hidevops.io/hiboot/pkg/at",
     "hidevops.io/hiboot/pkg/log",
+    "hidevops.io/hiboot/pkg/model",
     "hidevops.io/hiboot/pkg/starter/actuator",
     "hidevops.io/hiboot/pkg/starter/grpc",
+    "hidevops.io/hiboot/pkg/starter/jwt",
+    "hidevops.io/hiboot/pkg/starter/locale",
+    "hidevops.io/hiboot/pkg/starter/websocket",
+    "hidevops.io/hiboot/pkg/utils/copier",
+    "hidevops.io/hiboot/pkg/utils/idgen",
     "hidevops.io/hiboot/pkg/utils/io",
+    "hidevops.io/hioak/starter",
     "hidevops.io/hioak/starter/docker",
     "hidevops.io/hioak/starter/docker/fake",
     "hidevops.io/hioak/starter/kube",
     "hidevops.io/hioak/starter/scm/git",
+    "k8s.io/api/apps/v1",
     "k8s.io/api/core/v1",
+    "k8s.io/api/extensions/v1beta1",
     "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1",
     "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset",
     "k8s.io/apimachinery/pkg/api/errors",
@@ -1365,6 +1502,7 @@
     "k8s.io/apimachinery/pkg/watch",
     "k8s.io/client-go/discovery",
     "k8s.io/client-go/discovery/fake",
+    "k8s.io/client-go/kubernetes/fake",
     "k8s.io/client-go/rest",
     "k8s.io/client-go/testing",
     "k8s.io/client-go/tools/cache",

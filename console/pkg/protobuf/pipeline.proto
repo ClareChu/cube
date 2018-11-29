@@ -1,0 +1,41 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.devops.hinode.pipeline";
+option java_outer_classname = "PipelineProto";
+
+// target package name
+package protobuf;
+
+// The greeting service definition.
+service PipelineService {
+
+    rpc CreateBuildConfig (PipelineRequest) returns (PipelineResponse) {
+    }
+    rpc Watch (PipelineRequest) returns (PipelineResponse) {
+    }
+}
+
+message PipelineRequest {
+    string message = 1;
+}
+
+message PipelineResponse {
+    int32 code = 1;
+    string message = 2;
+    PipelineRequest data = 3;
+}

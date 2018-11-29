@@ -1,0 +1,26 @@
+# filename should be application.yml
+
+app:
+  project: hidevopsio
+  name: hiadmin
+  profiles:
+    include:
+    - jwt
+    - grpc
+    - etcd
+    - kube
+    - mio
+    - locale
+    - docker
+    - websocket
+    - gorm
+    - bolt
+
+logging:
+  level: debug
+
+
+email:
+  username: 1062186165@qq.com
+  password: plsfrtnaeecwbdci
+  subject: 审核内容
