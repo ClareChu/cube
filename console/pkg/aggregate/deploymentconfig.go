@@ -84,8 +84,8 @@ func (d *DeploymentConfig) Create(name, pipelineName, namespace, sourceType, ver
 		deploy.Spec.Profile = profile
 		deploy.Status.LastVersion = deploy.Status.LastVersion + 1
 		deploymentConfig, err = d.deploymentConfigClient.Update(name, namespace, deploy)
-		log.Info("update deployment configs deploy :%v", deploymentConfig)
-		log.Info("update deployment configs err :%v", err)
+		log.Infof("update deployment configs deploy :%v", deploymentConfig)
+		log.Infof("update deployment configs err :%v", err)
 	} else {
 		deploymentConfig.Status.LastVersion = constant.InitLastVersion
 		deploymentConfig.Spec.Profile = profile

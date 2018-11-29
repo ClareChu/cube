@@ -122,7 +122,7 @@ func (p *Pipeline) Watch(name, namespace string) (pipeline *v1alpha1.Pipeline, e
 					return
 				}
 			case watch.Deleted:
-				log.Infof("Deleted: ", event.Object)
+				log.Info("Deleted: ", event.Object)
 				return
 			default:
 				log.Error("Failed")

@@ -31,7 +31,7 @@ func NewNotifyService(notify *mio.Notify) NotifyAggregate {
 }
 
 func (n *Notify) Create(notify *v1alpha1.Notify) (*v1alpha1.Notify, error) {
-	log.Info("create notify :%v", notify)
+	log.Infof("create notify :%v", notify)
 	return n.notify.Create(notify)
 }
 
@@ -40,7 +40,7 @@ func (n *Notify) CreateNotify(name, namespace, profile, sourceCode string) (noti
 	uid, err := uuid.NewV4()
 	name = fmt.Sprintf("%s-%s", name, uid)
 	notifyTemplate, err := n.notify.Get(sourceCode, constant.TemplateDefaultNamespace)
-	log.Info("create templates :%v", notifyTemplate)
+	log.Infof("create templates :%v", notifyTemplate)
 	if err != nil {
 		return
 	}
@@ -59,7 +59,7 @@ func (n *Notify) CreateNotify(name, namespace, profile, sourceCode string) (noti
 	}
 	notify.Spec = notifyTemplate.Spec
 	config, err := n.notify.Create(notify)
-	log.Info("create notify config : %v", config)
+	log.Infof("create notify config : %v", config)
 	if err != nil {
 		return
 	}

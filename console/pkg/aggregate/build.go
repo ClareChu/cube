@@ -342,7 +342,7 @@ func (s *Build) WatchPod(name, namespace string) error {
 			return errors.New("Pod query timeout 10 minutes")
 		case event, ok := <-w.ResultChan():
 			if !ok {
-				log.Infof("WatchPod resultChan: ", ok)
+				log.Info("WatchPod resultChan: ", ok)
 				return nil
 			}
 			switch event.Type {
@@ -370,7 +370,7 @@ func (s *Build) WatchPod(name, namespace string) error {
 				}
 				log.Infof("update event type :%v", pod.Status)
 			case watch.Deleted:
-				log.Infof("Deleted: ", event.Object)
+				log.Info("Deleted: ", event.Object)
 				return nil
 			default:
 				log.Error("Failed")

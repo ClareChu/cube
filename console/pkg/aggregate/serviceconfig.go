@@ -68,7 +68,7 @@ func (s *ServiceConfig) Create(name, pipelineName, namespace, sourceType, versio
 	serviceConfig = new(v1alpha1.ServiceConfig)
 	template, err := s.serviceConfigClient.Get(sourceType, constant.TemplateDefaultNamespace)
 	if err != nil {
-		log.Info("create service err : %v", err)
+		log.Infof("create service err : %v", err)
 		return nil, err
 	}
 	if profile != "" {
