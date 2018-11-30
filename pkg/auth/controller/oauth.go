@@ -19,20 +19,22 @@ type OAuth struct {
 
 type oauthController struct {
 	at.RestController
-	token        jwt.Token
-	oauthService service.OauthService
-	loginService service.LoginService
+	token            jwt.Token
+	oauthService     service.OauthService
+	loginService     service.LoginService
+	sessionInterface service.SessionInterface
 }
 
 func init() {
 	app.Register(newOauthController)
 }
 
-func newOauthController(token jwt.Token, oauthService service.OauthService, loginService service.LoginService) *oauthController {
+func newOauthController(token jwt.Token, oauthService service.OauthService, loginService service.LoginService, sessionInterface service.SessionInterface) *oauthController {
 	return &oauthController{
-		token:        token,
-		oauthService: oauthService,
-		loginService: loginService,
+		token:          token,
+		oauthService:   oauthService,
+		loginService:   loginService,
+		sessionInterface: sessionInterface,
 	}
 }
 
@@ -59,7 +61,7 @@ func (o *oauthController) GetByCode(code string) (response model.Response, err e
 	scmUrl := os.Getenv("SCM_URL")
 	s := url.QueryEscape(service.CallbackUrl)
 	session := service.NewClient(service.BaseUrl, service.AccessTokenUrl, service.ApplicationId, s, service.Secret)
-	resp, err := session.GetAccessToken(code)
+	resp, err := o.sessionInterface.GetAccessToken(session, code)
 	if err != nil || resp.AccessToken == "" {
 		response.SetCode(http.StatusUnauthorized)
 		log.Error("login session get accessToken error", err)
