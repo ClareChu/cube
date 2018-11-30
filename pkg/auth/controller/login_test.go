@@ -21,13 +21,14 @@ import (
 	"hidevops.io/hioak/starter/scm"
 	"hidevops.io/mio/pkg/auth/service/mocks"
 	"net/http"
+	"os"
 	"testing"
 )
 
 func TestUserLogin(t *testing.T) {
 
 	io.EnsureWorkDir(1, "config/application.yml")
-
+	os.Setenv("SCM_URL", "https://github.com")
 	loginService := new(mocks.LoginService)
 	jwtToken := jwt.NewJwtToken(&jwt.Properties{
 		PrivateKeyPath: "config/ssl/app.rsa",
@@ -37,8 +38,8 @@ func TestUserLogin(t *testing.T) {
 	testApp := web.NewTestApp(t, login).
 		SetProperty("kube.serviceHost", "test").
 		Run(t)
-	loginService.On("GetSession", "https://gitlab.vpclub.cn", "1", "2").Return("", 1, "", nil)
-	loginService.On("GetUser", "https://gitlab.vpclub.cn", "").Return(&scm.User{}, nil)
+	loginService.On("GetSession", "https://github.com", "1", "2").Return("", 1, "", nil)
+	loginService.On("GetUser", "https://github.com", "").Return(&scm.User{}, nil)
 	user := &UserRequest{
 		Username: "1",
 		Password: "2",
