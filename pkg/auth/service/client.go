@@ -3,11 +3,26 @@ package service
 import (
 	"crypto/tls"
 	"encoding/json"
+	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/mio/pkg/utils"
 	"io"
 	"net/http"
 	"time"
 )
+
+type ClientService interface {
+	Get(method, baseUrl string, v interface{}) (*http.Response, error)
+}
+
+func init() {
+	app.Register(newClientSet)
+}
+
+type ClientServiceImpl struct {
+	ClientService
+	client *http.Client
+}
+
 
 func Client(method, baseUrl string, v interface{}) (*http.Response, error) {
 	transport := &utils.Transport{
@@ -19,7 +34,6 @@ func Client(method, baseUrl string, v interface{}) (*http.Response, error) {
 	}
 	defer transport.Close()
 	client := &http.Client{Transport: transport}
-
 	req2, _ := http.NewRequest(method, baseUrl, nil)
 	resp, err := client.Do(req2)
 	if err != nil {

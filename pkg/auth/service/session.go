@@ -1,9 +1,27 @@
 package service
 
 import (
+	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/utils/replacer"
 )
+
+type SessionInterface interface {
+	GetAccessToken(session *Session, code string) (*SessionResponse, error)
+
+}
+
+type SessionService struct {
+	SessionInterface
+}
+
+func init()  {
+	app.Register(newSessionService)
+}
+
+func  newSessionService() SessionInterface {
+	return &SessionService{}
+}
 
 type Session struct {
 	AuthURL       string
@@ -36,7 +54,7 @@ func NewClient(authUrl, tokenUrl, applicationId, callbackUrl, secret string) *Se
 	return s
 }
 
-func (session *Session) GetAccessToken(code string) (*SessionResponse, error) {
+func (s *SessionService) GetAccessToken(session *Session, code string) (*SessionResponse, error) {
 	log.Info("session GetAccessToken code : ", code)
 	session.Code = code
 	t := replacer.GetMatches(AccessTokenUrl)
