@@ -15,6 +15,7 @@ app:
     - websocket
     - gorm
     - bolt
+    - gitlab
 
 logging:
   level: debug
