@@ -25,6 +25,7 @@ import (
 	_ "hidevops.io/mio/console/pkg/controller"
 	_ "hidevops.io/mio/console/pkg/rpc"
 	_ "hidevops.io/mio/console/pkg/service"
+	_ "hidevops.io/mio/pkg/auth/controller"
 )
 
 // main

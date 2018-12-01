@@ -826,6 +826,14 @@
   revision = "cdfbe9377474227bb42120c1e22fd4433e7f69bf"
 
 [[projects]]
+  branch = "f-api-v3"
+  digest = "1:7d5769516244ddf82344987f9eaf511e5f0989e6cbf879ab46b791174b19a012"
+  name = "github.com/xanzy/go-gitlab"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "896163fa8f7a8178ada89ef13f7a72e728f0c010"
+
+[[projects]]
   digest = "1:3148cb3478c26a92b4c1a18abb9428234b281e278af6267840721a24b6cbc6a3"
   name = "github.com/xanzy/ssh-agent"
   packages = ["."]
@@ -1195,17 +1203,20 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:a0469ffe2cdf18e814d67a57111862d805888eaa88a2ea451871bdc0d19eed73"
+  digest = "1:377f2ba737a832fe09ef34c57e51fe0dcb9b74b9154ca8092a6bcc1973ee4fdb"
   name = "hidevops.io/hioak"
   packages = [
     "starter",
     "starter/docker",
     "starter/docker/fake",
     "starter/kube",
+    "starter/scm",
     "starter/scm/git",
+    "starter/scm/gitlab",
+    "starter/scm/gitlab/fake",
   ]
   pruneopts = "NUT"
-  revision = "e6a61a31945c06d6878461af15a28f245f2d21fb"
+  revision = "8d7af4b93d3118d592c2159afd72e0d0707adad1"
 
 [[projects]]
   digest = "1:5ccc5b26e3a61e3ed02776bd67dcd9fb7129696c6aaa2d656281fc23847f40da"
@@ -1462,6 +1473,7 @@
     "github.com/prometheus/common/log",
     "github.com/stretchr/testify/assert",
     "github.com/stretchr/testify/mock",
+    "github.com/xanzy/go-gitlab",
     "golang.org/x/net/context",
     "google.golang.org/grpc",
     "gopkg.in/src-d/go-git.v4",
@@ -1482,11 +1494,15 @@
     "hidevops.io/hiboot/pkg/utils/copier",
     "hidevops.io/hiboot/pkg/utils/idgen",
     "hidevops.io/hiboot/pkg/utils/io",
+    "hidevops.io/hiboot/pkg/utils/replacer",
     "hidevops.io/hioak/starter",
     "hidevops.io/hioak/starter/docker",
     "hidevops.io/hioak/starter/docker/fake",
     "hidevops.io/hioak/starter/kube",
+    "hidevops.io/hioak/starter/scm",
     "hidevops.io/hioak/starter/scm/git",
+    "hidevops.io/hioak/starter/scm/gitlab",
+    "hidevops.io/hioak/starter/scm/gitlab/fake",
     "k8s.io/api/apps/v1",
     "k8s.io/api/core/v1",
     "k8s.io/api/extensions/v1beta1",
