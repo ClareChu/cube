@@ -1,6 +1,7 @@
 package aggregate
 
 import (
+	"errors"
 	"fmt"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
@@ -12,6 +13,8 @@ import (
 	"hidevops.io/mio/pkg/starter/mio"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/watch"
+	"os"
+	"strconv"
 	"time"
 )
 
@@ -81,6 +84,10 @@ func (d *Deployment) Create(deploymentConfig *v1alpha1.DeploymentConfig, pipelin
 
 func (d *Deployment) Watch(name, namespace string) error {
 	log.Debug("build config Watch :%v", name)
+	kubeWatchTimeout, err := strconv.Atoi(os.Getenv("KUBE_WATCH_TIMEOUT"))
+	after := time.Duration(kubeWatchTimeout) * time.Minute
+
+
 	timeout := int64(constant.TimeoutSeconds)
 	option := v1.ListOptions{
 		TimeoutSeconds: &timeout,
@@ -92,8 +99,8 @@ func (d *Deployment) Watch(name, namespace string) error {
 	}
 	for {
 		select {
-		case <-time.After(10 * time.Second):
-			return nil
+		case <-time.After(after):
+			return errors.New("pod query timeout 10 minutes")
 		case event, ok := <-w.ResultChan():
 			if !ok {
 				log.Info(" build watch resultChan: ", ok)

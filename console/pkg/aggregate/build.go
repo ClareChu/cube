@@ -17,6 +17,8 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/watch"
+	"os"
+	"strconv"
 	"time"
 )
 
@@ -97,7 +99,14 @@ func (s *Build) Create(buildConfig *v1alpha1.BuildConfig, pipelineName, version 
 
 func (s *Build) Watch(name, namespace string) (build *v1alpha1.Build, err error) {
 	log.Debug("build config Watch :%v", name)
+	kubeWatchTimeout, err := strconv.Atoi(os.Getenv("KUBE_WATCH_TIMEOUT"))
+	after := time.Duration(kubeWatchTimeout) * time.Minute
+
 	timeout := int64(constant.TimeoutSeconds)
+	if err != nil {
+		err = errors.New("kube watch time out ")
+		return
+	}
 	option := v1.ListOptions{
 		TimeoutSeconds: &timeout,
 		LabelSelector:  fmt.Sprintf("app=%s", name),
@@ -108,8 +117,8 @@ func (s *Build) Watch(name, namespace string) (build *v1alpha1.Build, err error)
 	}
 	for {
 		select {
-		case <-time.After(10 * time.Second):
-			return nil, errors.New("Pod query timeout 10 minutes")
+		case <-time.After(after):
+			return nil, errors.New("pod query timeout 10 minutes")
 		case event, ok := <-w.ResultChan():
 			if !ok {
 				log.Info(" build watch resultChan: ", ok)
@@ -327,6 +336,9 @@ func (s *Build) Update(build *v1alpha1.Build, event, phase string) error {
 
 func (s *Build) WatchPod(name, namespace string) error {
 	log.Debugf("build config Watch :%v", name)
+	kubeWatchTimeout, err := strconv.Atoi(os.Getenv("KUBE_WATCH_TIMEOUT"))
+	after := time.Duration(kubeWatchTimeout) * time.Minute
+
 	timeout := int64(constant.TimeoutSeconds)
 	listOptions := v1.ListOptions{
 		TimeoutSeconds: &timeout,
@@ -338,8 +350,8 @@ func (s *Build) WatchPod(name, namespace string) error {
 	}
 	for {
 		select {
-		case <-time.After(10 * time.Second):
-			return errors.New("Pod query timeout 10 minutes")
+		case <-time.After(after):
+			return errors.New("pod query timeout 10 minutes")
 		case event, ok := <-w.ResultChan():
 			if !ok {
 				log.Info("WatchPod resultChan: ", ok)

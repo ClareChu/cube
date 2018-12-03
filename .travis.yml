@@ -18,7 +18,7 @@ before_install:
 
 env:
   - APP_PROFILES_ACTIVE=local
-
+  - KUBE_WATCH_TIMEOUT=1
 script:
   - go test -v ./... -coverprofile=coverage.out -covermode=atomic
 
