@@ -298,19 +298,40 @@ func (s *Build) Selector(build *v1alpha1.Build) (err error) {
 	}
 	switch tak.Name {
 	case constant.DeployNode:
-		s.DeployNode(build)
+		err := s.DeployNode(build)
+		if err != nil {
+			log.Errorf("deploy node %v", err)
+		}
 	case constant.CreateService:
 		err = s.CreateService(build)
+		if err != nil {
+			log.Errorf("create service %v", err)
+		}
 	case constant.CLONE:
 		err = s.SourceCodePull(build)
+		if err != nil {
+			log.Errorf("source code pull  %v", err)
+		}
 	case constant.COMPILE:
 		err = s.Compile(build)
+		if err != nil {
+			log.Errorf("Compile %v", err)
+		}
 	case constant.BuildImage:
 		err = s.ImageBuild(build)
+		if err != nil {
+			log.Errorf("Image Build %v", err)
+		}
 	case constant.PushImage:
 		err = s.ImagePush(build)
+		if err != nil {
+			log.Errorf("Image Push %v", err)
+		}
 	case constant.DeleteDeployment:
 		err = s.DeleteNode(build)
+		if err != nil {
+			log.Errorf("Delete Node %v", err)
+		}
 	case constant.Ending:
 		err = s.Update(build, "", constant.Complete)
 		log.Info("update pipeline aggregate")

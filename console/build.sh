@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo  "GOOS=linux go build"
- GOOS=linux go build
+ GOOS=linux go build -o hiadmin
 
 docker build -t hiadmin .
 
