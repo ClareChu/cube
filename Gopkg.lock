@@ -1158,7 +1158,7 @@
   version = "v2.2.1"
 
 [[projects]]
-  digest = "1:ac2c95b5f08a3e095ca82b2f92c2aa44f6aafd77e26ecf0c2545f1984d46df4c"
+  digest = "1:cb4a04bf6df131ee0c7771c08b47fe109110bdfc46f31dd631ef7b30ce119ec3"
   name = "hidevops.io/hiboot"
   packages = [
     "pkg/app",
@@ -1190,20 +1190,20 @@
     "pkg/utils/validator",
   ]
   pruneopts = "NUT"
-  revision = "4222ad7c4524bbf047be68db6daf33b4b3d91ef0"
-  version = "v0.11.1"
+  revision = "ffb641d7c7f34251db4776cae46b0f0a849241e1"
+  version = "v1.0.0"
 
 [[projects]]
   digest = "1:6db22dfed41da05846b975e4f580adfc4113f6e2d70e3d611aa2d7ea8db56eb1"
   name = "hidevops.io/hiboot-data"
   packages = ["starter/etcd"]
   pruneopts = "NUT"
-  revision = "190faf30e4cfcfc36893b1ebc7be390815785d69"
-  version = "v0.2.1"
+  revision = "b2e7340dc1ea1d3202173696bd80639443e56767"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "master"
-  digest = "1:377f2ba737a832fe09ef34c57e51fe0dcb9b74b9154ca8092a6bcc1973ee4fdb"
+  digest = "1:99d4632ed648072b8af50a6d449f8c7315be5ac6305a8bccea11dc59c2ad67d2"
   name = "hidevops.io/hioak"
   packages = [
     "starter",
@@ -1216,15 +1216,15 @@
     "starter/scm/gitlab/fake",
   ]
   pruneopts = "NUT"
-  revision = "8d7af4b93d3118d592c2159afd72e0d0707adad1"
+  revision = "2801a22dc19d4f33506cb6073862a239bb55fc0e"
 
 [[projects]]
   digest = "1:5ccc5b26e3a61e3ed02776bd67dcd9fb7129696c6aaa2d656281fc23847f40da"
   name = "hidevops.io/viper"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "86828cc12e0d5432e8440421083c6cf8f905470c"
-  version = "v1.3.1"
+  revision = "759cc1a242b33c7a6fce864b3f1c560496fc72e6"
+  version = "v1.3.2"
 
 [[projects]]
   digest = "1:41ef5a61ad194cdfb47dbdac3697743ca11b1d99360e8b12b1a7a44751717588"
