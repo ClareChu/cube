@@ -11,3 +11,4 @@ docker login -p $(oc whoami -t) -u unused docker-registry-default.app.vpclub.io
 
 docker push docker-registry-default.app.vpclub.io/demo/hiadmin:v1
 
+
