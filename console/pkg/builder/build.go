@@ -74,7 +74,7 @@ func (s *BuildNodeImpl) DeleteDeployment(name, namespace string) error {
 		LabelSelector: fmt.Sprintf("app=%s", name),
 	}
 	list, err := s.replicaSet.List(name, namespace, option)
-	if len(list.Items) != 1 || err != nil || list.Items == nil {
+	if  err != nil {
 		return err
 	}
 	deleteOption := &metav1.DeleteOptions{

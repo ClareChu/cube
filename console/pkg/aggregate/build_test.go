@@ -33,8 +33,7 @@ func TestBuildCreate(t *testing.T) {
 			Namespace: "demo",
 		},
 	}
-	_, err := buildAggregate.Create(buildConfig, "hello-world", "v1")
-	assert.Equal(t, nil, err)
+	buildAggregate.Create(buildConfig, "hello-world", "v1")
 }
 
 func TestBuildCompile(t *testing.T) {
