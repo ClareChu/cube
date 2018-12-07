@@ -15,9 +15,8 @@ go_import_path: hidevops.io/mio
 install: true
 
 env:
-  - APP_PROFILES_ACTIVE=local
-  - KUBE_WATCH_TIMEOUT=1
-  - GO111MODULE=on
+  - APP_PROFILES_ACTIVE=local KUBE_WATCH_TIMEOUT=1 GO111MODULE=on
+
 script:
   - go test -v ./... -coverprofile=coverage.out -covermode=atomic
 
