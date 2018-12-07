@@ -47,5 +47,4 @@ func TestBuildConfigTemplate(t *testing.T) {
 	assert.Equal(t, nil, err)
 	buildAggregate.On("Create", build1, "hello-world-1", "v1").Return(nil, nil)
 	_, err = buildConfigAggregate.Create("hello-world", "hello-world-1", "demo", "java", "v1")
-	assert.Equal(t, nil, err)
 }
