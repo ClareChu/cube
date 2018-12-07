@@ -35,7 +35,7 @@ func TestBuildCreate(t *testing.T) {
 		},
 	}
 	_, err := buildAggregate.Create(buildConfig, "hello-world", "v1")
-	assert.Equal(t, errors.New("Pod query timeout 10 minutes"), err)
+	assert.Equal(t, errors.New("pod query timeout 10 minutes"), err)
 }
 
 func TestBuildCompile(t *testing.T) {
