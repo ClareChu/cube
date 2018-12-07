@@ -359,7 +359,6 @@ func (s *Build) WatchPod(name, namespace string) error {
 	log.Debugf("build config Watch :%v", name)
 	kubeWatchTimeout, err := strconv.Atoi(os.Getenv("KUBE_WATCH_TIMEOUT"))
 	after := time.Duration(kubeWatchTimeout) * time.Minute
-
 	timeout := int64(constant.TimeoutSeconds)
 	listOptions := v1.ListOptions{
 		TimeoutSeconds: &timeout,

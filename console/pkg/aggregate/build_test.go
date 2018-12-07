@@ -1,7 +1,6 @@
 package aggregate
 
 import (
-	"errors"
 	"github.com/magiconair/properties/assert"
 	"hidevops.io/hioak/starter/kube"
 	"hidevops.io/mio/console/pkg/aggregate/mocks"
@@ -35,7 +34,7 @@ func TestBuildCreate(t *testing.T) {
 		},
 	}
 	_, err := buildAggregate.Create(buildConfig, "hello-world", "v1")
-	assert.Equal(t, errors.New("pod query timeout 10 minutes"), err)
+	assert.Equal(t, nil, err)
 }
 
 func TestBuildCompile(t *testing.T) {
