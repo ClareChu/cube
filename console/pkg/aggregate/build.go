@@ -231,6 +231,7 @@ func (s *Build) CreateService(build *v1alpha1.Build) error {
 	command := &command.ServiceNode{
 		DeployData: kube.DeployData{
 			Name:           build.Name,
+			App:            build.ObjectMeta.Labels["name"],
 			NameSpace:      build.Namespace,
 			Replicas:       build.Spec.DeployData.Replicas,
 			Labels:         build.Spec.DeployData.Labels,
@@ -415,10 +416,9 @@ func (s *Build) WatchPod(name, namespace string) error {
 func (s *Build) DeleteNode(build *v1alpha1.Build) error {
 	phase := constant.Success
 	//TODO delete deployment config
-	err := s.buildNode.DeleteDeployment(build.Name, build.Namespace)
-
+	err := s.buildNode.DeleteDeployment(build.ObjectMeta.Labels["name"], build.Namespace)
 	//TODO delete service
-	err = s.serviceConfigAggregate.DeleteService(build.Name, build.Namespace)
+	err = s.serviceConfigAggregate.DeleteService(build.ObjectMeta.Labels["name"], build.Namespace)
 	if err != nil {
 		phase = constant.Fail
 	}
