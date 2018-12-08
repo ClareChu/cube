@@ -47,7 +47,34 @@ dep ensure -v
 如果使用1.11 以上版本最则使用go modules
 该项目下分为`console` 和 `node` 俩个项目, console 主要负责cicd 调度 启动 任务分发 等作用， node 主要负责 代码编译 代码测试 镜像的制作等主要工作。
 
-### console镜像制作
+### console镜像制作 与部署
+
+创建namespace
+
+```bash
+oc create namespace hidevopsio
+
+### 给namespace 授权
+oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:hidevopsio:default
+
+oc adm policy add-scc-to-user privileged -z default -n hidevopsio
+
+### 默认情况openshift 会预先分配UID 不能以任何用户身份运行，并阻止容器运行, 修改restricted
+
+oc edit scc restricted
+
+# 更改runAsUser.Type为RunAsAny。
+# 确保allowPrivilegedContainer设置为false。
+
+# 要修改群集，以便它不预先分配UID并且不允许容器以root身份运行：
+# 更改runAsUser.Type为MustRunAsNonRoot。
+
+# 使用hostPath卷插件
+#  要放松群集中的安全性，以便允许群集使用 hostPath卷插件而不授予每个人访问特权 SCC 的权限：
+# 编辑受限制的 SCC：
+oc edit scc restricted
+#  添加 allowHostDirVolumePlugin: true。
+```
 
 ```bash
 cd console
