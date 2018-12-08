@@ -284,8 +284,6 @@ func (s *Build) DeployNode(build *v1alpha1.Build) error {
 
 func (s *Build) Selector(build *v1alpha1.Build) (err error) {
 	var tak v1alpha1.Task
-	log.Info("task", build.Spec.Tasks)
-	log.Info(" build config", build.Status)
 	if len(build.Status.Stages) == 0 {
 		if len(build.Spec.Tasks) == 0 {
 			err = fmt.Errorf("build.Spec.Tasks is error")
