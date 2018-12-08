@@ -54,8 +54,8 @@ cd console
 ### 执行build.sh
 ./build.sh
 ###脚本大致内容
-
-## console 代码打包linux 
+
+## console 代码打包linux
  GOOS=linux go build -o hiadmin
 
 ## 镜像制作
