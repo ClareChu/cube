@@ -213,7 +213,7 @@ func TestBuildDeleteNode(t *testing.T) {
 			Name:      "hello-world",
 			Namespace: "demo",
 			Labels: map[string]string{
-				"name": "1",
+				"name": "hello-world",
 			},
 		},
 	}

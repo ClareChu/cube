@@ -70,7 +70,7 @@ func (s *BuildNodeImpl) DeleteDeployment(name, namespace string) (err error) {
 	//TODO delete replica set
 
 	list, err := s.replicaSet.List(name, namespace, option)
-	if  err != nil {
+	if err != nil {
 		return
 	}
 	for _, rs := range list.Items {
@@ -84,7 +84,12 @@ func (s *BuildNodeImpl) DeleteDeployment(name, namespace string) (err error) {
 }
 
 func (s *BuildNodeImpl) Update(name, namespace string) error {
-	deploy := &v1beta1.Deployment{}
+	deploy := &v1beta1.Deployment{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      name,
+			Namespace: namespace,
+		},
+	}
 	err := s.deployment.Update(deploy)
 	return err
 }
