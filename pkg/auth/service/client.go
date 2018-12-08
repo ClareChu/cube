@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+
 type ClientService interface {
 	Get(method, baseUrl string, v interface{}) (*http.Response, error)
 }

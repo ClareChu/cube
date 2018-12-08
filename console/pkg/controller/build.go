@@ -46,3 +46,17 @@ func (b *BuildController) GetByNameNamespace(name, namespace string) (model.Resp
 	base := new(model.BaseResponse)
 	return base, err
 }
+
+func (b *BuildController) Delete() (model.Response, error) {
+	build := &v1alpha1.Build{
+		ObjectMeta: metav1.ObjectMeta{
+			Labels: map[string]string{
+				"name": "hello-world",
+			},
+			Namespace: "demo",
+		},
+	}
+	err := b.buildAggregate.DeleteNode(build)
+	base := new(model.BaseResponse)
+	return base, err
+}

@@ -53,40 +53,43 @@ func (s *BuildNodeImpl) CreateServiceNode(node *command.ServiceNode) error {
 		})
 	}
 
-	err := s.service.Create(node.Name, node.NameSpace, ports)
+	err := s.service.Create(node.Name, node.App, node.NameSpace, ports)
 	return err
 }
 
-func (s *BuildNodeImpl) DeleteDeployment(name, namespace string) error {
-	deploy, err := s.deployment.Get(name, namespace, metav1.GetOptions{})
-	replicas := int32(0)
-	deploy.Spec.Replicas = &replicas
-	err = s.deployment.Update(deploy)
-	//TODO delete deployment
-	Second := int64(0)
-	options := &metav1.DeleteOptions{
-		GracePeriodSeconds: &Second,
-	}
-	err = s.deployment.Delete(name, namespace, options)
-
-	//TODO delete replica set
+func (s *BuildNodeImpl) DeleteDeployment(name, namespace string) (err error) {
 	option := metav1.ListOptions{
-		LabelSelector: fmt.Sprintf("app=%s", name),
+		LabelSelector: fmt.Sprintf("name=%s", name),
 	}
+	deploys, err := s.deployment.List(namespace, option)
+	opt := &metav1.DeleteOptions{}
+	for _, deploy := range deploys.Items {
+
+		err = s.deployment.Delete(deploy.Name, namespace, opt)
+	}
+	//TODO delete replica set
+
 	list, err := s.replicaSet.List(name, namespace, option)
-	if len(list.Items) != 1 || err != nil || list.Items == nil {
-		return err
+	if err != nil {
+		return
 	}
-	deleteOption := &metav1.DeleteOptions{
-		GracePeriodSeconds: &Second,
+	for _, rs := range list.Items {
+		err = s.replicaSet.Delete(rs.Name, namespace, opt)
+		if err != nil {
+			return
+		}
 	}
-	err = s.replicaSet.Delete(list.Items[0].Name, namespace, deleteOption)
-	//TODO delete service
-	return err
+	return
+
 }
 
 func (s *BuildNodeImpl) Update(name, namespace string) error {
-	deploy := &v1beta1.Deployment{}
+	deploy := &v1beta1.Deployment{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      name,
+			Namespace: namespace,
+		},
+	}
 	err := s.deployment.Update(deploy)
 	return err
 }

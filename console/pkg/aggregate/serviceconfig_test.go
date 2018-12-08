@@ -31,7 +31,7 @@ func TestServiceConfigCreate(t *testing.T) {
 	pb.On("Update", "", "demo-dev", "createService", "success", "").Return(nil)
 	_, err = serviceAggregate.Create("hello-world", "", "demo", "java", "v1", "dev")
 	assert.Equal(t, nil, err)
-	err = service.Create("java", constant.TemplateDefaultNamespace, "")
+	err = service.Create("java", "",  constant.TemplateDefaultNamespace, "")
 	assert.Equal(t, nil, err)
 
 	err = serviceAggregate.DeleteService("java", constant.TemplateDefaultNamespace)

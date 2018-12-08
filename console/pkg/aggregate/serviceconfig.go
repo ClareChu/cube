@@ -108,6 +108,15 @@ func (s *ServiceConfig) CreateService(serviceConfig *v1alpha1.ServiceConfig) (er
 }
 
 func (s *ServiceConfig) DeleteService(name, namespace string) (err error) {
-	err = s.service.Delete(name, namespace)
-	return err
+	opt := v1.ListOptions{
+		LabelSelector: fmt.Sprintf("name=%s", name),
+	}
+	list, err := s.service.List(namespace, opt)
+	for _, service := range list.Items {
+		err = s.service.Delete(service.Name, namespace)
+		if err != nil {
+			return
+		}
+	}
+	return
 }

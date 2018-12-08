@@ -17,6 +17,8 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/watch"
+	"os"
+	"strconv"
 	"time"
 )
 
@@ -97,7 +99,14 @@ func (s *Build) Create(buildConfig *v1alpha1.BuildConfig, pipelineName, version 
 
 func (s *Build) Watch(name, namespace string) (build *v1alpha1.Build, err error) {
 	log.Debug("build config Watch :%v", name)
+	kubeWatchTimeout, err := strconv.Atoi(os.Getenv("KUBE_WATCH_TIMEOUT"))
+	after := time.Duration(kubeWatchTimeout) * time.Minute
+
 	timeout := int64(constant.TimeoutSeconds)
+	if err != nil {
+		err = errors.New("kube watch time out ")
+		return
+	}
 	option := v1.ListOptions{
 		TimeoutSeconds: &timeout,
 		LabelSelector:  fmt.Sprintf("app=%s", name),
@@ -108,8 +117,8 @@ func (s *Build) Watch(name, namespace string) (build *v1alpha1.Build, err error)
 	}
 	for {
 		select {
-		case <-time.After(10 * time.Second):
-			return nil, errors.New("Pod query timeout 10 minutes")
+		case <-time.After(after):
+			return nil, errors.New("pod query timeout 10 minutes")
 		case event, ok := <-w.ResultChan():
 			if !ok {
 				log.Info(" build watch resultChan: ", ok)
@@ -222,6 +231,7 @@ func (s *Build) CreateService(build *v1alpha1.Build) error {
 	command := &command.ServiceNode{
 		DeployData: kube.DeployData{
 			Name:           build.Name,
+			App:            build.ObjectMeta.Labels["name"],
 			NameSpace:      build.Namespace,
 			Replicas:       build.Spec.DeployData.Replicas,
 			Labels:         build.Spec.DeployData.Labels,
@@ -274,8 +284,6 @@ func (s *Build) DeployNode(build *v1alpha1.Build) error {
 
 func (s *Build) Selector(build *v1alpha1.Build) (err error) {
 	var tak v1alpha1.Task
-	log.Info("task", build.Spec.Tasks)
-	log.Info(" build config", build.Status)
 	if len(build.Status.Stages) == 0 {
 		if len(build.Spec.Tasks) == 0 {
 			err = fmt.Errorf("build.Spec.Tasks is error")
@@ -289,19 +297,40 @@ func (s *Build) Selector(build *v1alpha1.Build) (err error) {
 	}
 	switch tak.Name {
 	case constant.DeployNode:
-		s.DeployNode(build)
+		err := s.DeployNode(build)
+		if err != nil {
+			log.Errorf("deploy node %v", err)
+		}
 	case constant.CreateService:
 		err = s.CreateService(build)
+		if err != nil {
+			log.Errorf("create service %v", err)
+		}
 	case constant.CLONE:
 		err = s.SourceCodePull(build)
+		if err != nil {
+			log.Errorf("source code pull  %v", err)
+		}
 	case constant.COMPILE:
 		err = s.Compile(build)
+		if err != nil {
+			log.Errorf("Compile %v", err)
+		}
 	case constant.BuildImage:
 		err = s.ImageBuild(build)
+		if err != nil {
+			log.Errorf("Image Build %v", err)
+		}
 	case constant.PushImage:
 		err = s.ImagePush(build)
+		if err != nil {
+			log.Errorf("Image Push %v", err)
+		}
 	case constant.DeleteDeployment:
 		err = s.DeleteNode(build)
+		if err != nil {
+			log.Errorf("Delete Node %v", err)
+		}
 	case constant.Ending:
 		err = s.Update(build, "", constant.Complete)
 		log.Info("update pipeline aggregate")
@@ -327,6 +356,8 @@ func (s *Build) Update(build *v1alpha1.Build, event, phase string) error {
 
 func (s *Build) WatchPod(name, namespace string) error {
 	log.Debugf("build config Watch :%v", name)
+	kubeWatchTimeout, err := strconv.Atoi(os.Getenv("KUBE_WATCH_TIMEOUT"))
+	after := time.Duration(kubeWatchTimeout) * time.Minute
 	timeout := int64(constant.TimeoutSeconds)
 	listOptions := v1.ListOptions{
 		TimeoutSeconds: &timeout,
@@ -338,8 +369,8 @@ func (s *Build) WatchPod(name, namespace string) error {
 	}
 	for {
 		select {
-		case <-time.After(10 * time.Second):
-			return errors.New("Pod query timeout 10 minutes")
+		case <-time.After(after):
+			return errors.New("pod query timeout 10 minutes")
 		case event, ok := <-w.ResultChan():
 			if !ok {
 				log.Info("WatchPod resultChan: ", ok)
@@ -383,10 +414,9 @@ func (s *Build) WatchPod(name, namespace string) error {
 func (s *Build) DeleteNode(build *v1alpha1.Build) error {
 	phase := constant.Success
 	//TODO delete deployment config
-	err := s.buildNode.DeleteDeployment(build.Name, build.Namespace)
-
+	err := s.buildNode.DeleteDeployment(build.ObjectMeta.Labels["name"], build.Namespace)
 	//TODO delete service
-	err = s.serviceConfigAggregate.DeleteService(build.Name, build.Namespace)
+	err = s.serviceConfigAggregate.DeleteService(build.ObjectMeta.Labels["name"], build.Namespace)
 	if err != nil {
 		phase = constant.Fail
 	}

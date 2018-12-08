@@ -12,6 +12,8 @@ import (
 	"hidevops.io/mio/pkg/starter/mio"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/watch"
+	"os"
+	"strconv"
 	"time"
 )
 
@@ -88,6 +90,9 @@ func (p *Pipeline) Create(pipelineConfig *v1alpha1.PipelineConfig, sourceCode st
 }
 
 func (p *Pipeline) Watch(name, namespace string) (pipeline *v1alpha1.Pipeline, err error) {
+	kubeWatchTimeout, err := strconv.Atoi(os.Getenv("KUBE_WATCH_TIMEOUT"))
+	after := time.Duration(kubeWatchTimeout) * time.Minute
+
 	timeout := int64(constant.TimeoutSeconds)
 	options := v1.ListOptions{
 		TimeoutSeconds: &timeout,
@@ -99,7 +104,7 @@ func (p *Pipeline) Watch(name, namespace string) (pipeline *v1alpha1.Pipeline, e
 	}
 	for {
 		select {
-		case <-time.After(10 * time.Second):
+		case <-time.After(after):
 			return nil, errors.New("10 min")
 		case event, ok := <-w.ResultChan():
 			if !ok {
