@@ -37,7 +37,7 @@ Mio is a Continuous Integration and Continuous Delivery Platform built on contai
 go get -u github.com/hidevopsio/mio
 ```
 
-如果使用GO版本在 `go1.11` 一下 请自行安装dep包管理工具。
+如果使用GO版本在 `go1.11` 下 请自行安装dep包管理工具。
 在项目下执行
 
 ```bash
