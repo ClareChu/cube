@@ -43,9 +43,8 @@ go get -u github.com/hidevopsio/mio
 ```bash
 dep ensure -v
 ```
-
 如果使用1.11 以上版本最则使用go modules
-该项目下分为`console` 和 `node` 俩个项目, console 主要负责CICD 调度 启动 任务分发 等作用， node 主要负责 代码编译 代码测试 镜像的制作等主要工作。
+该项目下分为`console` 和 `node` 俩个项目, console 主要负责CI/CD 调度 启动 任务分发 等作用， node 主要负责 代码编译 代码测试 镜像的制作等主要工作。
 
 ### console镜像制作 与部署
 
@@ -193,7 +192,19 @@ yml中的namespace 请自行更改，在这里需要讲一下env
 |DOCKER_API_VERSION|1.24|string|docker api 的版本|
 
 ### node镜像制作
-...
+进入node目录执行make命令即可
+
+make
+
+如需变更版本和镜像名称修改node目录下Makefile中变量
+
+imageName = {registries}/{group}/{image_name}:tag
+```
+tag := 1.1.8
+registries := docker.vpclub.cn
+group := hidevopsio
+image_name := hinode-java-jar
+```
 
 ## CRD 资源
 
@@ -210,3 +221,111 @@ oc apply -f .
 kubectl apply -f .
 ```
 
+## CRD 资源参见
+### 1. buildConfig
+buildconfig.yaml
+```yaml
+apiVersion: mio.io/v1alpha1
+kind: BuildConfig
+metadata:
+  clusterName: ""
+  creationTimestamp: 2018-10-23T08:29:45Z
+  generation: 0
+  name: java
+  namespace: templates
+spec:
+  app: ""
+  baseImage: docker.vpclub.cn/hidevopsio/hinode-java-jar:1.1.12
+  cloneConfig:
+    branch: master
+    depth: 1
+    dstDir: /opt/app-root/src/vpclub
+    password: ""
+    url: https://gitlab.vpclub.cn
+    username: ""
+  cloneType: ""
+  codeType: java
+  compileCmd:
+  - commandName: pwd
+  - Script: |-
+      mvn clean package -U -Dmaven.test.skip=true -Djava.net.preferIPv4Stack=true
+      if [[ $? == 0 ]]; then
+        echo 'Build Successful.'
+      else
+        echo 'Build Failed!'
+        exit 1
+      fi
+    execType: script
+  - commandName: ls
+  - params： -a
+  deployData:
+    envs:
+      CODE_TYPE: java
+      DOCKER_API_VERSION: "1.24"
+      MAVEN_HOST: http://nexus.vpclub.cn
+      MAVEN_MIRROR_URL: http://nexus.vpclub.cn/repository/maven-public/
+      NODE_NAME: node05.vpclub.io
+    hostPathVolume:
+      /var/lib/docker: /var/lib/docker
+      /var/run/docker.sock: /var/run/docker.sock
+    ports:
+    - 8080
+    - 7575
+    replicas: 1
+  dockerAuthConfig:
+    password: Harbor12345
+    username: admin
+  dockerFile:
+  - FROM docker.vpclub.cn/hidevopsio/java:8-jre-alpine
+  - ENV  TZ="Asia/Shanghai"
+  - ENV  APP_OPTIONS="-Xms128m -Xmx512m -Xss512k"
+  - ENV   APP_OPTIONS="-Xms128m -Xmx512m -Xss512k"
+  - COPY app.jar /root
+  - EXPOSE 8080
+  - EXPOSE 7575
+  - ENTRYPOINT ["sh","-c","java -jar /root/app.jar $APP_OPTIONS"]
+  dockerRegistry: harbor.vpclub.io
+  nodeService: ""
+  tasks:
+  - name: createService
+  - name: deployNode
+  - name: clone
+  - name: compile
+  - name: buildImage
+  - name: pushImage
+status:
+  lastVersion: 1
+```
+
+字段|类型|含义
+:---:|:---:|:---:
+|spec.baseImage|string|mio下node项目制作的镜像名称|
+|spec.cloneType|string|代码克隆模式|
+|spec.codeType|string|代码语言类型|
+|spec.dockerRegistry|string|镜像仓库地址|
+|spec.tasks|string|pipeline任务序列|
+|---|---|---|
+|spec.cloneConfig|object|存放克隆代码所需的一些信息|
+|spec.cloneConfig.url|string|设置克隆代码的http地址|
+|spec.cloneConfig.bransh|string|配置即将克隆代码的分支|
+|spec.cloneConfig.depth|string|配置代码克隆的深度|
+|spec.cloneConfig.dstDir|string|代码克隆在容器内部的目标地址|
+|spec.cloneConfig.username|string|配置克隆代码的鉴权用户名信息|
+|spec.cloneConfig.password|string|配置克隆代码的鉴权用密码信息|
+|---|---|---|
+|spec.compileCmd|list|用来存放一个shell命令组，主要用来代码编译|
+|spec.compileCmd`[`0`]`.execType|string|用来选择是否执行script字段中的脚本内容|
+|spec.compileCmd`[`0`]`.script|string|execType选择了script后会使用此字段中的内容生成一个脚本并执行|
+|spec.compileCmd`[`0`]`.commandName|string|command名称，使用时不能设置execType为script|
+|spec.compileCmd`[`0`]`.params|string|command参数和commandName配合使用|
+|---|---|---|
+|spec.deployData|object|用于node发布时的一些配置数据|
+|spec.deployData.envs|list|以key，value形式存放环境变量的一个数组|
+|spec.deployData.hostPathVolume|list|以key，value形式存放hostPathVolume挂载的一个数组|
+|spec.deployData.ports|list|用来存放node服务端口暴露的配置字段|
+|---|---|---|
+|spec.dockerAuthConfig|object|用于配置docker权限的配置信息|
+|spec.dockerAuthConfig.username|string|用户名|
+|spec.dockerAuthConfig.password|string|密码|
+|---|---|---|
+|spec.dockerFile|list|一个以行为单位存放Dockerfile语句的数组|
