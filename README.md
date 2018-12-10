@@ -41,11 +41,10 @@ go get -u github.com/hidevopsio/mio
 在项目下执行
 
 ```bash
-dep ensure -v主要负责
+dep ensure -v
 ```
-
 如果使用1.11 以上版本最则使用go modules
-该项目下分为`console` 和 `node` 俩个项目, console 主要负责CI/CD 调度 启动 任务分发 等作用， node 主要负责 代码编译 代码测试 镜像的制作等主要工作。
+该项目下分为`console` 和 `node` 俩个项目, console 主要负责 CI/CD 调度 启动 任务分发 等作用， node 主要负责 代码编译 代码测试 镜像的制作等主要工作。
 
 ### console镜像制作 与部署
 
@@ -222,7 +221,6 @@ oc apply -f .
 kubectl apply -f .
 ```
 
-
 ## CRD 资源参见
 ### 1. buildConfig
 buildconfig.yaml
@@ -331,5 +329,3 @@ status:
 |spec.dockerAuthConfig.password|string|密码|
 |---|---|---|
 |spec.dockerFile|list|一个以行为单位存放Dockerfile语句的数组|
-
-
