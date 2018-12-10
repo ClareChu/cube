@@ -99,16 +99,10 @@ docker push docker-registry-default.app.vpclub.io/demo/hiadmin:v1
 apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: >
-      {"apiVersion":"apps.openshift.io/v1","kind":"DeploymentConfig","metadata":{"annotations":{},"labels":{"app":"hiadmin"},"name":"hiadmin","namespace":"demo"},"spec":{"replicas":1,"selector":{"app":"hiadmin","deploymentconfig":"hiadmin"},"strategy":{"activeDeadlineSeconds":21600},"template":{"spec":{"containers":[{"env":[{"name":"APP_PROFILES_ACTIVE","value":"dev"},{"name":"SCM_URL","value":"http://gitlab.vpclub.cn:8022"}],"image":"docker-registry.default.svc:5000/demo/hiadmin@sha256:6cec6fbb1afed87f60d04050c08248dd3e386302e4e3757931d1625514b176c5","imagePullPolicy":"Always","name":"hiadmin","ports":[{"containerPort":7575,"protocol":"TCP"},{"containerPort":8080,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","volumeMounts":[{"mountPath":"/var/lib/docker","name":"volume1"},{"mountPath":"/var/run/docker.sock","name":"volume2"}]}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30,"volumes":[{"hostPath":{"path":"/var/lib/docker","type":""},"name":"volume1"},{"hostPath":{"path":"/var/run/docker.sock","type":""},"name":"volume2"}]}},"test":false,"triggers":[{"type":"ConfigChange"},{"imageChangeParams":{"automatic":true,"containerNames":["hiadmin"],"from":{"kind":"ImageStreamTag","name":"hiadmin:v1","namespace":"demo"},"lastTriggeredImage":"docker.vpclub.cn/demo/admin:v1"},"type":"ImageChange"}]}}
-    openshift.io/generated-by: OpenShiftWebConsole
-  creationTimestamp: '2018-10-21T07:06:25Z'
-  generation: 188
   labels:
     app: hiadmin
   name: hiadmin
-  namespace: demo
+  namespace: hidevopsio
   resourceVersion: '139885254'
   selfLink: /apis/apps.openshift.io/v1/namespaces/demo/deploymentconfigs/hiadmin
   uid: d2bcdad9-d4ff-11e8-bb8c-005056935c80
@@ -117,16 +111,6 @@ spec:
   selector:
     app: hiadmin
     deploymentconfig: hiadmin
-  strategy:
-    activeDeadlineSeconds: 21600
-    resources: {}
-    rollingParams:
-      intervalSeconds: 1
-      maxSurge: 25%
-      maxUnavailable: 25%
-      timeoutSeconds: 600
-      updatePeriodSeconds: 1
-    type: Rolling
   template:
     metadata:
       annotations:
@@ -195,35 +179,6 @@ spec:
         lastTriggeredImage: >-
           docker-registry.default.svc:5000/demo/hiadmin@sha256:851f49987fbbf469cbe87c6c26160a1ce7cb1ce5bdb6b1b7d3795127b8a44436
       type: ImageChange
-status:
-  availableReplicas: 1
-  conditions:
-    - lastTransitionTime: '2018-12-07T07:12:15Z'
-      lastUpdateTime: '2018-12-07T07:12:15Z'
-      message: Deployment config has minimum availability.
-      status: 'True'
-      type: Available
-    - lastTransitionTime: '2018-12-07T16:14:31Z'
-      lastUpdateTime: '2018-12-07T16:14:32Z'
-      message: replication controller "hiadmin-147" successfully rolled out
-      reason: NewReplicationControllerAvailable
-      status: 'True'
-      type: Progressing
-  details:
-    causes:
-      - imageTrigger:
-          from:
-            kind: DockerImage
-            name: >-
-              docker-registry.default.svc:5000/demo/hiadmin@sha256:851f49987fbbf469cbe87c6c26160a1ce7cb1ce5bdb6b1b7d3795127b8a44436
-        type: ImageChange
-    message: image change
-  latestVersion: 147
-  observedGeneration: 188
-  readyReplicas: 1
-  replicas: 1
-  unavailableReplicas: 0
-  updatedReplicas: 1
 ```
 
 yml中的namespace 请自行更改，在这里需要讲一下env
