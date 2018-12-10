@@ -193,7 +193,6 @@ yml中的namespace 请自行更改，在这里需要讲一下env
 |DOCKER_API_VERSION|1.24|string|docker api 的版本|
 
 ### node镜像制作
-
 ...
 
 ## CRD 资源
