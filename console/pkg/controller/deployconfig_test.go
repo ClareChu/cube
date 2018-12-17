@@ -12,7 +12,7 @@ import (
 
 func TestDeploymentConfig(t *testing.T) {
 	deploy := new(mocks.DeploymentConfigAggregate)
-	appInfo := newDeploymentConfigController(deploy)
+	appInfo := newDeploymentConfigController(deploy, nil)
 	deploy.On("Create", "", "", "", "", "", "", "dev").Return(nil, nil)
 
 	app := web.NewTestApp(t, appInfo).

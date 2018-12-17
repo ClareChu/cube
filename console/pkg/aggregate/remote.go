@@ -9,6 +9,7 @@ import (
 	"hidevops.io/mio/console/pkg/builder"
 	"hidevops.io/mio/console/pkg/constant"
 	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
+	"os"
 )
 
 const ImageUsername = "unused"
@@ -23,9 +24,9 @@ func init() {
 
 type Remote struct {
 	RemoteAggregate
-	imageClient       *docker.ImageClient
-	token             kube.Token
-	deploymentBuilder builder.DeploymentBuilder
+	imageClient             *docker.ImageClient
+	token                   kube.Token
+	deploymentBuilder       builder.DeploymentBuilder
 }
 
 func NewRemoteService(imageClient *docker.ImageClient, token kube.Token, deploymentBuilder builder.DeploymentBuilder) RemoteAggregate {
@@ -86,4 +87,14 @@ func (r *Remote) TagImage(deploy *v1alpha1.Deployment) error {
 	}
 	err = r.deploymentBuilder.Update(deploy.Name, deploy.Namespace, constant.RemoteDeploy, constant.Success)
 	return err
+}
+
+//GetRemoteTag get tag if
+func GetRemoteTag(version string) (tag string) {
+	tag = os.Getenv("Image_Tag")
+	if tag == "" {
+		tag = version
+		return
+	}
+	return
 }

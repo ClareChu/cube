@@ -3,7 +3,6 @@ package aggregate
 import (
 	"errors"
 	"github.com/magiconair/properties/assert"
-	"hidevops.io/hioak/starter/kube"
 	"hidevops.io/mio/console/pkg/aggregate/mocks"
 	builder "hidevops.io/mio/console/pkg/builder/mocks"
 	"hidevops.io/mio/console/pkg/constant"
@@ -11,7 +10,6 @@ import (
 	"hidevops.io/mio/pkg/client/clientset/versioned/fake"
 	"hidevops.io/mio/pkg/starter/mio"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
-	kubeFake "k8s.io/client-go/kubernetes/fake"
 	"testing"
 )
 
@@ -19,11 +17,9 @@ func TestDeploymentCreate(t *testing.T) {
 	clientSet := fake.NewSimpleClientset().MioV1alpha1()
 	deployment := mio.NewDeployment(clientSet)
 	remoteAggregate := new(mocks.RemoteAggregate)
-	client := kubeFake.NewSimpleClientset()
-	deploymentClient := kube.NewDeployment(client)
 	deployBuilder := new(builder.DeploymentBuilder)
 	pipelineBuilder := new(builder.PipelineBuilder)
-	buildConfigAggregate := NewDeploymentService(deployment, remoteAggregate, deploymentClient, deployBuilder, pipelineBuilder)
+	buildConfigAggregate := NewDeploymentService(deployment, remoteAggregate, deployBuilder, pipelineBuilder)
 	dc := &v1alpha1.DeploymentConfig{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "hello-world",
@@ -34,35 +30,13 @@ func TestDeploymentCreate(t *testing.T) {
 	assert.Equal(t, errors.New("pod query timeout 10 minutes"), err)
 }
 
-func TestDeploymentCreateApp(t *testing.T) {
-	clientSet := fake.NewSimpleClientset().MioV1alpha1()
-	deployment := mio.NewDeployment(clientSet)
-	remoteAggregate := new(mocks.RemoteAggregate)
-	client := kubeFake.NewSimpleClientset()
-	deploymentClient := kube.NewDeployment(client)
-	deployBuilder := new(builder.DeploymentBuilder)
-	pipelineBuilder := new(builder.PipelineBuilder)
-	buildConfigAggregate := NewDeploymentService(deployment, remoteAggregate, deploymentClient, deployBuilder, pipelineBuilder)
-	d := &v1alpha1.Deployment{
-		ObjectMeta: v1.ObjectMeta{
-			Name:      "hello-world",
-			Namespace: "demo",
-		},
-	}
-	deployBuilder.On("Update", "hello-world", "demo", "deploy", "success").Return(nil)
-	err := buildConfigAggregate.CreateApp(d)
-	assert.Equal(t, nil, err)
-}
-
 func TestDeploymentSelector(t *testing.T) {
 	clientSet := fake.NewSimpleClientset().MioV1alpha1()
 	deployment := mio.NewDeployment(clientSet)
 	remoteAggregate := new(mocks.RemoteAggregate)
-	client := kubeFake.NewSimpleClientset()
-	deploymentClient := kube.NewDeployment(client)
 	deployBuilder := new(builder.DeploymentBuilder)
 	pipelineBuilder := new(builder.PipelineBuilder)
-	buildConfigAggregate := NewDeploymentService(deployment, remoteAggregate, deploymentClient, deployBuilder, pipelineBuilder)
+	buildConfigAggregate := NewDeploymentService(deployment, remoteAggregate, deployBuilder, pipelineBuilder)
 	d := &v1alpha1.Deployment{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "hello-world",

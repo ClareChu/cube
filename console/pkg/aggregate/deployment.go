@@ -6,7 +6,6 @@ import (
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/utils/copier"
-	"hidevops.io/hioak/starter/kube"
 	"hidevops.io/mio/console/pkg/builder"
 	"hidevops.io/mio/console/pkg/constant"
 	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
@@ -22,29 +21,28 @@ type DeploymentAggregate interface {
 	Create(deploymentConfig *v1alpha1.DeploymentConfig, pipelineName, version, buildVersion string) (deployment *v1alpha1.Deployment, err error)
 	Watch(name, namespace string) error
 	Selector(deploy *v1alpha1.Deployment) error
-	CreateApp(deploy *v1alpha1.Deployment) error
 }
 
 type Deployment struct {
 	DeploymentAggregate
-	deploymentClient  *mio.Deployment
-	remoteAggregate   RemoteAggregate
-	pipelineBuilder   builder.PipelineBuilder
-	deployment        *kube.Deployment
-	deploymentBuilder builder.DeploymentBuilder
+	deploymentClient        *mio.Deployment
+	remoteAggregate         RemoteAggregate
+	pipelineBuilder         builder.PipelineBuilder
+	deploymentBuilder       builder.DeploymentBuilder
+	deploymentConfigBuilder builder.DeploymentConfigBuilder
 }
 
 func init() {
 	app.Register(NewDeploymentService)
 }
 
-func NewDeploymentService(deploymentClient *mio.Deployment, remoteAggregate RemoteAggregate, deployment *kube.Deployment, deploymentBuilder builder.DeploymentBuilder, pipelineBuilder builder.PipelineBuilder) DeploymentAggregate {
+func NewDeploymentService(deploymentClient *mio.Deployment, remoteAggregate RemoteAggregate, deploymentBuilder builder.DeploymentBuilder, pipelineBuilder builder.PipelineBuilder, deploymentConfigBuilder builder.DeploymentConfigBuilder) DeploymentAggregate {
 	return &Deployment{
-		deploymentClient:  deploymentClient,
-		remoteAggregate:   remoteAggregate,
-		deployment:        deployment,
-		deploymentBuilder: deploymentBuilder,
-		pipelineBuilder:   pipelineBuilder,
+		deploymentClient:        deploymentClient,
+		remoteAggregate:         remoteAggregate,
+		deploymentBuilder:       deploymentBuilder,
+		pipelineBuilder:         pipelineBuilder,
+		deploymentConfigBuilder: deploymentConfigBuilder,
 	}
 }
 
@@ -86,7 +84,6 @@ func (d *Deployment) Watch(name, namespace string) error {
 	log.Debug("build config Watch :%v", name)
 	kubeWatchTimeout, err := strconv.Atoi(os.Getenv("KUBE_WATCH_TIMEOUT"))
 	after := time.Duration(kubeWatchTimeout) * time.Minute
-
 
 	timeout := int64(constant.TimeoutSeconds)
 	option := v1.ListOptions{
@@ -157,7 +154,7 @@ func (d *Deployment) Selector(deploy *v1alpha1.Deployment) error {
 		err = d.deploymentBuilder.Update(deploy.Name, deploy.Namespace, constant.RemoteDeploy, constant.Created)
 	case constant.Deploy:
 		go func() {
-			d.CreateApp(deploy)
+			d.CreateDeployment(deploy)
 		}()
 		err = d.deploymentBuilder.Update(deploy.Name, deploy.Namespace, constant.Deploy, constant.Created)
 	case constant.Ending:
@@ -166,42 +163,14 @@ func (d *Deployment) Selector(deploy *v1alpha1.Deployment) error {
 	default:
 
 	}
-
 	return err
 }
 
-func (d *Deployment) CreateApp(deploy *v1alpha1.Deployment) error {
-	phase := constant.Success
-	namespace := ""
-	//uri := fmt.Sprintf("%s/%s", namespace, deploy.Labels[constant.PipelineName])
-	if deploy.Spec.Profile == "" {
-		namespace = deploy.Namespace
-	} else {
-		namespace = deploy.Namespace + "-" + deploy.Spec.Profile
+func (d *Deployment) CreateDeployment(deploy *v1alpha1.Deployment) (err error) {
+	if os.Getenv("IS_OPENSHIFT") == "" {
+		err = d.deploymentBuilder.CreateApp(deploy)
+		return
 	}
-	//deploy.Spec.Labels["URI"] = uri
-	request := &kube.DeployRequest{
-		App:            deploy.Labels[constant.DeploymentConfig],
-		Namespace:      namespace,
-		Ports:          deploy.Spec.Port,
-		Replicas:       deploy.Spec.Replicas,
-		Version:        deploy.Spec.Version,
-		Tag:            deploy.ObjectMeta.Labels[constant.BuildVersion],
-		Labels:         deploy.Spec.Labels,
-		ReadinessProbe: deploy.Spec.ReadinessProbe,
-		NodeSelector:   deploy.Spec.NodeSelector,
-		LivenessProbe:  deploy.Spec.LivenessProbe,
-		Env:            deploy.Spec.Env,
-		DockerRegistry: deploy.Spec.DockerRegistry,
-		Volumes:        deploy.Spec.Volumes,
-		VolumeMounts:   deploy.Spec.VolumeMounts,
-	}
-	_, err := d.deployment.Deploy(request)
-	if err != nil {
-		log.Errorf("create app :%v", err)
-		phase = constant.Fail
-	}
-	err = d.deploymentBuilder.Update(deploy.Name, deploy.Namespace, constant.Deploy, phase)
-	log.Debugf("create app update pipeline :name %v,namespace %v,deploy %v, type:%v, error %v", deploy.Name, deploy.Namespace, constant.Deploy, phase, err)
-	return err
+	err = d.deploymentConfigBuilder.CreateApp(deploy)
+	return
 }

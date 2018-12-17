@@ -15,6 +15,7 @@ app:
     - websocket
     - bolt
     - gitlab
+    - openshift
 
 logging:
   level: debug
