@@ -28,7 +28,7 @@ func TestServiceConfigCreate(t *testing.T) {
 	}
 	_, err := serviceAggregate.Template(cmd)
 	assert.Equal(t, nil, err)
-	pb.On("Update", "", "demo-dev", "createService", "success", "").Return(nil)
+	pb.On("Update", "", "demo", "createService", "success", "").Return(nil)
 	_, err = serviceAggregate.Create("hello-world", "", "demo", "java", "v1", "dev")
 	assert.Equal(t, nil, err)
 	err = service.Create("java", "",  constant.TemplateDefaultNamespace, "")

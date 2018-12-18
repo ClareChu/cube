@@ -14,10 +14,12 @@ import (
 	"hidevops.io/mio/pkg/starter/mio"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	kubeFake "k8s.io/client-go/kubernetes/fake"
+	"os"
 	"testing"
 )
 
 func TestBuildCreate(t *testing.T) {
+	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
 	clientSet := fake.NewSimpleClientset().MioV1alpha1()
 	build := mio.NewBuild(clientSet)
 	buildConfigService := new(service.BuildConfigService)
@@ -39,6 +41,7 @@ func TestBuildCreate(t *testing.T) {
 }
 
 func TestBuildCompile(t *testing.T) {
+	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
 	clientSet := fake.NewSimpleClientset().MioV1alpha1()
 	build := mio.NewBuild(clientSet)
 	buildConfigService := new(service.BuildConfigService)
@@ -66,6 +69,7 @@ func TestBuildCompile(t *testing.T) {
 }
 
 func TestBuild_ImageBuild(t *testing.T) {
+	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
 	clientSet := fake.NewSimpleClientset().MioV1alpha1()
 	build := mio.NewBuild(clientSet)
 	buildConfigService := new(service.BuildConfigService)
@@ -104,6 +108,7 @@ func TestBuild_ImageBuild(t *testing.T) {
 }
 
 func TestBuild_ImagePush(t *testing.T) {
+	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
 	clientSet := fake.NewSimpleClientset().MioV1alpha1()
 	build := mio.NewBuild(clientSet)
 	buildConfigService := new(service.BuildConfigService)
@@ -131,6 +136,7 @@ func TestBuild_ImagePush(t *testing.T) {
 }
 
 func TestBuildCreateService(t *testing.T) {
+	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
 	clientSet := fake.NewSimpleClientset().MioV1alpha1()
 	build := mio.NewBuild(clientSet)
 	buildConfigService := new(service.BuildConfigService)
@@ -161,6 +167,7 @@ func TestBuildCreateService(t *testing.T) {
 }
 
 func TestBuildDeployNode(t *testing.T) {
+	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
 	clientSet := fake.NewSimpleClientset().MioV1alpha1()
 	build := mio.NewBuild(clientSet)
 	buildConfigService := new(service.BuildConfigService)
@@ -197,6 +204,7 @@ func TestBuildDeployNode(t *testing.T) {
 }
 
 func TestBuildDeleteNode(t *testing.T) {
+	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
 	clientSet := fake.NewSimpleClientset().MioV1alpha1()
 	build := mio.NewBuild(clientSet)
 	buildConfigService := new(service.BuildConfigService)
@@ -224,6 +232,7 @@ func TestBuildDeleteNode(t *testing.T) {
 }
 
 func TestBuildSelector(t *testing.T) {
+	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
 	clientSet := fake.NewSimpleClientset().MioV1alpha1()
 	build := mio.NewBuild(clientSet)
 	buildConfigService := new(service.BuildConfigService)

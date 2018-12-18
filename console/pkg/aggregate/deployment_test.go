@@ -10,16 +10,19 @@ import (
 	"hidevops.io/mio/pkg/client/clientset/versioned/fake"
 	"hidevops.io/mio/pkg/starter/mio"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	"os"
 	"testing"
 )
 
 func TestDeploymentCreate(t *testing.T) {
+	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
 	clientSet := fake.NewSimpleClientset().MioV1alpha1()
 	deployment := mio.NewDeployment(clientSet)
 	remoteAggregate := new(mocks.RemoteAggregate)
 	deployBuilder := new(builder.DeploymentBuilder)
 	pipelineBuilder := new(builder.PipelineBuilder)
-	buildConfigAggregate := NewDeploymentService(deployment, remoteAggregate, deployBuilder, pipelineBuilder)
+	deploy := new(builder.DeploymentConfigBuilder)
+	buildConfigAggregate := NewDeploymentService(deployment, remoteAggregate, deployBuilder, pipelineBuilder, deploy)
 	dc := &v1alpha1.DeploymentConfig{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "hello-world",
@@ -31,12 +34,14 @@ func TestDeploymentCreate(t *testing.T) {
 }
 
 func TestDeploymentSelector(t *testing.T) {
+	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
 	clientSet := fake.NewSimpleClientset().MioV1alpha1()
 	deployment := mio.NewDeployment(clientSet)
 	remoteAggregate := new(mocks.RemoteAggregate)
 	deployBuilder := new(builder.DeploymentBuilder)
 	pipelineBuilder := new(builder.PipelineBuilder)
-	buildConfigAggregate := NewDeploymentService(deployment, remoteAggregate, deployBuilder, pipelineBuilder)
+	deploy := new(builder.DeploymentConfigBuilder)
+	buildConfigAggregate := NewDeploymentService(deployment, remoteAggregate, deployBuilder, pipelineBuilder, deploy)
 	d := &v1alpha1.Deployment{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "hello-world",

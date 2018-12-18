@@ -32,7 +32,7 @@ func TestGatewayConfigCreate(t *testing.T) {
 	cmd := &command.GatewayConfig{}
 	_, err = gatewayAggregate.Template(cmd)
 	assert.Equal(t, nil, err)
-	pb.On("Update", "", "demo-dev", "createService", "fail", "").Return(nil)
+	pb.On("Update", "", "demo", "createService", "fail", "").Return(nil)
 	_, err = gatewayAggregate.Create("hello-world", "", "demo", "java", "v1", "dev")
 	assert.Equal(t, nil, err)
 }

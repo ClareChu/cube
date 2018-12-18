@@ -1259,7 +1259,7 @@
     "starter/scm/gitlab/fake",
   ]
   pruneopts = "NUT"
-  revision = "0828762d1d86587a3eea42e185a53dd92438526c"
+  revision = "bec2058a55dc332afc591c375bc64f680b65be46"
 
 [[projects]]
   digest = "1:5ccc5b26e3a61e3ed02776bd67dcd9fb7129696c6aaa2d656281fc23847f40da"

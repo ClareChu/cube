@@ -32,7 +32,7 @@ func (p *Pipeline) Update(name, namespace, eventType, phase, eventVersion string
 	log.Debugf("name: %v, namespace: %v , eventType: %v , phase : %v ", name, namespace, eventType, phase)
 	pipeline, err := p.pipelineClient.Get(name, namespace)
 	if err != nil {
-		log.Error("get pipeline err : %v", err)
+		log.Errorf("get pipeline err : %v", err)
 		return err
 	}
 	if eventVersion != "" {

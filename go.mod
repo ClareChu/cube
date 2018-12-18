@@ -115,7 +115,7 @@ require (
 	gopkg.in/yaml.v2 v2.2.1
 	hidevops.io/hiboot v1.0.0
 	hidevops.io/hiboot-data v1.0.0
-	hidevops.io/hioak v0.0.0-20181217083358-0828762d1d86
+	hidevops.io/hioak v0.0.0-20181218124440-bec2058a55dc
 	hidevops.io/viper v1.3.2
 	k8s.io/api v0.0.0-20180601181742-8b7507fac302
 	k8s.io/apiextensions-apiserver v0.0.0-20180601203502-8e7f43002fec
