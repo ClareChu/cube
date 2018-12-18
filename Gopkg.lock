@@ -662,6 +662,48 @@
   revision = "9ac6cf4d929b2fa8fd2d2e6dec5bb0feb4f4911d"
 
 [[projects]]
+  digest = "1:de867a6b283b8efe534e6b850ad0c6c9ba4c426e8cd98875546a9da8978f615c"
+  name = "github.com/openshift/api"
+  packages = [
+    "apps/v1",
+    "authorization/v1",
+    "build/v1",
+    "image/docker10",
+    "image/dockerpre012",
+    "image/v1",
+    "oauth/v1",
+    "pkg/serialization",
+    "project/v1",
+    "route/v1",
+  ]
+  pruneopts = "NUT"
+  revision = "0d921e363e951d89f583292c60d013c318df64dc"
+  version = "v3.9.0"
+
+[[projects]]
+  digest = "1:14b11fea356cbf10c4eb014241056bf11aa63a15188707ed6e388dd609415b03"
+  name = "github.com/openshift/client-go"
+  packages = [
+    "apps/clientset/versioned/scheme",
+    "apps/clientset/versioned/typed/apps/v1",
+    "authorization/clientset/versioned/scheme",
+    "authorization/clientset/versioned/typed/authorization/v1",
+    "build/clientset/versioned/scheme",
+    "build/clientset/versioned/typed/build/v1",
+    "image/clientset/versioned/scheme",
+    "image/clientset/versioned/typed/image/v1",
+    "oauth/clientset/versioned/scheme",
+    "oauth/clientset/versioned/typed/oauth/v1",
+    "project/clientset/versioned/scheme",
+    "project/clientset/versioned/typed/project/v1",
+    "route/clientset/versioned/scheme",
+    "route/clientset/versioned/typed/route/v1",
+  ]
+  pruneopts = "NUT"
+  revision = "1fa528d3be060e4c7178eb69e76d37cf7e699e3c"
+  version = "v3.9.0"
+
+[[projects]]
   digest = "1:aa236b5778f70fb400809f622813a2feb01142ea32b95f4ab23f98c5ad3cee18"
   name = "github.com/parnurzeal/gorequest"
   packages = ["."]
@@ -1203,20 +1245,21 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:99d4632ed648072b8af50a6d449f8c7315be5ac6305a8bccea11dc59c2ad67d2"
+  digest = "1:037542f9720be54f87996ca3140daf621edaa130066747b4c77133cc6481de4c"
   name = "hidevops.io/hioak"
   packages = [
     "starter",
     "starter/docker",
     "starter/docker/fake",
     "starter/kube",
+    "starter/openshift",
     "starter/scm",
     "starter/scm/git",
     "starter/scm/gitlab",
     "starter/scm/gitlab/fake",
   ]
   pruneopts = "NUT"
-  revision = "2801a22dc19d4f33506cb6073862a239bb55fc0e"
+  revision = "0828762d1d86587a3eea42e185a53dd92438526c"
 
 [[projects]]
   digest = "1:5ccc5b26e3a61e3ed02776bd67dcd9fb7129696c6aaa2d656281fc23847f40da"
@@ -1499,6 +1542,7 @@
     "hidevops.io/hioak/starter/docker",
     "hidevops.io/hioak/starter/docker/fake",
     "hidevops.io/hioak/starter/kube",
+    "hidevops.io/hioak/starter/openshift",
     "hidevops.io/hioak/starter/scm",
     "hidevops.io/hioak/starter/scm/git",
     "hidevops.io/hioak/starter/scm/gitlab",

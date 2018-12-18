@@ -37,12 +37,13 @@ Mio is a Continuous Integration and Continuous Delivery Platform built on contai
 go get -u github.com/hidevopsio/mio
 ```
 
-如果使用GO版本在 `go1.11` 下 请自行安装dep包管理工具。
+如果使用GO版本在 `go1.11` 以下 请自行安装dep包管理工具。
 在项目下执行
 
 ```bash
 dep ensure -v
 ```
+
 如果使用1.11 以上版本最则使用go modules
 该项目下分为`console` 和 `node` 俩个项目, console 主要负责CI/CD 调度 启动 任务分发 等作用， node 主要负责 代码编译 代码测试 镜像的制作等主要工作。
 
@@ -221,16 +222,14 @@ oc apply -f .
 kubectl apply -f .
 ```
 
-## CRD 资源参见
 ### 1. buildConfig
-buildconfig.yaml
+
+ `buildConfig` 资源主要起到的作用是编译 打包代码 代码检测 镜像的编译等作用，以下是讲解buildconfig字段的含义。
+
 ```yaml
 apiVersion: mio.io/v1alpha1
 kind: BuildConfig
 metadata:
-  clusterName: ""
-  creationTimestamp: 2018-10-23T08:29:45Z
-  generation: 0
   name: java
   namespace: templates
 spec:
@@ -329,3 +328,69 @@ status:
 |spec.dockerAuthConfig.password|string|密码|
 |---|---|---|
 |spec.dockerFile|list|一个以行为单位存放Dockerfile语句的数组|
+
+### 2. deploymentConfig
+
+`deploymentConfig` 主要是针对镜像deploy
+
+```yaml
+apiVersion: mio.io/v1alpha1
+kind: DeploymentConfig
+metadata:
+  name: java
+  namespace: templates
+spec:
+  dockerRegistry: docker-registry.default.svc:5000
+  env:
+  - name: starter
+    value: jav -jar
+  - name: TZ
+    value: Asia/Shanghai
+  - name: APP_OPTIONS
+    value: -Xms128m -Xmx512m -Xss512k
+  - name: SPRING_PROFILES_ACTIVE
+    value: dev
+  envType:
+  - remoteDeploy
+  - deploy
+  fromRegistry: docker-registry-default.app.vpclub.io
+  port:
+  - containerPort: 8080
+    name: tcp-8080
+    protocol: TCP
+  profile: dev
+status:
+  lastVersion: 1
+```
+
+字段|类型|含义|
+:---:|:---:|:---:
+|dockerRegistry|string|推镜像的仓库地址|
+|env|[]string|pod 环境变量|
+|envType|string| 执行步骤|
+|fromRegistry|string|拉取镜像仓库地址|
+|port|---|对外端口|
+|profile|string|环境变量|
+
+### 3. serviceConfig
+
+```yaml
+apiVersion: mio.io/v1alpha1
+kind: ServiceConfig
+metadata:
+  generation: 0
+  name: java
+  namespace: templates
+spec:
+  ports:
+  - name: http-8080
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  - name: http-7575
+    port: 7575
+    protocol: TCP
+    targetPort: 7575
+status:
+  metadata: {}
+```
