@@ -71,8 +71,9 @@ func (s *ServiceConfig) Create(name, pipelineName, namespace, sourceType, versio
 		log.Infof("create service err : %v", err)
 		return nil, err
 	}
+	project := namespace
 	if profile != "" {
-		namespace = fmt.Sprintf("%s-%s", namespace, profile)
+		project = fmt.Sprintf("%s-%s", namespace, profile)
 	}
 	copier.Copy(serviceConfig, template)
 	serviceConfig.TypeMeta = v1.TypeMeta{
@@ -81,15 +82,15 @@ func (s *ServiceConfig) Create(name, pipelineName, namespace, sourceType, versio
 	}
 	serviceConfig.ObjectMeta = v1.ObjectMeta{
 		Name:      name,
-		Namespace: namespace,
+		Namespace: project,
 		Labels: map[string]string{
 			constant.CodeType: sourceType,
 		},
 	}
-	deploy, err := s.serviceConfigClient.Get(name, namespace)
+	deploy, err := s.serviceConfigClient.Get(name, project)
 	if err == nil {
 		deploy.Spec = template.Spec
-		serviceConfig, err = s.serviceConfigClient.Update(name, namespace, deploy)
+		serviceConfig, err = s.serviceConfigClient.Update(name, project, deploy)
 	} else {
 		serviceConfig, err = s.serviceConfigClient.Create(serviceConfig)
 	}
@@ -98,6 +99,7 @@ func (s *ServiceConfig) Create(name, pipelineName, namespace, sourceType, versio
 		phase = constant.Fail
 		log.Errorf("create service name %v err : %v", name, err)
 	}
+	log.Info("create service success")
 	err = s.pipelineBuilder.Update(pipelineName, namespace, constant.CreateService, phase, "")
 	return
 }

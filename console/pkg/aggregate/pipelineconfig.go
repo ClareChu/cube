@@ -92,7 +92,6 @@ func (p *PipelineConfig) StartPipelineConfig(cmd *command.PipelineStart) (pipeli
 	}
 	if err == nil {
 		//TODO 	创建 pipeline
-		log.Errorf("update or create pipeline error : %v", err)
 		_, err = p.pipelineAggregate.Create(pipelineConfig, cmd.SourceCode)
 		return
 	}

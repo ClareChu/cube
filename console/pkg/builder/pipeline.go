@@ -1,6 +1,7 @@
 package builder
 
 import (
+	"github.com/prometheus/common/log"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/mio/console/pkg/constant"
 	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
@@ -28,8 +29,10 @@ func newPipelineService(pipelineClient *mio.Pipeline) PipelineBuilder {
 }
 
 func (p *Pipeline) Update(name, namespace, eventType, phase, eventVersion string) error {
+	log.Debugf("name: %v, namespace: %v , eventType: %v , phase : %v ", name, namespace, eventType, phase)
 	pipeline, err := p.pipelineClient.Get(name, namespace)
 	if err != nil {
+		log.Error("get pipeline err : %v", err)
 		return err
 	}
 	if eventVersion != "" {

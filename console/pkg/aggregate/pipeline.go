@@ -145,7 +145,7 @@ func (p *Pipeline) Selector(pipeline *v1alpha1.Pipeline) (err error) {
 	} else if pipeline.Status.Phase == constant.Success && len(pipeline.Status.Stages) != len(pipeline.Spec.Events) {
 		eventType = pipeline.Spec.Events[len(pipeline.Status.Stages)]
 	}
-	log.Debugf("events : %v, eventType name: %v", pipeline.Spec.Events, eventType.Name)
+	log.Debugf("EventTypes : %v", eventType.EventTypes)
 	switch eventType.EventTypes {
 	case constant.BuildPipeline:
 		go func() {
