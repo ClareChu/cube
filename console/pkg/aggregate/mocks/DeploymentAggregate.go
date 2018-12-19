@@ -33,8 +33,8 @@ func (_m *DeploymentAggregate) Create(deploymentConfig *v1alpha1.DeploymentConfi
 	return r0, r1
 }
 
-// CreateApp provides a mock function with given fields: deploy
-func (_m *DeploymentAggregate) CreateApp(deploy *v1alpha1.Deployment) error {
+// CreateDeployment provides a mock function with given fields: deploy
+func (_m *DeploymentAggregate) CreateDeployment(deploy *v1alpha1.Deployment) error {
 	ret := _m.Called(deploy)
 
 	var r0 error

@@ -57,3 +57,28 @@ func TestDeploymentSelector(t *testing.T) {
 	err := buildConfigAggregate.Selector(d)
 	assert.Equal(t, nil, err)
 }
+
+func TestDeployCreate(t *testing.T) {
+	deployBuilder := new(builder.DeploymentBuilder)
+	deploy := new(builder.DeploymentConfigBuilder)
+	buildConfigAggregate := NewDeploymentService(nil, nil, deployBuilder, nil, deploy)
+	d := &v1alpha1.Deployment{
+		ObjectMeta: v1.ObjectMeta{
+			Name:      "hello-world",
+			Namespace: "demo",
+		},
+		Status: v1alpha1.DeploymentStatus{
+			Stages: []v1alpha1.Stages{v1alpha1.Stages{
+				Name: constant.Deploy,
+			}},
+		},
+	}
+	deployBuilder.On("CreateApp", d).Return(nil)
+	err := buildConfigAggregate.CreateDeployment(d)
+	assert.Equal(t, nil, err)
+	err = os.Setenv("IS_OPENSHIFT", "1")
+	assert.Equal(t, nil, err)
+	deploy.On("CreateApp", d).Return(nil)
+	err = buildConfigAggregate.CreateDeployment(d)
+	assert.Equal(t, nil, err)
+}

@@ -21,6 +21,7 @@ type DeploymentAggregate interface {
 	Create(deploymentConfig *v1alpha1.DeploymentConfig, pipelineName, version, buildVersion string) (deployment *v1alpha1.Deployment, err error)
 	Watch(name, namespace string) error
 	Selector(deploy *v1alpha1.Deployment) error
+	CreateDeployment(deploy *v1alpha1.Deployment) (err error)
 }
 
 type Deployment struct {
