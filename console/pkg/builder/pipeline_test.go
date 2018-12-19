@@ -1,6 +1,7 @@
 package builder
 
 import (
+	"errors"
 	"github.com/magiconair/properties/assert"
 	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
 	"hidevops.io/mio/pkg/client/clientset/versioned/fake"
@@ -18,8 +19,10 @@ func TestPipelineUpdate(t *testing.T) {
 			Namespace: "demo",
 		},
 	}
-	_, err := pipeline.Create(dca)
 	db := newPipelineService(pipeline)
+	err := db.Update("hello-world-v1", "demo", "a", "success", "")
+	assert.Equal(t, errors.New("pipelines.mio.io \"hello-world-v1\" not found").Error(), err.Error())
+	_, err = pipeline.Create(dca)
 	err = db.Update("hello-world-v1", "demo", "a", "success", "")
 	assert.Equal(t, nil, err)
 }

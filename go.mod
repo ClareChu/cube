@@ -68,6 +68,8 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
 	github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742
 	github.com/moul/http2curl v1.0.0
+	github.com/openshift/api v3.9.0+incompatible
+	github.com/openshift/client-go v3.9.0+incompatible
 	github.com/parnurzeal/gorequest v0.2.15
 	github.com/pelletier/go-buffruneio v0.2.0
 	github.com/pelletier/go-toml v1.2.0
@@ -113,7 +115,7 @@ require (
 	gopkg.in/yaml.v2 v2.2.1
 	hidevops.io/hiboot v1.0.0
 	hidevops.io/hiboot-data v1.0.0
-	hidevops.io/hioak v0.0.0-20181207184938-062448c0e85a77c1fa51b04fa5cc327f110914f0
+	hidevops.io/hioak v0.0.0-20181218124440-bec2058a55dc
 	hidevops.io/viper v1.3.2
 	k8s.io/api v0.0.0-20180601181742-8b7507fac302
 	k8s.io/apiextensions-apiserver v0.0.0-20180601203502-8e7f43002fec

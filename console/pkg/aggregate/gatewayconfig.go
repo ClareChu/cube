@@ -63,6 +63,7 @@ func (s *GatewayConfig) Template(cmd *command.GatewayConfig) (gatewayConfig *v1a
 func (s *GatewayConfig) Create(name, pipelineName, namespace, sourceType, version, profile string) (gatewayConfig *v1alpha1.GatewayConfig, err error) {
 	log.Debugf("gateway config create name :%s, namespace : %s , sourceType : %s", name, namespace, sourceType)
 	phase := constant.Success
+	project := namespace
 	gatewayConfig = new(v1alpha1.GatewayConfig)
 	if profile != "" {
 		namespace = fmt.Sprintf("%s-%s", namespace, profile)
@@ -98,9 +99,10 @@ func (s *GatewayConfig) Create(name, pipelineName, namespace, sourceType, versio
 	}
 	err = s.Gateway(gatewayConfig)
 	if err != nil {
+		log.Error("create gateway err : %v", err)
 		phase = constant.Fail
 	}
-	err = s.pipelineBuilder.Update(pipelineName, namespace, constant.CreateService, phase, "")
+	err = s.pipelineBuilder.Update(pipelineName, project, constant.CreateService, phase, "")
 	return
 }
 

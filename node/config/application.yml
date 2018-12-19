@@ -2,7 +2,7 @@
 
 app:
   project: hidevopsio
-  name: hiadmin
+  name: mio-node
   profiles:
     include:
     - jwt

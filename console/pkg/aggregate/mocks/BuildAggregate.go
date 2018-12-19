@@ -10,10 +10,6 @@ type BuildAggregate struct {
 	mock.Mock
 }
 
-func (_m *BuildAggregate) ImagePush(build *v1alpha1.Build) error {
-	panic("implement me")
-}
-
 // Compile provides a mock function with given fields: build
 func (_m *BuildAggregate) Compile(build *v1alpha1.Build) error {
 	ret := _m.Called(build)
@@ -95,6 +91,20 @@ func (_m *BuildAggregate) DeployNode(build *v1alpha1.Build) error {
 
 // ImageBuild provides a mock function with given fields: build
 func (_m *BuildAggregate) ImageBuild(build *v1alpha1.Build) error {
+	ret := _m.Called(build)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*v1alpha1.Build) error); ok {
+		r0 = rf(build)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// ImagePush provides a mock function with given fields: build
+func (_m *BuildAggregate) ImagePush(build *v1alpha1.Build) error {
 	ret := _m.Called(build)
 
 	var r0 error
