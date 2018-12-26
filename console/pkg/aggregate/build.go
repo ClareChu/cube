@@ -275,7 +275,7 @@ func (s *Build) DeployNode(build *v1alpha1.Build) error {
 }
 
 func (s *Build) Selector(build *v1alpha1.Build) (err error) {
-	tak, err := GetTask(build)
+	tak, err := GetTask(build.Status.Stages, build.Spec.Tasks, build.Status.Phase)
 	if err != nil {
 		return
 	}
@@ -326,16 +326,16 @@ func (s *Build) Selector(build *v1alpha1.Build) (err error) {
 	return
 }
 
-func GetTask(build *v1alpha1.Build) (tak v1alpha1.Task, err error) {
-	if len(build.Status.Stages) == 0 {
-		if len(build.Spec.Tasks) == 0 {
-			err = fmt.Errorf("build.Spec.Tasks is error")
+func GetTask(stages []v1alpha1.Stages, tasks []v1alpha1.Task, phase string) (tak v1alpha1.Task, err error) {
+	if len(stages) == 0 {
+		if len(tasks) == 0 {
+			err = fmt.Errorf("tasks is len equ 0")
 			return
 		}
-		tak = build.Spec.Tasks[0]
-	} else if build.Status.Phase == constant.Success && len(build.Status.Stages) != len(build.Spec.Tasks) {
-		tak = build.Spec.Tasks[len(build.Status.Stages)]
-	} else if len(build.Status.Stages) == len(build.Spec.Tasks) {
+		tak = tasks[0]
+	} else if phase == constant.Success && len(stages) != len(tasks) {
+		tak = tasks[len(stages)]
+	} else if len(stages) == len(tasks) {
 		tak.Name = constant.Ending
 	}
 	return
@@ -422,4 +422,3 @@ func (s *Build) DeleteNode(build *v1alpha1.Build) error {
 	err = s.Update(build, constant.DeleteDeployment, phase)
 	return err
 }
-
