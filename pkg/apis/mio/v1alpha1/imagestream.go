@@ -6,9 +6,6 @@ import (
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// Foo is a specification for a Foo resource
-
 type ImageStream struct {
 	metav1.TypeMeta `json:",inline"`
 	// Standard object metadata.
@@ -21,7 +18,7 @@ type ImageStream struct {
 
 	// Most recently observed status of the Deployment.
 	// +optional
-	Status Status `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
+	Status metav1.Status `json:"status,omitempty" protobuf:"bytes,3,opt,name=status"`
 }
 
 type ImageStreamSpec struct {
@@ -40,8 +37,6 @@ type Status struct {
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// FooList is a list of Foo resources
 type ImageStreamList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata"`
