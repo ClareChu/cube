@@ -34,6 +34,8 @@ type Interface interface {
 	DeploymentConfigs() DeploymentConfigInformer
 	// GatewayConfigs returns a GatewayConfigInformer.
 	GatewayConfigs() GatewayConfigInformer
+	// ImageStreams returns a ImageStreamInformer.
+	ImageStreams() ImageStreamInformer
 	// Notifies returns a NotifyInformer.
 	Notifies() NotifyInformer
 	// Pipelines returns a PipelineInformer.
@@ -84,6 +86,11 @@ func (v *version) DeploymentConfigs() DeploymentConfigInformer {
 // GatewayConfigs returns a GatewayConfigInformer.
 func (v *version) GatewayConfigs() GatewayConfigInformer {
 	return &gatewayConfigInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+}
+
+// ImageStreams returns a ImageStreamInformer.
+func (v *version) ImageStreams() ImageStreamInformer {
+	return &imageStreamInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }
 
 // Notifies returns a NotifyInformer.

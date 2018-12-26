@@ -71,4 +71,14 @@ func TestMioConfig(t *testing.T) {
 	assert.Equal(t, (*Pipeline)(nil), pipeline)
 
 	pipeline = configuration.Pipeline(config)
+
+	imagesStream := configuration.ImageStream(nil)
+	assert.Equal(t, (*ImageStream)(nil), imagesStream)
+
+	pipelineConfig = configuration.PipelineConfig(config)
+
+	imagesStream = configuration.ImageStream(nil)
+	assert.Equal(t, (*ImageStream)(nil), imagesStream)
+
+	imagesStream = configuration.ImageStream(config)
 }

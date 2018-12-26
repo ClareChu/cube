@@ -162,3 +162,15 @@ func (c *configuration) Notify(restConfig *kube.RestConfig) *Notify {
 	}
 	return nil
 }
+
+func (c *configuration) ImageStream(restConfig *kube.RestConfig) *ImageStream {
+	if restConfig != nil {
+		clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
+		if err != nil {
+			log.Errorf("v1alpha1.NewForConfig %v", err)
+			return nil
+		}
+		return NewImageStream(clientSet)
+	}
+	return nil
+}

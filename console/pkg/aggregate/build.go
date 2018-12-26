@@ -124,16 +124,10 @@ func (s *Build) Watch(name, namespace string) (build *v1alpha1.Build, err error)
 				log.Info(" build watch resultChan: ", ok)
 				return
 			}
-			switch event.Type {
-			case watch.Added:
-				build = event.Object.(*v1alpha1.Build)
-				err = s.Selector(build)
-				if err != nil {
-					log.Errorf("add selector : %v", err)
-					return
-				}
-				log.Infof("event type :%v, err: %v", build.Status, err)
-			case watch.Modified:
+			if event.Type == watch.Deleted {
+				log.Info("Deleted: ", event.Object)
+				return
+			} else if event.Type == watch.Added || event.Type == watch.Modified {
 				build = event.Object.(*v1alpha1.Build)
 				if build.Status.Phase == constant.Fail {
 					return
@@ -144,12 +138,10 @@ func (s *Build) Watch(name, namespace string) (build *v1alpha1.Build, err error)
 					return
 				}
 				log.Infof("event type :%v", build.Status)
-			case watch.Deleted:
-				log.Info("Deleted: ", event.Object)
-				return
-			default:
-				log.Error("Failed")
+			} else {
+				log.Info("build default ")
 			}
+
 		}
 	}
 }
@@ -283,17 +275,9 @@ func (s *Build) DeployNode(build *v1alpha1.Build) error {
 }
 
 func (s *Build) Selector(build *v1alpha1.Build) (err error) {
-	var tak v1alpha1.Task
-	if len(build.Status.Stages) == 0 {
-		if len(build.Spec.Tasks) == 0 {
-			err = fmt.Errorf("build.Spec.Tasks is error")
-			return
-		}
-		tak = build.Spec.Tasks[0]
-	} else if build.Status.Phase == constant.Success && len(build.Status.Stages) != len(build.Spec.Tasks) {
-		tak = build.Spec.Tasks[len(build.Status.Stages)]
-	} else if len(build.Status.Stages) == len(build.Spec.Tasks) {
-		tak.Name = constant.Ending
+	tak, err := GetTask(build.Status.Stages, build.Spec.Tasks, build.Status.Phase)
+	if err != nil {
+		return
 	}
 	switch tak.Name {
 	case constant.DeployNode:
@@ -338,6 +322,21 @@ func (s *Build) Selector(build *v1alpha1.Build) (err error) {
 		err = fmt.Errorf("build is ending")
 	default:
 
+	}
+	return
+}
+
+func GetTask(stages []v1alpha1.Stages, tasks []v1alpha1.Task, phase string) (tak v1alpha1.Task, err error) {
+	if len(stages) == 0 {
+		if len(tasks) == 0 {
+			err = fmt.Errorf("tasks is len equ 0")
+			return
+		}
+		tak = tasks[0]
+	} else if phase == constant.Success && len(stages) != len(tasks) {
+		tak = tasks[len(stages)]
+	} else if len(stages) == len(tasks) {
+		tak.Name = constant.Ending
 	}
 	return
 }

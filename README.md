@@ -87,9 +87,9 @@ cd console
 
 ## 镜像制作
 
-docker build -t docker-registry-default.app.vpclub.io/demo/mio-console:v1 .
+docker build -t docker-registry-default.app.example.io/demo/mio-console:v1 .
 
-docker push docker-registry-default.app.vpclub.io/demo/mio-console:v1
+docker push docker-registry-default.app.example.io/demo/mio-console:v1
 
 ```
 
@@ -125,7 +125,7 @@ spec:
             - name: APP_PROFILES_ACTIVE
               value: dev
             - name: SCM_URL
-              value: 'http://gitlab.vpclub.cn:8022'
+              value: 'http://gitlab.example.cn:8022'
             - name: TZ
               value: Asia/Shanghai
             - name: DOCKER_API_VERSION
@@ -202,7 +202,7 @@ make
 imageName = {registries}/{group}/{image_name}:tag
 ```
 tag := 1.1.8
-registries := docker.vpclub.cn
+registries := docker.example.cn
 group := hidevopsio
 image_name := hinode-java-jar
 ```
@@ -234,13 +234,13 @@ metadata:
   namespace: templates
 spec:
   app: ""
-  baseImage: docker.vpclub.cn/hidevopsio/hinode-java-jar:1.1.12
+  baseImage: docker.example.cn/hidevopsio/hinode-java-jar:1.1.12
   cloneConfig:
     branch: master
     depth: 1
-    dstDir: /opt/app-root/src/vpclub
+    dstDir: /opt/app-root/src/example
     password: ""
-    url: https://gitlab.vpclub.cn
+    url: https://gitlab.example.cn
     username: ""
   cloneType: ""
   codeType: java
@@ -261,9 +261,9 @@ spec:
     envs:
       CODE_TYPE: java
       DOCKER_API_VERSION: "1.24"
-      MAVEN_HOST: http://nexus.vpclub.cn
-      MAVEN_MIRROR_URL: http://nexus.vpclub.cn/repository/maven-public/
-      NODE_NAME: node05.vpclub.io
+      MAVEN_HOST: http://nexus.example.cn
+      MAVEN_MIRROR_URL: http://nexus.example.cn/repository/maven-public/
+      NODE_NAME: node05.example.io
     hostPathVolume:
       /var/lib/docker: /var/lib/docker
       /var/run/docker.sock: /var/run/docker.sock
@@ -275,7 +275,7 @@ spec:
     password: Harbor12345
     username: admin
   dockerFile:
-  - FROM docker.vpclub.cn/hidevopsio/java:8-jre-alpine
+  - FROM docker.example.cn/hidevopsio/java:8-jre-alpine
   - ENV  TZ="Asia/Shanghai"
   - ENV  APP_OPTIONS="-Xms128m -Xmx512m -Xss512k"
   - ENV   APP_OPTIONS="-Xms128m -Xmx512m -Xss512k"
@@ -283,7 +283,7 @@ spec:
   - EXPOSE 8080
   - EXPOSE 7575
   - ENTRYPOINT ["sh","-c","java -jar /root/app.jar $APP_OPTIONS"]
-  dockerRegistry: harbor.vpclub.io
+  dockerRegistry: harbor.example.io
   nodeService: ""
   tasks:
   - name: createService
@@ -353,7 +353,7 @@ spec:
   envType:
   - remoteDeploy
   - deploy
-  fromRegistry: docker-registry-default.app.vpclub.io
+  fromRegistry: docker-registry-default.app.example.io
   port:
   - containerPort: 8080
     name: tcp-8080
