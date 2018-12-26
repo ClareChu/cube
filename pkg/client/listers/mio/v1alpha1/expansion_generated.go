@@ -58,6 +58,14 @@ type GatewayConfigListerExpansion interface{}
 // GatewayConfigNamespaceLister.
 type GatewayConfigNamespaceListerExpansion interface{}
 
+// ImageStreamListerExpansion allows custom methods to be added to
+// ImageStreamLister.
+type ImageStreamListerExpansion interface{}
+
+// ImageStreamNamespaceListerExpansion allows custom methods to be added to
+// ImageStreamNamespaceLister.
+type ImageStreamNamespaceListerExpansion interface{}
+
 // NotifyListerExpansion allows custom methods to be added to
 // NotifyLister.
 type NotifyListerExpansion interface{}

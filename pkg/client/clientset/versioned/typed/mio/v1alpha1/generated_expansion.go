@@ -28,6 +28,8 @@ type DeploymentConfigExpansion interface{}
 
 type GatewayConfigExpansion interface{}
 
+type ImageStreamExpansion interface{}
+
 type NotifyExpansion interface{}
 
 type PipelineExpansion interface{}
