@@ -774,8 +774,10 @@ func (in *ImageStreamSpec) DeepCopyInto(out *ImageStreamSpec) {
 	*out = *in
 	if in.Tags != nil {
 		in, out := &in.Tags, &out.Tags
-		*out = make([]Tag, len(*in))
-		copy(*out, *in)
+		*out = make(map[string]Tag, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
 	}
 	return
 }
