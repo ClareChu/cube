@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	docker_types "github.com/docker/docker/api/types"
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport"
@@ -12,13 +13,14 @@ import (
 	scmgit "hidevops.io/hioak/starter/scm/git"
 	"hidevops.io/mio/node/protobuf"
 	"hidevops.io/mio/node/types"
-	miov1alpha1 "hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	//docker_types "github.com/docker/docker/api/types"
-
 	pkg_utils "hidevops.io/mio/node/utils"
+	miov1alpha1 "hidevops.io/mio/pkg/apis/mio/v1alpha1"
+	"hidevops.io/mio/pkg/starter/mio"
 	"io"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"os"
 	"strings"
+	"time"
 )
 
 type BuildConfigService interface {
@@ -26,21 +28,24 @@ type BuildConfigService interface {
 	Compile(compileRequest *protobuf.CompileRequest) error
 	ImageBuild(imageBuildRequest *protobuf.ImageBuildRequest) error
 	ImagePush(imagePushRequest *protobuf.ImagePushRequest) error
+	CreateImage(name, namespace, tag string, imageSummary docker_types.ImageSummary) error
 }
 
 type buildConfigServiceImpl struct {
 	BuildConfigService
 	imageClient *docker.ImageClient
+	imageStream *mio.ImageStream
 }
 
 func init() {
 	log.SetLevel(log.DebugLevel)
-	app.Component(newBuildService)
+	app.Register(newBuildService)
 }
 
-func newBuildService(imageClient *docker.ImageClient) BuildConfigService {
+func newBuildService(imageClient *docker.ImageClient, imageStream *mio.ImageStream) BuildConfigService {
 	return &buildConfigServiceImpl{
 		imageClient: imageClient,
+		imageStream: imageStream,
 	}
 }
 
@@ -216,6 +221,60 @@ func (b *buildConfigServiceImpl) ImagePush(imagePushRequest *protobuf.ImagePushR
 			return err
 		}
 	}
-	//fmt.Printf("\n[INFO] image %v push succeed\n", imagePushRequest.Tags)
 	return nil
+}
+
+func (b *buildConfigServiceImpl) GetImage(imagePushRequest *protobuf.ImagePushRequest) error {
+	log.Infof("get image: %s", imagePushRequest.Name)
+	imageInfo := strings.Split(imagePushRequest.Tags[0], ":")
+	image := &docker.Image{
+		FromImage: imageInfo[0],
+		Tag:       imageInfo[1],
+	}
+	imageSummary, err := b.imageClient.GetImage(image)
+	if err != nil {
+		log.Error("get image is not found ")
+		return err
+	}
+	b.CreateImage(imagePushRequest.Name, imagePushRequest.Namespace, imageInfo[1], imageSummary)
+	return nil
+}
+
+func (b *buildConfigServiceImpl) CreateImage(name, namespace, tag string, imageSummary docker_types.ImageSummary) error {
+	log.Errorf("create image stream name : %v , namespace : %v", name, namespace)
+	t := time.Now()
+	image, err := b.imageStream.Get(name, namespace)
+	stream := &miov1alpha1.ImageStream{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      name,
+			Namespace: namespace,
+			Labels: map[string]string{
+				"app": name,
+			},
+		},
+	}
+	spec := miov1alpha1.ImageStreamSpec{
+		DockerImageRepository: imageSummary.RepoTags[0],
+		Tags: map[string]miov1alpha1.Tag{
+			tag: miov1alpha1.Tag{
+				Created:              t.UTC().Format(time.UnixDate),
+				DockerImageReference: imageSummary.RepoDigests[0],
+				Generation:           "1",
+			},
+		},
+	}
+	stream.Spec = spec
+	if err != nil {
+		log.Errorf("get image: %v", err)
+		_, err := b.imageStream.Create(stream)
+		return err
+	}
+	delete(image.Spec.Tags, tag)
+	image.Spec.Tags[tag] = miov1alpha1.Tag{
+		Created:              t.UTC().Format(time.UnixDate),
+		DockerImageReference: imageSummary.RepoDigests[0],
+		Generation:           "1",
+	}
+	_, err = b.imageStream.Update(name, namespace, image)
+	return err
 }
