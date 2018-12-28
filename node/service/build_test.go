@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"github.com/docker/docker/api/types"
+	docker_types "github.com/docker/docker/api/types"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/src-d/go-git.v4"
@@ -10,6 +11,8 @@ import (
 	"hidevops.io/hioak/starter/docker/fake"
 	"hidevops.io/mio/node/protobuf"
 	"hidevops.io/mio/node/service/mock"
+	mio_fake "hidevops.io/mio/pkg/client/clientset/versioned/fake"
+	"hidevops.io/mio/pkg/starter/mio"
 	"io"
 	"os"
 	"testing"
@@ -138,4 +141,25 @@ func TestBuildConfigServiceImpl_Clone2(t *testing.T) {
 		return nil, nil
 	})
 	assert.NotEqual(t, nil, err)
+}
+
+func TestBuildConfigServiceImplCreateImage(t *testing.T) {
+	clientSet := mio_fake.NewSimpleClientset().MioV1alpha1()
+	name := "hello-world"
+	namespace := "demo"
+	tag := "v1"
+	image := mio.NewImageStream(clientSet)
+	b := newBuildService(nil, image)
+	imageSummary := docker_types.ImageSummary{
+		RepoDigests: []string{
+			"aaaaaaa", "",
+		},
+		RepoTags: []string{
+			"kkkkk",
+		},
+	}
+	err := b.CreateImage(name, namespace, tag, imageSummary)
+	assert.Equal(t, nil, err)
+	err = b.CreateImage(name, namespace, tag, imageSummary)
+	assert.Equal(t, nil, err)
 }

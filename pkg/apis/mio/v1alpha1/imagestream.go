@@ -22,15 +22,15 @@ type ImageStream struct {
 }
 
 type ImageStreamSpec struct {
-	DockerImageRepository string `json:"dockerImageRepository,omitempty" protobuf:"bytes,1,opt,name=dockerImageRepository"`
-	Tags                  []Tag  `json:"tags,omitempty" protobuf:"bytes,2,opt,name=tags`
+	DockerImageRepository string         `json:"dockerImageRepository,omitempty" protobuf:"bytes,1,opt,name=dockerImageRepository"`
+	Tags                  map[string]Tag `json:"tags,omitempty" protobuf:"bytes,2,opt,name=tags`
 }
 
 type Tag struct {
 	Created              string `json:"created,omitempty" protobuf:"bytes,1,opt,name=created"`
-	DockerImageReference string `json:"dockerImageReference,omitempty" protobuf:"bytes,1,opt,name=dockerImageReference"`
-	Generation           string `json:"generation" protobuf:"bytes,2,opt,name=generation"`
-	Version              string `json:"version" protobuf:"bytes,3,opt,name=version"`
+	DockerImageReference string `json:"dockerImageReference,omitempty" protobuf:"bytes,2,opt,name=dockerImageReference"`
+	Generation           string `json:"generation" protobuf:"bytes,3,opt,name=generation"`
+	Image                string `json:"image" protobuf:"bytes,4,opt,name=image"`
 }
 
 type Status struct {

@@ -45,7 +45,7 @@ type buildConfigClientImpl struct {
 }
 
 func init() {
-	app.Component(newBuildConfigClient)
+	app.Register(newBuildConfigClient)
 }
 
 func newBuildConfigClient(build *mio.Build) BuildConfigClient {
