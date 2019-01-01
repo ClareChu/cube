@@ -64,7 +64,7 @@ message BuildCommand {
     string execType    = 2;
     string script   = 3;
     string commandName = 4;
-    repeated string Params = 5;
+    repeated string params = 5;
 }
 
 message CompileResponse {
@@ -99,6 +99,7 @@ message ImagePushRequest {
     string username = 4;
     string password = 5;
     string registryToken = 6;
+    string imageName = 7;
 }
 
 message ImagePushResponse {

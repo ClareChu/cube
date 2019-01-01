@@ -14,7 +14,7 @@
 
 // if protoc report command not found error, should install proto and protc-gen-go
 // go get -u -v github.com/golang/protobuf/{proto,protoc-gen-go}
-//go:generate protoc -I pkg/protobuf --go_out=plugins=grpc:pkg/protobuf pkg/protobuf/buildconfig.proto
+//go:generate protoc -I protobuf --go_out=plugins=grpc:protobuf protobuf/buildconfig.proto
 
 package main
 

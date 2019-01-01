@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 echo  "GOOS=linux go build"
- GOOS=linux go build -o mio-console
+ GOOS=linux go build -o hiadmin
 
-docker build -t mio-console .
+docker build -t hiadmin .
 
-docker tag mio-console docker-registry-default.app.vpclub.io/demo/mio-console:v1
+docker tag hiadmin docker-registry-default.app.vpclub.io/demo/hiadmin:v1
 
 docker login -p $(oc whoami -t) -u unused docker-registry-default.app.vpclub.io
 
-docker push docker-registry-default.app.vpclub.io/demo/mio-console:v1
+docker push docker-registry-default.app.vpclub.io/demo/hiadmin:v1
 
 

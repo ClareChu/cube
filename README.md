@@ -83,13 +83,13 @@ cd console
 ###脚本大致内容
 
 ## console 代码打包linux
- GOOS=linux go build -o mio-console
+ GOOS=linux go build -o hiadmin
 
 ## 镜像制作
 
-docker build -t docker-registry-default.app.example.io/demo/mio-console:v1 .
+docker build -t docker-registry-default.app.example.io/demo/hiadmin:v1 .
 
-docker push docker-registry-default.app.example.io/demo/mio-console:v1
+docker push docker-registry-default.app.example.io/demo/hiadmin:v1
 
 ```
 
@@ -100,25 +100,25 @@ apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
   labels:
-    app: mio-console
-  name: mio-console
+    app: hiadmin
+  name: hiadmin
   namespace: hidevopsio
   resourceVersion: '139885254'
-  selfLink: /apis/apps.openshift.io/v1/namespaces/demo/deploymentconfigs/mio-console
+  selfLink: /apis/apps.openshift.io/v1/namespaces/demo/deploymentconfigs/hiadmin
   uid: d2bcdad9-d4ff-11e8-bb8c-005056935c80
 spec:
   replicas: 1
   selector:
-    app: mio-console
-    deploymentconfig: mio-console
+    app: hiadmin
+    deploymentconfig: hiadmin
   template:
     metadata:
       annotations:
         openshift.io/generated-by: OpenShiftWebConsole
       creationTimestamp: null
       labels:
-        app: mio-console
-        deploymentconfig: mio-console
+        app: hiadmin
+        deploymentconfig: hiadmin
     spec:
       containers:
         - env:
@@ -135,9 +135,9 @@ spec:
             - name: API_VERSION
               value: /api/v3
           image: >-
-            docker-registry.default.svc:5000/demo/mio-console@sha256:851f49987fbbf469cbe87c6c26160a1ce7cb1ce5bdb6b1b7d3795127b8a44436
+            docker-registry.default.svc:5000/demo/hiadmin@sha256:851f49987fbbf469cbe87c6c26160a1ce7cb1ce5bdb6b1b7d3795127b8a44436
           imagePullPolicy: Always
-          name: mio-console
+          name: hiadmin
           ports:
             - containerPort: 7575
               protocol: TCP
@@ -171,13 +171,13 @@ spec:
     - imageChangeParams:
         automatic: true
         containerNames:
-          - mio-console
+          - hiadmin
         from:
           kind: ImageStreamTag
-          name: 'mio-console:v1'
+          name: 'hiadmin:v1'
           namespace: demo
         lastTriggeredImage: >-
-          docker-registry.default.svc:5000/demo/mio-console@sha256:851f49987fbbf469cbe87c6c26160a1ce7cb1ce5bdb6b1b7d3795127b8a44436
+          docker-registry.default.svc:5000/demo/hiadmin@sha256:851f49987fbbf469cbe87c6c26160a1ce7cb1ce5bdb6b1b7d3795127b8a44436
       type: ImageChange
 ```
 

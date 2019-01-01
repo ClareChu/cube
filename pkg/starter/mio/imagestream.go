@@ -20,7 +20,7 @@ func NewImageStream(clientSet miov1.MioV1alpha1Interface) *ImageStream {
 }
 
 func (s *ImageStream) Create(imageStream *v1alpha1.ImageStream) (image *v1alpha1.ImageStream, err error) {
-	log.Debugf("gatewayConfigs create : %v", imageStream.Name)
+	log.Debugf("image stream create : %v", imageStream.Name)
 	image, err = s.clientSet.ImageStreams(imageStream.Namespace).Create(imageStream)
 	if err != nil {
 		return nil, err

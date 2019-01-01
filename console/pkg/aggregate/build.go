@@ -192,7 +192,7 @@ func (s *Build) ImageBuild(build *v1alpha1.Build) error {
 	command := &command.ImageBuildCommand{
 		App:        build.Spec.App,
 		S2IImage:   build.Spec.BaseImage,
-		Tags:       []string{build.Spec.Tags[0] + ":" + build.ObjectMeta.Labels[constant.Number]},
+		Tags:      []string{build.Spec.Tags[0] + ":" + build.ObjectMeta.Labels[constant.Number], build.Spec.Tags[0] + ":latest"},
 		DockerFile: build.Spec.DockerFile,
 		Name:       build.Name,
 		Namespace:  build.Namespace,
@@ -206,11 +206,12 @@ func (s *Build) ImageBuild(build *v1alpha1.Build) error {
 
 func (s *Build) ImagePush(build *v1alpha1.Build) error {
 	command := &command.ImagePushCommand{
-		Tags:      []string{build.Spec.Tags[0] + ":" + build.ObjectMeta.Labels[constant.Number]},
+		Tags:      []string{build.Spec.Tags[0] + ":" + build.ObjectMeta.Labels[constant.Number], build.Spec.Tags[0] + ":latest"},
 		Name:      build.Name,
 		Namespace: build.Namespace,
 		Username:  build.Spec.DockerAuthConfig.Username,
 		Password:  build.Spec.DockerAuthConfig.Password,
+		ImageName: build.ObjectMeta.Labels["name"],
 	}
 	log.Infof("ImagePush :%v", command)
 	err := s.buildConfigService.ImagePush(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), "7575", command)
