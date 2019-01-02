@@ -40,6 +40,8 @@ func (t *Tag) TagImage(deploy *v1alpha1.Deployment) error {
 	n := GetNamespace(deploy.Namespace, deploy.Spec.Profile)
 	is, err := t.imageStream.Get(deploy.Labels[constant.DeploymentConfig], n)
 	if err != nil {
+		is.Spec.Tags[constant.Latest] = tag
+		_, err = t.imageStream.Update(deploy.Labels[constant.DeploymentConfig], n, is)
 		return err
 	}
 	stream := &miov1alpha1.ImageStream{
@@ -57,7 +59,7 @@ func (t *Tag) TagImage(deploy *v1alpha1.Deployment) error {
 			},
 		},
 	}
-	is, err := t.imageStream.Create(stream)
+	is, err = t.imageStream.Create(stream)
 	log.Info(is)
 	return err
 }
