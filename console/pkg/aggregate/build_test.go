@@ -92,7 +92,7 @@ func TestBuild_ImageBuild(t *testing.T) {
 	cmd := &command.ImageBuildCommand{
 		Namespace: "demo",
 		Name:      "hello-world",
-		Tags:      []string{"1:"},
+		Tags:      []string{"1:", "1:latest"},
 	}
 	buildConfigService.On("ImageBuild", "hello-world.demo.svc", "7575", cmd).Return(nil)
 	err := buildAggregate.ImageBuild(build1)
@@ -100,7 +100,7 @@ func TestBuild_ImageBuild(t *testing.T) {
 	cmd1 := &command.ImagePushCommand{
 		Namespace: "demo",
 		Name:      "hello-world",
-		Tags:      []string{"1:"},
+		Tags:      []string{"1:", "1:latest"},
 	}
 	buildConfigService.On("ImagePush", "hello-world.demo.svc", "7575", cmd1).Return(nil)
 	err = buildAggregate.ImagePush(build1)
