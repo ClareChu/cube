@@ -400,7 +400,7 @@ func TestBuildSelector(t *testing.T) {
 			},
 		},
 	}
-	imageBuildCommand := &command.ImageBuildCommand{App:"", S2IImage:"", Tags:[]string{":"}, DockerFile:[]string(nil)}
+	imageBuildCommand := &command.ImageBuildCommand{App:"", S2IImage:"", Tags:[]string{":", ":latest"}, DockerFile:[]string(nil)}
 	buildConfigService.On("ImageBuild", "..svc", "7575", imageBuildCommand).Return(errors.New("1"))
 	err = buildAggregate.Selector(b)
 	assert.Equal(t, "1", err.Error())
@@ -452,7 +452,7 @@ func TestBuildSelector(t *testing.T) {
 			},
 		},
 	}
-	imagePushCommand := &command.ImagePushCommand{Tags:[]string{":"}}
+	imagePushCommand := &command.ImagePushCommand{Tags:[]string{":", ":latest"}}
 	buildConfigService.On("ImagePush", "..svc", "7575", imagePushCommand).Return(errors.New("1"))
 	err = buildAggregate.Selector(b)
 	assert.Equal(t, "1", err.Error())

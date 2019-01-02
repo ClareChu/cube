@@ -14,3 +14,6 @@ func TestGetNamespace(t *testing.T) {
 	n = GetNamespace(space, profile)
 	assert.Equal(t, "demo", n)
 }
+
+func TestTagTagImage(t *testing.T) {
+}
