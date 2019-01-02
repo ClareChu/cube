@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"github.com/docker/docker/api/types"
 	docker_types "github.com/docker/docker/api/types"
 	"github.com/golang/mock/gomock"
@@ -15,6 +16,7 @@ import (
 	"hidevops.io/mio/pkg/starter/mio"
 	"io"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -152,7 +154,7 @@ func TestBuildConfigServiceImplCreateImage(t *testing.T) {
 	b := newBuildService(nil, image)
 	imageSummary := docker_types.ImageSummary{
 		RepoDigests: []string{
-			"aaaaaaa", "",
+			"aaaaaaa@aaa", "",
 		},
 		RepoTags: []string{
 			"kkkkk",
@@ -162,4 +164,6 @@ func TestBuildConfigServiceImplCreateImage(t *testing.T) {
 	assert.Equal(t, nil, err)
 	err = b.CreateImage(name, namespace, tag, imageSummary)
 	assert.Equal(t, nil, err)
+	s := strings.Split("docker-registry-default.app.vpclub.io/demo/hello-world@sha256:485a3c93699c107dbe6d8a265a75d282b0bc767b5780f60d45a18a923689cee2", "@")
+	fmt.Sprint(s)
 }

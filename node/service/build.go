@@ -272,6 +272,13 @@ func (b *buildConfigServiceImpl) CreateImage(name, namespace, tag string, imageS
 				Created:              t.UTC().Format(time.UnixDate),
 				DockerImageReference: imageSummary.RepoDigests[0],
 				Generation:           "1",
+				Image: strings.Split(imageSummary.RepoDigests[0], "@")[1],
+			},
+			Latest: miov1alpha1.Tag{
+				Created:              t.UTC().Format(time.UnixDate),
+				DockerImageReference: imageSummary.RepoDigests[0],
+				Generation:           "1",
+				Image: strings.Split(imageSummary.RepoDigests[0], "@")[1],
 			},
 		},
 	}
@@ -288,11 +295,13 @@ func (b *buildConfigServiceImpl) CreateImage(name, namespace, tag string, imageS
 		Created:              t.UTC().Format(time.UnixDate),
 		DockerImageReference: imageSummary.RepoDigests[0],
 		Generation:           Generation,
+		Image: strings.Split(imageSummary.RepoDigests[0], "@")[1],
 	}
 	image.Spec.Tags[Latest] = miov1alpha1.Tag{
 		Created:              t.UTC().Format(time.UnixDate),
 		DockerImageReference: imageSummary.RepoDigests[0],
 		Generation:           Generation,
+		Image: strings.Split(imageSummary.RepoDigests[0], "@")[1],
 	}
 	_, err = b.imageStream.Update(name, namespace, image)
 	return err
