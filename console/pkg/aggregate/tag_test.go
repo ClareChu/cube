@@ -2,6 +2,11 @@ package aggregate
 
 import (
 	"github.com/magiconair/properties/assert"
+	"hidevops.io/mio/console/pkg/constant"
+	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
+	"hidevops.io/mio/pkg/client/clientset/versioned/fake"
+	"hidevops.io/mio/pkg/starter/mio"
+	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"testing"
 )
 
@@ -16,4 +21,41 @@ func TestGetNamespace(t *testing.T) {
 }
 
 func TestTagTagImage(t *testing.T) {
+	clientSet := fake.NewSimpleClientset().MioV1alpha1()
+	imageStream := mio.NewImageStream(clientSet)
+	tag := NewTagService(imageStream)
+	deploy := &v1alpha1.Deployment{
+		ObjectMeta: v1.ObjectMeta{
+			Labels: map[string]string{
+				constant.DeploymentConfig: "hello-world",
+			},
+			Name: "hello-world",
+			Namespace: "demo",
+		},
+	}
+	is := &v1alpha1.ImageStream{
+		ObjectMeta: v1.ObjectMeta{
+			Name: "hello-world",
+			Namespace: "demo",
+		},
+	}
+	err := tag.TagImage(deploy)
+	assert.Equal(t, "imagestreams.mio.io \"hello-world\" not found", err.Error())
+	imageStream.Create(is)
+	err = tag.TagImage(deploy)
+	assert.Equal(t, nil, err)
+	deploy = &v1alpha1.Deployment{
+		ObjectMeta: v1.ObjectMeta{
+			Labels: map[string]string{
+				constant.DeploymentConfig: "hello-world",
+			},
+			Name: "hello-world",
+			Namespace: "demo",
+		},
+		Spec:v1alpha1.DeploymentConfigSpec{
+			Profile: "dev",
+		},
+	}
+	err = tag.TagImage(deploy)
+	assert.Equal(t, nil, err)
 }
