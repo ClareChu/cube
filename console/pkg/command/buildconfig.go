@@ -74,8 +74,9 @@ type ImagePushCommand struct {
 	Tags      []string `protobuf:"bytes,1,rep,name=tags,proto3" json:"tags,omitempty"`
 	Namespace string   `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	Name      string   `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Username  string   `protobuf:"bytes,4,opt,name=name,proto3" json:"username,omitempty"`
-	Password  string   `protobuf:"bytes,5,opt,name=name,proto3" json:"password,omitempty"`
+	Username  string   `protobuf:"bytes,4,opt,name=username,proto3" json:"username,omitempty"`
+	Password  string   `protobuf:"bytes,5,opt,name=password,proto3" json:"password,omitempty"`
+	ImageName string   `protobuf:"bytes,6,opt,name=imageName,proto3" json:"imageName,omitempty"`
 }
 
 type BuildSpec struct {

@@ -92,7 +92,7 @@ func TestBuild_ImageBuild(t *testing.T) {
 	cmd := &command.ImageBuildCommand{
 		Namespace: "demo",
 		Name:      "hello-world",
-		Tags:      []string{"1:"},
+		Tags:      []string{"1:", "1:latest"},
 	}
 	buildConfigService.On("ImageBuild", "hello-world.demo.svc", "7575", cmd).Return(nil)
 	err := buildAggregate.ImageBuild(build1)
@@ -100,7 +100,7 @@ func TestBuild_ImageBuild(t *testing.T) {
 	cmd1 := &command.ImagePushCommand{
 		Namespace: "demo",
 		Name:      "hello-world",
-		Tags:      []string{"1:"},
+		Tags:      []string{"1:", "1:latest"},
 	}
 	buildConfigService.On("ImagePush", "hello-world.demo.svc", "7575", cmd1).Return(nil)
 	err = buildAggregate.ImagePush(build1)
@@ -400,7 +400,7 @@ func TestBuildSelector(t *testing.T) {
 			},
 		},
 	}
-	imageBuildCommand := &command.ImageBuildCommand{App:"", S2IImage:"", Tags:[]string{":"}, DockerFile:[]string(nil)}
+	imageBuildCommand := &command.ImageBuildCommand{App:"", S2IImage:"", Tags:[]string{":", ":latest"}, DockerFile:[]string(nil)}
 	buildConfigService.On("ImageBuild", "..svc", "7575", imageBuildCommand).Return(errors.New("1"))
 	err = buildAggregate.Selector(b)
 	assert.Equal(t, "1", err.Error())
@@ -452,7 +452,7 @@ func TestBuildSelector(t *testing.T) {
 			},
 		},
 	}
-	imagePushCommand := &command.ImagePushCommand{Tags:[]string{":"}}
+	imagePushCommand := &command.ImagePushCommand{Tags:[]string{":", ":latest"}}
 	buildConfigService.On("ImagePush", "..svc", "7575", imagePushCommand).Return(errors.New("1"))
 	err = buildAggregate.Selector(b)
 	assert.Equal(t, "1", err.Error())

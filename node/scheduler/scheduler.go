@@ -34,7 +34,7 @@ func newBuildSchedulerImpl(buildConfigService service.BuildConfigService,
 }
 
 func init() {
-	app.Component(newBuildSchedulerImpl)
+	app.Register(newBuildSchedulerImpl)
 }
 
 type BuildService interface {

@@ -1,5 +1,5 @@
 
-tag := 1.1.8
+tag := 1.2.7
 registries := docker.vpclub.cn
 group := hidevopsio
 image_name := hinode-java-jar

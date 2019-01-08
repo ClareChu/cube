@@ -28,6 +28,7 @@ type BuildConfigService interface {
 	Compile(compileRequest *protobuf.CompileRequest) error
 	ImageBuild(imageBuildRequest *protobuf.ImageBuildRequest) error
 	ImagePush(imagePushRequest *protobuf.ImagePushRequest) error
+	GetImage(imagePushRequest *protobuf.ImagePushRequest) error
 	CreateImage(name, namespace, tag string, imageSummary docker_types.ImageSummary) error
 }
 
@@ -48,6 +49,11 @@ func newBuildService(imageClient *docker.ImageClient, imageStream *mio.ImageStre
 		imageStream: imageStream,
 	}
 }
+
+const (
+	Latest     = "latest"
+	Generation = "1"
+)
 
 func (b *buildConfigServiceImpl) Clone(sourceCodePullRequest *protobuf.SourceCodePullRequest, cloneFunc scmgit.CloneFunc) (string, error) {
 	fmt.Printf("\n[INFO] clone %s start:\n", sourceCodePullRequest.Url)
@@ -204,11 +210,10 @@ func (b *buildConfigServiceImpl) ImageBuild(imageBuildRequest *protobuf.ImageBui
 
 func (b *buildConfigServiceImpl) ImagePush(imagePushRequest *protobuf.ImagePushRequest) error {
 
-	fmt.Printf("\n[INFO] image %v start push:\n", imagePushRequest.Tags)
-
+	fmt.Printf("\n[INFO] image %v start push:\n", imagePushRequest)
+	fmt.Printf("xxxxxxxxxxx")
 	for _, imageName := range imagePushRequest.Tags {
 		imageInfo := strings.Split(imageName, ":")
-
 		pushImage := &docker.Image{
 			Username:  imagePushRequest.Username,
 			Password:  imagePushRequest.Password,
@@ -220,12 +225,17 @@ func (b *buildConfigServiceImpl) ImagePush(imagePushRequest *protobuf.ImagePushR
 			fmt.Printf("\nError image %s push filed\n", imageName)
 			return err
 		}
+
 	}
-	return nil
+	log.Info("push image success ")
+	fmt.Printf("xxxxxxxxxxx")
+	err := b.GetImage(imagePushRequest)
+	return err
 }
 
 func (b *buildConfigServiceImpl) GetImage(imagePushRequest *protobuf.ImagePushRequest) error {
-	log.Infof("get image: %s", imagePushRequest.Name)
+	log.Infof("get image: %v", imagePushRequest.ImageName)
+	fmt.Printf("xxxxxxxxxxx")
 	imageInfo := strings.Split(imagePushRequest.Tags[0], ":")
 	image := &docker.Image{
 		FromImage: imageInfo[0],
@@ -236,11 +246,13 @@ func (b *buildConfigServiceImpl) GetImage(imagePushRequest *protobuf.ImagePushRe
 		log.Error("get image is not found ")
 		return err
 	}
-	b.CreateImage(imagePushRequest.Name, imagePushRequest.Namespace, imageInfo[1], imageSummary)
+	b.CreateImage(imagePushRequest.ImageName, imagePushRequest.Namespace, imageInfo[1], imageSummary)
+	fmt.Printf("xxxxxxxxxxx")
 	return nil
 }
 
 func (b *buildConfigServiceImpl) CreateImage(name, namespace, tag string, imageSummary docker_types.ImageSummary) error {
+	fmt.Printf("xxxxxxxxxxx")
 	log.Errorf("create image stream name : %v , namespace : %v", name, namespace)
 	t := time.Now()
 	image, err := b.imageStream.Get(name, namespace)
@@ -260,6 +272,13 @@ func (b *buildConfigServiceImpl) CreateImage(name, namespace, tag string, imageS
 				Created:              t.UTC().Format(time.UnixDate),
 				DockerImageReference: imageSummary.RepoDigests[0],
 				Generation:           "1",
+				Image: strings.Split(imageSummary.RepoDigests[0], "@")[1],
+			},
+			Latest: miov1alpha1.Tag{
+				Created:              t.UTC().Format(time.UnixDate),
+				DockerImageReference: imageSummary.RepoDigests[0],
+				Generation:           "1",
+				Image: strings.Split(imageSummary.RepoDigests[0], "@")[1],
 			},
 		},
 	}
@@ -267,13 +286,22 @@ func (b *buildConfigServiceImpl) CreateImage(name, namespace, tag string, imageS
 	if err != nil {
 		log.Errorf("get image: %v", err)
 		_, err := b.imageStream.Create(stream)
+		log.Errorf("create image: %v", err)
 		return err
 	}
 	delete(image.Spec.Tags, tag)
+	delete(image.Spec.Tags, Latest)
 	image.Spec.Tags[tag] = miov1alpha1.Tag{
 		Created:              t.UTC().Format(time.UnixDate),
 		DockerImageReference: imageSummary.RepoDigests[0],
-		Generation:           "1",
+		Generation:           Generation,
+		Image: strings.Split(imageSummary.RepoDigests[0], "@")[1],
+	}
+	image.Spec.Tags[Latest] = miov1alpha1.Tag{
+		Created:              t.UTC().Format(time.UnixDate),
+		DockerImageReference: imageSummary.RepoDigests[0],
+		Generation:           Generation,
+		Image: strings.Split(imageSummary.RepoDigests[0], "@")[1],
 	}
 	_, err = b.imageStream.Update(name, namespace, image)
 	return err
