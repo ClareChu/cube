@@ -2,6 +2,7 @@ package aggregate
 
 import (
 	"github.com/magiconair/properties/assert"
+	"hidevops.io/mio/console/pkg/builder/mocks"
 	"hidevops.io/mio/console/pkg/constant"
 	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
 	"hidevops.io/mio/pkg/client/clientset/versioned/fake"
@@ -23,7 +24,8 @@ func TestGetNamespace(t *testing.T) {
 func TestTagTagImage(t *testing.T) {
 	clientSet := fake.NewSimpleClientset().MioV1alpha1()
 	imageStream := mio.NewImageStream(clientSet)
-	tag := NewTagService(imageStream)
+	d := new(mocks.DeploymentBuilder)
+	tag := NewTagService(imageStream, d)
 	deploy := &v1alpha1.Deployment{
 		ObjectMeta: v1.ObjectMeta{
 			Labels: map[string]string{
@@ -42,6 +44,7 @@ func TestTagTagImage(t *testing.T) {
 	err := tag.TagImage(deploy)
 	assert.Equal(t, "imagestreams.mio.io \"hello-world\" not found", err.Error())
 	imageStream.Create(is)
+	d.On("Update", "hello-world", "demo", "remoteDeploy", "success").Return(nil)
 	err = tag.TagImage(deploy)
 	assert.Equal(t, nil, err)
 	deploy = &v1alpha1.Deployment{
