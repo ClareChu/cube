@@ -23,7 +23,7 @@ func TestDeploymentUpdate(t *testing.T) {
 		},
 	}
 	_, err := deployment.Create(dca)
-	db := newDeploymentService(deployment, deploy)
+	db := newDeploymentService(deployment, deploy, nil)
 	err = db.Update("hello-world-v1", "demo", "a", "success")
 	assert.Equal(t, nil, err)
 

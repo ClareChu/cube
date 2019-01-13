@@ -31,19 +31,21 @@ type Deployment struct {
 	pipelineBuilder         builder.PipelineBuilder
 	deploymentBuilder       builder.DeploymentBuilder
 	deploymentConfigBuilder builder.DeploymentConfigBuilder
+	tagAggregate            TagAggregate
 }
 
 func init() {
 	app.Register(NewDeploymentService)
 }
 
-func NewDeploymentService(deploymentClient *mio.Deployment, remoteAggregate RemoteAggregate, deploymentBuilder builder.DeploymentBuilder, pipelineBuilder builder.PipelineBuilder, deploymentConfigBuilder builder.DeploymentConfigBuilder) DeploymentAggregate {
+func NewDeploymentService(deploymentClient *mio.Deployment, remoteAggregate RemoteAggregate, deploymentBuilder builder.DeploymentBuilder, pipelineBuilder builder.PipelineBuilder, deploymentConfigBuilder builder.DeploymentConfigBuilder, tagAggregate TagAggregate) DeploymentAggregate {
 	return &Deployment{
 		deploymentClient:        deploymentClient,
 		remoteAggregate:         remoteAggregate,
 		deploymentBuilder:       deploymentBuilder,
 		pipelineBuilder:         pipelineBuilder,
 		deploymentConfigBuilder: deploymentConfigBuilder,
+		tagAggregate:            tagAggregate,
 	}
 }
 
@@ -82,7 +84,7 @@ func (d *Deployment) Create(deploymentConfig *v1alpha1.DeploymentConfig, pipelin
 }
 
 func (d *Deployment) Watch(name, namespace string) error {
-	log.Debug("build config Watch :%v", name)
+	log.Debugf("build config Watch :%v", name)
 	kubeWatchTimeout, err := strconv.Atoi(os.Getenv("KUBE_WATCH_TIMEOUT"))
 	after := time.Duration(kubeWatchTimeout) * time.Minute
 
@@ -150,7 +152,7 @@ func (d *Deployment) Selector(deploy *v1alpha1.Deployment) error {
 	switch eventType {
 	case constant.RemoteDeploy:
 		go func() {
-			d.remoteAggregate.TagImage(deploy)
+			d.tagAggregate.TagImage(deploy)
 		}()
 		err = d.deploymentBuilder.Update(deploy.Name, deploy.Namespace, constant.RemoteDeploy, constant.Created)
 	case constant.Deploy:

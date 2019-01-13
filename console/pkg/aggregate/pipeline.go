@@ -56,7 +56,7 @@ func (p *Pipeline) Get(name, namespace string) (*v1alpha1.Pipeline, error) {
 }
 
 func (p *Pipeline) Create(pipelineConfig *v1alpha1.PipelineConfig, sourceCode string) (*v1alpha1.Pipeline, error) {
-	log.Debug("create pipeline :%v", pipelineConfig)
+	log.Debugf("create pipeline :%v", pipelineConfig)
 	number := fmt.Sprintf("%d", pipelineConfig.Status.LastVersion)
 	nameVersion := pipelineConfig.Name + "-" + number
 	pipeline := new(v1alpha1.Pipeline)

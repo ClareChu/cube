@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"github.com/prometheus/common/log"
 	"hidevops.io/hiboot/pkg/app"
+	"hidevops.io/mio/console/pkg/builder"
 	"hidevops.io/mio/console/pkg/constant"
 	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
 	miov1alpha1 "hidevops.io/mio/pkg/apis/mio/v1alpha1"
 	"hidevops.io/mio/pkg/starter/mio"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"strings"
 )
 
 type TagAggregate interface {
@@ -16,17 +18,19 @@ type TagAggregate interface {
 }
 
 func init() {
-	app.Register(NewRemoteService)
+	app.Register(NewTagService)
 }
 
 type Tag struct {
 	TagAggregate
-	imageStream *mio.ImageStream
+	imageStream       *mio.ImageStream
+	deploymentBuilder builder.DeploymentBuilder
 }
 
-func NewTagService(imageStream *mio.ImageStream) TagAggregate {
+func NewTagService(imageStream *mio.ImageStream, deploymentBuilder builder.DeploymentBuilder) TagAggregate {
 	return &Tag{
-		imageStream: imageStream,
+		imageStream:       imageStream,
+		deploymentBuilder: deploymentBuilder,
 	}
 }
 
@@ -46,9 +50,11 @@ func (t *Tag) TagImage(deploy *v1alpha1.Deployment) error {
 				Tags: map[string]v1alpha1.Tag{
 					constant.Latest: tag,
 				},
+				DockerImageRepository: strings.Split(i.Spec.DockerImageRepository, ":")[0] + ":latest" ,
 			},
 		}
 		_, err = t.imageStream.Update(deploy.Labels[constant.DeploymentConfig], n, imageStream)
+		err = t.deploymentBuilder.Update(deploy.Name, deploy.Namespace, constant.RemoteDeploy, constant.Success)
 		return err
 	}
 	stream := &miov1alpha1.ImageStream{
@@ -60,14 +66,14 @@ func (t *Tag) TagImage(deploy *v1alpha1.Deployment) error {
 			},
 		},
 		Spec: miov1alpha1.ImageStreamSpec{
-			DockerImageRepository: "",
+			DockerImageRepository: strings.Split(i.Spec.DockerImageRepository, ":")[0] + ":latest" ,
 			Tags: map[string]miov1alpha1.Tag{
 				constant.Latest: tag,
 			},
 		},
 	}
 	is, err = t.imageStream.Create(stream)
-	log.Info(is)
+	err = t.deploymentBuilder.Update(deploy.Name, deploy.Namespace, constant.RemoteDeploy, constant.Success)
 	return err
 }
 

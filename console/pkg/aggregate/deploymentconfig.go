@@ -63,7 +63,7 @@ func (d *DeploymentConfig) Template(cmd *command.DeploymentConfig) (deploymentCo
 }
 
 func (d *DeploymentConfig) Create(name, pipelineName, namespace, sourceType, version, buildVersion, profile string) (deploymentConfig *v1alpha1.DeploymentConfig, err error) {
-	log.Debug("build config create name :%s, namespace : %s , sourceType : %s", name, namespace, sourceType)
+	log.Debugf("build config create name :%s, namespace : %s , sourceType : %s", name, namespace, sourceType)
 	deploymentConfig = new(v1alpha1.DeploymentConfig)
 	template, err := d.deploymentConfigClient.Get(sourceType, constant.TemplateDefaultNamespace)
 	if err != nil {

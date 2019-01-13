@@ -60,7 +60,7 @@ func (d *DeploymentConfig) CreateApp(deploy *v1alpha1.Deployment) error {
 	}
 	err := d.deploymentConfig.Create(de)
 	if err != nil {
-		log.Error("create openshift deployment config : %v", err)
+		log.Errorf("create openshift deployment config : %v", err)
 		phase = constant.Fail
 	}
 	err = d.deploymentBuilder.Update(deploy.Name, deploy.Namespace, constant.Deploy, phase)

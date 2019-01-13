@@ -98,7 +98,7 @@ func (s *Build) Create(buildConfig *v1alpha1.BuildConfig, pipelineName, version 
 }
 
 func (s *Build) Watch(name, namespace string) (build *v1alpha1.Build, err error) {
-	log.Debug("build config Watch :%v", name)
+	log.Debugf("build config Watch :%v", name)
 	kubeWatchTimeout, err := strconv.Atoi(os.Getenv("KUBE_WATCH_TIMEOUT"))
 	after := time.Duration(kubeWatchTimeout) * time.Minute
 

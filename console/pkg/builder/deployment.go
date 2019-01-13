@@ -1,6 +1,7 @@
 package builder
 
 import (
+	"fmt"
 	"github.com/prometheus/common/log"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hioak/starter/kube"
@@ -19,16 +20,18 @@ type Deployment struct {
 	DeploymentBuilder
 	deploymentClient *mio.Deployment
 	deployment       *kube.Deployment
+	imageStream      *mio.ImageStream
 }
 
 func init() {
 	app.Register(newDeploymentService)
 }
 
-func newDeploymentService(deploymentClient *mio.Deployment, deployment *kube.Deployment) DeploymentBuilder {
+func newDeploymentService(deploymentClient *mio.Deployment, deployment *kube.Deployment, imageStream *mio.ImageStream) DeploymentBuilder {
 	return &Deployment{
 		deploymentClient: deploymentClient,
 		deployment:       deployment,
+		imageStream:      imageStream,
 	}
 }
 
@@ -60,11 +63,11 @@ func (d *Deployment) Update(name, namespace, event, phase string) error {
 
 func (d *Deployment) CreateApp(deploy *v1alpha1.Deployment) error {
 	phase := constant.Success
-	namespace := ""
-	if deploy.Spec.Profile == "" {
-		namespace = deploy.Namespace
-	} else {
-		namespace = deploy.Namespace + "-" + deploy.Spec.Profile
+	namespace := GetNamespace(deploy.Namespace, deploy.Spec.Profile)
+	i, err := d.imageStream.Get(deploy.Labels[constant.DeploymentConfig], namespace)
+	if err != nil {
+		log.Errorf("get image err: %v", err)
+		return err
 	}
 	request := &kube.DeployRequest{
 		App:            deploy.Labels[constant.DeploymentConfig],
@@ -72,17 +75,16 @@ func (d *Deployment) CreateApp(deploy *v1alpha1.Deployment) error {
 		Ports:          deploy.Spec.Port,
 		Replicas:       deploy.Spec.Replicas,
 		Version:        deploy.Spec.Version,
-		Tag:            deploy.ObjectMeta.Labels[constant.BuildVersion],
 		Labels:         deploy.Spec.Labels,
 		ReadinessProbe: deploy.Spec.ReadinessProbe,
 		NodeSelector:   deploy.Spec.NodeSelector,
 		LivenessProbe:  deploy.Spec.LivenessProbe,
 		Env:            deploy.Spec.Env,
-		DockerRegistry: deploy.Spec.DockerRegistry,
 		Volumes:        deploy.Spec.Volumes,
 		VolumeMounts:   deploy.Spec.VolumeMounts,
+		DockerImage:    i.Spec.Tags[constant.Latest].DockerImageReference,
 	}
-	_, err := d.deployment.Deploy(request)
+	_, err = d.deployment.Deploy(request)
 	if err != nil {
 		log.Errorf("create app :%v", err)
 		phase = constant.Fail
@@ -90,4 +92,12 @@ func (d *Deployment) CreateApp(deploy *v1alpha1.Deployment) error {
 	err = d.Update(deploy.Name, deploy.Namespace, constant.Deploy, phase)
 	log.Debugf("create app update pipeline :name %v,namespace %v,deploy %v, type:%v, error %v", deploy.Name, deploy.Namespace, constant.Deploy, phase, err)
 	return err
+}
+
+
+func GetNamespace(space, profile string) string {
+	if profile == "" {
+		return space
+	}
+	return fmt.Sprintf("%s-%s", space, profile)
 }
