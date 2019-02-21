@@ -368,8 +368,8 @@ status:
 |dockerRegistry|string|推镜像的仓库地址|
 |env|[]string|pod 环境变量|
 |envType|string| 执行步骤|
-|fromRegistry|string|拉取镜像仓库地址|
-|port|---|对外端口|
+|fromRegistry|string|拉取镜像仓库地址|
+|port|---|对外端口|
 |profile|string|环境变量|
 
 ### 3. serviceConfig
