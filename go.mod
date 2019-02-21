@@ -97,6 +97,14 @@ require (
 	github.com/yalp/jsonpath v0.0.0-20180802001716-5cc68e5049a0
 	github.com/yudai/gojsondiff v0.0.0-20170107030110-7b1b7adf999d
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82
+	golang.org/x/crypto v0.0.0-20181127143415-eb0de9b17e85
+	golang.org/x/net v0.0.0-20181114220301-adae6a3d119a
+	golang.org/x/sys v0.0.0-20181128092732-4ed8d59d0b35
+	golang.org/x/text v0.3.0
+	golang.org/x/time v0.0.0-20181108054448-85acf8d2951c
+	golang.org/x/tools v0.0.0-20181128225727-c5b00d9557fd
+	google.golang.org/genproto v0.0.0-20181127195345-31ac5d88444a
+	google.golang.org/grpc v1.16.0
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 	gopkg.in/go-playground/validator.v8 v8.18.2
 	gopkg.in/inf.v0 v0.9.1
@@ -107,7 +115,7 @@ require (
 	gopkg.in/yaml.v2 v2.2.1
 	hidevops.io/hiboot v1.0.0
 	hidevops.io/hiboot-data v1.0.0
-	hidevops.io/hioak v0.0.0-20181218124440-bec2058a55dc
+	hidevops.io/hioak v0.0.0-20190112155535-57437150495e
 	hidevops.io/viper v1.3.2
 	k8s.io/api v0.0.0-20180601181742-8b7507fac302
 	k8s.io/apiextensions-apiserver v0.0.0-20180601203502-8e7f43002fec

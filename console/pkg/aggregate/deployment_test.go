@@ -22,7 +22,8 @@ func TestDeploymentCreate(t *testing.T) {
 	deployBuilder := new(builder.DeploymentBuilder)
 	pipelineBuilder := new(builder.PipelineBuilder)
 	deploy := new(builder.DeploymentConfigBuilder)
-	buildConfigAggregate := NewDeploymentService(deployment, remoteAggregate, deployBuilder, pipelineBuilder, deploy)
+	tag := new(mocks.TagAggregate)
+	buildConfigAggregate := NewDeploymentService(deployment, remoteAggregate, deployBuilder, pipelineBuilder, deploy, tag)
 	dc := &v1alpha1.DeploymentConfig{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "hello-world",
@@ -41,7 +42,8 @@ func TestDeploymentSelector(t *testing.T) {
 	deployBuilder := new(builder.DeploymentBuilder)
 	pipelineBuilder := new(builder.PipelineBuilder)
 	deploy := new(builder.DeploymentConfigBuilder)
-	buildConfigAggregate := NewDeploymentService(deployment, remoteAggregate, deployBuilder, pipelineBuilder, deploy)
+	tag := new(mocks.TagAggregate)
+	buildConfigAggregate := NewDeploymentService(deployment, remoteAggregate, deployBuilder, pipelineBuilder, deploy, tag)
 	d := &v1alpha1.Deployment{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "hello-world",
@@ -61,7 +63,8 @@ func TestDeploymentSelector(t *testing.T) {
 func TestDeployCreate(t *testing.T) {
 	deployBuilder := new(builder.DeploymentBuilder)
 	deploy := new(builder.DeploymentConfigBuilder)
-	buildConfigAggregate := NewDeploymentService(nil, nil, deployBuilder, nil, deploy)
+	tag := new(mocks.TagAggregate)
+	buildConfigAggregate := NewDeploymentService(nil, nil, deployBuilder, nil, deploy, tag)
 	d := &v1alpha1.Deployment{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "hello-world",

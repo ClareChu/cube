@@ -99,7 +99,7 @@ func (s *GatewayConfig) Create(name, pipelineName, namespace, sourceType, versio
 	}
 	err = s.Gateway(gatewayConfig)
 	if err != nil {
-		log.Error("create gateway err : %v", err)
+		log.Errorf("create gateway err : %v", err)
 		phase = constant.Fail
 	}
 	err = s.pipelineBuilder.Update(pipelineName, project, constant.CreateService, phase, "")
