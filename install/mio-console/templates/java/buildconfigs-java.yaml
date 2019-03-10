@@ -1,0 +1,72 @@
+apiVersion: mio.io/v1alpha1
+kind: BuildConfig
+metadata:
+  name: java
+  namespace: templates
+spec:
+  app: ""
+  baseImage: {{ .Values.buildconfig.baseImage }}
+  cloneConfig:
+    branch: {{ .Values.buildconfig.branch }}
+    dstDir: /opt/app-root/src/vpclub
+    password: ""
+    url: {{ .Values.buildconfig.gitlabUrl }}
+    username: ""
+  cloneType: ""
+  codeType: java
+  compileCmd:
+  - commandName: pwd
+  - Script: |-
+      mvn clean package -U -Dmaven.test.skip=true -Djava.net.preferIPv4Stack=true
+      if [[ $? == 0 ]]; then
+        echo 'Build Successful.'
+      else
+        echo 'Build Failed!'
+        exit 1
+      fi
+    execType: script
+  - commandName: pwd
+  - Script: ls
+    execType: script
+  deployData:
+    envs:
+      CODE_TYPE: java
+      DOCKER_API_VERSION: "1.24"
+      MAVEN_MIRROR_URL: {{ .Values.buildconfig.mavenMirrorUrl }}
+    hostPathVolume:
+      /var/lib/docker: /var/lib/docker
+      /var/run/docker.sock: /var/run/docker.sock
+    ports:
+    - 8080
+    - 7575
+    replicas: 1
+  dockerAuthConfig:
+    password: {{ .Values.buildconfig.dockerAuthPassword }}
+    username: {{ .Values.buildconfig.dockerAuthUsername }}
+  dockerFile:
+  - FROM {{ .Values.buildconfig.baseImageUrl }}
+  - ENV  TZ="Asia/Shanghai"
+  - ENV  APP_OPTIONS="-Xms128m -Xmx512m -Xss512k"
+  - ENV   APP_OPTIONS="-Xms128m -Xmx512m -Xss512k"
+  - USER 0
+  - RUN  useradd -u 1002 -r -g 0 -d ${HOME} -s /sbin/nologin -c "Default Application
+    User" java
+  - COPY ./app.jar ${HOME}
+  - RUN chown -R 1001:0 ${HOME}
+  - USER 1002
+  - EXPOSE 8080
+  - EXPOSE 7575
+  - ENTRYPOINT ["sh","-c","java -jar $HOME/app.jar $APP_OPTIONS"]
+  dockerRegistry: {{ .Values.buildconfig.dockerRegistry }}
+  nodeService: ""
+  tasks:
+  - name: createService
+  - name: deployNode
+  - name: clone
+  - name: compile
+  - name: buildImage
+  - name: pushImage
+  - name: deleteDeployment
+status:
+  lastVersion: 1
+

@@ -13,7 +13,7 @@ nameOverride: "mio-console"
 fullnameOverride: "mio-console"
 
 service:
-  type: ClusterIP
+  type: NodePort
   port: 8080
 
 ingress:
@@ -46,3 +46,22 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+mioDeployment:
+  scmUrl: "http://gitlab.vpclub.cn:8022"
+  tz: "Asia/Shanghai"
+  apiVersion: "/api/v3"
+
+buildconfig:
+  branch: "development"
+  baseImage: "docker.vpclub.cn/hidevopsio/hinode-java-jar:1.2.7"
+  gitlabUrl: "https://gitlab.vpclub.cn"
+  mavenMirrorUrl: "http://nexus.vpclub.cn/repository/maven-public/"
+  dockerAuthUsername: admin
+  dockerAuthPassword: Harbor12345
+  baseImageUrl: "clarechu/base-image-java:0.1"
+  dockerRegistry: "harbor.vpclub.io"
+
+deployconfig:
+  dockerRegistry: "harbor.vpclub.io"
+  fromRegistry: "harbor.vpclub.io"  

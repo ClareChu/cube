@@ -34,15 +34,15 @@ spec:
             - name: APP_PROFILES_ACTIVE
               value: dev
             - name: SCM_URL
-              value: 'http://gitlab.example.com'
+              value: {{ .Values.mioDeployment.scmUrl }}
             - name: TZ
-              value: Asia/Shanghai
+              value: {{ .Values.mioDeployment.tz }}
             - name: DOCKER_API_VERSION
               value: '1.24'
             - name: KUBE_WATCH_TIMEOUT
               value: '20'
             - name: API_VERSION
-              value: /api/v3
+              value: {{ .Values.mioDeployment.apiVersion }}
           name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
