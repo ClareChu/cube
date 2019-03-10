@@ -1,0 +1,28 @@
+apiVersion: v1
+items:
+- apiVersion: mio.io/v1alpha1
+  kind: PipelineConfig
+  metadata:
+    name: java
+    namespace: templates
+  spec:
+    app: ""
+    dockerRegistry: ""
+    events:
+    - eventTypes: buildPipeline
+      name: java
+    - eventTypes: deploy
+      name: java
+    - eventTypes: service
+      name: java
+    namespace: ""
+    nodeSelector: ""
+    profile: dev
+    project: ""
+    version: v2
+  status: {}
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""
+
