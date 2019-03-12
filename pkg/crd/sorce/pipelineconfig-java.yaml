@@ -22,8 +22,6 @@ items:
       name: java
     - eventTypes: deploy
       name: java
-    - eventTypes: deploy
-      name: java-test
     - eventTypes: service
       name: java
     - eventTypes: gateway

@@ -252,8 +252,6 @@ func (b *buildConfigServiceImpl) GetImage(imagePushRequest *protobuf.ImagePushRe
 }
 
 func (b *buildConfigServiceImpl) CreateImage(name, namespace, tag string, imageSummary docker_types.ImageSummary) error {
-	fmt.Printf("xxxxxxxxxxx")
-	log.Errorf("create image stream name : %v , namespace : %v", name, namespace)
 	t := time.Now()
 	image, err := b.imageStream.Get(name, namespace)
 	stream := &miov1alpha1.ImageStream{
@@ -286,7 +284,6 @@ func (b *buildConfigServiceImpl) CreateImage(name, namespace, tag string, imageS
 	if err != nil {
 		log.Errorf("get image: %v", err)
 		_, err := b.imageStream.Create(stream)
-		log.Errorf("create image: %v", err)
 		return err
 	}
 	delete(image.Spec.Tags, tag)

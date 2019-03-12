@@ -27,7 +27,7 @@ require (
 	github.com/ghodss/yaml v1.0.0
 	github.com/gogo/protobuf v1.1.1
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
-	github.com/golang/mock v1.1.1
+	github.com/golang/mock v1.2.0
 	github.com/golang/protobuf v1.2.0
 	github.com/google/go-querystring v1.0.0
 	github.com/google/gofuzz v0.0.0-20170612174753-24818f796faf
@@ -97,14 +97,14 @@ require (
 	github.com/yalp/jsonpath v0.0.0-20180802001716-5cc68e5049a0
 	github.com/yudai/gojsondiff v1.0.0
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82
-	golang.org/x/crypto v0.0.0-20181127143415-eb0de9b17e85
-	golang.org/x/net v0.0.0-20181114220301-adae6a3d119a
+	golang.org/x/crypto v0.0.0-20190211182817-74369b46fc67
+	golang.org/x/net v0.0.0-20190213061140-3a22650c66bd
 	golang.org/x/sys v0.0.0-20181128092732-4ed8d59d0b35
-	golang.org/x/text v0.3.0
+	golang.org/x/text v0.3.1-0.20180807135948-17ff2d5776d2
 	golang.org/x/time v0.0.0-20181108054448-85acf8d2951c
 	golang.org/x/tools v0.0.0-20181128225727-c5b00d9557fd
-	google.golang.org/genproto v0.0.0-20181127195345-31ac5d88444a
-	google.golang.org/grpc v1.16.0
+	google.golang.org/genproto v0.0.0-20190201180003-4b09977fb922
+	google.golang.org/grpc v1.17.0
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 	gopkg.in/go-playground/validator.v8 v8.18.2
 	gopkg.in/inf.v0 v0.9.1
@@ -113,9 +113,9 @@ require (
 	gopkg.in/src-d/go-git.v4 v4.8.1
 	gopkg.in/warnings.v0 v0.1.2
 	gopkg.in/yaml.v2 v2.2.1
-	hidevops.io/hiboot v1.0.3
-	hidevops.io/hiboot-data v1.0.3
-	hidevops.io/hioak v0.0.0-20190112155535-57437150495e
+	hidevops.io/hiboot v1.0.4
+	hidevops.io/hiboot-data v1.0.4
+	hidevops.io/hioak v1.0.4
 	hidevops.io/viper v1.3.2
 	k8s.io/api v0.0.0-20180601181742-8b7507fac302
 	k8s.io/apiextensions-apiserver v0.0.0-20180601203502-8e7f43002fec
@@ -124,4 +124,25 @@ require (
 	k8s.io/code-generator v0.0.0-20180601180426-9de8e796a74d
 	k8s.io/gengo v0.0.0-20181113154421-fd15ee9cc2f7
 	k8s.io/klog v0.1.0
+)
+
+replace (
+	cloud.google.com/go => github.com/googleapis/google-cloud-go v0.36.0
+	golang.org/x/build => github.com/golang/build v0.0.0-20190215225244-0261b66eb045
+	golang.org/x/crypto => github.com/golang/crypto v0.0.0-20181030022821-bc7917b19d8f
+	golang.org/x/exp => github.com/golang/exp v0.0.0-20190212162250-21964bba6549
+	golang.org/x/lint => github.com/golang/lint v0.0.0-20181217174547-8f45f776aaf1
+	golang.org/x/net => github.com/golang/net v0.0.0-20181029044818-c44066c5c816
+	golang.org/x/oauth2 => github.com/golang/oauth2 v0.0.0-20181017192945-9dcd33a902f4
+	golang.org/x/perf => github.com/golang/perf v0.0.0-20190124201629-844a5f5b46f4
+	golang.org/x/sync => github.com/golang/sync v0.0.0-20181221193216-37e7f081c4d4
+	golang.org/x/sys => github.com/golang/sys v0.0.0-20181029174526-d69651ed3497
+	golang.org/x/text => github.com/golang/text v0.3.0
+	golang.org/x/time => github.com/golang/time v0.0.0-20180412165947-fbb02b2291d2
+	golang.org/x/tools => github.com/golang/tools v0.0.0-20190214204934-8dcb7bc8c7fe
+	golang.org/x/vgo => github.com/golang/vgo v0.0.0-20180912184537-9d567625acf4
+	google.golang.org/api => github.com/googleapis/googleapis v0.0.0-20190215163516-1a4f0f12777d
+	google.golang.org/appengine => github.com/golang/appengine v1.4.0
+	google.golang.org/genproto => github.com/google/go-genproto v0.0.0-20190215211957-bd968387e4aa
+	google.golang.org/grpc => github.com/grpc/grpc-go v1.14.0
 )
