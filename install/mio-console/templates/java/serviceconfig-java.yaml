@@ -1,0 +1,25 @@
+apiVersion: mio.io/v1alpha1
+kind: ServiceConfig
+metadata:
+  clusterName: ""
+  creationTimestamp: 2018-10-26T07:31:26Z
+  generation: 0
+  labels:
+    profile: dev
+  name: java
+  namespace: templates
+  resourceVersion: "118995004"
+  selfLink: /apis/mio.io/v1alpha1/namespaces/templates/serviceconfigs/java
+  uid: 25e39a5a-d8f1-11e8-bff0-005056935c80
+spec:
+  ports:
+  - name: http-8080
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  - name: http-7575
+    port: 7575
+    protocol: TCP
+    targetPort: 7575
+status:
+  metadata: {}
