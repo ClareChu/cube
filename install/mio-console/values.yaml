@@ -65,5 +65,5 @@ buildconfig:
 
 
 java:
-  baseImage: "docker.vpclub.cn/hidevopsio/hinode-java-jar:1.2.7"
-  baseImageUrl: "clarechu/base-image-java:0.1"
+  nodeImage: "docker.vpclub.cn/hidevopsio/hinode-java-jar:1.2.7"
+  baseImage: "clarechu/base-image-java:0.1"

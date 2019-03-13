@@ -5,7 +5,7 @@ metadata:
   namespace: templates
 spec:
   app: ""
-  baseImage: {{ .Values.java.baseImage }}
+  baseImage: {{ .Values.java.nodeImage }}
   cloneConfig:
     branch: {{ .Values.buildconfig.branch }}
     dstDir: /opt/app-root/src/vpclub
@@ -44,7 +44,7 @@ spec:
     password: {{ .Values.docker.password }}
     username: {{ .Values.docker.username }}
   dockerFile:
-  - FROM {{ .Values.java.baseImageUrl }}
+  - FROM {{ .Values.java.baseImage }}
   - ENV  TZ="Asia/Shanghai"
   - ENV  APP_OPTIONS="-Xms128m -Xmx512m -Xss512k"
   - ENV   APP_OPTIONS="-Xms128m -Xmx512m -Xss512k"
