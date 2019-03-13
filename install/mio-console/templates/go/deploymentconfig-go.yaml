@@ -2,10 +2,10 @@ apiVersion: mio.io/v1alpha1
 kind: DeploymentConfig
 metadata:
   annotations:
-  name: java
+  name: go
   namespace: templates
 spec:
-  dockerRegistry: {{ .Values.docker.registy }}
+  dockerRegistry: {{ .Values.buildconfig.dockerRegistry }}
   env:
   - name: starter
     value: jav -jar
@@ -18,7 +18,7 @@ spec:
   envType:
   - remoteDeploy
   - deploy
-  fromRegistry: {{ .Values.docker.registy }}
+  fromRegistry: {{ .Values.buildconfig.fromRegistry }}
   port:
   - containerPort: 8080
     name: tcp-8080

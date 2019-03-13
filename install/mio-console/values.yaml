@@ -47,21 +47,23 @@ tolerations: []
 
 affinity: {}
 
-mioDeployment:
-  scmUrl: "http://gitlab.vpclub.cn:8022"
+git:
+  url: "http://gitlab.vpclub.cn:8022"
+
+docker:
+  registy: "harbor.vpclub.io"
+  username: admin
+  password: Harbor12345
+
+deployment:
   tz: "Asia/Shanghai"
   apiVersion: "/api/v3"
 
 buildconfig:
   branch: "development"
-  baseImage: "docker.vpclub.cn/hidevopsio/hinode-java-jar:1.2.7"
-  gitlabUrl: "https://gitlab.vpclub.cn"
   mavenMirrorUrl: "http://nexus.vpclub.cn/repository/maven-public/"
-  dockerAuthUsername: admin
-  dockerAuthPassword: Harbor12345
-  baseImageUrl: "clarechu/base-image-java:0.1"
-  dockerRegistry: "harbor.vpclub.io"
 
-deployconfig:
-  dockerRegistry: "harbor.vpclub.io"
-  fromRegistry: "harbor.vpclub.io"  
+
+java:
+  baseImage: "docker.vpclub.cn/hidevopsio/hinode-java-jar:1.2.7"
+  baseImageUrl: "clarechu/base-image-java:0.1"

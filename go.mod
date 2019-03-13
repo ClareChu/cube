@@ -1,5 +1,7 @@
 module hidevops.io/mio
 
+go 1.12
+
 require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/Joker/jade v0.0.0-20180419144541-8828253bfc54

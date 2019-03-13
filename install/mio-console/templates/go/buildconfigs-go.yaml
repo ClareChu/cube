@@ -1,16 +1,16 @@
 apiVersion: mio.io/v1alpha1
 kind: BuildConfig
 metadata:
-  name: java
+  name: go
   namespace: templates
 spec:
   app: ""
-  baseImage: {{ .Values.java.baseImage }}
+  baseImage: {{ .Values.buildconfig.baseImage }}
   cloneConfig:
     branch: {{ .Values.buildconfig.branch }}
     dstDir: /opt/app-root/src/vpclub
     password: ""
-    url: {{ .Values.git.url }}
+    url: {{ .Values.buildconfig.gitlabUrl }}
     username: ""
   cloneType: ""
   codeType: java
@@ -41,10 +41,10 @@ spec:
     - 7575
     replicas: 1
   dockerAuthConfig:
-    password: {{ .Values.docker.password }}
-    username: {{ .Values.docker.username }}
+    password: {{ .Values.buildconfig.dockerAuthPassword }}
+    username: {{ .Values.buildconfig.dockerAuthUsername }}
   dockerFile:
-  - FROM {{ .Values.java.baseImageUrl }}
+  - FROM {{ .Values.buildconfig.baseImageUrl }}
   - ENV  TZ="Asia/Shanghai"
   - ENV  APP_OPTIONS="-Xms128m -Xmx512m -Xss512k"
   - ENV   APP_OPTIONS="-Xms128m -Xmx512m -Xss512k"
@@ -57,7 +57,7 @@ spec:
   - EXPOSE 8080
   - EXPOSE 7575
   - ENTRYPOINT ["sh","-c","java -jar $HOME/app.jar $APP_OPTIONS"]
-  dockerRegistry: {{ .Values.docker.registy }}
+  dockerRegistry: {{ .Values.buildconfig.dockerRegistry }}
   nodeService: ""
   tasks:
   - name: createService
