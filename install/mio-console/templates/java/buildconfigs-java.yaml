@@ -8,7 +8,7 @@ spec:
   baseImage: {{ .Values.java.nodeImage }}
   cloneConfig:
     branch: {{ .Values.buildconfig.branch }}
-    dstDir: /opt/app-root/src/vpclub
+    dstDir: /opt/app-root/src
     password: ""
     url: {{ .Values.git.url }}
     username: ""

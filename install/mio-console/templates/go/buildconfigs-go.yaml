@@ -8,31 +8,23 @@ spec:
   baseImage: {{ .Values.buildconfig.baseImage }}
   cloneConfig:
     branch: {{ .Values.buildconfig.branch }}
-    dstDir: /opt/app-root/src/vpclub
+    dstDir: /opt/app-root/src
     password: ""
     url: {{ .Values.buildconfig.gitlabUrl }}
     username: ""
   cloneType: ""
-  codeType: java
+  codeType: go
   compileCmd:
   - commandName: pwd
-  - Script: |-
-      mvn clean package -U -Dmaven.test.skip=true -Djava.net.preferIPv4Stack=true
-      if [[ $? == 0 ]]; then
-        echo 'Build Successful.'
-      else
-        echo 'Build Failed!'
-        exit 1
-      fi
+  - Script: go build
     execType: script
   - commandName: pwd
   - Script: ls
     execType: script
   deployData:
     envs:
-      CODE_TYPE: java
+      CODE_TYPE: go
       DOCKER_API_VERSION: "1.24"
-      MAVEN_MIRROR_URL: {{ .Values.buildconfig.mavenMirrorUrl }}
     hostPathVolume:
       /var/lib/docker: /var/lib/docker
       /var/run/docker.sock: /var/run/docker.sock
