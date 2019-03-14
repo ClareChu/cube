@@ -5,7 +5,7 @@ metadata:
   namespace: templates
 spec:
   app: ""
-  baseImage: {{ .Values.buildconfig.baseImage }}
+  baseImage: {{ .Values.go.nodeImage }}
   cloneConfig:
     branch: {{ .Values.buildconfig.branch }}
     dstDir: /opt/app-root/src
@@ -36,7 +36,7 @@ spec:
     password: {{ .Values.buildconfig.dockerAuthPassword }}
     username: {{ .Values.buildconfig.dockerAuthUsername }}
   dockerFile:
-  - FROM {{ .Values.buildconfig.baseImageUrl }}
+  - FROM {{ .Values.go.baseImage }}
   - ENV  TZ="Asia/Shanghai"
   - ENV  APP_OPTIONS="-Xms128m -Xmx512m -Xss512k"
   - ENV   APP_OPTIONS="-Xms128m -Xmx512m -Xss512k"
