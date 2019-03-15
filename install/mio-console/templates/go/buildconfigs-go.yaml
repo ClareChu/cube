@@ -10,7 +10,7 @@ spec:
     branch: {{ .Values.buildconfig.branch }}
     dstDir: /opt/app-root/src
     password: ""
-    url: {{ .Values.buildconfig.gitlabUrl }}
+    url: {{ .Values.git.url }}
     username: ""
   cloneType: ""
   codeType: go
@@ -33,8 +33,8 @@ spec:
     - 7575
     replicas: 1
   dockerAuthConfig:
-    password: {{ .Values.buildconfig.dockerAuthPassword }}
-    username: {{ .Values.buildconfig.dockerAuthUsername }}
+    password: {{ .Values.docker.password }}
+    username: {{ .Values.docker.username }}
   dockerFile:
   - FROM {{ .Values.go.baseImage }}
   - ENV  TZ="Asia/Shanghai"
@@ -49,7 +49,7 @@ spec:
   - EXPOSE 8080
   - EXPOSE 7575
   - ENTRYPOINT ["sh","-c","java -jar $HOME/app.jar $APP_OPTIONS"]
-  dockerRegistry: {{ .Values.buildconfig.dockerRegistry }}
+  dockerRegistry: {{ .Values.docker.registy }}
   nodeService: ""
   tasks:
   - name: createService
