@@ -71,3 +71,4 @@ java:
 go:
   nodeImage: clarechu/hinode-go:v1.0.0
   baseImage: clarechu/base-image-java:0.1
+  goProxy: http://172.16.125.1:3000
