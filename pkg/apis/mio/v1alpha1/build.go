@@ -76,10 +76,10 @@ type BuildSpec struct {
 
 type DeployData struct {
 	Replicas        int32             `json:"replicas"  protobuf:"bytes,1,opt,name=replicas"`
-	Labels          map[string]string `json:"labels"  protobuf:"bytes,1,opt,name=labels"`
-	Ports           []int             `json:"ports"  protobuf:"bytes,1,opt,name=ports"`
-	Envs            map[string]string `json:"envs"  protobuf:"bytes,1,opt,name=envs"`
-	HostPathVolumes []string          `json:"hostPathVolumes"  protobuf:"bytes,1,opt,name=hostPathVolumes"`
+	Labels          map[string]string `json:"labels"  protobuf:"bytes,2,opt,name=labels"`
+	Ports           []int             `json:"ports"  protobuf:"bytes,3,opt,name=ports"`
+	Envs            map[string]string `json:"envs"  protobuf:"bytes,4,opt,name=envs"`
+	HostPathVolumes []Volume          `json:"hostPathVolumes"  protobuf:"bytes,5,opt,name=hostPathVolumes"`
 }
 
 type Volume struct {

@@ -324,7 +324,7 @@ func (in *DeployData) DeepCopyInto(out *DeployData) {
 	}
 	if in.HostPathVolumes != nil {
 		in, out := &in.HostPathVolumes, &out.HostPathVolumes
-		*out = make([]string, len(*in))
+		*out = make([]Volume, len(*in))
 		copy(*out, *in)
 	}
 	return
