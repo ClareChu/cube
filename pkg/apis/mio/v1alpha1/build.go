@@ -75,15 +75,23 @@ type BuildSpec struct {
 }
 
 type DeployData struct {
-	Replicas       int32             `json:"replicas"  protobuf:"bytes,1,opt,name=replicas"`
-	Labels         map[string]string `json:"labels"  protobuf:"bytes,1,opt,name=labels"`
-	Ports          []int             `json:"ports"  protobuf:"bytes,1,opt,name=ports"`
-	Envs           map[string]string `json:"envs"  protobuf:"bytes,1,opt,name=envs"`
-	HostPathVolume map[string]string `json:"hostPathVolume"  protobuf:"bytes,1,opt,name=hostPathVolume"`
+	Replicas        int32             `json:"replicas"  protobuf:"bytes,1,opt,name=replicas"`
+	Labels          map[string]string `json:"labels"  protobuf:"bytes,1,opt,name=labels"`
+	Ports           []int             `json:"ports"  protobuf:"bytes,1,opt,name=ports"`
+	Envs            map[string]string `json:"envs"  protobuf:"bytes,1,opt,name=envs"`
+	HostPathVolumes []string          `json:"hostPathVolumes"  protobuf:"bytes,1,opt,name=hostPathVolumes"`
+}
+
+type Volume struct {
+	Name             string `json:"name"  protobuf:"bytes,1,opt,name=name"`
+	VolumeSource     string `json:"volumeSource"  protobuf:"bytes,2,opt,name=volumeSource"`
+	ReadOnly         bool   `json:"readOnly"  protobuf:"bytes,3,opt,name=readOnly"`
+	MountPath        string `json:"mountPath"  protobuf:"bytes,4,opt,name=mountPath"`
+	SubPath          string `json:"subPath"  protobuf:"bytes,5,opt,name=subPath"`
+	MountPropagation string `json:"mountPropagation"  protobuf:"bytes,6,opt,name=mountPropagation"`
 }
 
 type BuildCloneConfig struct {
-	// http://gitlab.vpclb.cn   http://
 	Url      string `json:"url"  protobuf:"bytes,1,opt,name=url"`
 	Branch   string `json:"branch"  protobuf:"bytes,2,opt,name=branch"`
 	DstDir   string `json:"dstDir"  protobuf:"bytes,3,opt,name=dstDir"`
