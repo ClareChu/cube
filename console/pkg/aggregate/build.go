@@ -35,6 +35,7 @@ type BuildAggregate interface {
 	WatchPod(name, namespace string) error
 	DeleteNode(build *v1alpha1.Build) error
 	ImagePush(build *v1alpha1.Build) error
+	Volume(build *v1alpha1.Build) (volumes []corev1.Volume, volumeMounts []corev1.VolumeMount)
 }
 
 type Build struct {
@@ -64,7 +65,7 @@ func NewBuildService(buildClient *mio.Build, buildConfigService service.BuildCon
 	}
 }
 
-func (s *Build) Create(buildConfig *v1alpha1.BuildConfig, pipelineName, version string) (build *v1alpha1.Build, err error) {
+func (b *Build) Create(buildConfig *v1alpha1.BuildConfig, pipelineName, version string) (build *v1alpha1.Build, err error) {
 	log.Debugf("build config create :%v", buildConfig)
 	number := fmt.Sprintf("%d", buildConfig.Status.LastVersion)
 	nameVersion := fmt.Sprintf("%s-%s-%s", buildConfig.Name, version, number)
@@ -86,18 +87,18 @@ func (s *Build) Create(buildConfig *v1alpha1.BuildConfig, pipelineName, version 
 			constant.Name:            buildConfig.Name,
 		},
 	}
-	config, err := s.buildClient.Create(build)
+	config, err := b.buildClient.Create(build)
 	log.Info("............config err:", config)
 	if err != nil {
 		log.Errorf("create build error :%v", err)
 		return
 	} else {
-		_, err = s.Watch(config.Name, config.Namespace)
+		_, err = b.Watch(config.Name, config.Namespace)
 	}
 	return config, err
 }
 
-func (s *Build) Watch(name, namespace string) (build *v1alpha1.Build, err error) {
+func (b *Build) Watch(name, namespace string) (build *v1alpha1.Build, err error) {
 	log.Debugf("build config Watch :%v", name)
 	kubeWatchTimeout, err := strconv.Atoi(os.Getenv("KUBE_WATCH_TIMEOUT"))
 	after := time.Duration(kubeWatchTimeout) * time.Minute
@@ -111,7 +112,7 @@ func (s *Build) Watch(name, namespace string) (build *v1alpha1.Build, err error)
 		TimeoutSeconds: &timeout,
 		LabelSelector:  fmt.Sprintf("app=%s", name),
 	}
-	w, err := s.buildClient.Watch(option, namespace)
+	w, err := b.buildClient.Watch(option, namespace)
 	if err != nil {
 		return
 	}
@@ -132,7 +133,7 @@ func (s *Build) Watch(name, namespace string) (build *v1alpha1.Build, err error)
 				if build.Status.Phase == constant.Fail {
 					return
 				}
-				err = s.Selector(build)
+				err = b.Selector(build)
 				if err != nil {
 					log.Errorf("add selector : %v", err)
 					return
@@ -146,7 +147,7 @@ func (s *Build) Watch(name, namespace string) (build *v1alpha1.Build, err error)
 	}
 }
 
-func (s *Build) SourceCodePull(build *v1alpha1.Build) error {
+func (b *Build) SourceCodePull(build *v1alpha1.Build) error {
 	command := &command.SourceCodePullCommand{
 		CloneType: build.Spec.CloneType,
 		Url:       fmt.Sprintf("%s/%s/%s.git", build.Spec.CloneConfig.Url, build.Namespace, build.Labels[constant.BuildConfigName]),
@@ -158,11 +159,11 @@ func (s *Build) SourceCodePull(build *v1alpha1.Build) error {
 		Name:      build.Name,
 	}
 
-	err := s.buildConfigService.SourceCodePull(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), "7575", command)
+	err := b.buildConfigService.SourceCodePull(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), "7575", command)
 	return err
 }
 
-func (s *Build) Compile(build *v1alpha1.Build) error {
+func (b *Build) Compile(build *v1alpha1.Build) error {
 	var buildCommands []*command.BuildCommand
 	for _, cmd := range build.Spec.CompileCmd {
 		buildCommands = append(buildCommands, &command.BuildCommand{
@@ -180,11 +181,11 @@ func (s *Build) Compile(build *v1alpha1.Build) error {
 		CompileCmd: buildCommands,
 	}
 
-	err := s.buildConfigService.Compile(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), "7575", command)
+	err := b.buildConfigService.Compile(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), "7575", command)
 	return err
 }
 
-func (s *Build) ImageBuild(build *v1alpha1.Build) error {
+func (b *Build) ImageBuild(build *v1alpha1.Build) error {
 	id, err := idgen.NextString()
 	if err != nil {
 		log.Errorf("id err :{}", id)
@@ -192,7 +193,7 @@ func (s *Build) ImageBuild(build *v1alpha1.Build) error {
 	command := &command.ImageBuildCommand{
 		App:        build.Spec.App,
 		S2IImage:   build.Spec.BaseImage,
-		Tags:      []string{build.Spec.Tags[0] + ":" + build.ObjectMeta.Labels[constant.Number], build.Spec.Tags[0] + ":latest"},
+		Tags:       []string{build.Spec.Tags[0] + ":" + build.ObjectMeta.Labels[constant.Number], build.Spec.Tags[0] + ":latest"},
 		DockerFile: build.Spec.DockerFile,
 		Name:       build.Name,
 		Namespace:  build.Namespace,
@@ -200,11 +201,11 @@ func (s *Build) ImageBuild(build *v1alpha1.Build) error {
 		Password:   build.Spec.DockerAuthConfig.Password,
 	}
 	log.Infof("build ImageBuild :%v", command)
-	err = s.buildConfigService.ImageBuild(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), "7575", command)
+	err = b.buildConfigService.ImageBuild(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), "7575", command)
 	return err
 }
 
-func (s *Build) ImagePush(build *v1alpha1.Build) error {
+func (b *Build) ImagePush(build *v1alpha1.Build) error {
 	command := &command.ImagePushCommand{
 		Tags:      []string{build.Spec.Tags[0] + ":" + build.ObjectMeta.Labels[constant.Number], build.Spec.Tags[0] + ":latest"},
 		Name:      build.Name,
@@ -214,37 +215,37 @@ func (s *Build) ImagePush(build *v1alpha1.Build) error {
 		ImageName: build.ObjectMeta.Labels["name"],
 	}
 	log.Infof("ImagePush :%v", command)
-	err := s.buildConfigService.ImagePush(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), "7575", command)
+	err := b.buildConfigService.ImagePush(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), "7575", command)
 	return err
 }
 
-func (s *Build) CreateService(build *v1alpha1.Build) error {
+func (b *Build) CreateService(build *v1alpha1.Build) error {
 	log.Infof("aggregate create service %v", build)
 	phase := constant.Success
 	command := &command.ServiceNode{
 		DeployData: kube.DeployData{
-			Name:           build.Name,
-			App:            build.ObjectMeta.Labels["name"],
-			NameSpace:      build.Namespace,
-			Replicas:       build.Spec.DeployData.Replicas,
-			Labels:         build.Spec.DeployData.Labels,
-			Image:          build.Spec.BaseImage,
-			Ports:          build.Spec.DeployData.Ports,
-			HostPathVolume: build.Spec.DeployData.HostPathVolume,
+			Name:      build.Name,
+			App:       build.ObjectMeta.Labels["name"],
+			NameSpace: build.Namespace,
+			Replicas:  build.Spec.DeployData.Replicas,
+			Labels:    build.Spec.DeployData.Labels,
+			Image:     build.Spec.BaseImage,
+			Ports:     build.Spec.DeployData.Ports,
 		},
 	}
-	err := s.buildNode.CreateServiceNode(command)
+	err := b.buildNode.CreateServiceNode(command)
 	if err != nil {
 		log.Errorf("deploy hinode err :%v", err)
 		phase = constant.Fail
 		return err
 	}
-	err = s.Update(build, constant.CreateService, phase)
+	err = b.Update(build, constant.CreateService, phase)
 	return err
 }
 
-func (s *Build) DeployNode(build *v1alpha1.Build) error {
+func (b *Build) DeployNode(build *v1alpha1.Build) error {
 	phase := constant.Success
+	volumes, volumeMounts := b.Volume(build)
 	command := &command.DeployNode{
 		DeployData: kube.DeployData{
 			Name:      build.Name,
@@ -254,72 +255,73 @@ func (s *Build) DeployNode(build *v1alpha1.Build) error {
 				constant.App:  build.Name,
 				constant.Name: build.ObjectMeta.Labels[constant.Name],
 			},
-			Image:          build.Spec.BaseImage,
-			Ports:          build.Spec.DeployData.Ports,
-			HostPathVolume: build.Spec.DeployData.HostPathVolume,
-			Envs:           build.Spec.DeployData.Envs,
-			NodeName:       build.Spec.DeployData.Envs["NODE_NAME"],
+			Image:        build.Spec.BaseImage,
+			Ports:        build.Spec.DeployData.Ports,
+			Envs:         build.Spec.DeployData.Envs,
+			NodeName:     build.Spec.DeployData.Envs["NODE_NAME"],
+			Volumes:      volumes,
+			VolumeMounts: volumeMounts,
 		},
 	}
-	_, err := s.buildNode.Start(command)
+	_, err := b.buildNode.Start(command)
 	if err != nil {
 		log.Errorf("deploy hinode err :%v", err)
 		return err
 	}
-	err = s.WatchPod(build.Name, build.Namespace)
+	err = b.WatchPod(build.Name, build.Namespace)
 	if err != nil {
 		phase = constant.Fail
 	}
 
-	err = s.Update(build, constant.DeployNode, phase)
+	err = b.Update(build, constant.DeployNode, phase)
 	return err
 }
 
-func (s *Build) Selector(build *v1alpha1.Build) (err error) {
+func (b *Build) Selector(build *v1alpha1.Build) (err error) {
 	tak, err := GetTask(build.Status.Stages, build.Spec.Tasks, build.Status.Phase)
 	if err != nil {
 		return
 	}
 	switch tak.Name {
 	case constant.DeployNode:
-		err := s.DeployNode(build)
+		err := b.DeployNode(build)
 		if err != nil {
 			log.Errorf("deploy node %v", err)
 		}
 	case constant.CreateService:
-		err = s.CreateService(build)
+		err = b.CreateService(build)
 		if err != nil {
 			log.Errorf("create service %v", err)
 		}
 	case constant.CLONE:
-		err = s.SourceCodePull(build)
+		err = b.SourceCodePull(build)
 		if err != nil {
 			log.Errorf("source code pull  %v", err)
 		}
 	case constant.COMPILE:
-		err = s.Compile(build)
+		err = b.Compile(build)
 		if err != nil {
 			log.Errorf("Compile %v", err)
 		}
 	case constant.BuildImage:
-		err = s.ImageBuild(build)
+		err = b.ImageBuild(build)
 		if err != nil {
 			log.Errorf("Image Build %v", err)
 		}
 	case constant.PushImage:
-		err = s.ImagePush(build)
+		err = b.ImagePush(build)
 		if err != nil {
 			log.Errorf("Image Push %v", err)
 		}
 	case constant.DeleteDeployment:
-		err = s.DeleteNode(build)
+		err = b.DeleteNode(build)
 		if err != nil {
 			log.Errorf("Delete Node %v", err)
 		}
 	case constant.Ending:
-		err = s.Update(build, "", constant.Complete)
+		err = b.Update(build, "", constant.Complete)
 		log.Info("update pipeline aggregate")
-		err = s.pipelineBuilder.Update(build.ObjectMeta.Labels[constant.PipelineName], build.Namespace, constant.BuildPipeline, constant.Success, build.ObjectMeta.Labels[constant.Number])
+		err = b.pipelineBuilder.Update(build.ObjectMeta.Labels[constant.PipelineName], build.Namespace, constant.BuildPipeline, constant.Success, build.ObjectMeta.Labels[constant.Number])
 		err = fmt.Errorf("build is ending")
 	default:
 
@@ -342,7 +344,7 @@ func GetTask(stages []v1alpha1.Stages, tasks []v1alpha1.Task, phase string) (tak
 	return
 }
 
-func (s *Build) Update(build *v1alpha1.Build, event, phase string) error {
+func (b *Build) Update(build *v1alpha1.Build, event, phase string) error {
 	stage := v1alpha1.Stages{
 		Name:                 event,
 		StartTime:            time.Now().Unix(),
@@ -350,11 +352,11 @@ func (s *Build) Update(build *v1alpha1.Build, event, phase string) error {
 	}
 	build.Status.Stages = append(build.Status.Stages, stage)
 	build.Status.Phase = phase
-	_, err := s.buildClient.Update(build.Name, build.Namespace, build)
+	_, err := b.buildClient.Update(build.Name, build.Namespace, build)
 	return err
 }
 
-func (s *Build) WatchPod(name, namespace string) error {
+func (b *Build) WatchPod(name, namespace string) error {
 	log.Debugf("build config Watch :%v", name)
 	kubeWatchTimeout, err := strconv.Atoi(os.Getenv("KUBE_WATCH_TIMEOUT"))
 	after := time.Duration(kubeWatchTimeout) * time.Minute
@@ -363,7 +365,7 @@ func (s *Build) WatchPod(name, namespace string) error {
 		TimeoutSeconds: &timeout,
 		LabelSelector:  fmt.Sprintf("app=%s", name),
 	}
-	w, err := s.pod.Watch(listOptions, namespace)
+	w, err := b.pod.Watch(listOptions, namespace)
 	if err != nil {
 		return err
 	}
@@ -411,15 +413,38 @@ func (s *Build) WatchPod(name, namespace string) error {
 	}
 }
 
-func (s *Build) DeleteNode(build *v1alpha1.Build) error {
+func (b *Build) DeleteNode(build *v1alpha1.Build) error {
 	phase := constant.Success
 	//TODO delete deployment config
-	err := s.buildNode.DeleteDeployment(build.ObjectMeta.Labels["name"], build.Namespace)
+	err := b.buildNode.DeleteDeployment(build.ObjectMeta.Labels["name"], build.Namespace)
 	//TODO delete service
-	err = s.serviceConfigAggregate.DeleteService(build.ObjectMeta.Labels["name"], build.Namespace)
+	err = b.serviceConfigAggregate.DeleteService(build.ObjectMeta.Labels["name"], build.Namespace)
 	if err != nil {
 		phase = constant.Fail
 	}
-	err = s.Update(build, constant.DeleteDeployment, phase)
+	err = b.Update(build, constant.DeleteDeployment, phase)
 	return err
+}
+
+func (b *Build) Volume(build *v1alpha1.Build) (volumes []corev1.Volume, volumeMounts []corev1.VolumeMount) {
+	for _, hostPathVolume := range build.Spec.DeployData.HostPathVolumes {
+		volume := corev1.Volume{
+			Name: hostPathVolume.Name,
+			VolumeSource: corev1.VolumeSource{
+				HostPath: &corev1.HostPathVolumeSource{
+					Path: hostPathVolume.VolumeSource,
+				},
+			},
+		}
+		volumeMount := corev1.VolumeMount{
+			Name: hostPathVolume.Name,
+			ReadOnly: hostPathVolume.ReadOnly,
+			MountPath: hostPathVolume.MountPath,
+			SubPath: hostPathVolume.SubPath,
+		}
+		volumes = append(volumes, volume)
+		volumeMounts = append(volumeMounts, volumeMount)
+	}
+
+	return volumes, volumeMounts
 }
