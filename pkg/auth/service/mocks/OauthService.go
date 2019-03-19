@@ -10,16 +10,46 @@ type OauthService struct {
 	mock.Mock
 }
 
-// GetAuthURL provides a mock function with given fields: a
-func (_m *OauthService) GetAuthURL(a *service.Auth) string {
-	ret := _m.Called(a)
+// GetAuthURL provides a mock function with given fields:
+func (_m *OauthService) GetAuthURL() (error, string) {
+	ret := _m.Called()
 
-	var r0 string
-	if rf, ok := ret.Get(0).(func(*service.Auth) string); ok {
-		r0 = rf(a)
+	var r0 error
+	if rf, ok := ret.Get(0).(func() error); ok {
+		r0 = rf()
 	} else {
-		r0 = ret.Get(0).(string)
+		r0 = ret.Error(0)
 	}
 
-	return r0
+	var r1 string
+	if rf, ok := ret.Get(1).(func() string); ok {
+		r1 = rf()
+	} else {
+		r1 = ret.Get(1).(string)
+	}
+
+	return r0, r1
+}
+
+// GetConfiguration provides a mock function with given fields:
+func (_m *OauthService) GetConfiguration() (*service.Auth, error) {
+	ret := _m.Called()
+
+	var r0 *service.Auth
+	if rf, ok := ret.Get(0).(func() *service.Auth); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*service.Auth)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func() error); ok {
+		r1 = rf()
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
 }
