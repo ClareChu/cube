@@ -44,7 +44,7 @@ func TestOauthControllerGetUrl(t *testing.T) {
 	}
 	sessionService.On("GetAccessToken", session, "aa").Return(re, nil)
 
-	loginService.On("GetUser", "https://github.com", "q").Return(&scm.User{}, nil)
+	loginService.On("GetUser", "q").Return(&scm.User{}, nil)
 	t.Run("should pass with jwt token", func(t *testing.T) {
 		application.Get("/oauth/code/aa").Expect().Status(http.StatusOK)
 	})

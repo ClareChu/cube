@@ -3,21 +3,41 @@ package controller
 import (
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/at"
+	"hidevops.io/hiboot/pkg/model"
 	"hidevops.io/mio/console/pkg/aggregate"
+	"hidevops.io/mio/console/pkg/constant"
 )
 
-type InitConfiguationController struct {
+type ConfigurationController struct {
 	at.RestController
-	buildAggregate aggregate.BuildAggregate
+	configMapsAggregate aggregate.ConfigMapsAggregate
 }
 
 func init() {
-	app.Register(newBuildController)
+	app.Register(newInitConfigurationController)
 }
 
-func newBuildController(buildAggregate aggregate.BuildAggregate) *BuildController {
-	return &BuildController{
-		buildAggregate: buildAggregate,
+func newInitConfigurationController(configMapsAggregate aggregate.ConfigMapsAggregate) *ConfigurationController {
+	return &ConfigurationController{
+		configMapsAggregate: configMapsAggregate,
 	}
 }
 
+type ReqModel struct {
+	model.RequestBody
+	Data map[string]string `json:"data,omitempty" protobuf:"bytes,1,opt,name=data"`
+}
+
+func (c *ConfigurationController) PostGitlab(req *ReqModel) (response model.Response, err error) {
+	maps, err := c.configMapsAggregate.Create(constant.GitlabConstant, constant.TemplateDefaultNamespace, req.Data)
+	response = new(model.BaseResponse)
+	response.SetData(maps)
+	return
+}
+
+func (c *ConfigurationController) PostDocker(req *ReqModel) (response model.Response, err error) {
+	maps,err := c.configMapsAggregate.Create(constant.DockerConstant, constant.TemplateDefaultNamespace, req.Data)
+	response = new(model.BaseResponse)
+	response.SetData(maps)
+	return
+}

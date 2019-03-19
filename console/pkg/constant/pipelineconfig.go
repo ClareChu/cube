@@ -1,7 +1,9 @@
 package constant
 
 const (
-	TemplateDefaultNamespace = "templates"
+	TemplateDefaultNamespace = "hidevopsio"
 	PipelineConfigKind       = "PipelineConfig"
 	PipelineConfigApiVersion = "PipelineConfig.mio.io/v1alpha1"
+	GitlabConstant           = "gitlab"
+	DockerConstant           = "docker"
 )

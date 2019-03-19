@@ -33,9 +33,17 @@ spec:
       CODE_TYPE: java
       DOCKER_API_VERSION: "1.24"
       MAVEN_MIRROR_URL: {{ .Values.buildconfig.mavenMirrorUrl }}
-    hostPathVolume:
-      /var/lib/docker: /var/lib/docker
-      /var/run/docker.sock: /var/run/docker.sock
+    hostPathVolumes:
+    - name: "docker"
+      volumeSource: /var/lib/docker
+      readOnly: true
+      mountPath: /var/lib/docker
+      subPath:
+    - name: "docker-sock"
+      volumeSource: /var/run/docker.sock
+      readOnly: true
+      mountPath: /var/run/docker.sock
+      subPath:
     ports:
     - 8080
     - 7575

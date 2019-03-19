@@ -8,7 +8,6 @@ import (
 	"hidevops.io/hiboot/pkg/starter/jwt"
 	"hidevops.io/mio/pkg/auth/service"
 	"net/http"
-	"os"
 	"time"
 )
 
@@ -42,14 +41,13 @@ func newLoginController(token jwt.Token, loginService service.LoginService) *log
 func (c *loginController) Post(request *UserRequest) (response model.Response, err error) {
 	log.Debug("loginController.Login")
 	response = new(model.BaseResponse)
-	request.Url = os.Getenv("SCM_URL")
-	privateToken, uid, _, err := c.loginService.GetSession(request.Url, request.Username, request.Password)
+	privateToken, uid, _, err := c.loginService.GetSession(request.Username, request.Password)
 	if err != nil {
 		response.SetCode(http.StatusNonAuthoritativeInfo)
 		log.Error("username and password error ")
 		return
 	}
-	u, err := c.loginService.GetUser(request.Url, privateToken)
+	u, err := c.loginService.GetUser(privateToken)
 	token, err := c.token.Generate(jwt.Map{
 		"username":      request.Username,
 		"private_token": privateToken,
