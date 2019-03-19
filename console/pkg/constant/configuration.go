@@ -1,11 +1,11 @@
 package constant
 
 const (
-	BaseUrl        = "BaseUrl"
-	ApiVersion     = "ApiVersion"
-	ApplicationId  = "ApplicationId"
-	Secret         = "Secret"
-	CallbackUrl    = "CallbackUrl"
-	OauthUrl       = "OauthUrl"
-	AccessTokenUrl = "AccessTokenUrl"
+	BaseUrl        = "baseUrl"
+	ApiVersion     = "apiVersion"
+	ApplicationId  = "applicationId"
+	Secret         = "secret"
+	CallbackUrl    = "callbackUrl"
+	OauthUrl       = "oauthUrl"
+	AccessTokenUrl = "accessTokenUrl"
 )

@@ -26,11 +26,11 @@ func TestBuildCreate(t *testing.T) {
 	buildNode := new(builder.BuildNode)
 	client := kubeFake.NewSimpleClientset()
 	pod := kube.NewPod(client)
-
+	configMaps := kube.NewConfigMaps(client)
 	pipelineBuilder := new(builder.PipelineBuilder)
 	replicationControllerAggregate := new(mocks.ReplicationControllerAggregate)
 	serviceAggregate := new(mocks.ServiceConfigAggregate)
-	buildAggregate := NewBuildService(build, buildConfigService, buildNode, pod, pipelineBuilder, replicationControllerAggregate, serviceAggregate)
+	buildAggregate := NewBuildService(configMaps, build, buildConfigService, buildNode, pod, pipelineBuilder, replicationControllerAggregate, serviceAggregate)
 	buildConfig := &v1alpha1.BuildConfig{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "hello-world",
@@ -51,7 +51,8 @@ func TestBuildCompile(t *testing.T) {
 	pipelineBuilder := new(builder.PipelineBuilder)
 	replicationControllerAggregate := new(mocks.ReplicationControllerAggregate)
 	serviceAggregate := new(mocks.ServiceConfigAggregate)
-	buildAggregate := NewBuildService(build, buildConfigService, buildNode, pod, pipelineBuilder, replicationControllerAggregate, serviceAggregate)
+	configMaps := kube.NewConfigMaps(client)
+	buildAggregate := NewBuildService(configMaps, build, buildConfigService, buildNode, pod, pipelineBuilder, replicationControllerAggregate, serviceAggregate)
 	build1 := &v1alpha1.Build{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "hello-world",
@@ -79,7 +80,8 @@ func TestBuild_ImageBuild(t *testing.T) {
 	pipelineBuilder := new(builder.PipelineBuilder)
 	replicationControllerAggregate := new(mocks.ReplicationControllerAggregate)
 	serviceAggregate := new(mocks.ServiceConfigAggregate)
-	buildAggregate := NewBuildService(build, buildConfigService, buildNode, pod, pipelineBuilder, replicationControllerAggregate, serviceAggregate)
+	configMaps := kube.NewConfigMaps(client)
+	buildAggregate := NewBuildService(configMaps, build, buildConfigService, buildNode, pod, pipelineBuilder, replicationControllerAggregate, serviceAggregate)
 	build1 := &v1alpha1.Build{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "hello-world",
@@ -118,7 +120,8 @@ func TestBuild_ImagePush(t *testing.T) {
 	pipelineBuilder := new(builder.PipelineBuilder)
 	replicationControllerAggregate := new(mocks.ReplicationControllerAggregate)
 	serviceAggregate := new(mocks.ServiceConfigAggregate)
-	buildAggregate := NewBuildService(build, buildConfigService, buildNode, pod, pipelineBuilder, replicationControllerAggregate, serviceAggregate)
+	configMaps := kube.NewConfigMaps(client)
+	buildAggregate := NewBuildService(configMaps, build, buildConfigService, buildNode, pod, pipelineBuilder, replicationControllerAggregate, serviceAggregate)
 	build1 := &v1alpha1.Build{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "hello-world",
@@ -131,6 +134,10 @@ func TestBuild_ImagePush(t *testing.T) {
 		Url:       "/demo/.git",
 	}
 	buildConfigService.On("SourceCodePull", "hello-world.demo.svc", "7575", cmd).Return(nil)
+	data := map[string]string{
+		constant.GitlabConstant:"",
+	}
+	configMaps.Create(constant.GitlabConstant, constant.TemplateDefaultNamespace, data)
 	err := buildAggregate.SourceCodePull(build1)
 	assert.Equal(t, nil, err)
 }
@@ -146,7 +153,8 @@ func TestBuildCreateService(t *testing.T) {
 	pipelineBuilder := new(builder.PipelineBuilder)
 	replicationControllerAggregate := new(mocks.ReplicationControllerAggregate)
 	serviceAggregate := new(mocks.ServiceConfigAggregate)
-	buildAggregate := NewBuildService(build, buildConfigService, buildNode, pod, pipelineBuilder, replicationControllerAggregate, serviceAggregate)
+	configMaps := kube.NewConfigMaps(client)
+	buildAggregate := NewBuildService(configMaps, build, buildConfigService, buildNode, pod, pipelineBuilder, replicationControllerAggregate, serviceAggregate)
 	build1 := &v1alpha1.Build{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "hello-world",
@@ -177,7 +185,8 @@ func TestBuildDeployNode(t *testing.T) {
 	pipelineBuilder := new(builder.PipelineBuilder)
 	replicationControllerAggregate := new(mocks.ReplicationControllerAggregate)
 	serviceAggregate := new(mocks.ServiceConfigAggregate)
-	buildAggregate := NewBuildService(build, buildConfigService, buildNode, pod, pipelineBuilder, replicationControllerAggregate, serviceAggregate)
+	configMaps := kube.NewConfigMaps(client)
+	buildAggregate := NewBuildService(configMaps, build, buildConfigService, buildNode, pod, pipelineBuilder, replicationControllerAggregate, serviceAggregate)
 	build1 := &v1alpha1.Build{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "hello-world",
@@ -214,7 +223,8 @@ func TestBuildDeleteNode(t *testing.T) {
 	pipelineBuilder := new(builder.PipelineBuilder)
 	replicationControllerAggregate := new(mocks.ReplicationControllerAggregate)
 	serviceAggregate := new(mocks.ServiceConfigAggregate)
-	buildAggregate := NewBuildService(build, buildConfigService, buildNode, pod, pipelineBuilder, replicationControllerAggregate, serviceAggregate)
+	configMaps := kube.NewConfigMaps(client)
+	buildAggregate := NewBuildService(configMaps, build, buildConfigService, buildNode, pod, pipelineBuilder, replicationControllerAggregate, serviceAggregate)
 	buildNode.On("DeleteDeployment", "hello-world", "demo").Return(nil)
 	build1 := &v1alpha1.Build{
 		ObjectMeta: v1.ObjectMeta{
@@ -242,7 +252,8 @@ func TestBuildSelector(t *testing.T) {
 	pipelineBuilder := new(builder.PipelineBuilder)
 	replicationControllerAggregate := new(mocks.ReplicationControllerAggregate)
 	serviceAggregate := new(mocks.ServiceConfigAggregate)
-	buildAggregate := NewBuildService(build, buildConfigService, buildNode, pod, pipelineBuilder, replicationControllerAggregate, serviceAggregate)
+	configMaps := kube.NewConfigMaps(client)
+	buildAggregate := NewBuildService(configMaps, build, buildConfigService, buildNode, pod, pipelineBuilder, replicationControllerAggregate, serviceAggregate)
 	b := &v1alpha1.Build{
 		Spec: v1alpha1.BuildSpec{
 			Tasks: []v1alpha1.Task{

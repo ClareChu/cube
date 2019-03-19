@@ -54,8 +54,9 @@ func init() {
 	app.Register(NewBuildService)
 }
 
-func NewBuildService(buildClient *mio.Build, buildConfigService service.BuildConfigService, buildNode builder.BuildNode, pod *kube.Pod, pipelineBuilder builder.PipelineBuilder, replicationControllerAggregate ReplicationControllerAggregate, serviceConfigAggregate ServiceConfigAggregate) BuildAggregate {
+func NewBuildService(configMaps *kube.ConfigMaps, buildClient *mio.Build, buildConfigService service.BuildConfigService, buildNode builder.BuildNode, pod *kube.Pod, pipelineBuilder builder.PipelineBuilder, replicationControllerAggregate ReplicationControllerAggregate, serviceConfigAggregate ServiceConfigAggregate) BuildAggregate {
 	return &Build{
+		configMaps:                     configMaps,
 		buildClient:                    buildClient,
 		buildConfigService:             buildConfigService,
 		buildNode:                      buildNode,
@@ -149,10 +150,14 @@ func (b *Build) Watch(name, namespace string) (build *v1alpha1.Build, err error)
 }
 
 func (b *Build) SourceCodePull(build *v1alpha1.Build) error {
-
+	configMaps, err := b.configMaps.Get(constant.GitlabConstant, constant.TemplateDefaultNamespace)
+	if err != nil {
+		log.Errorf("build get configMaps: %v", err)
+		return err
+	}
 	command := &command.SourceCodePullCommand{
 		CloneType: build.Spec.CloneType,
-		Url:       fmt.Sprintf("%s/%s/%s.git", build.Spec.CloneConfig.Url, build.Namespace, build.Labels[constant.BuildConfigName]),
+		Url:       fmt.Sprintf("%s/%s/%s.git", configMaps.Data[constant.BaseUrl], build.Namespace, build.Labels[constant.BuildConfigName]),
 		Branch:    build.Spec.CloneConfig.Branch,
 		DstDir:    build.Spec.CloneConfig.DstDir,
 		Username:  build.Spec.CloneConfig.Username,
@@ -161,7 +166,7 @@ func (b *Build) SourceCodePull(build *v1alpha1.Build) error {
 		Name:      build.Name,
 	}
 
-	err := b.buildConfigService.SourceCodePull(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), "7575", command)
+	err = b.buildConfigService.SourceCodePull(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), "7575", command)
 	return err
 }
 

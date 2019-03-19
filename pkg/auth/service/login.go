@@ -58,7 +58,7 @@ func (l *LoginServiceImpl) GetUrl() (baseUrl string, err error) {
 		return "", err
 	}
 	apiVersion := configMaps.Data[constant.ApiVersion]
-	baseUrl = configMaps.Data[constant.ApiVersion]
+	baseUrl = configMaps.Data[constant.BaseUrl]
 	baseUrl = baseUrl + apiVersion
 	return
 }
