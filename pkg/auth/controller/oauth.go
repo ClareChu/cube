@@ -10,7 +10,6 @@ import (
 	"hidevops.io/mio/pkg/auth/service"
 	"net/http"
 	"net/url"
-	"os"
 	"time"
 )
 
@@ -41,12 +40,10 @@ func newOauthController(token jwt.Token, oauthService service.OauthService, logi
 func (o *oauthController) GetUrl() (response model.Response, err error) {
 	log.Debug("gitlab get oauth2 url")
 	response = new(model.BaseResponse)
-	a := &service.Auth{
-		AuthURL:       os.Getenv("SCM_URL"),
-		ApplicationId: service.ApplicationId,
-		CallbackUrl:   service.CallbackUrl,
+	err, url := o.oauthService.GetAuthURL()
+	if err != nil {
+		return
 	}
-	url := o.oauthService.GetAuthURL(a)
 	responseBody := map[string]interface{}{
 		"authUrl": &url,
 	}
@@ -59,7 +56,7 @@ func (o *oauthController) GetByCode(code string) (response model.Response, err e
 	//TODO 通过code  获取用户的 access token  和失效时间  通过时间来获取用户信息
 	response = new(model.BaseResponse)
 	s := url.QueryEscape(service.CallbackUrl)
-	session := service.NewClient(service.BaseUrl, service.AccessTokenUrl, service.ApplicationId, s, service.Secret)
+	session := service.NewClient(service.OauthUrl, service.AccessTokenUrl, service.ApplicationId, s, service.Secret)
 	resp, err := o.sessionInterface.GetAccessToken(session, code)
 	if err != nil || resp.AccessToken == "" {
 		response.SetCode(http.StatusUnauthorized)
