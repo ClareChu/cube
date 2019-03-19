@@ -4,7 +4,7 @@ items:
   kind: PipelineConfig
   metadata:
     name: go
-    namespace: templates
+    namespace: hidevopsio
   spec:
     app: ""
     dockerRegistry: ""

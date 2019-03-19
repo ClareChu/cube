@@ -3,7 +3,7 @@ kind: DeploymentConfig
 metadata:
   annotations:
   name: go
-  namespace: templates
+  namespace: hidevopsio
 spec:
   dockerRegistry: {{ .Values.buildconfig.dockerRegistry }}
   env:
@@ -21,7 +21,10 @@ spec:
   fromRegistry: {{ .Values.buildconfig.fromRegistry }}
   port:
   - containerPort: 8080
-    name: tcp-8080
+    name: http
+    protocol: TCP
+  - containerPort: 7575
+    name: grpc
     protocol: TCP
   profile: dev
 status:

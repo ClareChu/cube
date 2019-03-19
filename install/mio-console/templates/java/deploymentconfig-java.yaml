@@ -3,7 +3,7 @@ kind: DeploymentConfig
 metadata:
   annotations:
   name: java
-  namespace: templates
+  namespace: hidevopsio
 spec:
   dockerRegistry: {{ .Values.docker.registy }}
   env:

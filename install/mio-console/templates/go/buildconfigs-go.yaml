@@ -2,7 +2,7 @@ apiVersion: mio.io/v1alpha1
 kind: BuildConfig
 metadata:
   name: go
-  namespace: templates
+  namespace: hidevopsio
 spec:
   app: ""
   baseImage: {{ .Values.go.nodeImage }}

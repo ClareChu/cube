@@ -44,6 +44,7 @@ type Build struct {
 	buildConfigService             service.BuildConfigService
 	buildNode                      builder.BuildNode
 	pod                            *kube.Pod
+	configMaps                     *kube.ConfigMaps
 	pipelineBuilder                builder.PipelineBuilder
 	replicationControllerAggregate ReplicationControllerAggregate
 	serviceConfigAggregate         ServiceConfigAggregate
@@ -148,6 +149,7 @@ func (b *Build) Watch(name, namespace string) (build *v1alpha1.Build, err error)
 }
 
 func (b *Build) SourceCodePull(build *v1alpha1.Build) error {
+
 	command := &command.SourceCodePullCommand{
 		CloneType: build.Spec.CloneType,
 		Url:       fmt.Sprintf("%s/%s/%s.git", build.Spec.CloneConfig.Url, build.Namespace, build.Labels[constant.BuildConfigName]),
@@ -437,10 +439,10 @@ func (b *Build) Volume(build *v1alpha1.Build) (volumes []corev1.Volume, volumeMo
 			},
 		}
 		volumeMount := corev1.VolumeMount{
-			Name: hostPathVolume.Name,
-			ReadOnly: hostPathVolume.ReadOnly,
+			Name:      hostPathVolume.Name,
+			ReadOnly:  hostPathVolume.ReadOnly,
 			MountPath: hostPathVolume.MountPath,
-			SubPath: hostPathVolume.SubPath,
+			SubPath:   hostPathVolume.SubPath,
 		}
 		volumes = append(volumes, volume)
 		volumeMounts = append(volumeMounts, volumeMount)
