@@ -10,34 +10,34 @@ type LoginService struct {
 	mock.Mock
 }
 
-// GetSession provides a mock function with given fields: baseUrl, username, password
-func (_m *LoginService) GetSession(baseUrl string, username string, password string) (string, int, string, error) {
-	ret := _m.Called(baseUrl, username, password)
+// GetSession provides a mock function with given fields: username, password
+func (_m *LoginService) GetSession(username string, password string) (string, int, string, error) {
+	ret := _m.Called(username, password)
 
 	var r0 string
-	if rf, ok := ret.Get(0).(func(string, string, string) string); ok {
-		r0 = rf(baseUrl, username, password)
+	if rf, ok := ret.Get(0).(func(string, string) string); ok {
+		r0 = rf(username, password)
 	} else {
 		r0 = ret.Get(0).(string)
 	}
 
 	var r1 int
-	if rf, ok := ret.Get(1).(func(string, string, string) int); ok {
-		r1 = rf(baseUrl, username, password)
+	if rf, ok := ret.Get(1).(func(string, string) int); ok {
+		r1 = rf(username, password)
 	} else {
 		r1 = ret.Get(1).(int)
 	}
 
 	var r2 string
-	if rf, ok := ret.Get(2).(func(string, string, string) string); ok {
-		r2 = rf(baseUrl, username, password)
+	if rf, ok := ret.Get(2).(func(string, string) string); ok {
+		r2 = rf(username, password)
 	} else {
 		r2 = ret.Get(2).(string)
 	}
 
 	var r3 error
-	if rf, ok := ret.Get(3).(func(string, string, string) error); ok {
-		r3 = rf(baseUrl, username, password)
+	if rf, ok := ret.Get(3).(func(string, string) error); ok {
+		r3 = rf(username, password)
 	} else {
 		r3 = ret.Error(3)
 	}
@@ -45,13 +45,34 @@ func (_m *LoginService) GetSession(baseUrl string, username string, password str
 	return r0, r1, r2, r3
 }
 
-// GetUser provides a mock function with given fields: baseUrl, accessToken
-func (_m *LoginService) GetUser(baseUrl string, accessToken string) (*scm.User, error) {
-	ret := _m.Called(baseUrl, accessToken)
+// GetUrl provides a mock function with given fields:
+func (_m *LoginService) GetUrl() (string, error) {
+	ret := _m.Called()
+
+	var r0 string
+	if rf, ok := ret.Get(0).(func() string); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(string)
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func() error); ok {
+		r1 = rf()
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// GetUser provides a mock function with given fields: accessToken
+func (_m *LoginService) GetUser(accessToken string) (*scm.User, error) {
+	ret := _m.Called(accessToken)
 
 	var r0 *scm.User
-	if rf, ok := ret.Get(0).(func(string, string) *scm.User); ok {
-		r0 = rf(baseUrl, accessToken)
+	if rf, ok := ret.Get(0).(func(string) *scm.User); ok {
+		r0 = rf(accessToken)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*scm.User)
@@ -59,8 +80,8 @@ func (_m *LoginService) GetUser(baseUrl string, accessToken string) (*scm.User, 
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(string, string) error); ok {
-		r1 = rf(baseUrl, accessToken)
+	if rf, ok := ret.Get(1).(func(string) error); ok {
+		r1 = rf(accessToken)
 	} else {
 		r1 = ret.Error(1)
 	}
