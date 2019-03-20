@@ -71,7 +71,7 @@ func (p *Pipeline) Create(pipelineConfig *v1alpha1.PipelineConfig, sourceCode st
 		Labels: map[string]string{
 			constant.App:                nameVersion,
 			constant.Version:            pipelineConfig.Spec.Version,
-			constant.Number:             number,
+			constant.Number:              number,
 			constant.PipelineConfigName: pipelineConfig.Name,
 			constant.CodeType:           sourceCode,
 		},
