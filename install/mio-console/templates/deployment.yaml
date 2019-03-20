@@ -33,8 +33,6 @@ spec:
         - env:
             - name: APP_PROFILES_ACTIVE
               value: dev
-            - name: SCM_URL
-              value: {{ .Values.git.url }}
             - name: TZ
               value: {{ .Values.deployment.tz }}
             - name: DOCKER_API_VERSION
