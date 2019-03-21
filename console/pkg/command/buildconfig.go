@@ -108,4 +108,5 @@ type BuildConfigTemplate struct {
 	Events       []string `json:"events"`
 	Version      string   `json:"version"`
 	PipelineName string   `json:"pipelineName"`
+	Branch       string   `json:"branch"`
 }

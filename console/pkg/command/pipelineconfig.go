@@ -13,6 +13,7 @@ type PipelineStart struct {
 	SourceCode string `json:"sourceCode"`
 	Version    string `json:"version"`
 	Profile    string `json:"profile"`
+	Branch     string `json:"branch"`
 }
 
 type PipelineConfigTemplate struct {

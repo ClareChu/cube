@@ -13,7 +13,7 @@ import (
 
 type BuildConfigAggregate interface {
 	Template(buildConfigTemplate *command.BuildConfig) (buildConfig *v1alpha1.BuildConfig, err error)
-	Create(name, pipelineName, namespace, sourceType, version string) (buildConfig *v1alpha1.BuildConfig, err error)
+	Create(name, pipelineName, namespace, sourceType, version, branch string) (buildConfig *v1alpha1.BuildConfig, err error)
 	Delete(name, namespace string) error
 }
 
@@ -64,7 +64,7 @@ func (s *BuildConfig) Template(buildConfigTemplate *command.BuildConfig) (buildC
 	return
 }
 
-func (s *BuildConfig) Create(name, pipelineName, namespace, sourceType, version string) (buildConfig *v1alpha1.BuildConfig, err error) {
+func (s *BuildConfig) Create(name, pipelineName, namespace, sourceType, version, branch string) (buildConfig *v1alpha1.BuildConfig, err error) {
 	log.Debugf("build config create name :%v, namespace :%v", name, namespace)
 	template, err := s.buildConfigClient.Get(sourceType, constant.TemplateDefaultNamespace)
 	if err != nil {
@@ -87,6 +87,7 @@ func (s *BuildConfig) Create(name, pipelineName, namespace, sourceType, version 
 		APIVersion: constant.BuildConfigApiVersion,
 	}
 	buildConfigTemplate.Spec.App = name
+	buildConfigTemplate.Spec.CloneConfig.Branch = branch
 	buildConfigTemplate.Spec.Tags = []string{template.Spec.DockerRegistry + "/" + namespace + "/" + name}
 	//TODO 如果存在创建 buildconfig 不存在新建buildconfig 创建完buildconfig 新建
 	if err != nil {
