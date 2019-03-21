@@ -23,6 +23,9 @@ spec:
   - containerPort: 8080
     name: tcp-8080
     protocol: TCP
+  - containerPort: 7575
+    name: grpc-7575
+    protocol: TCP
   profile: dev
 status:
   lastVersion: 1

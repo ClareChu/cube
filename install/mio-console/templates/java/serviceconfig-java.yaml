@@ -11,7 +11,7 @@ spec:
     port: 8080
     protocol: TCP
     targetPort: 8080
-  - name: http-7575
+  - name: grpc-7575
     port: 7575
     protocol: TCP
     targetPort: 7575

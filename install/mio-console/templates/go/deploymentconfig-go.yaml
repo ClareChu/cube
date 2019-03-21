@@ -21,10 +21,10 @@ spec:
   fromRegistry: {{ .Values.buildconfig.fromRegistry }}
   port:
   - containerPort: 8080
-    name: http
+    name: http-8080
     protocol: TCP
   - containerPort: 7575
-    name: grpc
+    name: grpc-7575
     protocol: TCP
   profile: dev
 status:
