@@ -102,6 +102,7 @@ func replaceProfile(cmd *command.PipelineStart, pipelineConfig *v1alpha1.Pipelin
 	if cmd.Version != "" && cmd.Profile != "" && cmd.Branch != "" {
 		pipelineConfig.Spec.Version = cmd.Version
 		pipelineConfig.Spec.Profile = cmd.Profile
+		pipelineConfig.Spec.Branch = cmd.Branch
 	} else if cmd.Version != "" {
 		pipelineConfig.Spec.Version = cmd.Version
 	} else if cmd.Profile != "" {
