@@ -62,3 +62,4 @@ func TestTagTagImage(t *testing.T) {
 	err = tag.TagImage(deploy)
 	assert.Equal(t, nil, err)
 }
+
