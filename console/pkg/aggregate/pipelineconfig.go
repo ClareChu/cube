@@ -65,7 +65,7 @@ func (p *PipelineConfig) Get(name, namespace string) (*v1alpha1.PipelineConfig, 
 }
 
 func (p *PipelineConfig) StartPipelineConfig(cmd *command.PipelineStart) (pipelineConfig *v1alpha1.PipelineConfig, err error) {
-	log.Debugf("PipelineConfig get :%v", cmd.Name, cmd.Namespace)
+	log.Debugf("PipelineConfig get name: %v, namespace: %v", cmd.Name, cmd.Namespace)
 	lastVersion := 1
 	//TODO get pipeline template
 	pipelineConfigTemplate, err := p.pipelineConfigClient.Get(cmd.SourceCode, constant.TemplateDefaultNamespace)
