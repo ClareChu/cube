@@ -148,11 +148,8 @@ func CloneBYCMD(sourceCodePullRequest *protobuf.SourceCodePullRequest) (string, 
 	}
 
 	if _, err := os.Stat(projectPath); err != nil {
-		if os.IsNotExist(err) {
-			return "", fmt.Errorf("clone %s fail", sourceCodePullRequest.Url)
-		} else {
-			return "", err
-		}
+		fmt.Printf("git clone err: %v", err)
+		return "", err
 	}
 
 	return projectPath, nil

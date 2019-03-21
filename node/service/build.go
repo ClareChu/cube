@@ -56,13 +56,12 @@ const (
 )
 
 func (b *buildConfigServiceImpl) Clone(sourceCodePullRequest *protobuf.SourceCodePullRequest, cloneFunc scmgit.CloneFunc) (string, error) {
-	fmt.Printf("\n[INFO] clone %s start:\n", sourceCodePullRequest.Url)
-
+	fmt.Printf("git clone url: %s, branch: %s", sourceCodePullRequest.Url, sourceCodePullRequest.Branch)
+	log.Infof("git clone url: %s, branch: %s", sourceCodePullRequest.Url, sourceCodePullRequest.Branch)
 	if sourceCodePullRequest.Token != "" {
 		//CMD
 		Path, err := pkg_utils.CloneBYCMD(sourceCodePullRequest)
 		if err != nil {
-			fmt.Printf("Error clone %s filed:\n", sourceCodePullRequest.Url)
 			return "", err
 		} else {
 			return Path, nil

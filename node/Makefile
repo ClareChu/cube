@@ -1,7 +1,7 @@
 
-tag := v1.0.0
-registries := hub.docker.com
-group := hidevopsio
+tag := v1.0.1
+registries := docker.io
+group := hidevops
 image_name := hinode-go
 binary := hinode
 
