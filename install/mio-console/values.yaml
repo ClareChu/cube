@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: hidevops/mio-console
-  tag: v1.0.0
+  tag: v1.0.2
   pullPolicy: Always
 
 nameOverride: "mio-console"
@@ -48,20 +48,20 @@ tolerations: []
 affinity: {}
 
 git:
-  url: "http://gitlab.vpclub.cn:8022"
+  url: ""
 
 docker:
-  registy: "harbor.vpclub.io"
+  registy: "harbor.cloud2go.cn"
   username: admin
   password: Harbor12345
 
 deployment:
   tz: "Asia/Shanghai"
-  apiVersion: "/api/v3"
+  apiVersion: ""
 
 buildconfig:
-  branch: "development"
-  mavenMirrorUrl: "http://nexus.vpclub.cn/repository/maven-public/"
+  branch: ""
+  mavenMirrorUrl: "http://nexus.cloud2go.cn/repository/maven-public/"
 
 
 java:
@@ -71,4 +71,4 @@ java:
 go:
   nodeImage: clarechu/hinode-go:v1.0.0
   baseImage: clarechu/base-image-java:0.1
-  goProxy: http://172.16.125.1:3000
+  goProxy: http://athens.apps.cloud2go.cn
