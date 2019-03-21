@@ -39,8 +39,6 @@ spec:
               value: '1.24'
             - name: KUBE_WATCH_TIMEOUT
               value: '20'
-            - name: API_VERSION
-              value: {{ .Values.deployment.apiVersion }}
           name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}

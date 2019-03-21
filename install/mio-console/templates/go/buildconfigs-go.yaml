@@ -7,10 +7,10 @@ spec:
   app: ""
   baseImage: {{ .Values.go.nodeImage }}
   cloneConfig:
-    branch: {{ .Values.buildconfig.branch }}
+    branch: ""
     dstDir: /opt/app-root/src
     password: ""
-    url: {{ .Values.git.url }}
+    url: ""
     username: ""
   cloneType: ""
   codeType: go

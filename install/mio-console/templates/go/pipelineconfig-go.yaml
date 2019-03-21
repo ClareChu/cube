@@ -19,7 +19,8 @@ items:
     nodeSelector: ""
     profile: dev
     project: ""
-    version: v2
+    version: v1
+    branch: "master"
   status: {}
 kind: List
 metadata:

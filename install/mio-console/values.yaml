@@ -47,9 +47,6 @@ tolerations: []
 
 affinity: {}
 
-git:
-  url: ""
-
 docker:
   registy: "harbor.cloud2go.cn"
   username: admin
@@ -57,10 +54,8 @@ docker:
 
 deployment:
   tz: "Asia/Shanghai"
-  apiVersion: ""
 
 buildconfig:
-  branch: ""
   mavenMirrorUrl: "http://nexus.cloud2go.cn/repository/maven-public/"
 
 
@@ -69,6 +64,6 @@ java:
   baseImage: "clarechu/base-image-java:0.1"
 
 go:
-  nodeImage: clarechu/hinode-go:v1.0.0
+  nodeImage: hidevops/hinode-go:v1.0.1
   baseImage: clarechu/base-image-java:0.1
   goProxy: http://athens.apps.cloud2go.cn
