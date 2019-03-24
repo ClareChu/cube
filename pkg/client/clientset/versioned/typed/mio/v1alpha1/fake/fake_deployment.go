@@ -19,24 +19,24 @@ limitations under the License.
 package fake
 
 import (
-	v1alpha1 "hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/labels"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/watch"
+	"k8s.io/client-go/testing"
 )
 
 // FakeDeployments implements DeploymentInterface
 type FakeDeployments struct {
-	Fake *FakeMioV1alpha1
+	Fake *FakeCubeV1alpha1
 	ns   string
 }
 
-var deploymentsResource = schema.GroupVersionResource{Group: "mio.io", Version: "v1alpha1", Resource: "deployments"}
+var deploymentsResource = schema.GroupVersionResource{Group: "cube.io", Version: "v1alpha1", Resource: "deployments"}
 
-var deploymentsKind = schema.GroupVersionKind{Group: "mio.io", Version: "v1alpha1", Kind: "Deployment"}
+var deploymentsKind = schema.GroupVersionKind{Group: "cube.io", Version: "v1alpha1", Kind: "Deployment"}
 
 // Get takes name of the deployment, and returns the corresponding deployment object, and an error if there is any.
 func (c *FakeDeployments) Get(name string, options v1.GetOptions) (result *v1alpha1.Deployment, err error) {

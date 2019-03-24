@@ -2,22 +2,22 @@ package aggregate
 
 import (
 	"github.com/magiconair/properties/assert"
+	"hidevops.io/cube/console/pkg/aggregate/mocks"
+	builder "hidevops.io/cube/console/pkg/builder/mocks"
+	"hidevops.io/cube/console/pkg/command"
+	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/client/clientset/versioned/fake"
+	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hioak/starter/kube"
-	"hidevops.io/mio/console/pkg/aggregate/mocks"
-	builder "hidevops.io/mio/console/pkg/builder/mocks"
-	"hidevops.io/mio/console/pkg/command"
-	"hidevops.io/mio/console/pkg/constant"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/client/clientset/versioned/fake"
-	"hidevops.io/mio/pkg/starter/mio"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	kubeFake "k8s.io/client-go/kubernetes/fake"
 	"testing"
 )
 
 func TestDeploymentConfigTemplate(t *testing.T) {
-	clientSet := fake.NewSimpleClientset().MioV1alpha1()
-	deploymentConfig := mio.NewDeploymentConfig(clientSet)
+	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
+	deploymentConfig := cube.NewDeploymentConfig(clientSet)
 	deploymentAggregate := new(mocks.DeploymentAggregate)
 	pipelineBuilder := new(builder.PipelineBuilder)
 	client := kubeFake.NewSimpleClientset()
@@ -29,8 +29,8 @@ func TestDeploymentConfigTemplate(t *testing.T) {
 }
 
 func TestDeploymentConfigCreate(t *testing.T) {
-	clientSet := fake.NewSimpleClientset().MioV1alpha1()
-	deploymentConfig := mio.NewDeploymentConfig(clientSet)
+	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
+	deploymentConfig := cube.NewDeploymentConfig(clientSet)
 	deploymentAggregate := new(mocks.DeploymentAggregate)
 	pipelineBuilder := new(builder.PipelineBuilder)
 	client := kubeFake.NewSimpleClientset()
@@ -45,7 +45,7 @@ func TestDeploymentConfigCreate(t *testing.T) {
 	_, err := deploymentConfig.Create(dc)
 	d := &v1alpha1.DeploymentConfig{
 		TypeMeta: v1.TypeMeta{
-			Kind:       "DeploymentConfig.mio.io/v1alpha1",
+			Kind:       "DeploymentConfig.cube.io/v1alpha1",
 			APIVersion: "a1alpha1",
 		},
 		ObjectMeta: v1.ObjectMeta{

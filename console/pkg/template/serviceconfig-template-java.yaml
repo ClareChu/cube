@@ -1,4 +1,4 @@
-apiVersion: mio.io/v1alpha1
+apiVersion: cube.io/v1alpha1
 kind: ServiceConfig
 metadata:
   clusterName: ""
@@ -7,7 +7,7 @@ metadata:
   name: java
   namespace: templates
   resourceVersion: "98010410"
-  selfLink: /apis/mio.io/v1alpha1/namespaces/templates/serviceconfigs/java
+  selfLink: /apis/cube.io/v1alpha1/namespaces/templates/serviceconfigs/java
   uid: 25e39a5a-d8f1-11e8-bff0-005056935c80
 spec:
   ports:

@@ -2,11 +2,11 @@ package aggregate
 
 import (
 	"github.com/magiconair/properties/assert"
-	"hidevops.io/mio/console/pkg/builder/mocks"
-	"hidevops.io/mio/console/pkg/constant"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/client/clientset/versioned/fake"
-	"hidevops.io/mio/pkg/starter/mio"
+	"hidevops.io/cube/console/pkg/builder/mocks"
+	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/client/clientset/versioned/fake"
+	"hidevops.io/cube/pkg/starter/cube"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"testing"
 )
@@ -22,8 +22,8 @@ func TestGetNamespace(t *testing.T) {
 }
 
 func TestTagTagImage(t *testing.T) {
-	clientSet := fake.NewSimpleClientset().MioV1alpha1()
-	imageStream := mio.NewImageStream(clientSet)
+	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
+	imageStream := cube.NewImageStream(clientSet)
 	d := new(mocks.DeploymentBuilder)
 	tag := NewTagService(imageStream, d)
 	deploy := &v1alpha1.Deployment{
@@ -31,18 +31,18 @@ func TestTagTagImage(t *testing.T) {
 			Labels: map[string]string{
 				constant.DeploymentConfig: "hello-world",
 			},
-			Name: "hello-world",
+			Name:      "hello-world",
 			Namespace: "demo",
 		},
 	}
 	is := &v1alpha1.ImageStream{
 		ObjectMeta: v1.ObjectMeta{
-			Name: "hello-world",
+			Name:      "hello-world",
 			Namespace: "demo",
 		},
 	}
 	err := tag.TagImage(deploy)
-	assert.Equal(t, "imagestreams.mio.io \"hello-world\" not found", err.Error())
+	assert.Equal(t, "imagestreams.cube.io \"hello-world\" not found", err.Error())
 	imageStream.Create(is)
 	d.On("Update", "hello-world", "demo", "remoteDeploy", "success").Return(nil)
 	err = tag.TagImage(deploy)
@@ -52,14 +52,13 @@ func TestTagTagImage(t *testing.T) {
 			Labels: map[string]string{
 				constant.DeploymentConfig: "hello-world",
 			},
-			Name: "hello-world",
+			Name:      "hello-world",
 			Namespace: "demo",
 		},
-		Spec:v1alpha1.DeploymentConfigSpec{
+		Spec: v1alpha1.DeploymentConfigSpec{
 			Profile: "dev",
 		},
 	}
 	err = tag.TagImage(deploy)
 	assert.Equal(t, nil, err)
 }
-

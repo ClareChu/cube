@@ -2,19 +2,19 @@ package aggregate
 
 import (
 	"github.com/magiconair/properties/assert"
-	"hidevops.io/mio/console/pkg/aggregate/mocks"
-	"hidevops.io/mio/console/pkg/command"
-	"hidevops.io/mio/console/pkg/constant"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/client/clientset/versioned/fake"
-	"hidevops.io/mio/pkg/starter/mio"
+	"hidevops.io/cube/console/pkg/aggregate/mocks"
+	"hidevops.io/cube/console/pkg/command"
+	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/client/clientset/versioned/fake"
+	"hidevops.io/cube/pkg/starter/cube"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"testing"
 )
 
 func TestBuildConfigTemplate(t *testing.T) {
-	clientSet := fake.NewSimpleClientset().MioV1alpha1()
-	buildConfig := mio.NewBuildConfig(clientSet)
+	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
+	buildConfig := cube.NewBuildConfig(clientSet)
 	buildAggregate := new(mocks.BuildAggregate)
 	buildConfigAggregate := NewBuildConfigService(buildConfig, buildAggregate)
 	bc := &command.BuildConfig{

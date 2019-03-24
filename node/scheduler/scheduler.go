@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"github.com/prometheus/common/log"
 	"gopkg.in/src-d/go-git.v4"
+	"hidevops.io/cube/node/protobuf"
+	"hidevops.io/cube/node/service"
+	pkg_utils "hidevops.io/cube/node/utils"
 	"hidevops.io/hiboot/pkg/app"
 	utilsio "hidevops.io/hiboot/pkg/utils/io"
 	"hidevops.io/hioak/starter/kube"
-	"hidevops.io/mio/node/protobuf"
-	"hidevops.io/mio/node/service"
-	pkg_utils "hidevops.io/mio/node/utils"
 	corev1 "k8s.io/api/core/v1"
 	"os"
 	"time"
@@ -86,7 +86,7 @@ func (b *buildSchedulerImpl) SourceCodePull(sourceCodePullRequest *protobuf.Sour
 		return
 	}
 
-	secret, err := b.secret.Get(bc.Labels["mio.io/buildConfig.name"], sourceCodePullRequest.Namespace)
+	secret, err := b.secret.Get(bc.Labels["cube.io/buildConfig.name"], sourceCodePullRequest.Namespace)
 	if err != nil {
 		fmt.Println("Error ", err)
 		////TODO update status

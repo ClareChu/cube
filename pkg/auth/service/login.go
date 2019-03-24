@@ -2,11 +2,11 @@ package service
 
 import (
 	"github.com/prometheus/common/log"
+	"hidevops.io/cube/console/pkg/constant"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hioak/starter/kube"
 	"hidevops.io/hioak/starter/scm"
 	"hidevops.io/hioak/starter/scm/gitlab"
-	"hidevops.io/mio/console/pkg/constant"
 )
 
 type LoginService interface {

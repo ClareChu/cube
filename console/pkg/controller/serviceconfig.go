@@ -2,11 +2,11 @@ package controller
 
 import (
 	"github.com/prometheus/common/log"
+	"hidevops.io/cube/console/pkg/aggregate"
+	"hidevops.io/cube/console/pkg/command"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/at"
 	"hidevops.io/hiboot/pkg/model"
-	"hidevops.io/mio/console/pkg/aggregate"
-	"hidevops.io/mio/console/pkg/command"
 )
 
 type ServiceConfigController struct {

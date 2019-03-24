@@ -1,11 +1,11 @@
 package controller
 
 import (
+	"hidevops.io/cube/console/pkg/aggregate/mocks"
+	"hidevops.io/cube/console/pkg/command"
 	"hidevops.io/hiboot/pkg/app/web"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/utils/io"
-	"hidevops.io/mio/console/pkg/aggregate/mocks"
-	"hidevops.io/mio/console/pkg/command"
 	"net/http"
 	"testing"
 )

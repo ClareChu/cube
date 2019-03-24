@@ -16,13 +16,13 @@ RUN  mkdir -p ${APP_BIN} ${APP_ROOT} \
      && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
      && adduser -u 1001 -S -G root -g 0 -D -h ${APP_ROOT} -s /sbin/nologin go
 
-COPY ./mio-console ${APP_BIN}
+COPY ./cube-console ${APP_BIN}
 COPY ./config ${APP_ROOT}/config
 COPY ./run.sh ${APP_ROOT}
 # Drop the root user and make the content of /opt/app-root owned by user 1001
 RUN chown -R 1001:0 ${APP_ROOT}
 
-RUN chmod 755 ${APP_BIN}/mio-console
+RUN chmod 755 ${APP_BIN}/cube-console
 
 WORKDIR ${APP_ROOT}
 

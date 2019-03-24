@@ -7,15 +7,15 @@ import (
 	"gopkg.in/src-d/go-git.v4/plumbing"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport/http"
+	"hidevops.io/cube/node/protobuf"
+	"hidevops.io/cube/node/types"
+	pkg_utils "hidevops.io/cube/node/utils"
+	cubev1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hioak/starter/docker"
 	scmgit "hidevops.io/hioak/starter/scm/git"
-	"hidevops.io/mio/node/protobuf"
-	"hidevops.io/mio/node/types"
-	pkg_utils "hidevops.io/mio/node/utils"
-	miov1alpha1 "hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/starter/mio"
 	"io"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"os"
@@ -35,7 +35,7 @@ type BuildConfigService interface {
 type buildConfigServiceImpl struct {
 	BuildConfigService
 	imageClient *docker.ImageClient
-	imageStream *mio.ImageStream
+	imageStream *cube.ImageStream
 }
 
 func init() {
@@ -43,7 +43,7 @@ func init() {
 	app.Register(newBuildService)
 }
 
-func newBuildService(imageClient *docker.ImageClient, imageStream *mio.ImageStream) BuildConfigService {
+func newBuildService(imageClient *docker.ImageClient, imageStream *cube.ImageStream) BuildConfigService {
 	return &buildConfigServiceImpl{
 		imageClient: imageClient,
 		imageStream: imageStream,
@@ -137,14 +137,14 @@ func (b *buildConfigServiceImpl) Compile(compileRequest *protobuf.CompileRequest
 		projectName := fmt.Sprintf("%s-%s.%s", pomXmlInfo.ArtifactId, pomXmlInfo.Version, pomXmlInfo.Packaging)
 
 		fmt.Println("[INFO] project name ", projectName)
-		compileRequest.CompileCmd = append(compileRequest.CompileCmd, &protobuf.BuildCommand{ExecType: string(string(miov1alpha1.Script)),
+		compileRequest.CompileCmd = append(compileRequest.CompileCmd, &protobuf.BuildCommand{ExecType: string(string(cubev1alpha1.Script)),
 			Script: fmt.Sprintf("cp target/%s app.%s", projectName, pomXmlInfo.Packaging),
 		})
 
 	}
 
 	for _, cmd := range compileRequest.CompileCmd {
-		if cmd.ExecType == string(miov1alpha1.Script) {
+		if cmd.ExecType == string(cubev1alpha1.Script) {
 			fmt.Println("$ compile script:\n", cmd.Script)
 			scriptPath, err := pkg_utils.GenScript(cmd.Script)
 			if err != nil {
@@ -253,7 +253,7 @@ func (b *buildConfigServiceImpl) GetImage(imagePushRequest *protobuf.ImagePushRe
 func (b *buildConfigServiceImpl) CreateImage(name, namespace, tag string, imageSummary docker_types.ImageSummary) error {
 	t := time.Now()
 	image, err := b.imageStream.Get(name, namespace)
-	stream := &miov1alpha1.ImageStream{
+	stream := &cubev1alpha1.ImageStream{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      name,
 			Namespace: namespace,
@@ -262,20 +262,20 @@ func (b *buildConfigServiceImpl) CreateImage(name, namespace, tag string, imageS
 			},
 		},
 	}
-	spec := miov1alpha1.ImageStreamSpec{
+	spec := cubev1alpha1.ImageStreamSpec{
 		DockerImageRepository: imageSummary.RepoTags[0],
-		Tags: map[string]miov1alpha1.Tag{
-			tag: miov1alpha1.Tag{
+		Tags: map[string]cubev1alpha1.Tag{
+			tag: cubev1alpha1.Tag{
 				Created:              t.UTC().Format(time.UnixDate),
 				DockerImageReference: imageSummary.RepoDigests[0],
 				Generation:           "1",
-				Image: strings.Split(imageSummary.RepoDigests[0], "@")[1],
+				Image:                strings.Split(imageSummary.RepoDigests[0], "@")[1],
 			},
-			Latest: miov1alpha1.Tag{
+			Latest: cubev1alpha1.Tag{
 				Created:              t.UTC().Format(time.UnixDate),
 				DockerImageReference: imageSummary.RepoDigests[0],
 				Generation:           "1",
-				Image: strings.Split(imageSummary.RepoDigests[0], "@")[1],
+				Image:                strings.Split(imageSummary.RepoDigests[0], "@")[1],
 			},
 		},
 	}
@@ -287,17 +287,17 @@ func (b *buildConfigServiceImpl) CreateImage(name, namespace, tag string, imageS
 	}
 	delete(image.Spec.Tags, tag)
 	delete(image.Spec.Tags, Latest)
-	image.Spec.Tags[tag] = miov1alpha1.Tag{
+	image.Spec.Tags[tag] = cubev1alpha1.Tag{
 		Created:              t.UTC().Format(time.UnixDate),
 		DockerImageReference: imageSummary.RepoDigests[0],
 		Generation:           Generation,
-		Image: strings.Split(imageSummary.RepoDigests[0], "@")[1],
+		Image:                strings.Split(imageSummary.RepoDigests[0], "@")[1],
 	}
-	image.Spec.Tags[Latest] = miov1alpha1.Tag{
+	image.Spec.Tags[Latest] = cubev1alpha1.Tag{
 		Created:              t.UTC().Format(time.UnixDate),
 		DockerImageReference: imageSummary.RepoDigests[0],
 		Generation:           Generation,
-		Image: strings.Split(imageSummary.RepoDigests[0], "@")[1],
+		Image:                strings.Split(imageSummary.RepoDigests[0], "@")[1],
 	}
 	_, err = b.imageStream.Update(name, namespace, image)
 	return err

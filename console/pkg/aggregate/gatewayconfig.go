@@ -3,14 +3,14 @@ package aggregate
 import (
 	"fmt"
 	"github.com/kevholditch/gokong"
+	"hidevops.io/cube/console/pkg/builder"
+	"hidevops.io/cube/console/pkg/command"
+	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/utils/copier"
-	"hidevops.io/mio/console/pkg/builder"
-	"hidevops.io/mio/console/pkg/command"
-	"hidevops.io/mio/console/pkg/constant"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/starter/mio"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"strings"
 )
@@ -23,7 +23,7 @@ type GatewayConfigAggregate interface {
 
 type GatewayConfig struct {
 	GatewayConfigAggregate
-	gatewayConfigClient *mio.GatewayConfig
+	gatewayConfigClient *cube.GatewayConfig
 	pipelineBuilder     builder.PipelineBuilder
 }
 
@@ -31,7 +31,7 @@ func init() {
 	app.Register(NewGatewayService)
 }
 
-func NewGatewayService(gatewayConfigClient *mio.GatewayConfig, pipelineBuilder builder.PipelineBuilder) GatewayConfigAggregate {
+func NewGatewayService(gatewayConfigClient *cube.GatewayConfig, pipelineBuilder builder.PipelineBuilder) GatewayConfigAggregate {
 	return &GatewayConfig{
 		gatewayConfigClient: gatewayConfigClient,
 		pipelineBuilder:     pipelineBuilder,

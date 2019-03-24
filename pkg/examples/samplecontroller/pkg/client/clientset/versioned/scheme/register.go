@@ -19,11 +19,11 @@ limitations under the License.
 package scheme
 
 import (
-	samplecontrollerv1alpha1 "hidevops.io/mio/pkg/examples/samplecontroller/pkg/apis/samplecontroller/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	runtime "k8s.io/apimachinery/pkg/runtime"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
-	serializer "k8s.io/apimachinery/pkg/runtime/serializer"
+	samplecontrollerv1alpha1 "hidevops.io/cube/pkg/examples/samplecontroller/pkg/apis/samplecontroller/v1alpha1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/runtime/serializer"
 )
 
 var Scheme = runtime.NewScheme()

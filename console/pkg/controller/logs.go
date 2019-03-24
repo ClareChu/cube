@@ -1,10 +1,10 @@
 package controller
 
 import (
+	"hidevops.io/cube/console/pkg/service"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/at"
 	"hidevops.io/hiboot/pkg/starter/websocket"
-	"hidevops.io/mio/console/pkg/service"
 )
 
 type webSocketController struct {

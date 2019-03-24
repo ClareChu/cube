@@ -19,9 +19,9 @@ limitations under the License.
 package fake
 
 import (
-	clientset "hidevops.io/mio/pkg/client/clientset/versioned"
-	miov1alpha1 "hidevops.io/mio/pkg/client/clientset/versioned/typed/mio/v1alpha1"
-	fakemiov1alpha1 "hidevops.io/mio/pkg/client/clientset/versioned/typed/mio/v1alpha1/fake"
+	clientset "hidevops.io/cube/pkg/client/clientset/versioned"
+	cubev1alpha1 "hidevops.io/cube/pkg/client/clientset/versioned/typed/cube/v1alpha1"
+	fakecubev1alpha1 "hidevops.io/cube/pkg/client/clientset/versioned/typed/cube/v1alpha1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
@@ -70,12 +70,12 @@ func (c *Clientset) Discovery() discovery.DiscoveryInterface {
 
 var _ clientset.Interface = &Clientset{}
 
-// MioV1alpha1 retrieves the MioV1alpha1Client
-func (c *Clientset) MioV1alpha1() miov1alpha1.MioV1alpha1Interface {
-	return &fakemiov1alpha1.FakeMioV1alpha1{Fake: &c.Fake}
+// CubeV1alpha1 retrieves the CubeV1alpha1Client
+func (c *Clientset) CubeV1alpha1() cubev1alpha1.CubeV1alpha1Interface {
+	return &fakecubev1alpha1.FakeCubeV1alpha1{Fake: &c.Fake}
 }
 
-// Mio retrieves the MioV1alpha1Client
-func (c *Clientset) Mio() miov1alpha1.MioV1alpha1Interface {
-	return &fakemiov1alpha1.FakeMioV1alpha1{Fake: &c.Fake}
+// Cube retrieves the CubeV1alpha1Client
+func (c *Clientset) Cube() cubev1alpha1.CubeV1alpha1Interface {
+	return &fakecubev1alpha1.FakeCubeV1alpha1{Fake: &c.Fake}
 }

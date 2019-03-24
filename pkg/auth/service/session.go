@@ -8,18 +8,17 @@ import (
 
 type SessionInterface interface {
 	GetAccessToken(session *Session, code string) (*SessionResponse, error)
-
 }
 
 type SessionService struct {
 	SessionInterface
 }
 
-func init()  {
+func init() {
 	app.Register(newSessionService)
 }
 
-func  newSessionService() SessionInterface {
+func newSessionService() SessionInterface {
 	return &SessionService{}
 }
 

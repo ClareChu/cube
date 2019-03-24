@@ -2,14 +2,14 @@ package controller
 
 import (
 	"github.com/jinzhu/copier"
+	"hidevops.io/cube/console/pkg/aggregate"
+	"hidevops.io/cube/console/pkg/builder"
+	"hidevops.io/cube/console/pkg/command"
+	"hidevops.io/cube/console/pkg/service"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/at"
 	"hidevops.io/hiboot/pkg/model"
-	"hidevops.io/mio/console/pkg/aggregate"
-	"hidevops.io/mio/console/pkg/builder"
-	"hidevops.io/mio/console/pkg/command"
-	"hidevops.io/mio/console/pkg/service"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
 )
 
 type BuildConfigController struct {

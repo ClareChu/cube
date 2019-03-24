@@ -2,13 +2,13 @@ package controller
 
 import (
 	"github.com/prometheus/common/log"
+	"hidevops.io/cube/console/pkg/aggregate"
+	"hidevops.io/cube/console/pkg/builder"
+	"hidevops.io/cube/console/pkg/command"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/at"
 	"hidevops.io/hiboot/pkg/model"
-	"hidevops.io/mio/console/pkg/aggregate"
-	"hidevops.io/mio/console/pkg/builder"
-	"hidevops.io/mio/console/pkg/command"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 )

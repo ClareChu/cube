@@ -1,11 +1,11 @@
 package controller
 
 import (
+	"hidevops.io/cube/console/pkg/aggregate"
+	"hidevops.io/cube/console/pkg/constant"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/at"
 	"hidevops.io/hiboot/pkg/model"
-	"hidevops.io/mio/console/pkg/aggregate"
-	"hidevops.io/mio/console/pkg/constant"
 )
 
 type ConfigurationController struct {
@@ -36,7 +36,7 @@ func (c *ConfigurationController) PostGitlab(req *ReqModel) (response model.Resp
 }
 
 func (c *ConfigurationController) PostDocker(req *ReqModel) (response model.Response, err error) {
-	maps,err := c.configMapsAggregate.Create(constant.DockerConstant, constant.TemplateDefaultNamespace, req.Data)
+	maps, err := c.configMapsAggregate.Create(constant.DockerConstant, constant.TemplateDefaultNamespace, req.Data)
 	response = new(model.BaseResponse)
 	response.SetData(maps)
 	return

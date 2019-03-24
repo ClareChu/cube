@@ -1,7 +1,7 @@
 package builder
 
 import (
-	"hidevops.io/mio/console/pkg/constant"
+	"hidevops.io/cube/console/pkg/constant"
 	"net/smtp"
 	"strings"
 )

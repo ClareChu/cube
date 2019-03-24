@@ -3,13 +3,13 @@ package aggregate
 import (
 	"errors"
 	"fmt"
+	"hidevops.io/cube/console/pkg/builder"
+	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/utils/copier"
-	"hidevops.io/mio/console/pkg/builder"
-	"hidevops.io/mio/console/pkg/constant"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/starter/mio"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/watch"
 	"os"
@@ -26,7 +26,7 @@ type DeploymentAggregate interface {
 
 type Deployment struct {
 	DeploymentAggregate
-	deploymentClient        *mio.Deployment
+	deploymentClient        *cube.Deployment
 	remoteAggregate         RemoteAggregate
 	pipelineBuilder         builder.PipelineBuilder
 	deploymentBuilder       builder.DeploymentBuilder
@@ -38,7 +38,7 @@ func init() {
 	app.Register(NewDeploymentService)
 }
 
-func NewDeploymentService(deploymentClient *mio.Deployment, remoteAggregate RemoteAggregate, deploymentBuilder builder.DeploymentBuilder, pipelineBuilder builder.PipelineBuilder, deploymentConfigBuilder builder.DeploymentConfigBuilder, tagAggregate TagAggregate) DeploymentAggregate {
+func NewDeploymentService(deploymentClient *cube.Deployment, remoteAggregate RemoteAggregate, deploymentBuilder builder.DeploymentBuilder, pipelineBuilder builder.PipelineBuilder, deploymentConfigBuilder builder.DeploymentConfigBuilder, tagAggregate TagAggregate) DeploymentAggregate {
 	return &Deployment{
 		deploymentClient:        deploymentClient,
 		remoteAggregate:         remoteAggregate,

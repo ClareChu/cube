@@ -4,19 +4,19 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/kataras/iris/core/errors"
+	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hioak/starter/kube"
-	"hidevops.io/mio/console/pkg/constant"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/starter/mio"
 	"k8s.io/api/core/v1"
 	corev1 "k8s.io/api/core/v1"
 	meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"time"
 )
 
-//go:generate mockgen -destination mock_logs.go -package aggregate hidevops.io/mio/console/pkg/aggregate KubeClient
+//go:generate mockgen -destination mock_logs.go -package aggregate hidevops.io/cube/console/pkg/aggregate KubeClient
 
 type KubeClient interface {
 	GetBuildConfigLastVersion(namespace, name string) (int, error)
@@ -32,17 +32,17 @@ type KubeClient interface {
 type KubeClientImpl struct {
 	KubeClient
 	pod                  *kube.Pod
-	buildConfig          *mio.BuildConfig
-	buildClient          *mio.Build
-	pipelineConfigClient *mio.PipelineConfig
-	pipelineClient       *mio.Pipeline
+	buildConfig          *cube.BuildConfig
+	buildClient          *cube.Build
+	pipelineConfigClient *cube.PipelineConfig
+	pipelineClient       *cube.Pipeline
 }
 
 func init() {
 	app.Register(newLogOutConfig)
 }
 
-func newLogOutConfig(buildClient *mio.Build, pod *kube.Pod, buildConfig *mio.BuildConfig, pipelineConfigClient *mio.PipelineConfig) KubeClient {
+func newLogOutConfig(buildClient *cube.Build, pod *kube.Pod, buildConfig *cube.BuildConfig, pipelineConfigClient *cube.PipelineConfig) KubeClient {
 	return &KubeClientImpl{
 		pod:                  pod,
 		buildConfig:          buildConfig,

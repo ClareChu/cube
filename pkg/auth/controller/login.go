@@ -1,12 +1,12 @@
 package controller
 
 import (
+	"hidevops.io/cube/pkg/auth/service"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/at"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/model"
 	"hidevops.io/hiboot/pkg/starter/jwt"
-	"hidevops.io/mio/pkg/auth/service"
 	"net/http"
 	"time"
 )
@@ -23,7 +23,7 @@ type UserRequest struct {
 
 type loginController struct {
 	at.RestController
-	token   jwt.Token
+	token        jwt.Token
 	loginService service.LoginService
 }
 
@@ -33,7 +33,7 @@ func init() {
 
 func newLoginController(token jwt.Token, loginService service.LoginService) *loginController {
 	return &loginController{
-		token:   token,
+		token:        token,
 		loginService: loginService,
 	}
 }

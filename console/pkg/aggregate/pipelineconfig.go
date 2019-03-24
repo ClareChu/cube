@@ -2,12 +2,12 @@ package aggregate
 
 import (
 	"github.com/jinzhu/copier"
+	"hidevops.io/cube/console/pkg/command"
+	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
-	"hidevops.io/mio/console/pkg/command"
-	"hidevops.io/mio/console/pkg/constant"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/starter/mio"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -20,7 +20,7 @@ type PipelineConfigAggregate interface {
 
 type PipelineConfig struct {
 	PipelineConfigAggregate
-	pipelineConfigClient *mio.PipelineConfig
+	pipelineConfigClient *cube.PipelineConfig
 	pipelineAggregate    PipelineAggregate
 }
 
@@ -28,7 +28,7 @@ func init() {
 	app.Register(NewPipelineConfigService)
 }
 
-func NewPipelineConfigService(pipelineConfigClient *mio.PipelineConfig, pipelineAggregate PipelineAggregate) PipelineConfigAggregate {
+func NewPipelineConfigService(pipelineConfigClient *cube.PipelineConfig, pipelineAggregate PipelineAggregate) PipelineConfigAggregate {
 	return &PipelineConfig{
 		pipelineConfigClient: pipelineConfigClient,
 		pipelineAggregate:    pipelineAggregate,

@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"github.com/iris-contrib/go.uuid"
 	"github.com/prometheus/common/log"
+	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
-	"hidevops.io/mio/console/pkg/constant"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/starter/mio"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -17,14 +17,14 @@ type NotifyAggregate interface {
 
 type Notify struct {
 	NotifyAggregate
-	notify *mio.Notify
+	notify *cube.Notify
 }
 
 func init() {
 	app.Register(NewNotifyService)
 }
 
-func NewNotifyService(notify *mio.Notify) NotifyAggregate {
+func NewNotifyService(notify *cube.Notify) NotifyAggregate {
 	return &Notify{
 		notify: notify,
 	}

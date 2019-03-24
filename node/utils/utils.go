@@ -4,10 +4,10 @@ import (
 	"bufio"
 	"encoding/xml"
 	"fmt"
+	"hidevops.io/cube/node/protobuf"
+	cubev1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/hiboot/pkg/log"
 	utilsio "hidevops.io/hiboot/pkg/utils/io"
-	"hidevops.io/mio/node/protobuf"
-	miov1alpha1 "hidevops.io/mio/pkg/apis/mio/v1alpha1"
 	"io"
 	"io/ioutil"
 	"os"
@@ -107,7 +107,7 @@ func CloneBYCMD(sourceCodePullRequest *protobuf.SourceCodePullRequest) (string, 
 
 	//git clone -b "分支" --depth=1 xxx.git "指定目录"
 
-	//git clone http://oauth2:cf5c6dd52a297270fb5f94e1f763bb6acac3169561f98161258c4103b2b7b17f@gitlab.vpclub:8022/hidevopsio/mio-console.git
+	//git clone http://oauth2:cf5c6dd52a297270fb5f94e1f763bb6acac3169561f98161258c4103b2b7b17f@gitlab.vpclub:8022/hidevopsio/cube-console.git
 
 	urls := strings.Split(sourceCodePullRequest.Url, "//")
 
@@ -185,7 +185,7 @@ func TestStart(testRequest *protobuf.TestsRequest) error {
 
 	for _, cmd := range testRequest.TestCmd {
 
-		if cmd.ExecType == string(miov1alpha1.Script) {
+		if cmd.ExecType == string(cubev1alpha1.Script) {
 			fmt.Println("$script:\n", cmd.Script)
 			scriptPath, err := GenScript(cmd.Script)
 			if err != nil {
@@ -242,7 +242,7 @@ func StartCmd(commandRequest *protobuf.CommandRequest) error {
 
 	for _, cmd := range commandRequest.CommandList {
 
-		if cmd.ExecType == string(miov1alpha1.Script) {
+		if cmd.ExecType == string(cubev1alpha1.Script) {
 			fmt.Println("$script:\n", cmd.Script)
 			scriptPath, err := GenScript(cmd.Script)
 			if err != nil {

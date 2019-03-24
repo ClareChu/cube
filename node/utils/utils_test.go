@@ -3,8 +3,8 @@ package utils
 import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
+	"hidevops.io/cube/node/protobuf"
 	"hidevops.io/hiboot/pkg/log"
-	"hidevops.io/mio/node/protobuf"
 	"io/ioutil"
 	"os"
 	"testing"

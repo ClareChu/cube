@@ -4,10 +4,10 @@ import (
 	"github.com/magiconair/properties/assert"
 	gg "github.com/xanzy/go-gitlab"
 	gogitlab "github.com/xanzy/go-gitlab"
+	"hidevops.io/cube/console/pkg/constant"
 	"hidevops.io/hioak/starter/kube"
 	"hidevops.io/hioak/starter/scm/gitlab"
 	"hidevops.io/hioak/starter/scm/gitlab/fake"
-	"hidevops.io/mio/console/pkg/constant"
 	fk "k8s.io/client-go/kubernetes/fake"
 	"testing"
 )
@@ -44,8 +44,8 @@ func TestLoginServiceImplGetSession(t *testing.T) {
 	clientSet := fk.NewSimpleClientset()
 	configMaps := kube.NewConfigMaps(clientSet)
 	data := map[string]string{
-		"API_VERSION":"api/v3",
-		"BASE_URL":"https://github.com",
+		"API_VERSION": "api/v3",
+		"BASE_URL":    "https://github.com",
 	}
 	configMaps.Create(constant.GitlabConstant, constant.TemplateDefaultNamespace, data)
 	login := newLoginService(s, u, configMaps)

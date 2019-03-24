@@ -1,10 +1,10 @@
 package service
 
 import (
+	"hidevops.io/cube/console/pkg/constant"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/utils/replacer"
 	"hidevops.io/hioak/starter/kube"
-	"hidevops.io/mio/console/pkg/constant"
 	"os"
 	"reflect"
 	"strings"

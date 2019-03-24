@@ -2,9 +2,9 @@ package builder
 
 import (
 	"github.com/magiconair/properties/assert"
+	"hidevops.io/cube/console/pkg/command"
+	"hidevops.io/cube/console/pkg/constant"
 	"hidevops.io/hioak/starter/kube"
-	"hidevops.io/mio/console/pkg/command"
-	"hidevops.io/mio/console/pkg/constant"
 	"k8s.io/api/apps/v1"
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes/fake"

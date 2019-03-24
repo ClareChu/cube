@@ -2,13 +2,13 @@
 
 app:
   project: hidevopsio
-  name: mio-node
+  name: cube-node
   profiles:
     include:
     - jwt
     - grpc
     - kube
-    - mio
+    - cube
     - docker
 
 logging:

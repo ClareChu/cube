@@ -3,12 +3,12 @@ package aggregate
 import (
 	"fmt"
 	"github.com/prometheus/common/log"
+	"hidevops.io/cube/console/pkg/builder"
+	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	cubev1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
-	"hidevops.io/mio/console/pkg/builder"
-	"hidevops.io/mio/console/pkg/constant"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	miov1alpha1 "hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/starter/mio"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"strings"
 )
@@ -23,11 +23,11 @@ func init() {
 
 type Tag struct {
 	TagAggregate
-	imageStream       *mio.ImageStream
+	imageStream       *cube.ImageStream
 	deploymentBuilder builder.DeploymentBuilder
 }
 
-func NewTagService(imageStream *mio.ImageStream, deploymentBuilder builder.DeploymentBuilder) TagAggregate {
+func NewTagService(imageStream *cube.ImageStream, deploymentBuilder builder.DeploymentBuilder) TagAggregate {
 	return &Tag{
 		imageStream:       imageStream,
 		deploymentBuilder: deploymentBuilder,
@@ -50,14 +50,14 @@ func (t *Tag) TagImage(deploy *v1alpha1.Deployment) error {
 				Tags: map[string]v1alpha1.Tag{
 					constant.Latest: tag,
 				},
-				DockerImageRepository: strings.Split(i.Spec.DockerImageRepository, ":")[0] + ":latest" ,
+				DockerImageRepository: strings.Split(i.Spec.DockerImageRepository, ":")[0] + ":latest",
 			},
 		}
 		_, err = t.imageStream.Update(deploy.Labels[constant.DeploymentConfig], n, imageStream)
 		err = t.deploymentBuilder.Update(deploy.Name, deploy.Namespace, constant.RemoteDeploy, constant.Success)
 		return err
 	}
-	stream := &miov1alpha1.ImageStream{
+	stream := &cubev1alpha1.ImageStream{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      deploy.Labels[constant.DeploymentConfig],
 			Namespace: n,
@@ -65,9 +65,9 @@ func (t *Tag) TagImage(deploy *v1alpha1.Deployment) error {
 				"app": deploy.Labels[constant.DeploymentConfig],
 			},
 		},
-		Spec: miov1alpha1.ImageStreamSpec{
-			DockerImageRepository: strings.Split(i.Spec.DockerImageRepository, ":")[0] + ":latest" ,
-			Tags: map[string]miov1alpha1.Tag{
+		Spec: cubev1alpha1.ImageStreamSpec{
+			DockerImageRepository: strings.Split(i.Spec.DockerImageRepository, ":")[0] + ":latest",
+			Tags: map[string]cubev1alpha1.Tag{
 				constant.Latest: tag,
 			},
 		},

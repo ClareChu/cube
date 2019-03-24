@@ -2,10 +2,10 @@ package builder
 
 import (
 	"github.com/prometheus/common/log"
+	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
-	"hidevops.io/mio/console/pkg/constant"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/starter/mio"
 	"time"
 )
 
@@ -15,14 +15,14 @@ type PipelineBuilder interface {
 
 type Pipeline struct {
 	PipelineBuilder
-	pipelineClient *mio.Pipeline
+	pipelineClient *cube.Pipeline
 }
 
 func init() {
 	app.Register(newPipelineService)
 }
 
-func newPipelineService(pipelineClient *mio.Pipeline) PipelineBuilder {
+func newPipelineService(pipelineClient *cube.Pipeline) PipelineBuilder {
 	return &Pipeline{
 		pipelineClient: pipelineClient,
 	}

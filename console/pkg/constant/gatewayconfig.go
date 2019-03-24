@@ -2,5 +2,5 @@ package constant
 
 const (
 	GatewayConfigKind       = "GatewayConfig"
-	GatewayConfigApiVersion = "GatewayConfig.mio.io/v1alpha1"
+	GatewayConfigApiVersion = "GatewayConfig.cube.io/v1alpha1"
 )

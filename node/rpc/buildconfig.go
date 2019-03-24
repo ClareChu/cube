@@ -2,9 +2,9 @@ package rpc
 
 import (
 	"context"
+	"hidevops.io/cube/node/protobuf"
+	"hidevops.io/cube/node/scheduler"
 	"hidevops.io/hiboot/pkg/starter/grpc"
-	"hidevops.io/mio/node/protobuf"
-	"hidevops.io/mio/node/scheduler"
 )
 
 type BuildServerImpl struct {

@@ -4,12 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"github.com/jinzhu/copier"
+	"hidevops.io/cube/console/pkg/builder"
+	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
-	"hidevops.io/mio/console/pkg/builder"
-	"hidevops.io/mio/console/pkg/constant"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/starter/mio"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/watch"
 	"os"
@@ -26,7 +26,7 @@ type PipelineAggregate interface {
 
 type Pipeline struct {
 	PipelineAggregate
-	pipelineClient            *mio.Pipeline
+	pipelineClient            *cube.Pipeline
 	buildConfigAggregate      BuildConfigAggregate
 	deploymentConfigAggregate DeploymentConfigAggregate
 	pipelineBuilder           builder.PipelineBuilder
@@ -38,7 +38,7 @@ func init() {
 	app.Register(NewPipelineService)
 }
 
-func NewPipelineService(pipelineClient *mio.Pipeline, buildConfigAggregate BuildConfigAggregate, deploymentConfigAggregate DeploymentConfigAggregate, pipelineBuilder builder.PipelineBuilder, serviceConfigAggregate ServiceConfigAggregate, gatewayConfigAggregate GatewayConfigAggregate) PipelineAggregate {
+func NewPipelineService(pipelineClient *cube.Pipeline, buildConfigAggregate BuildConfigAggregate, deploymentConfigAggregate DeploymentConfigAggregate, pipelineBuilder builder.PipelineBuilder, serviceConfigAggregate ServiceConfigAggregate, gatewayConfigAggregate GatewayConfigAggregate) PipelineAggregate {
 	return &Pipeline{
 		pipelineClient:            pipelineClient,
 		buildConfigAggregate:      buildConfigAggregate,
@@ -71,7 +71,7 @@ func (p *Pipeline) Create(pipelineConfig *v1alpha1.PipelineConfig, sourceCode st
 		Labels: map[string]string{
 			constant.App:                nameVersion,
 			constant.Version:            pipelineConfig.Spec.Version,
-			constant.Number:              number,
+			constant.Number:             number,
 			constant.PipelineConfigName: pipelineConfig.Name,
 			constant.CodeType:           sourceCode,
 		},

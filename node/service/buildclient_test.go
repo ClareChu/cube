@@ -1,16 +1,16 @@
 package service
 
-//go:generate mockgen -destination mock/mock_buildclient.go -package mock hidevops.io/mio/node/pkg/service BuildConfigClient
+//go:generate mockgen -destination mock/mock_buildclient.go -package mock hidevops.io/cube/node/pkg/service BuildConfigClient
 
 import (
 	"fmt"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
+	"hidevops.io/cube/node/service/mock"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/client/clientset/versioned/fake"
+	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/log"
-	"hidevops.io/mio/node/service/mock"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/client/clientset/versioned/fake"
-	"hidevops.io/mio/pkg/starter/mio"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"testing"
 )
@@ -25,7 +25,7 @@ func TestBuildClient(t *testing.T) {
 	build := &v1alpha1.Build{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "BuildConfig",
-			APIVersion: "mio.k8s.io/v1alpha1",
+			APIVersion: "cube.k8s.io/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      projectName,
@@ -56,8 +56,8 @@ func TestBuildClient(t *testing.T) {
 		},
 	}
 
-	clientSet := fake.NewSimpleClientset().MioV1alpha1()
-	buildClientSet := mio.NewBuild(clientSet)
+	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
+	buildClientSet := cube.NewBuild(clientSet)
 
 	b := newBuildConfigClient(buildClientSet)
 
@@ -99,7 +99,7 @@ func TestClient(t *testing.T) {
 	build := &v1alpha1.Build{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "BuildConfig",
-			APIVersion: "mio.k8s.io/v1alpha1",
+			APIVersion: "cube.k8s.io/v1alpha1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      projectName,

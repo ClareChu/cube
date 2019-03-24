@@ -5,13 +5,11 @@ import (
 	"testing"
 )
 
-func TestClient(t *testing.T)  {
+func TestClient(t *testing.T) {
 
 	var p *[3]int
 
-
 	var p1 [3]**int
-
 
 	p4 := [3]int{1, 2, 3}
 	p = &p4
@@ -32,25 +30,4 @@ func TestClient(t *testing.T)  {
 		log.Info("p1 ", i, *j)
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
-
-

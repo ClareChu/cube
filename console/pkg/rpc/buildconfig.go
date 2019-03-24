@@ -2,9 +2,9 @@ package rpc
 
 import (
 	"context"
+	"hidevops.io/cube/console/pkg/aggregate"
+	"hidevops.io/cube/console/pkg/protobuf"
 	"hidevops.io/hiboot/pkg/starter/grpc"
-	"hidevops.io/mio/console/pkg/aggregate"
-	"hidevops.io/mio/console/pkg/protobuf"
 )
 
 type buildConfigServiceServerImpl struct {

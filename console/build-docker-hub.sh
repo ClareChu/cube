@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 echo  "GOOS=linux go build"
- GOOS=linux go build -o mio-console
+ GOOS=linux go build -o cube-console
 
-docker build -t hidevops/mio-console:v1.0.2 .
+docker build -t hidevops/cube-console:v1.0.2 .
 
-docker push hidevops/mio-console:v1.0.2
+docker push hidevops/cube-console:v1.0.2
 
 

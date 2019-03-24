@@ -19,16 +19,16 @@ limitations under the License.
 package v1alpha1
 
 import (
-	time "time"
+	"time"
 
-	samplecontrollerv1alpha1 "hidevops.io/mio/pkg/examples/samplecontroller/pkg/apis/samplecontroller/v1alpha1"
-	versioned "hidevops.io/mio/pkg/examples/samplecontroller/pkg/client/clientset/versioned"
-	internalinterfaces "hidevops.io/mio/pkg/examples/samplecontroller/pkg/client/informers/externalversions/internalinterfaces"
-	v1alpha1 "hidevops.io/mio/pkg/examples/samplecontroller/pkg/client/listers/samplecontroller/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	runtime "k8s.io/apimachinery/pkg/runtime"
-	watch "k8s.io/apimachinery/pkg/watch"
-	cache "k8s.io/client-go/tools/cache"
+	samplecontrollerv1alpha1 "hidevops.io/cube/pkg/examples/samplecontroller/pkg/apis/samplecontroller/v1alpha1"
+	"hidevops.io/cube/pkg/examples/samplecontroller/pkg/client/clientset/versioned"
+	"hidevops.io/cube/pkg/examples/samplecontroller/pkg/client/informers/externalversions/internalinterfaces"
+	"hidevops.io/cube/pkg/examples/samplecontroller/pkg/client/listers/samplecontroller/v1alpha1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/watch"
+	"k8s.io/client-go/tools/cache"
 )
 
 // FooInformer provides access to a shared informer and lister for

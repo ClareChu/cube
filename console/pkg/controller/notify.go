@@ -1,13 +1,13 @@
 package controller
 
 import (
+	"hidevops.io/cube/console/pkg/aggregate"
+	"hidevops.io/cube/console/pkg/command"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/at"
 	"hidevops.io/hiboot/pkg/model"
 	"hidevops.io/hiboot/pkg/utils/copier"
-	"hidevops.io/mio/console/pkg/aggregate"
-	"hidevops.io/mio/console/pkg/command"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
 )
 
 type NotifyController struct {

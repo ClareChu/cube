@@ -1,9 +1,9 @@
 package command
 
 import (
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/hiboot/pkg/model"
 	"hidevops.io/hioak/starter/kube"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 

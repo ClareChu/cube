@@ -2,7 +2,7 @@ package constant
 
 const (
 	BuildKind              = "Build"
-	BuildApiVersion        = "Build.mio.io/v1alpha1"
+	BuildApiVersion        = "Build.cube.io/v1alpha1"
 	CLONE                  = "clone"
 	COMPILE                = "compile"
 	BuildImage             = "buildImage"

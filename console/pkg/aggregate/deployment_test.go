@@ -3,12 +3,12 @@ package aggregate
 import (
 	"errors"
 	"github.com/magiconair/properties/assert"
-	"hidevops.io/mio/console/pkg/aggregate/mocks"
-	builder "hidevops.io/mio/console/pkg/builder/mocks"
-	"hidevops.io/mio/console/pkg/constant"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/client/clientset/versioned/fake"
-	"hidevops.io/mio/pkg/starter/mio"
+	"hidevops.io/cube/console/pkg/aggregate/mocks"
+	builder "hidevops.io/cube/console/pkg/builder/mocks"
+	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/client/clientset/versioned/fake"
+	"hidevops.io/cube/pkg/starter/cube"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"os"
 	"testing"
@@ -16,8 +16,8 @@ import (
 
 func TestDeploymentCreate(t *testing.T) {
 	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
-	clientSet := fake.NewSimpleClientset().MioV1alpha1()
-	deployment := mio.NewDeployment(clientSet)
+	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
+	deployment := cube.NewDeployment(clientSet)
 	remoteAggregate := new(mocks.RemoteAggregate)
 	deployBuilder := new(builder.DeploymentBuilder)
 	pipelineBuilder := new(builder.PipelineBuilder)
@@ -36,8 +36,8 @@ func TestDeploymentCreate(t *testing.T) {
 
 func TestDeploymentSelector(t *testing.T) {
 	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
-	clientSet := fake.NewSimpleClientset().MioV1alpha1()
-	deployment := mio.NewDeployment(clientSet)
+	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
+	deployment := cube.NewDeployment(clientSet)
 	remoteAggregate := new(mocks.RemoteAggregate)
 	deployBuilder := new(builder.DeploymentBuilder)
 	pipelineBuilder := new(builder.PipelineBuilder)

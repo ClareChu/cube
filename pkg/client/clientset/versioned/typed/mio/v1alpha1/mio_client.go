@@ -19,13 +19,13 @@ limitations under the License.
 package v1alpha1
 
 import (
-	v1alpha1 "hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/client/clientset/versioned/scheme"
-	serializer "k8s.io/apimachinery/pkg/runtime/serializer"
-	rest "k8s.io/client-go/rest"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/client/clientset/versioned/scheme"
+	"k8s.io/apimachinery/pkg/runtime/serializer"
+	"k8s.io/client-go/rest"
 )
 
-type MioV1alpha1Interface interface {
+type CubeV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	BuildsGetter
 	BuildConfigsGetter
@@ -42,65 +42,65 @@ type MioV1alpha1Interface interface {
 	TestsesGetter
 }
 
-// MioV1alpha1Client is used to interact with features provided by the mio.io group.
-type MioV1alpha1Client struct {
+// CubeV1alpha1Client is used to interact with features provided by the cube.io group.
+type CubeV1alpha1Client struct {
 	restClient rest.Interface
 }
 
-func (c *MioV1alpha1Client) Builds(namespace string) BuildInterface {
+func (c *CubeV1alpha1Client) Builds(namespace string) BuildInterface {
 	return newBuilds(c, namespace)
 }
 
-func (c *MioV1alpha1Client) BuildConfigs(namespace string) BuildConfigInterface {
+func (c *CubeV1alpha1Client) BuildConfigs(namespace string) BuildConfigInterface {
 	return newBuildConfigs(c, namespace)
 }
 
-func (c *MioV1alpha1Client) Deployments(namespace string) DeploymentInterface {
+func (c *CubeV1alpha1Client) Deployments(namespace string) DeploymentInterface {
 	return newDeployments(c, namespace)
 }
 
-func (c *MioV1alpha1Client) DeploymentConfigs(namespace string) DeploymentConfigInterface {
+func (c *CubeV1alpha1Client) DeploymentConfigs(namespace string) DeploymentConfigInterface {
 	return newDeploymentConfigs(c, namespace)
 }
 
-func (c *MioV1alpha1Client) GatewayConfigs(namespace string) GatewayConfigInterface {
+func (c *CubeV1alpha1Client) GatewayConfigs(namespace string) GatewayConfigInterface {
 	return newGatewayConfigs(c, namespace)
 }
 
-func (c *MioV1alpha1Client) ImageStreams(namespace string) ImageStreamInterface {
+func (c *CubeV1alpha1Client) ImageStreams(namespace string) ImageStreamInterface {
 	return newImageStreams(c, namespace)
 }
 
-func (c *MioV1alpha1Client) Notifies(namespace string) NotifyInterface {
+func (c *CubeV1alpha1Client) Notifies(namespace string) NotifyInterface {
 	return newNotifies(c, namespace)
 }
 
-func (c *MioV1alpha1Client) Pipelines(namespace string) PipelineInterface {
+func (c *CubeV1alpha1Client) Pipelines(namespace string) PipelineInterface {
 	return newPipelines(c, namespace)
 }
 
-func (c *MioV1alpha1Client) PipelineConfigs(namespace string) PipelineConfigInterface {
+func (c *CubeV1alpha1Client) PipelineConfigs(namespace string) PipelineConfigInterface {
 	return newPipelineConfigs(c, namespace)
 }
 
-func (c *MioV1alpha1Client) ServiceConfigs(namespace string) ServiceConfigInterface {
+func (c *CubeV1alpha1Client) ServiceConfigs(namespace string) ServiceConfigInterface {
 	return newServiceConfigs(c, namespace)
 }
 
-func (c *MioV1alpha1Client) SourceConfigs(namespace string) SourceConfigInterface {
+func (c *CubeV1alpha1Client) SourceConfigs(namespace string) SourceConfigInterface {
 	return newSourceConfigs(c, namespace)
 }
 
-func (c *MioV1alpha1Client) TestConfigs(namespace string) TestConfigInterface {
+func (c *CubeV1alpha1Client) TestConfigs(namespace string) TestConfigInterface {
 	return newTestConfigs(c, namespace)
 }
 
-func (c *MioV1alpha1Client) Testses(namespace string) TestsInterface {
+func (c *CubeV1alpha1Client) Testses(namespace string) TestsInterface {
 	return newTestses(c, namespace)
 }
 
-// NewForConfig creates a new MioV1alpha1Client for the given config.
-func NewForConfig(c *rest.Config) (*MioV1alpha1Client, error) {
+// NewForConfig creates a new CubeV1alpha1Client for the given config.
+func NewForConfig(c *rest.Config) (*CubeV1alpha1Client, error) {
 	config := *c
 	if err := setConfigDefaults(&config); err != nil {
 		return nil, err
@@ -109,12 +109,12 @@ func NewForConfig(c *rest.Config) (*MioV1alpha1Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &MioV1alpha1Client{client}, nil
+	return &CubeV1alpha1Client{client}, nil
 }
 
-// NewForConfigOrDie creates a new MioV1alpha1Client for the given config and
+// NewForConfigOrDie creates a new CubeV1alpha1Client for the given config and
 // panics if there is an error in the config.
-func NewForConfigOrDie(c *rest.Config) *MioV1alpha1Client {
+func NewForConfigOrDie(c *rest.Config) *CubeV1alpha1Client {
 	client, err := NewForConfig(c)
 	if err != nil {
 		panic(err)
@@ -122,9 +122,9 @@ func NewForConfigOrDie(c *rest.Config) *MioV1alpha1Client {
 	return client
 }
 
-// New creates a new MioV1alpha1Client for the given RESTClient.
-func New(c rest.Interface) *MioV1alpha1Client {
-	return &MioV1alpha1Client{c}
+// New creates a new CubeV1alpha1Client for the given RESTClient.
+func New(c rest.Interface) *CubeV1alpha1Client {
+	return &CubeV1alpha1Client{c}
 }
 
 func setConfigDefaults(config *rest.Config) error {
@@ -142,7 +142,7 @@ func setConfigDefaults(config *rest.Config) error {
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *MioV1alpha1Client) RESTClient() rest.Interface {
+func (c *CubeV1alpha1Client) RESTClient() rest.Interface {
 	if c == nil {
 		return nil
 	}

@@ -2,12 +2,12 @@ package controller
 
 import (
 	"errors"
+	"hidevops.io/cube/pkg/auth/service"
+	"hidevops.io/cube/pkg/auth/service/mocks"
 	"hidevops.io/hiboot/pkg/app/web"
 	"hidevops.io/hiboot/pkg/starter/jwt"
 	"hidevops.io/hiboot/pkg/utils/io"
 	"hidevops.io/hioak/starter/scm"
-	"hidevops.io/mio/pkg/auth/service"
-	"hidevops.io/mio/pkg/auth/service/mocks"
 	"net/http"
 	"net/url"
 	"testing"

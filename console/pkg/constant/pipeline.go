@@ -2,10 +2,10 @@ package constant
 
 const (
 	PipelineKind       = "Pipeline"
-	PipelineApiVersion = "Pipeline.mio.io/v1alpha1"
+	PipelineApiVersion = "Pipeline.cube.io/v1alpha1"
 	Name               = "name"
 	Number             = "number"
-	BuildConfigName    = "mio.io/buildConfig.name"
+	BuildConfigName    = "cube.io/buildConfig.name"
 	Version            = "version"
 	App                = "app"
 	Success            = "success"

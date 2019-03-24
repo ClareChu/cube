@@ -8,19 +8,19 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/src-d/go-git.v4"
+	"hidevops.io/cube/node/protobuf"
+	"hidevops.io/cube/node/service/mock"
+	cube_fake "hidevops.io/cube/pkg/client/clientset/versioned/fake"
+	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hioak/starter/docker"
 	"hidevops.io/hioak/starter/docker/fake"
-	"hidevops.io/mio/node/protobuf"
-	"hidevops.io/mio/node/service/mock"
-	mio_fake "hidevops.io/mio/pkg/client/clientset/versioned/fake"
-	"hidevops.io/mio/pkg/starter/mio"
 	"io"
 	"os"
 	"strings"
 	"testing"
 )
 
-//go:generate mockgen -destination mock/mock_build.go -package mock hidevops.io/mio/node/pkg/service BuildConfigService
+//go:generate mockgen -destination mock/mock_build.go -package mock hidevops.io/cube/node/pkg/service BuildConfigService
 
 func TestBuild(t *testing.T) {
 
@@ -146,11 +146,11 @@ func TestBuildConfigServiceImpl_Clone2(t *testing.T) {
 }
 
 func TestBuildConfigServiceImplCreateImage(t *testing.T) {
-	clientSet := mio_fake.NewSimpleClientset().MioV1alpha1()
+	clientSet := cube_fake.NewSimpleClientset().CubeV1alpha1()
 	name := "hello-world"
 	namespace := "demo"
 	tag := "v1"
-	image := mio.NewImageStream(clientSet)
+	image := cube.NewImageStream(clientSet)
 	b := newBuildService(nil, image)
 	imageSummary := docker_types.ImageSummary{
 		RepoDigests: []string{

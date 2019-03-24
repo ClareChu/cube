@@ -2,12 +2,12 @@ package aggregate
 
 import (
 	"github.com/jinzhu/copier"
+	"hidevops.io/cube/console/pkg/command"
+	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
-	"hidevops.io/mio/console/pkg/command"
-	"hidevops.io/mio/console/pkg/constant"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/starter/mio"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -19,7 +19,7 @@ type BuildConfigAggregate interface {
 
 type BuildConfig struct {
 	BuildConfigAggregate
-	buildConfigClient *mio.BuildConfig
+	buildConfigClient *cube.BuildConfig
 	buildAggregate    BuildAggregate
 }
 
@@ -27,7 +27,7 @@ func init() {
 	app.Register(NewBuildConfigService)
 }
 
-func NewBuildConfigService(buildConfigClient *mio.BuildConfig, buildAggregate BuildAggregate) BuildConfigAggregate {
+func NewBuildConfigService(buildConfigClient *cube.BuildConfig, buildAggregate BuildAggregate) BuildConfigAggregate {
 	return &BuildConfig{
 		buildConfigClient: buildConfigClient,
 		buildAggregate:    buildAggregate,

@@ -2,21 +2,21 @@ package service
 
 import (
 	"fmt"
+	cubev1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
-	miov1alpha1 "hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/starter/mio"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/watch"
 	"time"
 )
 
 type BuildConfigClient interface {
-	Create(build *miov1alpha1.Build) (config *miov1alpha1.Build, err error)
-	Get(name, namespace string) (config *miov1alpha1.Build, err error)
+	Create(build *cubev1alpha1.Build) (config *cubev1alpha1.Build, err error)
+	Get(name, namespace string) (config *cubev1alpha1.Build, err error)
 	Watch(listOptions v1.ListOptions, namespace, name string) (watch.Interface, error)
 	Delete(name, namespace string) error
-	Update(name, namespace string, config *miov1alpha1.Build) (*miov1alpha1.Build, error)
-	UpdateBuildStatus(namespace, name, eventType, status string) (*miov1alpha1.Build, error)
+	Update(name, namespace string, config *cubev1alpha1.Build) (*cubev1alpha1.Build, error)
+	UpdateBuildStatus(namespace, name, eventType, status string) (*cubev1alpha1.Build, error)
 }
 
 const (
@@ -41,26 +41,26 @@ const (
 
 type buildConfigClientImpl struct {
 	BuildConfigClient
-	build *mio.Build
+	build *cube.Build
 }
 
 func init() {
 	app.Register(newBuildConfigClient)
 }
 
-func newBuildConfigClient(build *mio.Build) BuildConfigClient {
+func newBuildConfigClient(build *cube.Build) BuildConfigClient {
 	return &buildConfigClientImpl{
 		build: build,
 	}
 }
 
-func (b *buildConfigClientImpl) Create(build *miov1alpha1.Build) (config *miov1alpha1.Build, err error) {
+func (b *buildConfigClientImpl) Create(build *cubev1alpha1.Build) (config *cubev1alpha1.Build, err error) {
 
 	config, err = b.build.Create(build)
 	return
 }
 
-func (b *buildConfigClientImpl) Get(name, namespace string) (config *miov1alpha1.Build, err error) {
+func (b *buildConfigClientImpl) Get(name, namespace string) (config *cubev1alpha1.Build, err error) {
 
 	config, err = b.build.Get(name, namespace)
 	if err != nil {
@@ -83,12 +83,12 @@ func (b *buildConfigClientImpl) Delete(name, namespace string) error {
 	return b.build.Delete(name, namespace)
 }
 
-func (b *buildConfigClientImpl) Update(name, namespace string, config *miov1alpha1.Build) (*miov1alpha1.Build, error) {
+func (b *buildConfigClientImpl) Update(name, namespace string, config *cubev1alpha1.Build) (*cubev1alpha1.Build, error) {
 	result, err := b.build.Update(name, namespace, config)
 	return result, err
 }
 
-func (b *buildConfigClientImpl) UpdateBuildStatus(namespace, name, eventType, status string) (*miov1alpha1.Build, error) {
+func (b *buildConfigClientImpl) UpdateBuildStatus(namespace, name, eventType, status string) (*cubev1alpha1.Build, error) {
 	bc, err := b.Get(name, namespace)
 	if err != nil {
 		return nil, err
@@ -97,7 +97,7 @@ func (b *buildConfigClientImpl) UpdateBuildStatus(namespace, name, eventType, st
 	bc.Status.Phase = status
 
 	if len(bc.Status.Stages) == 0 {
-		bc.Status.Stages = append(bc.Status.Stages, miov1alpha1.Stages{
+		bc.Status.Stages = append(bc.Status.Stages, cubev1alpha1.Stages{
 			Name:      eventType,
 			StartTime: time.Now().Unix()},
 		)
@@ -110,7 +110,7 @@ func (b *buildConfigClientImpl) UpdateBuildStatus(namespace, name, eventType, st
 		}
 
 		if len(bc.Status.Stages) == (i + 1) {
-			bc.Status.Stages = append(bc.Status.Stages, miov1alpha1.Stages{
+			bc.Status.Stages = append(bc.Status.Stages, cubev1alpha1.Stages{
 				Name:      eventType,
 				StartTime: time.Now().Unix()},
 			)

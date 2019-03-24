@@ -1,4 +1,4 @@
-module hidevops.io/mio
+module hidevops.io/cube
 
 go 1.12
 

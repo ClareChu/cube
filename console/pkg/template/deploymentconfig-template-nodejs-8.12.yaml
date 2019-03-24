@@ -1,4 +1,4 @@
-apiVersion: mio.io/v1alpha1
+apiVersion: cube.io/v1alpha1
 kind: DeploymentConfig
 metadata:
   name: nodejs-8

@@ -19,12 +19,12 @@ limitations under the License.
 package v1alpha1
 
 import (
-	v1alpha1 "hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	scheme "hidevops.io/mio/pkg/client/clientset/versioned/scheme"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	rest "k8s.io/client-go/rest"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/client/clientset/versioned/scheme"
+	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/watch"
+	"k8s.io/client-go/rest"
 )
 
 // TestsesGetter has a method to return a TestsInterface.
@@ -54,7 +54,7 @@ type testses struct {
 }
 
 // newTestses returns a Testses
-func newTestses(c *MioV1alpha1Client, namespace string) *testses {
+func newTestses(c *CubeV1alpha1Client, namespace string) *testses {
 	return &testses{
 		client: c.RESTClient(),
 		ns:     namespace,

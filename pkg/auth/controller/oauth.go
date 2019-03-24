@@ -2,12 +2,12 @@ package controller
 
 import (
 	"errors"
+	"hidevops.io/cube/pkg/auth/service"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/at"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/model"
 	"hidevops.io/hiboot/pkg/starter/jwt"
-	"hidevops.io/mio/pkg/auth/service"
 	"net/http"
 	"net/url"
 	"time"
@@ -30,9 +30,9 @@ func init() {
 
 func newOauthController(token jwt.Token, oauthService service.OauthService, loginService service.LoginService, sessionInterface service.SessionInterface) *oauthController {
 	return &oauthController{
-		token:          token,
-		oauthService:   oauthService,
-		loginService:   loginService,
+		token:            token,
+		oauthService:     oauthService,
+		loginService:     loginService,
 		sessionInterface: sessionInterface,
 	}
 }

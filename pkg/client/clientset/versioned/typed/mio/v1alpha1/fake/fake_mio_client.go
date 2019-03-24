@@ -19,70 +19,70 @@ limitations under the License.
 package fake
 
 import (
-	v1alpha1 "hidevops.io/mio/pkg/client/clientset/versioned/typed/mio/v1alpha1"
-	rest "k8s.io/client-go/rest"
-	testing "k8s.io/client-go/testing"
+	"hidevops.io/cube/pkg/client/clientset/versioned/typed/cube/v1alpha1"
+	"k8s.io/client-go/rest"
+	"k8s.io/client-go/testing"
 )
 
-type FakeMioV1alpha1 struct {
+type FakeCubeV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeMioV1alpha1) Builds(namespace string) v1alpha1.BuildInterface {
+func (c *FakeCubeV1alpha1) Builds(namespace string) v1alpha1.BuildInterface {
 	return &FakeBuilds{c, namespace}
 }
 
-func (c *FakeMioV1alpha1) BuildConfigs(namespace string) v1alpha1.BuildConfigInterface {
+func (c *FakeCubeV1alpha1) BuildConfigs(namespace string) v1alpha1.BuildConfigInterface {
 	return &FakeBuildConfigs{c, namespace}
 }
 
-func (c *FakeMioV1alpha1) Deployments(namespace string) v1alpha1.DeploymentInterface {
+func (c *FakeCubeV1alpha1) Deployments(namespace string) v1alpha1.DeploymentInterface {
 	return &FakeDeployments{c, namespace}
 }
 
-func (c *FakeMioV1alpha1) DeploymentConfigs(namespace string) v1alpha1.DeploymentConfigInterface {
+func (c *FakeCubeV1alpha1) DeploymentConfigs(namespace string) v1alpha1.DeploymentConfigInterface {
 	return &FakeDeploymentConfigs{c, namespace}
 }
 
-func (c *FakeMioV1alpha1) GatewayConfigs(namespace string) v1alpha1.GatewayConfigInterface {
+func (c *FakeCubeV1alpha1) GatewayConfigs(namespace string) v1alpha1.GatewayConfigInterface {
 	return &FakeGatewayConfigs{c, namespace}
 }
 
-func (c *FakeMioV1alpha1) ImageStreams(namespace string) v1alpha1.ImageStreamInterface {
+func (c *FakeCubeV1alpha1) ImageStreams(namespace string) v1alpha1.ImageStreamInterface {
 	return &FakeImageStreams{c, namespace}
 }
 
-func (c *FakeMioV1alpha1) Notifies(namespace string) v1alpha1.NotifyInterface {
+func (c *FakeCubeV1alpha1) Notifies(namespace string) v1alpha1.NotifyInterface {
 	return &FakeNotifies{c, namespace}
 }
 
-func (c *FakeMioV1alpha1) Pipelines(namespace string) v1alpha1.PipelineInterface {
+func (c *FakeCubeV1alpha1) Pipelines(namespace string) v1alpha1.PipelineInterface {
 	return &FakePipelines{c, namespace}
 }
 
-func (c *FakeMioV1alpha1) PipelineConfigs(namespace string) v1alpha1.PipelineConfigInterface {
+func (c *FakeCubeV1alpha1) PipelineConfigs(namespace string) v1alpha1.PipelineConfigInterface {
 	return &FakePipelineConfigs{c, namespace}
 }
 
-func (c *FakeMioV1alpha1) ServiceConfigs(namespace string) v1alpha1.ServiceConfigInterface {
+func (c *FakeCubeV1alpha1) ServiceConfigs(namespace string) v1alpha1.ServiceConfigInterface {
 	return &FakeServiceConfigs{c, namespace}
 }
 
-func (c *FakeMioV1alpha1) SourceConfigs(namespace string) v1alpha1.SourceConfigInterface {
+func (c *FakeCubeV1alpha1) SourceConfigs(namespace string) v1alpha1.SourceConfigInterface {
 	return &FakeSourceConfigs{c, namespace}
 }
 
-func (c *FakeMioV1alpha1) TestConfigs(namespace string) v1alpha1.TestConfigInterface {
+func (c *FakeCubeV1alpha1) TestConfigs(namespace string) v1alpha1.TestConfigInterface {
 	return &FakeTestConfigs{c, namespace}
 }
 
-func (c *FakeMioV1alpha1) Testses(namespace string) v1alpha1.TestsInterface {
+func (c *FakeCubeV1alpha1) Testses(namespace string) v1alpha1.TestsInterface {
 	return &FakeTestses{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *FakeMioV1alpha1) RESTClient() rest.Interface {
+func (c *FakeCubeV1alpha1) RESTClient() rest.Interface {
 	var ret *rest.RESTClient
 	return ret
 }

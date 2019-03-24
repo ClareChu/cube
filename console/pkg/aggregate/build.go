@@ -4,16 +4,16 @@ import (
 	"errors"
 	"fmt"
 	"github.com/jinzhu/copier"
+	"hidevops.io/cube/console/pkg/builder"
+	"hidevops.io/cube/console/pkg/command"
+	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/console/pkg/service"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/utils/idgen"
 	"hidevops.io/hioak/starter/kube"
-	"hidevops.io/mio/console/pkg/builder"
-	"hidevops.io/mio/console/pkg/command"
-	"hidevops.io/mio/console/pkg/constant"
-	"hidevops.io/mio/console/pkg/service"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/starter/mio"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/watch"
@@ -40,7 +40,7 @@ type BuildAggregate interface {
 
 type Build struct {
 	BuildAggregate
-	buildClient                    *mio.Build
+	buildClient                    *cube.Build
 	buildConfigService             service.BuildConfigService
 	buildNode                      builder.BuildNode
 	pod                            *kube.Pod
@@ -54,7 +54,7 @@ func init() {
 	app.Register(NewBuildService)
 }
 
-func NewBuildService(configMaps *kube.ConfigMaps, buildClient *mio.Build, buildConfigService service.BuildConfigService, buildNode builder.BuildNode, pod *kube.Pod, pipelineBuilder builder.PipelineBuilder, replicationControllerAggregate ReplicationControllerAggregate, serviceConfigAggregate ServiceConfigAggregate) BuildAggregate {
+func NewBuildService(configMaps *kube.ConfigMaps, buildClient *cube.Build, buildConfigService service.BuildConfigService, buildNode builder.BuildNode, pod *kube.Pod, pipelineBuilder builder.PipelineBuilder, replicationControllerAggregate ReplicationControllerAggregate, serviceConfigAggregate ServiceConfigAggregate) BuildAggregate {
 	return &Build{
 		configMaps:                     configMaps,
 		buildClient:                    buildClient,

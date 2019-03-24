@@ -2,8 +2,8 @@ package aggregate
 
 import (
 	"github.com/magiconair/properties/assert"
+	"hidevops.io/cube/console/pkg/command"
 	"hidevops.io/hioak/starter/kube"
-	"hidevops.io/mio/console/pkg/command"
 	"k8s.io/client-go/kubernetes/fake"
 	"testing"
 )

@@ -19,24 +19,24 @@ limitations under the License.
 package fake
 
 import (
-	v1alpha1 "hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/labels"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/watch"
+	"k8s.io/client-go/testing"
 )
 
 // FakeSourceConfigs implements SourceConfigInterface
 type FakeSourceConfigs struct {
-	Fake *FakeMioV1alpha1
+	Fake *FakeCubeV1alpha1
 	ns   string
 }
 
-var sourceconfigsResource = schema.GroupVersionResource{Group: "mio.io", Version: "v1alpha1", Resource: "sourceconfigs"}
+var sourceconfigsResource = schema.GroupVersionResource{Group: "cube.io", Version: "v1alpha1", Resource: "sourceconfigs"}
 
-var sourceconfigsKind = schema.GroupVersionKind{Group: "mio.io", Version: "v1alpha1", Kind: "SourceConfig"}
+var sourceconfigsKind = schema.GroupVersionKind{Group: "cube.io", Version: "v1alpha1", Kind: "SourceConfig"}
 
 // Get takes name of the sourceConfig, and returns the corresponding sourceConfig object, and an error if there is any.
 func (c *FakeSourceConfigs) Get(name string, options v1.GetOptions) (result *v1alpha1.SourceConfig, err error) {

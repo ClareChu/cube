@@ -3,12 +3,12 @@ package service
 import (
 	"context"
 	"github.com/jinzhu/copier"
+	"hidevops.io/cube/console/pkg/command"
+	"hidevops.io/cube/console/pkg/protobuf"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/starter/grpc"
 	"hidevops.io/hiboot/pkg/utils/idgen"
-	"hidevops.io/mio/console/pkg/command"
-	"hidevops.io/mio/console/pkg/protobuf"
 	"time"
 )
 

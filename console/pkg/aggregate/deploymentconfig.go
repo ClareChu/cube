@@ -1,15 +1,15 @@
 package aggregate
 
 import (
+	"hidevops.io/cube/console/pkg/builder"
+	"hidevops.io/cube/console/pkg/command"
+	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/utils/copier"
 	"hidevops.io/hioak/starter/kube"
-	"hidevops.io/mio/console/pkg/builder"
-	"hidevops.io/mio/console/pkg/command"
-	"hidevops.io/mio/console/pkg/constant"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/starter/mio"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -20,7 +20,7 @@ type DeploymentConfigAggregate interface {
 
 type DeploymentConfig struct {
 	DeploymentConfigAggregate
-	deploymentConfigClient *mio.DeploymentConfig
+	deploymentConfigClient *cube.DeploymentConfig
 	deployment             *kube.Deployment
 	pipelineBuilder        builder.PipelineBuilder
 	deploymentAggregate    DeploymentAggregate
@@ -30,7 +30,7 @@ func init() {
 	app.Register(NewDeploymentConfigService)
 }
 
-func NewDeploymentConfigService(deploymentConfigClient *mio.DeploymentConfig, deployment *kube.Deployment, pipelineBuilder builder.PipelineBuilder, deploymentAggregate DeploymentAggregate) DeploymentConfigAggregate {
+func NewDeploymentConfigService(deploymentConfigClient *cube.DeploymentConfig, deployment *kube.Deployment, pipelineBuilder builder.PipelineBuilder, deploymentAggregate DeploymentAggregate) DeploymentConfigAggregate {
 	return &DeploymentConfig{
 		deploymentConfigClient: deploymentConfigClient,
 		deployment:             deployment,

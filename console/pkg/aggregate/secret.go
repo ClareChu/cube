@@ -1,10 +1,10 @@
 package aggregate
 
 import (
+	"hidevops.io/cube/console/pkg/command"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hioak/starter/kube"
-	"hidevops.io/mio/console/pkg/command"
 	corev1 "k8s.io/api/core/v1"
 )
 

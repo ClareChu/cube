@@ -19,13 +19,13 @@
 package main
 
 import (
+	_ "hidevops.io/cube/console/pkg/controller"
+	_ "hidevops.io/cube/console/pkg/rpc"
+	_ "hidevops.io/cube/console/pkg/service"
+	_ "hidevops.io/cube/pkg/auth/controller"
 	"hidevops.io/hiboot/pkg/app/web"
 	_ "hidevops.io/hiboot/pkg/starter/actuator"
 	_ "hidevops.io/hiboot/pkg/starter/locale"
-	_ "hidevops.io/mio/console/pkg/controller"
-	_ "hidevops.io/mio/console/pkg/rpc"
-	_ "hidevops.io/mio/console/pkg/service"
-	_ "hidevops.io/mio/pkg/auth/controller"
 )
 
 // main

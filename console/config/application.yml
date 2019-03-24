@@ -2,14 +2,14 @@
 
 app:
   project: hidevopsio
-  name: mio-console
+  name: cube-console
   profiles:
     include:
     - jwt
     - grpc
     - etcd
     - kube
-    - mio
+    - cube
     - locale
     - docker
     - websocket

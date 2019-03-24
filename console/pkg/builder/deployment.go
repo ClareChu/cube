@@ -3,11 +3,11 @@ package builder
 import (
 	"fmt"
 	"github.com/prometheus/common/log"
+	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hioak/starter/kube"
-	"hidevops.io/mio/console/pkg/constant"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/starter/mio"
 	"time"
 )
 
@@ -18,16 +18,16 @@ type DeploymentBuilder interface {
 
 type Deployment struct {
 	DeploymentBuilder
-	deploymentClient *mio.Deployment
+	deploymentClient *cube.Deployment
 	deployment       *kube.Deployment
-	imageStream      *mio.ImageStream
+	imageStream      *cube.ImageStream
 }
 
 func init() {
 	app.Register(newDeploymentService)
 }
 
-func newDeploymentService(deploymentClient *mio.Deployment, deployment *kube.Deployment, imageStream *mio.ImageStream) DeploymentBuilder {
+func newDeploymentService(deploymentClient *cube.Deployment, deployment *kube.Deployment, imageStream *cube.ImageStream) DeploymentBuilder {
 	return &Deployment{
 		deploymentClient: deploymentClient,
 		deployment:       deployment,
@@ -93,7 +93,6 @@ func (d *Deployment) CreateApp(deploy *v1alpha1.Deployment) error {
 	log.Debugf("create app update pipeline :name %v,namespace %v,deploy %v, type:%v, error %v", deploy.Name, deploy.Namespace, constant.Deploy, phase, err)
 	return err
 }
-
 
 func GetNamespace(space, profile string) string {
 	if profile == "" {

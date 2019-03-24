@@ -16,7 +16,7 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "io.devops.mio/node.buildconfig";
+option java_package = "io.devops.cube/node.buildconfig";
 option java_outer_classname = "BuildConfigProto";
 
 // target package name
@@ -25,23 +25,29 @@ package protobuf;
 // The greeting service definition.
 service BuildConfigService {
 
-    rpc SourceCodePull (SourceCodePullRequest) returns (SourceCodePullResponse) {}
-    rpc Compile (CompileRequest) returns (CompileResponse) {}
-    rpc ImageBuild (ImageBuildRequest) returns (ImageBuildResponse) {}
-    rpc ImagePush (ImagePushRequest) returns (ImagePushResponse) {}
-    rpc test (TestsRequest) returns (TestsResponse) {}
-    rpc command (CommandRequest) returns (CommandResponse) {}
+    rpc SourceCodePull (SourceCodePullRequest) returns (SourceCodePullResponse) {
+    }
+    rpc Compile (CompileRequest) returns (CompileResponse) {
+    }
+    rpc ImageBuild (ImageBuildRequest) returns (ImageBuildResponse) {
+    }
+    rpc ImagePush (ImagePushRequest) returns (ImagePushResponse) {
+    }
+    rpc test (TestsRequest) returns (TestsResponse) {
+    }
+    rpc command (CommandRequest) returns (CommandResponse) {
+    }
 }
 //rpc command (CommandRequest) returns (CommandResponse) {}
 //SourceCodePull
 message SourceCodePullRequest {
     string cloneType = 1;
-    string url       = 2;
-    string branch    = 3;
-    string dstDir    = 4;
-    string username  = 5;
-    string password  = 6;
-    int32  depth =7;
+    string url = 2;
+    string branch = 3;
+    string dstDir = 4;
+    string username = 5;
+    string password = 6;
+    int32 depth = 7;
     string namespace = 8;
     string name = 9;
     string token = 10;
@@ -55,14 +61,14 @@ message SourceCodePullResponse {
 
 //Compile
 message CompileRequest {
-    repeated BuildCommand CompileCmd  = 1;
+    repeated BuildCommand CompileCmd = 1;
     string namespace = 2;
     string name = 3;
 }
 message BuildCommand {
-    string codeType   = 1;
-    string execType    = 2;
-    string script   = 3;
+    string codeType = 1;
+    string execType = 2;
+    string script = 3;
     string commandName = 4;
     repeated string params = 5;
 }
@@ -75,10 +81,10 @@ message CompileResponse {
 
 //imageBuild
 message ImageBuildRequest {
-    string app                  = 1;
-    string s2iImage             = 2;
-    repeated string tags        = 3;
-    repeated string dockerFile  = 4;
+    string app = 1;
+    string s2iImage = 2;
+    repeated string tags = 3;
+    repeated string dockerFile = 4;
     string namespace = 5;
     string name = 6;
     string username = 7;
@@ -93,7 +99,7 @@ message ImageBuildResponse {
 
 //imagePush
 message ImagePushRequest {
-    repeated string tags    = 1;
+    repeated string tags = 1;
     string namespace = 2;
     string name = 3;
     string username = 4;
@@ -103,23 +109,22 @@ message ImagePushRequest {
 }
 
 message ImagePushResponse {
-    int32 code =1;
+    int32 code = 1;
     string message = 2;
     ImagePushRequest data = 3;
 }
 
-
 //test
 message TestCommand {
-    string execType    = 1;
-    string script   = 2;
+    string execType = 1;
+    string script = 2;
     string commandName = 3;
     repeated string Params = 4;
 }
 
 message TestsRequest {
-    repeated TestCommand TestCmd  = 1;
-    string codeType   = 2;
+    repeated TestCommand TestCmd = 1;
+    string codeType = 2;
     string namespace = 3;
     string name = 4;
 }
@@ -132,15 +137,15 @@ message TestsResponse {
 
 //command
 message Command {
-    string execType    = 1;
-    string script   = 2;
+    string execType = 1;
+    string script = 2;
     string commandName = 3;
     repeated string Params = 4;
 }
 
 message CommandRequest {
-    repeated Command CommandList  = 1;
-    string codeType   = 2;
+    repeated Command CommandList = 1;
+    string codeType = 2;
     string namespace = 3;
     string name = 4;
 }

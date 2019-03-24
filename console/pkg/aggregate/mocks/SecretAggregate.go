@@ -2,7 +2,7 @@
 
 package mocks
 
-import command "hidevops.io/mio/console/pkg/command"
+import command "hidevops.io/cube/console/pkg/command"
 import mock "github.com/stretchr/testify/mock"
 import v1 "k8s.io/api/core/v1"
 

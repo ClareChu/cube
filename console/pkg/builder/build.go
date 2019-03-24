@@ -2,11 +2,11 @@ package builder
 
 import (
 	"fmt"
+	"hidevops.io/cube/console/pkg/command"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hioak/starter"
 	"hidevops.io/hioak/starter/kube"
-	"hidevops.io/mio/console/pkg/command"
 	"k8s.io/api/extensions/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )

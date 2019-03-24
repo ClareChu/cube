@@ -19,10 +19,10 @@
 package main
 
 import (
+	_ "hidevops.io/cube/node/rpc"
+	_ "hidevops.io/cube/node/service"
 	"hidevops.io/hiboot/pkg/app/web"
 	_ "hidevops.io/hiboot/pkg/starter/actuator"
-	_ "hidevops.io/mio/node/rpc"
-	_ "hidevops.io/mio/node/service"
 )
 
 // main

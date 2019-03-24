@@ -3,19 +3,19 @@ package aggregate
 import (
 	"errors"
 	"github.com/magiconair/properties/assert"
-	aggregate "hidevops.io/mio/console/pkg/aggregate/mocks"
-	builder "hidevops.io/mio/console/pkg/builder/mocks"
-	"hidevops.io/mio/console/pkg/constant"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/client/clientset/versioned/fake"
-	"hidevops.io/mio/pkg/starter/mio"
+	aggregate "hidevops.io/cube/console/pkg/aggregate/mocks"
+	builder "hidevops.io/cube/console/pkg/builder/mocks"
+	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/client/clientset/versioned/fake"
+	"hidevops.io/cube/pkg/starter/cube"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"testing"
 )
 
 func TestPipelineCreate(t *testing.T) {
-	clientSet := fake.NewSimpleClientset().MioV1alpha1()
-	pipelineClient := mio.NewPipeline(clientSet)
+	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
+	pipelineClient := cube.NewPipeline(clientSet)
 	bca := new(aggregate.BuildConfigAggregate)
 	dca := new(aggregate.DeploymentConfigAggregate)
 	sa := new(aggregate.ServiceConfigAggregate)
@@ -33,8 +33,8 @@ func TestPipelineCreate(t *testing.T) {
 }
 
 func TestPipelineSelector(t *testing.T) {
-	clientSet := fake.NewSimpleClientset().MioV1alpha1()
-	pipelineClient := mio.NewPipeline(clientSet)
+	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
+	pipelineClient := cube.NewPipeline(clientSet)
 	bca := new(aggregate.BuildConfigAggregate)
 	dca := new(aggregate.DeploymentConfigAggregate)
 	sa := new(aggregate.ServiceConfigAggregate)

@@ -23,9 +23,9 @@ import (
 	sync "sync"
 	time "time"
 
-	versioned "hidevops.io/mio/pkg/client/clientset/versioned"
-	internalinterfaces "hidevops.io/mio/pkg/client/informers/externalversions/internalinterfaces"
-	mio "hidevops.io/mio/pkg/client/informers/externalversions/mio"
+	versioned "hidevops.io/cube/pkg/client/clientset/versioned"
+	cube "hidevops.io/cube/pkg/client/informers/externalversions/cube"
+	internalinterfaces "hidevops.io/cube/pkg/client/informers/externalversions/internalinterfaces"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -123,9 +123,9 @@ type SharedInformerFactory interface {
 	ForResource(resource schema.GroupVersionResource) (GenericInformer, error)
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
 
-	Mio() mio.Interface
+	Cube() cube.Interface
 }
 
-func (f *sharedInformerFactory) Mio() mio.Interface {
-	return mio.New(f, f.namespace, f.tweakListOptions)
+func (f *sharedInformerFactory) Cube() cube.Interface {
+	return cube.New(f, f.namespace, f.tweakListOptions)
 }

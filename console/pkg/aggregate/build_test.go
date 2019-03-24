@@ -3,15 +3,15 @@ package aggregate
 import (
 	"errors"
 	"github.com/magiconair/properties/assert"
+	"hidevops.io/cube/console/pkg/aggregate/mocks"
+	builder "hidevops.io/cube/console/pkg/builder/mocks"
+	"hidevops.io/cube/console/pkg/command"
+	"hidevops.io/cube/console/pkg/constant"
+	service "hidevops.io/cube/console/pkg/service/mocks"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/client/clientset/versioned/fake"
+	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hioak/starter/kube"
-	"hidevops.io/mio/console/pkg/aggregate/mocks"
-	builder "hidevops.io/mio/console/pkg/builder/mocks"
-	"hidevops.io/mio/console/pkg/command"
-	"hidevops.io/mio/console/pkg/constant"
-	service "hidevops.io/mio/console/pkg/service/mocks"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	"hidevops.io/mio/pkg/client/clientset/versioned/fake"
-	"hidevops.io/mio/pkg/starter/mio"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	kubeFake "k8s.io/client-go/kubernetes/fake"
 	"os"
@@ -20,8 +20,8 @@ import (
 
 func TestBuildCreate(t *testing.T) {
 	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
-	clientSet := fake.NewSimpleClientset().MioV1alpha1()
-	build := mio.NewBuild(clientSet)
+	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
+	build := cube.NewBuild(clientSet)
 	buildConfigService := new(service.BuildConfigService)
 	buildNode := new(builder.BuildNode)
 	client := kubeFake.NewSimpleClientset()
@@ -42,8 +42,8 @@ func TestBuildCreate(t *testing.T) {
 
 func TestBuildCompile(t *testing.T) {
 	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
-	clientSet := fake.NewSimpleClientset().MioV1alpha1()
-	build := mio.NewBuild(clientSet)
+	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
+	build := cube.NewBuild(clientSet)
 	buildConfigService := new(service.BuildConfigService)
 	buildNode := new(builder.BuildNode)
 	client := kubeFake.NewSimpleClientset()
@@ -71,8 +71,8 @@ func TestBuildCompile(t *testing.T) {
 
 func TestBuild_ImageBuild(t *testing.T) {
 	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
-	clientSet := fake.NewSimpleClientset().MioV1alpha1()
-	build := mio.NewBuild(clientSet)
+	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
+	build := cube.NewBuild(clientSet)
 	buildConfigService := new(service.BuildConfigService)
 	buildNode := new(builder.BuildNode)
 	client := kubeFake.NewSimpleClientset()
@@ -111,8 +111,8 @@ func TestBuild_ImageBuild(t *testing.T) {
 
 func TestBuild_ImagePush(t *testing.T) {
 	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
-	clientSet := fake.NewSimpleClientset().MioV1alpha1()
-	build := mio.NewBuild(clientSet)
+	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
+	build := cube.NewBuild(clientSet)
 	buildConfigService := new(service.BuildConfigService)
 	buildNode := new(builder.BuildNode)
 	client := kubeFake.NewSimpleClientset()
@@ -135,7 +135,7 @@ func TestBuild_ImagePush(t *testing.T) {
 	}
 	buildConfigService.On("SourceCodePull", "hello-world.demo.svc", "7575", cmd).Return(nil)
 	data := map[string]string{
-		constant.GitlabConstant:"",
+		constant.GitlabConstant: "",
 	}
 	configMaps.Create(constant.GitlabConstant, constant.TemplateDefaultNamespace, data)
 	err := buildAggregate.SourceCodePull(build1)
@@ -144,8 +144,8 @@ func TestBuild_ImagePush(t *testing.T) {
 
 func TestBuildCreateService(t *testing.T) {
 	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
-	clientSet := fake.NewSimpleClientset().MioV1alpha1()
-	build := mio.NewBuild(clientSet)
+	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
+	build := cube.NewBuild(clientSet)
 	buildConfigService := new(service.BuildConfigService)
 	buildNode := new(builder.BuildNode)
 	client := kubeFake.NewSimpleClientset()
@@ -176,8 +176,8 @@ func TestBuildCreateService(t *testing.T) {
 
 func TestBuildDeployNode(t *testing.T) {
 	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
-	clientSet := fake.NewSimpleClientset().MioV1alpha1()
-	build := mio.NewBuild(clientSet)
+	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
+	build := cube.NewBuild(clientSet)
 	buildConfigService := new(service.BuildConfigService)
 	buildNode := new(builder.BuildNode)
 	client := kubeFake.NewSimpleClientset()
@@ -214,8 +214,8 @@ func TestBuildDeployNode(t *testing.T) {
 
 func TestBuildDeleteNode(t *testing.T) {
 	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
-	clientSet := fake.NewSimpleClientset().MioV1alpha1()
-	build := mio.NewBuild(clientSet)
+	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
+	build := cube.NewBuild(clientSet)
 	buildConfigService := new(service.BuildConfigService)
 	buildNode := new(builder.BuildNode)
 	client := kubeFake.NewSimpleClientset()
@@ -243,8 +243,8 @@ func TestBuildDeleteNode(t *testing.T) {
 
 func TestBuildSelector(t *testing.T) {
 	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
-	clientSet := fake.NewSimpleClientset().MioV1alpha1()
-	build := mio.NewBuild(clientSet)
+	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
+	build := cube.NewBuild(clientSet)
 	buildConfigService := new(service.BuildConfigService)
 	buildNode := new(builder.BuildNode)
 	client := kubeFake.NewSimpleClientset()
@@ -298,7 +298,7 @@ func TestBuildSelector(t *testing.T) {
 	serviceCommand := &command.ServiceNode{}
 	buildNode.On("CreateServiceNode", serviceCommand).Return(nil)
 	err = buildAggregate.Selector(b)
-	assert.Equal(t, "builds.mio.io \"\" not found", err.Error())
+	assert.Equal(t, "builds.cube.io \"\" not found", err.Error())
 	b = &v1alpha1.Build{
 		Spec: v1alpha1.BuildSpec{
 			Tasks: []v1alpha1.Task{
@@ -365,7 +365,7 @@ func TestBuildSelector(t *testing.T) {
 			},
 		},
 	}
-	buildCommand := &command.CompileCommand{CompileCmd:[]*command.BuildCommand(nil), Namespace:"", Name:""}
+	buildCommand := &command.CompileCommand{CompileCmd: []*command.BuildCommand(nil), Namespace: "", Name: ""}
 	buildConfigService.On("Compile", "..svc", "7575", buildCommand).Return(errors.New("1"))
 	err = buildAggregate.Selector(b)
 	assert.Equal(t, "1", err.Error())
@@ -411,7 +411,7 @@ func TestBuildSelector(t *testing.T) {
 			},
 		},
 	}
-	imageBuildCommand := &command.ImageBuildCommand{App:"", S2IImage:"", Tags:[]string{":", ":latest"}, DockerFile:[]string(nil)}
+	imageBuildCommand := &command.ImageBuildCommand{App: "", S2IImage: "", Tags: []string{":", ":latest"}, DockerFile: []string(nil)}
 	buildConfigService.On("ImageBuild", "..svc", "7575", imageBuildCommand).Return(errors.New("1"))
 	err = buildAggregate.Selector(b)
 	assert.Equal(t, "1", err.Error())
@@ -463,7 +463,7 @@ func TestBuildSelector(t *testing.T) {
 			},
 		},
 	}
-	imagePushCommand := &command.ImagePushCommand{Tags:[]string{":", ":latest"}}
+	imagePushCommand := &command.ImagePushCommand{Tags: []string{":", ":latest"}}
 	buildConfigService.On("ImagePush", "..svc", "7575", imagePushCommand).Return(errors.New("1"))
 	err = buildAggregate.Selector(b)
 	assert.Equal(t, "1", err.Error())
@@ -524,5 +524,5 @@ func TestBuildSelector(t *testing.T) {
 	buildNode.On("DeleteDeployment", "", "").Return(nil)
 	serviceAggregate.On("DeleteService", "", "").Return(nil)
 	err = buildAggregate.Selector(b)
-	assert.Equal(t, "builds.mio.io \"\" not found", err.Error())
+	assert.Equal(t, "builds.cube.io \"\" not found", err.Error())
 }

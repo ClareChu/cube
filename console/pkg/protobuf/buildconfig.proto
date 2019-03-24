@@ -32,11 +32,11 @@ service BuildConfigService {
     }
     rpc ImagePush (ImagePushRequest) returns (ImagePushResponse) {
     }
-//    add
-//    rpc test (TestsRequest) returns (TestsResponse) {
-//    }
-//    rpc command (CommandRequest) returns (CommandResponse) {
-//    }
+    //    add
+    //    rpc test (TestsRequest) returns (TestsResponse) {
+    //    }
+    //    rpc command (CommandRequest) returns (CommandResponse) {
+    //    }
 }
 
 //SourceCodePull
@@ -113,18 +113,17 @@ message ImagePushResponse {
     ImagePushRequest data = 3;
 }
 
-
 //test
 message TestCommand {
-    string execType    = 1;
-    string script   = 2;
+    string execType = 1;
+    string script = 2;
     string commandName = 3;
     repeated string Params = 4;
 }
 
 message TestsRequest {
-    repeated TestCommand TestCmd  = 1;
-    string codeType   = 2;
+    repeated TestCommand TestCmd = 1;
+    string codeType = 2;
     string namespace = 3;
     string name = 4;
 }
@@ -137,15 +136,15 @@ message TestsResponse {
 
 //command
 message Command {
-    string execType    = 1;
-    string script   = 2;
+    string execType = 1;
+    string script = 2;
     string commandName = 3;
     repeated string Params = 4;
 }
 
 message CommandRequest {
-    repeated Command CommandList  = 1;
-    string codeType   = 2;
+    repeated Command CommandList = 1;
+    string codeType = 2;
     string namespace = 3;
     string name = 4;
 }

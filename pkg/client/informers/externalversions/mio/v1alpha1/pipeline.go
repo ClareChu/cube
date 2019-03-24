@@ -19,16 +19,16 @@ limitations under the License.
 package v1alpha1
 
 import (
-	time "time"
+	"time"
 
-	miov1alpha1 "hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	versioned "hidevops.io/mio/pkg/client/clientset/versioned"
-	internalinterfaces "hidevops.io/mio/pkg/client/informers/externalversions/internalinterfaces"
-	v1alpha1 "hidevops.io/mio/pkg/client/listers/mio/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	runtime "k8s.io/apimachinery/pkg/runtime"
-	watch "k8s.io/apimachinery/pkg/watch"
-	cache "k8s.io/client-go/tools/cache"
+	cubev1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/client/clientset/versioned"
+	"hidevops.io/cube/pkg/client/informers/externalversions/internalinterfaces"
+	"hidevops.io/cube/pkg/client/listers/cube/v1alpha1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/watch"
+	"k8s.io/client-go/tools/cache"
 )
 
 // PipelineInformer provides access to a shared informer and lister for
@@ -61,16 +61,16 @@ func NewFilteredPipelineInformer(client versioned.Interface, namespace string, r
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.MioV1alpha1().Pipelines(namespace).List(options)
+				return client.CubeV1alpha1().Pipelines(namespace).List(options)
 			},
 			WatchFunc: func(options v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.MioV1alpha1().Pipelines(namespace).Watch(options)
+				return client.CubeV1alpha1().Pipelines(namespace).Watch(options)
 			},
 		},
-		&miov1alpha1.Pipeline{},
+		&cubev1alpha1.Pipeline{},
 		resyncPeriod,
 		indexers,
 	)
@@ -81,7 +81,7 @@ func (f *pipelineInformer) defaultInformer(client versioned.Interface, resyncPer
 }
 
 func (f *pipelineInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&miov1alpha1.Pipeline{}, f.defaultInformer)
+	return f.factory.InformerFor(&cubev1alpha1.Pipeline{}, f.defaultInformer)
 }
 
 func (f *pipelineInformer) Lister() v1alpha1.PipelineLister {

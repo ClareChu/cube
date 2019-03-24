@@ -2,13 +2,13 @@ package aggregate
 
 import (
 	"fmt"
+	"hidevops.io/cube/console/pkg/builder"
+	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hioak/starter/docker"
 	"hidevops.io/hioak/starter/kube"
-	"hidevops.io/mio/console/pkg/builder"
-	"hidevops.io/mio/console/pkg/constant"
-	"hidevops.io/mio/pkg/apis/mio/v1alpha1"
 	"os"
 )
 
@@ -24,9 +24,9 @@ func init() {
 
 type Remote struct {
 	RemoteAggregate
-	imageClient             *docker.ImageClient
-	token                   kube.Token
-	deploymentBuilder       builder.DeploymentBuilder
+	imageClient       *docker.ImageClient
+	token             kube.Token
+	deploymentBuilder builder.DeploymentBuilder
 }
 
 func NewRemoteService(imageClient *docker.ImageClient, token kube.Token, deploymentBuilder builder.DeploymentBuilder) RemoteAggregate {
