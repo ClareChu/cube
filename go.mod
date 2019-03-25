@@ -11,7 +11,7 @@ require (
 	github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc
 	github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf
 	github.com/aymerick/raymond v2.0.2+incompatible
-	github.com/coreos/etcd v3.3.10+incompatible
+	github.com/coreos/etcd v3.3.9+incompatible
 	github.com/davecgh/go-spew v1.1.1
 	github.com/deckarep/golang-set v1.7.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
@@ -36,7 +36,7 @@ require (
 	github.com/googleapis/gnostic v0.2.0
 	github.com/gorilla/websocket v1.4.0
 	github.com/hashicorp/go-version v1.0.0
-	github.com/hashicorp/golang-lru v0.5.0
+	github.com/hashicorp/golang-lru v0.0.0-20180830032955-20f1fb78b074
 	github.com/hashicorp/hcl v1.0.0
 	github.com/howeyc/gopass v0.0.0-20170109162249-bf9dde6d0d2c
 	github.com/imdario/mergo v0.3.6
@@ -55,10 +55,10 @@ require (
 	github.com/kataras/iris v11.0.3+incompatible
 	github.com/kataras/pio v0.0.0-20180511174041-a9733b5b6b83
 	github.com/kataras/survey v2.0.0+incompatible
-	github.com/kevholditch/gokong v0.0.1
+	github.com/kevholditch/gokong v0.0.0-20180514071818-ab1e75d5f714
 	github.com/kevinburke/ssh_config v0.0.0-20180830205328-81db2a75821e
-	github.com/klauspost/compress v1.4.1
-	github.com/klauspost/cpuid v1.2.0
+	github.com/klauspost/compress v1.4.0
+	github.com/klauspost/cpuid v0.0.0-20180405133222-e7e905edc00e
 	github.com/konsorten/go-windows-terminal-sequences v1.0.1
 	github.com/magiconair/properties v1.8.0
 	github.com/mattn/go-colorable v0.0.9
@@ -72,7 +72,7 @@ require (
 	github.com/moul/http2curl v1.0.0
 	github.com/openshift/api v3.9.0+incompatible
 	github.com/openshift/client-go v3.9.0+incompatible
-	github.com/parnurzeal/gorequest v0.2.15
+	github.com/parnurzeal/gorequest v0.0.0-20170220172057-a578a48e8d6c
 	github.com/pelletier/go-buffruneio v0.2.0
 	github.com/pelletier/go-toml v1.2.0
 	github.com/pkg/errors v0.8.0
@@ -110,13 +110,13 @@ require (
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 	gopkg.in/go-playground/validator.v8 v8.18.2
 	gopkg.in/inf.v0 v0.9.1
-	gopkg.in/ini.v1 v1.39.0
+	gopkg.in/ini.v1 v1.38.3
 	gopkg.in/src-d/go-billy.v4 v4.3.0
-	gopkg.in/src-d/go-git.v4 v4.8.1
+	gopkg.in/src-d/go-git.v4 v4.7.1
 	gopkg.in/warnings.v0 v0.1.2
 	gopkg.in/yaml.v2 v2.2.1
 	hidevops.io/hiboot v1.0.4
-	hidevops.io/hiboot-data v1.0.0
+	hidevops.io/hiboot-data v0.0.0-20181205113857-b2e7340dc1ea
 	hidevops.io/hioak v0.0.0-20190318022159-922d01765358
 	hidevops.io/viper v1.3.2
 	k8s.io/api v0.0.0-20180601181742-8b7507fac302
@@ -125,5 +125,5 @@ require (
 	k8s.io/client-go v7.0.0+incompatible
 	k8s.io/code-generator v0.0.0-20180601180426-9de8e796a74d
 	k8s.io/gengo v0.0.0-20181113154421-fd15ee9cc2f7
-	k8s.io/klog v0.1.0
+	k8s.io/klog v0.0.0-20181113195958-a5bc97fbc634
 )
