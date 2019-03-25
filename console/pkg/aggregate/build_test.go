@@ -243,6 +243,12 @@ func TestBuildDeleteNode(t *testing.T) {
 
 func TestBuildSelector(t *testing.T) {
 	os.Setenv("KUBE_WATCH_TIMEOUT", "1")
+	configMaps := kube.NewConfigMaps(kubeFake.NewSimpleClientset())
+	data := map[string]string{
+		"API_VERSION":"api/v3",
+		"BASE_URL":"https://github.com",
+	}
+	configMaps.Create(constant.GitlabConstant, constant.TemplateDefaultNamespace, data)
 	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
 	build := cube.NewBuild(clientSet)
 	buildConfigService := new(service.BuildConfigService)
@@ -252,7 +258,6 @@ func TestBuildSelector(t *testing.T) {
 	pipelineBuilder := new(builder.PipelineBuilder)
 	replicationControllerAggregate := new(mocks.ReplicationControllerAggregate)
 	serviceAggregate := new(mocks.ServiceConfigAggregate)
-	configMaps := kube.NewConfigMaps(client)
 	buildAggregate := NewBuildService(configMaps, build, buildConfigService, buildNode, pod, pipelineBuilder, replicationControllerAggregate, serviceAggregate)
 	b := &v1alpha1.Build{
 		Spec: v1alpha1.BuildSpec{
