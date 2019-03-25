@@ -1,0 +1,16 @@
+# filename should be application.yml
+
+app:
+  project: hidevopsio
+  name: cube-node
+  profiles:
+    include:
+    - jwt
+    - grpc
+    - kube
+    - cube
+    - docker
+
+logging:
+  level: debug
+

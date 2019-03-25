@@ -1,0 +1,13 @@
+FROM docker.vpclub.cn/hidevopsio/centos7:1.0
+WORKDIR  ${HOME}/
+COPY config ${HOME}/config
+COPY hinode ${HOME}/hinode
+RUN  chmod +x ${HOME}/hinode
+ENV DOCKER_API_VERSION 1.24
+
+EXPOSE 7575
+EXPOSE 8080
+
+USER 0
+
+CMD ["./hinode"]
