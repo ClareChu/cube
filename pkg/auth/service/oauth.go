@@ -1,7 +1,7 @@
 package service
 
 import (
-	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/manager/pkg/constant"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/utils/replacer"
 	"hidevops.io/hioak/starter/kube"

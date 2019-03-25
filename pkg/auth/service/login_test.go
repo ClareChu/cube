@@ -4,7 +4,7 @@ import (
 	"github.com/magiconair/properties/assert"
 	gg "github.com/xanzy/go-gitlab"
 	gogitlab "github.com/xanzy/go-gitlab"
-	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/manager/pkg/constant"
 	"hidevops.io/hioak/starter/kube"
 	"hidevops.io/hioak/starter/scm/gitlab"
 	"hidevops.io/hioak/starter/scm/gitlab/fake"

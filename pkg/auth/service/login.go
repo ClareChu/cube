@@ -2,7 +2,7 @@ package service
 
 import (
 	"github.com/prometheus/common/log"
-	"hidevops.io/cube/console/pkg/constant"
+	"hidevops.io/cube/manager/pkg/constant"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hioak/starter/kube"
 	"hidevops.io/hioak/starter/scm"

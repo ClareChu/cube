@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"hidevops.io/cube/node/service/mock"
+	"hidevops.io/cube/agent/service/mock"
 	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/cube/pkg/client/clientset/versioned/fake"
 	"hidevops.io/cube/pkg/starter/cube"

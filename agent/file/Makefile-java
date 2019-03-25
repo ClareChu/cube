@@ -2,8 +2,8 @@
 tag := v1.0.0
 registries := hub.docker.com
 group := hidevopsio
-image_name := hinode-java-jar
-binary := hinode
+image_name := agent-java-jar
+binary := agent
 
 dockerimage := $(registries)/$(group)/$(image_name):$(tag)
 

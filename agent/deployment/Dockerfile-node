@@ -4,7 +4,7 @@ RUN mkdir ${HOME}/vpclub/ && chmod 755 ${HOME}/vpclub
 
 WORKDIR ${HOME}/vpclub
 
-COPY node ${HOME}/vpclub/node
+COPY agent ${HOME}/vpclub/agent
 
 COPY config/ ${HOME}/vpclub/config/
 
@@ -18,4 +18,4 @@ ENV npm_config_sass_binary_site https://npm.taobao.org/mirrors/node-sass/
 EXPOSE 7575
 EXPOSE 8080
 
-CMD ["./node"]
+CMD ["./agent"]

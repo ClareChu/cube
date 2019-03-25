@@ -2,7 +2,7 @@
 tag := v1.0.1
 registries := docker.io
 group := hidevops
-image_name := hinode-go
+image_name := agent
 binary := hinode
 
 dockerimage := $(registries)/$(group)/$(image_name):$(tag)

@@ -16,7 +16,7 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "io.devops.cube/node.buildconfig";
+option java_package = "io.devops.cube/agent.buildconfig";
 option java_outer_classname = "BuildConfigProto";
 
 // target package name

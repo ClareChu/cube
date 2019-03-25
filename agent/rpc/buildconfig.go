@@ -2,8 +2,8 @@ package rpc
 
 import (
 	"context"
-	"hidevops.io/cube/node/protobuf"
-	"hidevops.io/cube/node/scheduler"
+	"hidevops.io/cube/agent/protobuf"
+	"hidevops.io/cube/agent/scheduler"
 	"hidevops.io/hiboot/pkg/starter/grpc"
 )
 

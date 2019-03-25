@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"encoding/xml"
 	"fmt"
-	"hidevops.io/cube/node/protobuf"
+	"hidevops.io/cube/agent/protobuf"
 	cubev1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/hiboot/pkg/log"
 	utilsio "hidevops.io/hiboot/pkg/utils/io"
@@ -13,8 +13,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	//docker_types "github.com/docker/docker/api/types"
-
 	"os/exec"
 	"time"
 )

@@ -4,7 +4,7 @@ RUN mkdir ${HOME}/vpclub/ && chmod 755 ${HOME}/vpclub
 
 WORKDIR ${HOME}/vpclub
 
-COPY node ${HOME}/vpclub/node
+COPY agent ${HOME}/vpclub/agent
 
 COPY config/ ${HOME}/vpclub/config/
 
@@ -14,4 +14,4 @@ ENV MAVEN_CLEAR_REPO false
 EXPOSE 7575
 EXPOSE 8080
 
-CMD ["./node"]
+CMD ["./agent"]
