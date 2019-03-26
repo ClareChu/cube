@@ -15,3 +15,6 @@
 vendor/
 
 certs/
+
+agent/agent
+manager/manager
