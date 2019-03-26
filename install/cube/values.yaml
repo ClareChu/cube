@@ -60,8 +60,8 @@ buildconfig:
 
 
 java:
-  nodeImage: "hidevopsio/hinode-java-jar:v1.0.1"
-  baseImage: "clarechu/base-image-java:0.1"
+  nodeImage: hidevops/agent-java:v1.0.1
+  baseImage: hidevops/base-java:v1.0.0
 
 go:
   nodeImage: hidevops/agent:v1.0.1

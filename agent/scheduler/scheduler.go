@@ -58,7 +58,6 @@ func fmtName(str, namespace, name string) string {
 
 func (b *buildSchedulerImpl) SourceCodePull(sourceCodePullRequest *protobuf.SourceCodePullRequest) {
 
-	//////////////////////////
 	scriptPath := os.Getenv("Script_Path")
 	log.Debug("script path", scriptPath)
 	if scriptPath != "" {
@@ -69,18 +68,16 @@ func (b *buildSchedulerImpl) SourceCodePull(sourceCodePullRequest *protobuf.Sour
 			},
 		}
 		if err := pkg_utils.TestStart(&sourceCodeTestRequest); err != nil {
-			log.Debug("Error", fmt.Errorf("script %s start failed", scriptPath))
-			log.Debug("Error", err)
-			//return
+			log.Errorf("script %s start failed", scriptPath)
 		}
 		time.Sleep(time.Second * 3)
 	}
-	//////////////////////
+
 
 	//TODO update status
 	bc, err := b.buildConfigClient.UpdateBuildStatus(sourceCodePullRequest.Namespace, sourceCodePullRequest.Name, service.SourceCodePull, service.Created)
 	if err != nil {
-		fmt.Println("Error ", err)
+		log.Errorf("update buildConfig status: %v", err)
 		////TODO update status
 		b.buildConfigClient.UpdateBuildStatus(sourceCodePullRequest.Namespace, sourceCodePullRequest.Name, service.SourceCodePull, service.Fail)
 		return
@@ -88,7 +85,7 @@ func (b *buildSchedulerImpl) SourceCodePull(sourceCodePullRequest *protobuf.Sour
 
 	secret, err := b.secret.Get(bc.Labels["cube.io/buildConfig.name"], sourceCodePullRequest.Namespace)
 	if err != nil {
-		fmt.Println("Error ", err)
+		log.Errorf("get secret err: %v", err)
 		////TODO update status
 		b.buildConfigClient.UpdateBuildStatus(sourceCodePullRequest.Namespace, sourceCodePullRequest.Name, service.SourceCodePull, service.Fail)
 		return
@@ -99,14 +96,14 @@ func (b *buildSchedulerImpl) SourceCodePull(sourceCodePullRequest *protobuf.Sour
 
 	codePath, err := b.buildConfigService.Clone(sourceCodePullRequest, git.PlainClone)
 	if err != nil {
-		fmt.Println("Error ", err)
+		log.Errorf("buildConfig err: %v", err)
 		//TODO update status
 		b.buildConfigClient.UpdateBuildStatus(sourceCodePullRequest.Namespace, sourceCodePullRequest.Name, service.SourceCodePull, service.Fail)
 	}
 	//TODO update status
 	b.buildConfigClient.UpdateBuildStatus(sourceCodePullRequest.Namespace, sourceCodePullRequest.Name, service.SourceCodePull, service.Success)
 
-	fmt.Println("code path", codePath)
+	log.Infof("code path: %s", codePath)
 	dataCache[fmtName(CODEPATH, sourceCodePullRequest.Namespace, sourceCodePullRequest.Name)] = codePath
 	fmt.Println("data cache: ", dataCache)
 }
@@ -116,7 +113,7 @@ func (b *buildSchedulerImpl) SourceCodeCompiles(compileRequest *protobuf.Compile
 	codePathKey := fmtName(CODEPATH, compileRequest.Namespace, compileRequest.Name)
 
 	if _, ok := dataCache[codePathKey]; !ok {
-		fmt.Println(fmt.Errorf("code path: %s not found", codePathKey))
+		log.Errorf("code path: %s not found", codePathKey)
 		//TODO update status
 		b.buildConfigClient.UpdateBuildStatus(compileRequest.Namespace, compileRequest.Name, service.Compile, service.Fail)
 		return
@@ -143,14 +140,14 @@ func (b *buildSchedulerImpl) SourceCodeImageBuild(imageBuildRequest *protobuf.Im
 	codePathKey := fmtName(CODEPATH, imageBuildRequest.Namespace, imageBuildRequest.Name)
 
 	if _, ok := dataCache[codePathKey]; !ok {
-		fmt.Println(fmt.Errorf("code path not found"))
+		log.Errorf("code path not found")
 		//TODO update status
 		b.buildConfigClient.UpdateBuildStatus(imageBuildRequest.Namespace, imageBuildRequest.Name, service.ImageBuild, service.Fail)
 		return
 	}
 
 	if err := b.buildConfigService.ImageBuild(imageBuildRequest); err != nil {
-		fmt.Println("Error ", err)
+		log.Errorf("build image: %v", err)
 		//TODO update status
 		b.buildConfigClient.UpdateBuildStatus(imageBuildRequest.Namespace, imageBuildRequest.Name, service.ImageBuild, service.Fail)
 		return
@@ -158,8 +155,6 @@ func (b *buildSchedulerImpl) SourceCodeImageBuild(imageBuildRequest *protobuf.Im
 		//TODO update status
 		b.buildConfigClient.UpdateBuildStatus(imageBuildRequest.Namespace, imageBuildRequest.Name, service.ImageBuild, service.Success)
 	}
-
-	//delete(dataCache, codePathKey)
 }
 
 func (b *buildSchedulerImpl) SourceCodeImagePush(imagePushRequest *protobuf.ImagePushRequest) {
@@ -169,7 +164,7 @@ func (b *buildSchedulerImpl) SourceCodeImagePush(imagePushRequest *protobuf.Imag
 	}
 
 	if err := b.buildConfigService.ImagePush(imagePushRequest); err != nil {
-		fmt.Println("Error ", err)
+		log.Errorf("push image err: %v", err)
 		//TODO update status
 		b.buildConfigClient.UpdateBuildStatus(imagePushRequest.Namespace, imagePushRequest.Name, service.ImagePush, service.Fail)
 		return
@@ -183,14 +178,14 @@ func (b *buildSchedulerImpl) SourceCodeTest(testRequest *protobuf.TestsRequest) 
 	codePathKey := fmtName(CODEPATH, testRequest.Namespace, testRequest.Name)
 
 	if _, ok := dataCache[codePathKey]; !ok {
-		fmt.Println(fmt.Errorf("code path not found"))
+		log.Errorf("code path not found")
 		//TODO update status
 		b.buildConfigClient.UpdateBuildStatus(testRequest.Namespace, testRequest.Name, service.SourceCodeTest, service.Fail)
 		return
 	}
 
 	if err := pkg_utils.TestStart(testRequest); err != nil {
-		fmt.Println("Error", err)
+		log.Errorf("test start err: %v", err)
 		//TODO update status
 		b.buildConfigClient.UpdateBuildStatus(testRequest.Namespace, testRequest.Name, service.SourceCodeTest, service.Fail)
 	}
@@ -203,14 +198,14 @@ func (b *buildSchedulerImpl) EnvMakeUp(commandRequest *protobuf.CommandRequest) 
 	codePathKey := fmtName(CODEPATH, commandRequest.Namespace, commandRequest.Name)
 
 	if _, ok := dataCache[codePathKey]; !ok {
-		fmt.Println(fmt.Errorf("code path not found"))
+		log.Errorf("code path not found")
 		//TODO update status
 		b.buildConfigClient.UpdateBuildStatus(commandRequest.Namespace, commandRequest.Name, service.Command, service.Fail)
 		return
 	}
 
 	if err := pkg_utils.StartCmd(commandRequest); err != nil {
-		fmt.Println("Error", err)
+		log.Errorf("start cmd err: %v", err)
 		//TODO update status
 		b.buildConfigClient.UpdateBuildStatus(commandRequest.Namespace, commandRequest.Name, service.Command, service.Fail)
 	}

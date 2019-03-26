@@ -56,7 +56,6 @@ const (
 )
 
 func (b *buildConfigServiceImpl) Clone(sourceCodePullRequest *protobuf.SourceCodePullRequest, cloneFunc scmgit.CloneFunc) (string, error) {
-	fmt.Printf("git clone url: %s, branch: %s", sourceCodePullRequest.Url, sourceCodePullRequest.Branch)
 	log.Infof("git clone url: %s, branch: %s", sourceCodePullRequest.Url, sourceCodePullRequest.Branch)
 	if sourceCodePullRequest.Token != "" {
 		//CMD
@@ -85,16 +84,16 @@ func (b *buildConfigServiceImpl) Clone(sourceCodePullRequest *protobuf.SourceCod
 		sourceCodePullRequest.DstDir)
 
 	if err != nil {
-		fmt.Printf("\nError clone %s filed:\n", sourceCodePullRequest.Url)
+		log.Infof("clone %s filed:", sourceCodePullRequest.Url)
 		os.RemoveAll(codePath)
 		return "", err
 	}
-	fmt.Printf("\n[INFO] clone %s succeed\n", sourceCodePullRequest.Url)
+	log.Infof("clone %s succeed", sourceCodePullRequest.Url)
 	return codePath, nil
 }
 
 func (b *buildConfigServiceImpl) Compile(compileRequest *protobuf.CompileRequest) error {
-	fmt.Println("\n[INFO] compile start:")
+	log.Infof("compile start")
 
 	execCommand := func(CommandName string, Params []string) error {
 		cmd, bufioReader, err := pkg_utils.ExecCommand(CommandName, Params)
@@ -115,7 +114,7 @@ func (b *buildConfigServiceImpl) Compile(compileRequest *protobuf.CompileRequest
 				break
 			}
 
-			fmt.Println(line)
+			log.Infof(line)
 		}
 		if err = cmd.Wait(); err != nil {
 			return err
@@ -136,7 +135,7 @@ func (b *buildConfigServiceImpl) Compile(compileRequest *protobuf.CompileRequest
 
 		projectName := fmt.Sprintf("%s-%s.%s", pomXmlInfo.ArtifactId, pomXmlInfo.Version, pomXmlInfo.Packaging)
 
-		fmt.Println("[INFO] project name ", projectName)
+		log.Infof("project name ", projectName)
 		compileRequest.CompileCmd = append(compileRequest.CompileCmd, &protobuf.BuildCommand{ExecType: string(string(cubev1alpha1.Script)),
 			Script: fmt.Sprintf("cp target/%s app.%s", projectName, pomXmlInfo.Packaging),
 		})
@@ -145,7 +144,6 @@ func (b *buildConfigServiceImpl) Compile(compileRequest *protobuf.CompileRequest
 
 	for _, cmd := range compileRequest.CompileCmd {
 		if cmd.ExecType == string(cubev1alpha1.Script) {
-			fmt.Println("$ compile script:\n", cmd.Script)
 			scriptPath, err := pkg_utils.GenScript(cmd.Script)
 			if err != nil {
 				return err
@@ -156,7 +154,7 @@ func (b *buildConfigServiceImpl) Compile(compileRequest *protobuf.CompileRequest
 			}
 
 			if err := execCommand("sh", []string{"-c", scriptPath}); err != nil {
-				fmt.Println("Error compile filed")
+				log.Errorf("Error compile filed err: %v", err)
 				return err
 			}
 			os.RemoveAll(scriptPath)
@@ -164,7 +162,7 @@ func (b *buildConfigServiceImpl) Compile(compileRequest *protobuf.CompileRequest
 		}
 
 		if err := execCommand(cmd.CommandName, cmd.Params); err != nil {
-			fmt.Println("\nError compile filed")
+			log.Errorf("compile filed err : %v", err)
 			return err
 		}
 	}
