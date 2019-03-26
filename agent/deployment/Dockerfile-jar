@@ -1,14 +1,14 @@
-FROM docker.vpclub.cn/hidevopsio/s2i-java
+FROM ${HOST}/hidevopsio/s2i-java
 
-RUN mkdir ${HOME}/vpclub/ && chmod 755 ${HOME}/vpclub
+RUN mkdir ${HOME}/ && chmod 755 ${HOME}
 
-WORKDIR ${HOME}/vpclub
+WORKDIR ${HOME}/
 
-COPY agent ${HOME}/vpclub/agent
+COPY agent ${HOME}/agent
 
-COPY config/ ${HOME}/vpclub/config/
+COPY config/ ${HOME}/config/
 
-ENV MAVEN_MIRROR_URL http://nexus.vpclub.cn/repository/maven-public/
+ENV MAVEN_MIRROR_URL
 ENV MAVEN_CLEAR_REPO false
 
 EXPOSE 7575

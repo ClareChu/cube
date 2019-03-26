@@ -47,7 +47,7 @@ func TestBuildClient(t *testing.T) {
 				fmt.Sprintf("ADD %s /vpcloue/", projectName),
 				fmt.Sprintf("BuildCommand /vpcloue/%s", projectName)},
 			CloneConfig: v1alpha1.BuildCloneConfig{
-				Url:      "http://gitlab.vpclub:8022/wanglulu/clone-test.git",
+				Url:      "http://gitlab:8022/wanglulu/clone-test.git",
 				Branch:   "master",
 				DstDir:   "/Users/mac/.gvm/pkgsets/go1.10/vpcloud/src/hidevops.io/",
 				Username: "",
@@ -121,7 +121,7 @@ func TestClient(t *testing.T) {
 				fmt.Sprintf("ADD %s /vpcloue/", projectName),
 				fmt.Sprintf("BuildCommand /vpcloue/%s", projectName)},
 			CloneConfig: v1alpha1.BuildCloneConfig{
-				Url:      "http://gitlab.vpclub:8022/wanglulu/clone-test.git",
+				Url:      "http://gitlab:8022/wanglulu/clone-test.git",
 				Branch:   "master",
 				DstDir:   "/Users/mac/.gvm/pkgsets/go1.10/vpcloud/src/hidevops.io/",
 				Username: "",
