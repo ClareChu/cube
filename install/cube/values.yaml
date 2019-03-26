@@ -9,8 +9,8 @@ image:
   tag: v1.0.2
   pullPolicy: Always
 
-nameOverride: "cube"
-fullnameOverride: "cube"
+nameOverride: "manager"
+fullnameOverride: "manager"
 
 service:
   type: ClusterIP
