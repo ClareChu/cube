@@ -41,6 +41,7 @@ require (
 	github.com/howeyc/gopass v0.0.0-20170109162249-bf9dde6d0d2c
 	github.com/imdario/mergo v0.3.6
 	github.com/imkira/go-interpol v1.1.0
+	github.com/inconshreveable/go-update v0.0.0-20160112193335-8152e7eb6ccf
 	github.com/iris-contrib/blackfriday v2.0.0+incompatible
 	github.com/iris-contrib/formBinder v0.0.0-20171010160137-ad9fb86c356f
 	github.com/iris-contrib/go.uuid v2.0.0+incompatible
@@ -61,6 +62,7 @@ require (
 	github.com/klauspost/cpuid v0.0.0-20180405133222-e7e905edc00e
 	github.com/konsorten/go-windows-terminal-sequences v1.0.1
 	github.com/magiconair/properties v1.8.0
+	github.com/manifoldco/promptui v0.3.2
 	github.com/mattn/go-colorable v0.0.9
 	github.com/mattn/go-isatty v0.0.4
 	github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b
