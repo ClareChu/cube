@@ -5,12 +5,12 @@
 replicaCount: 1
 
 image:
-  repository: hidevops/cube-console
+  repository: hidevops/manager
   tag: v1.0.2
   pullPolicy: Always
 
-nameOverride: "cube-console"
-fullnameOverride: "cube-console"
+nameOverride: "cube"
+fullnameOverride: "cube"
 
 service:
   type: ClusterIP
@@ -23,7 +23,7 @@ ingress:
   # kubernetes.io/tls-acme: "true"
   paths: ['']
   hosts:
-  - cube-console-hidevopsio.apps.cloud2go.cn
+  - manager-hidevopsio.apps.cloud2go.cn
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -64,6 +64,6 @@ java:
   baseImage: "clarechu/base-image-java:0.1"
 
 go:
-  nodeImage: hidevops/hinode-go:v1.0.1
-  baseImage: clarechu/base-image-java:0.1
+  nodeImage: hidevops/agent:v1.0.1
+  baseImage: clarechu/base-go:v1.0.0
   goProxy: http://athens.apps.cloud2go.cn

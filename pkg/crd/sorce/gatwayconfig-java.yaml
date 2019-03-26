@@ -12,10 +12,9 @@ metadata:
 spec:
   eventType: null
   hosts:
-  - dev.vpclub.cn
   httpIfTerminated: false
   httpsOnly: false
-  kongAdminUrl: http://kong-admin-kong-dev.app.vpclub.io
+  kongAdminUrl:
   preserveHost: true
   profile: dev
   retries: "5"
