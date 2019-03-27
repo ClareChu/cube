@@ -104,9 +104,6 @@ func GetBuildFileBYDockerfile(dockerfile []string) []string {
 func CloneBYCMD(sourceCodePullRequest *protobuf.SourceCodePullRequest) (string, error) {
 
 	//git clone -b "分支" --depth=1 xxx.git "指定目录"
-
-	//git clone http://oauth2:cf5c6dd52a297270fb5f94e1f763bb6acac3169561f98161258c4103b2b7b17f@gitlab.vpclub:8022/hidevopsio/cube-console.git
-
 	urls := strings.Split(sourceCodePullRequest.Url, "//")
 
 	projectName := utilsio.Filename(sourceCodePullRequest.Url)

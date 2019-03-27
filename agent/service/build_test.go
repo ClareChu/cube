@@ -132,7 +132,7 @@ func TestBuildConfigServiceImpl_Clone2(t *testing.T) {
 
 	b := new(buildConfigServiceImpl)
 	sourceCodePullRequest := &protobuf.SourceCodePullRequest{
-		Url:      "http://gitlab.vpclub:8022/wanglulu/clone-test01.git",
+		Url:      "http://gitlab:8022/wanglulu/clone-test01.git",
 		Branch:   "master",
 		DstDir:   "/Users/mac/.gvm/pkgsets/go1.10/vpcloud/src/hidevops.io/",
 		Username: "",
@@ -164,6 +164,6 @@ func TestBuildConfigServiceImplCreateImage(t *testing.T) {
 	assert.Equal(t, nil, err)
 	err = b.CreateImage(name, namespace, tag, imageSummary)
 	assert.Equal(t, nil, err)
-	s := strings.Split("docker-registry-default.app.vpclub.io/demo/hello-world@sha256:485a3c93699c107dbe6d8a265a75d282b0bc767b5780f60d45a18a923689cee2", "@")
+	s := strings.Split("docker-registry-default.app.io/demo/hello-world@sha256:485a3c93699c107dbe6d8a265a75d282b0bc767b5780f60d45a18a923689cee2", "@")
 	fmt.Sprint(s)
 }

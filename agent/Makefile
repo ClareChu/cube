@@ -3,7 +3,7 @@ tag := v1.0.1
 registries := docker.io
 group := hidevops
 image_name := agent
-binary := hinode
+binary := agent
 
 dockerimage := $(registries)/$(group)/$(image_name):$(tag)
 

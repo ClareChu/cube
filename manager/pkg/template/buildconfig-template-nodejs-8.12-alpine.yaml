@@ -36,12 +36,12 @@ spec:
     password: Harbor12345
     username: unused
   dockerFile:
-  - FROM docker.vpclub.cn/hidevopsio/base-nodejs:8.12-alpine-0.0.1
+  - FROM
   - COPY ./dist ${APP_ROOT}/dist
   - USER 1001
   - EXPOSE 8080
   - CMD ["http-server", "dist"]
-  dockerRegistry: docker-registry-default.app.vpclub.io
+  dockerRegistry:
   events:
   - createService
   - deployNode

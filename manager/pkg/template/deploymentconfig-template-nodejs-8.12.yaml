@@ -11,7 +11,7 @@ spec:
   envType:
   - remoteDeploy
   - deploy
-  fromRegistry: docker-registry-default.app.vpclub.io
+  fromRegistry:
   image: ""
   livenessProbe:
     exec:

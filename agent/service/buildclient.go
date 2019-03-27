@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"github.com/prometheus/common/log"
 	cubev1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
@@ -119,7 +120,7 @@ func (b *buildConfigClientImpl) UpdateBuildStatus(namespace, name, eventType, st
 
 	bc, err = b.Update(name, namespace, bc)
 	if err != nil {
-		fmt.Println("Error ", err)
+		log.Errorf("build err: %v", err)
 		return nil, err
 	}
 

@@ -1,4 +1,4 @@
-FROM docker.vpclub.cn/hidevopsio/centos7:1.0
+FROM hidevopsio/centos7:1.0
 WORKDIR  ${HOME}/
 COPY config ${HOME}/config
 COPY agent ${HOME}/agent

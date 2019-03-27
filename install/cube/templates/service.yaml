@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "cube-console.fullname" . }}
+  name: {{ include "cube.fullname" . }}
   namespace: hidevopsio
   labels:
-    app.kubernetes.io/name: {{ include "cube-console.name" . }}
-    helm.sh/chart: {{ include "cube-console.chart" . }}
+    app.kubernetes.io/name: {{ include "cube.name" . }}
+    helm.sh/chart: {{ include "cube.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
@@ -17,5 +17,5 @@ spec:
     protocol: TCP
     name: grpc-7575
   selector:
-    app.kubernetes.io/name: {{ include "cube-console.name" . }}
+    app.kubernetes.io/name: {{ include "cube.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

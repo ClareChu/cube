@@ -14,7 +14,7 @@ RUN  mkdir -p ${APP_BIN} ${APP_ROOT} ${HOME}\
 
 WORKDIR  ${HOME}/
 COPY config ${HOME}/config
-COPY hinode ${HOME}/agent
+COPY agent ${HOME}/agent
 
 EXPOSE 7575
 EXPOSE 8080
