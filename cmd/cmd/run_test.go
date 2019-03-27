@@ -23,9 +23,9 @@ import (
 func TestRunCommands(t *testing.T) {
 	testApp := cli.NewTestApplication(t, NewRootCommand)
 
-	t.Run("should run filed", func(t *testing.T) {
-		_, err := testApp.Run("run", "--profile=test")
-		assert.NotEqual(t, nil, err)
+	t.Run("should run", func(t *testing.T) {
+		_, err := testApp.Run("run", "-h")
+		assert.Equal(t, nil, err)
 	})
 
 }

@@ -10,7 +10,7 @@ func TestLogCommands(t *testing.T) {
 	testApp := cli.NewTestApplication(t, NewRootCommand)
 
 	t.Run("should logs success", func(t *testing.T) {
-		_, err := testApp.Run("logs")
-		assert.NotEqual(t, nil, err)
+		_, err := testApp.Run("logs", "-h")
+		assert.Equal(t, nil, err)
 	})
 }

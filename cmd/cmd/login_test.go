@@ -27,10 +27,4 @@ func TestLoginCommands(t *testing.T) {
 		_, err := testApp.Run("login")
 		assert.NotEqual(t, nil, err)
 	})
-
-	t.Run("should login filed", func(t *testing.T) {
-		_, err := testApp.Run("login")
-		assert.NotEqual(t, nil, err)
-	})
-
 }

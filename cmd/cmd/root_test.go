@@ -24,7 +24,7 @@ func TestRootCommands(t *testing.T) {
 	testApp := cli.NewTestApplication(t, NewRootCommand)
 
 	t.Run("should run first command", func(t *testing.T) {
-		_, err := testApp.Run("-t", "10")
+		_, err := testApp.Run("-h")
 		assert.Equal(t, nil, err)
 	})
 
