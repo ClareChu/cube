@@ -105,7 +105,6 @@ func TestHttpsConnection(t *testing.T) {
 	}
 }
 
-
 func TestSlowServer(t *testing.T) {
 	starter.Do(func() { setupMockServer(t) })
 

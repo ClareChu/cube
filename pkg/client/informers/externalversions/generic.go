@@ -1,5 +1,5 @@
 /*
-Copyright 2018 The Kubernetes Authors.
+Copyright 2019 The Kubernetes Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ package externalversions
 import (
 	"fmt"
 
-	v1alpha1 "hidevops.io/mio/pkg/apis/mio/v1alpha1"
+	v1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
 )
@@ -52,33 +52,33 @@ func (f *genericInformer) Lister() cache.GenericLister {
 // TODO extend this to unknown resources with a client pool
 func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource) (GenericInformer, error) {
 	switch resource {
-	// Group=mio.io, Version=v1alpha1
+	// Group=cube.io, Version=v1alpha1
 	case v1alpha1.SchemeGroupVersion.WithResource("builds"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Mio().V1alpha1().Builds().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Cube().V1alpha1().Builds().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("buildconfigs"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Mio().V1alpha1().BuildConfigs().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Cube().V1alpha1().BuildConfigs().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("deployments"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Mio().V1alpha1().Deployments().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Cube().V1alpha1().Deployments().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("deploymentconfigs"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Mio().V1alpha1().DeploymentConfigs().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Cube().V1alpha1().DeploymentConfigs().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("gatewayconfigs"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Mio().V1alpha1().GatewayConfigs().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Cube().V1alpha1().GatewayConfigs().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("imagestreams"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Mio().V1alpha1().ImageStreams().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Cube().V1alpha1().ImageStreams().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("notifies"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Mio().V1alpha1().Notifies().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Cube().V1alpha1().Notifies().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("pipelines"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Mio().V1alpha1().Pipelines().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Cube().V1alpha1().Pipelines().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("pipelineconfigs"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Mio().V1alpha1().PipelineConfigs().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Cube().V1alpha1().PipelineConfigs().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("serviceconfigs"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Mio().V1alpha1().ServiceConfigs().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Cube().V1alpha1().ServiceConfigs().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("sourceconfigs"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Mio().V1alpha1().SourceConfigs().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Cube().V1alpha1().SourceConfigs().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("testconfigs"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Mio().V1alpha1().TestConfigs().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Cube().V1alpha1().TestConfigs().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("testses"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Mio().V1alpha1().Testses().Informer()}, nil
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Cube().V1alpha1().Testses().Informer()}, nil
 
 	}
 

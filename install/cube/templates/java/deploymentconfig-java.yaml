@@ -1,0 +1,32 @@
+apiVersion: cube.io/v1alpha1
+kind: DeploymentConfig
+metadata:
+  annotations:
+  name: java
+  namespace: hidevopsio
+spec:
+  dockerRegistry: {{ .Values.docker.registy }}
+  env:
+  - name: starter
+    value: jav -jar
+  - name: TZ
+    value: Asia/Shanghai
+  - name: APP_OPTIONS
+    value: -Xms128m -Xmx512m -Xss512k
+  - name: SPRING_PROFILES_ACTIVE
+    value: dev
+  envType:
+  - remoteDeploy
+  - deploy
+  fromRegistry: {{ .Values.docker.registy }}
+  port:
+  - containerPort: 8080
+    name: tcp-8080
+    protocol: TCP
+  - containerPort: 7575
+    name: grpc-7575
+    protocol: TCP
+  profile: dev
+status:
+  lastVersion: 1
+

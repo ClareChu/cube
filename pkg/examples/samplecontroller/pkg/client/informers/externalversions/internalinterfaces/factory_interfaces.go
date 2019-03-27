@@ -19,12 +19,12 @@ limitations under the License.
 package internalinterfaces
 
 import (
-	time "time"
+	"time"
 
-	versioned "hidevops.io/mio/pkg/examples/samplecontroller/pkg/client/clientset/versioned"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	runtime "k8s.io/apimachinery/pkg/runtime"
-	cache "k8s.io/client-go/tools/cache"
+	"hidevops.io/cube/pkg/examples/samplecontroller/pkg/client/clientset/versioned"
+	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/client-go/tools/cache"
 )
 
 type NewInformerFunc func(versioned.Interface, time.Duration) cache.SharedIndexInformer

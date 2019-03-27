@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package examples provides examples that use mio client
+// Package examples provides examples that use cube client
 package examples

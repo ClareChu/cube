@@ -21,9 +21,9 @@ package externalversions
 import (
 	"fmt"
 
-	v1alpha1 "hidevops.io/mio/pkg/examples/samplecontroller/pkg/apis/samplecontroller/v1alpha1"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
-	cache "k8s.io/client-go/tools/cache"
+	"hidevops.io/cube/pkg/examples/samplecontroller/pkg/apis/samplecontroller/v1alpha1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/client-go/tools/cache"
 )
 
 // GenericInformer is type of SharedIndexInformer which will locate and delegate to other

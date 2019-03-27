@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cube-console.fullname" . }}
+  namespace: hidevopsio
+  labels:
+    app.kubernetes.io/name: {{ include "cube-console.name" . }}
+    helm.sh/chart: {{ include "cube-console.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  - port: 8080
+    name: http-8080
+  - port: 7575
+    protocol: TCP
+    name: grpc-7575
+  selector:
+    app.kubernetes.io/name: {{ include "cube-console.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}

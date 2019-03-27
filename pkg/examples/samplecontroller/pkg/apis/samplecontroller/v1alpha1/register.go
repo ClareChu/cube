@@ -5,7 +5,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	samplecontroller "hidevops.io/mio/pkg/examples/samplecontroller/pkg/apis/samplecontroller"
+	"hidevops.io/cube/pkg/examples/samplecontroller/pkg/apis/samplecontroller"
 )
 
 // SchemeGroupVersion is group version used to register these objects

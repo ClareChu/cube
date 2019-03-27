@@ -1,5 +1,5 @@
 /*
-Copyright 2018 The Kubernetes Authors.
+Copyright 2019 The Kubernetes Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ package versioned
 
 import (
 	glog "github.com/golang/glog"
-	miov1alpha1 "hidevops.io/mio/pkg/client/clientset/versioned/typed/mio/v1alpha1"
+	cubev1alpha1 "hidevops.io/cube/pkg/client/clientset/versioned/typed/cube/v1alpha1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"
@@ -28,27 +28,27 @@ import (
 
 type Interface interface {
 	Discovery() discovery.DiscoveryInterface
-	MioV1alpha1() miov1alpha1.MioV1alpha1Interface
+	CubeV1alpha1() cubev1alpha1.CubeV1alpha1Interface
 	// Deprecated: please explicitly pick a version if possible.
-	Mio() miov1alpha1.MioV1alpha1Interface
+	Cube() cubev1alpha1.CubeV1alpha1Interface
 }
 
 // Clientset contains the clients for groups. Each group has exactly one
 // version included in a Clientset.
 type Clientset struct {
 	*discovery.DiscoveryClient
-	mioV1alpha1 *miov1alpha1.MioV1alpha1Client
+	cubeV1alpha1 *cubev1alpha1.CubeV1alpha1Client
 }
 
-// MioV1alpha1 retrieves the MioV1alpha1Client
-func (c *Clientset) MioV1alpha1() miov1alpha1.MioV1alpha1Interface {
-	return c.mioV1alpha1
+// CubeV1alpha1 retrieves the CubeV1alpha1Client
+func (c *Clientset) CubeV1alpha1() cubev1alpha1.CubeV1alpha1Interface {
+	return c.cubeV1alpha1
 }
 
-// Deprecated: Mio retrieves the default version of MioClient.
+// Deprecated: Cube retrieves the default version of CubeClient.
 // Please explicitly pick a version.
-func (c *Clientset) Mio() miov1alpha1.MioV1alpha1Interface {
-	return c.mioV1alpha1
+func (c *Clientset) Cube() cubev1alpha1.CubeV1alpha1Interface {
+	return c.cubeV1alpha1
 }
 
 // Discovery retrieves the DiscoveryClient
@@ -67,7 +67,7 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	}
 	var cs Clientset
 	var err error
-	cs.mioV1alpha1, err = miov1alpha1.NewForConfig(&configShallowCopy)
+	cs.cubeV1alpha1, err = cubev1alpha1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
 	}
@@ -84,7 +84,7 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 // panics if there is an error in the config.
 func NewForConfigOrDie(c *rest.Config) *Clientset {
 	var cs Clientset
-	cs.mioV1alpha1 = miov1alpha1.NewForConfigOrDie(c)
+	cs.cubeV1alpha1 = cubev1alpha1.NewForConfigOrDie(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClientForConfigOrDie(c)
 	return &cs
@@ -93,7 +93,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 // New creates a new Clientset for the given RESTClient.
 func New(c rest.Interface) *Clientset {
 	var cs Clientset
-	cs.mioV1alpha1 = miov1alpha1.New(c)
+	cs.cubeV1alpha1 = cubev1alpha1.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)
 	return &cs

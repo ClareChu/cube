@@ -19,8 +19,8 @@ limitations under the License.
 package samplecontroller
 
 import (
-	internalinterfaces "hidevops.io/mio/pkg/examples/samplecontroller/pkg/client/informers/externalversions/internalinterfaces"
-	v1alpha1 "hidevops.io/mio/pkg/examples/samplecontroller/pkg/client/informers/externalversions/samplecontroller/v1alpha1"
+	"hidevops.io/cube/pkg/examples/samplecontroller/pkg/client/informers/externalversions/internalinterfaces"
+	"hidevops.io/cube/pkg/examples/samplecontroller/pkg/client/informers/externalversions/samplecontroller/v1alpha1"
 )
 
 // Interface provides access to each of this group's versions.

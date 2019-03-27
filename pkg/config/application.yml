@@ -2,7 +2,7 @@
 
 app:
   project: hidevopsio
-  name: mio-console
+  name: manager
   profiles:
     include:
     - jwt

@@ -1,4 +1,4 @@
-apiVersion: mio.io/v1alpha1
+apiVersion: cube.io/v1alpha1
 kind: GatewayConfig
 metadata:
   clusterName: ""
@@ -7,7 +7,7 @@ metadata:
   name: java
   namespace: templates
   resourceVersion: "97813107"
-  selfLink: /apis/mio.io/v1alpha1/namespaces/templates/gatewayconfigs/java
+  selfLink: /apis/cube.io/v1alpha1/namespaces/templates/gatewayconfigs/java
   uid: c6efc1ea-d8fd-11e8-bff0-005056935c80
 spec:
   eventType: null

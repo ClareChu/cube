@@ -1,5 +1,5 @@
 /*
-Copyright 2018 The Kubernetes Authors.
+Copyright 2019 The Kubernetes Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,16 +19,16 @@ limitations under the License.
 package v1alpha1
 
 import (
-	time "time"
+	"time"
 
-	miov1alpha1 "hidevops.io/mio/pkg/apis/mio/v1alpha1"
-	versioned "hidevops.io/mio/pkg/client/clientset/versioned"
-	internalinterfaces "hidevops.io/mio/pkg/client/informers/externalversions/internalinterfaces"
-	v1alpha1 "hidevops.io/mio/pkg/client/listers/mio/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	runtime "k8s.io/apimachinery/pkg/runtime"
-	watch "k8s.io/apimachinery/pkg/watch"
-	cache "k8s.io/client-go/tools/cache"
+	cubev1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/pkg/client/clientset/versioned"
+	"hidevops.io/cube/pkg/client/informers/externalversions/internalinterfaces"
+	"hidevops.io/cube/pkg/client/listers/cube/v1alpha1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/watch"
+	"k8s.io/client-go/tools/cache"
 )
 
 // BuildConfigInformer provides access to a shared informer and lister for
@@ -61,16 +61,16 @@ func NewFilteredBuildConfigInformer(client versioned.Interface, namespace string
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.MioV1alpha1().BuildConfigs(namespace).List(options)
+				return client.CubeV1alpha1().BuildConfigs(namespace).List(options)
 			},
 			WatchFunc: func(options v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.MioV1alpha1().BuildConfigs(namespace).Watch(options)
+				return client.CubeV1alpha1().BuildConfigs(namespace).Watch(options)
 			},
 		},
-		&miov1alpha1.BuildConfig{},
+		&cubev1alpha1.BuildConfig{},
 		resyncPeriod,
 		indexers,
 	)
@@ -81,7 +81,7 @@ func (f *buildConfigInformer) defaultInformer(client versioned.Interface, resync
 }
 
 func (f *buildConfigInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&miov1alpha1.BuildConfig{}, f.defaultInformer)
+	return f.factory.InformerFor(&cubev1alpha1.BuildConfig{}, f.defaultInformer)
 }
 
 func (f *buildConfigInformer) Lister() v1alpha1.BuildConfigLister {

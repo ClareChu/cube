@@ -3,13 +3,12 @@ package service
 import (
 	"crypto/tls"
 	"encoding/json"
+	"hidevops.io/cube/pkg/utils"
 	"hidevops.io/hiboot/pkg/app"
-	"hidevops.io/mio/pkg/utils"
 	"io"
 	"net/http"
 	"time"
 )
-
 
 type ClientService interface {
 	Get(method, baseUrl string, v interface{}) (*http.Response, error)
@@ -59,7 +58,6 @@ func (c *ClientServiceImpl) Get(method, baseUrl string, v interface{}) (*http.Re
 	resp.Body.Close()
 	return resp, err
 }
-
 
 func Client(method, baseUrl string, v interface{}) (*http.Response, error) {
 	transport := &utils.Transport{

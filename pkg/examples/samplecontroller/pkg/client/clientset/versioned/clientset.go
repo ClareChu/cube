@@ -19,11 +19,11 @@ limitations under the License.
 package versioned
 
 import (
-	glog "github.com/golang/glog"
-	samplecontrollerv1alpha1 "hidevops.io/mio/pkg/examples/samplecontroller/pkg/client/clientset/versioned/typed/samplecontroller/v1alpha1"
-	discovery "k8s.io/client-go/discovery"
-	rest "k8s.io/client-go/rest"
-	flowcontrol "k8s.io/client-go/util/flowcontrol"
+	"github.com/golang/glog"
+	samplecontrollerv1alpha1 "hidevops.io/cube/pkg/examples/samplecontroller/pkg/client/clientset/versioned/typed/samplecontroller/v1alpha1"
+	"k8s.io/client-go/discovery"
+	"k8s.io/client-go/rest"
+	"k8s.io/client-go/util/flowcontrol"
 )
 
 type Interface interface {
