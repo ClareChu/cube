@@ -15,11 +15,11 @@
 package controller
 
 import (
+	"hidevops.io/cube/pkg/auth/service/mocks"
 	"hidevops.io/hiboot/pkg/app/web"
 	"hidevops.io/hiboot/pkg/starter/jwt"
 	"hidevops.io/hiboot/pkg/utils/io"
 	"hidevops.io/hioak/starter/scm"
-	"hidevops.io/mio/pkg/auth/service/mocks"
 	"net/http"
 	"os"
 	"testing"
@@ -38,8 +38,9 @@ func TestUserLogin(t *testing.T) {
 	testApp := web.NewTestApp(t, login).
 		SetProperty("kube.serviceHost", "test").
 		Run(t)
-	loginService.On("GetSession", "https://github.com", "1", "2").Return("", 1, "", nil)
-	loginService.On("GetUser", "https://github.com", "").Return(&scm.User{}, nil)
+	loginService.On("GetSession", "1", "2").Return("", 1, "", nil)
+	//loginService.On("GetUrl", "1", "2").Return("", 1, "", nil)
+	loginService.On("GetUser", "").Return(&scm.User{}, nil)
 	user := &UserRequest{
 		Username: "1",
 		Password: "2",

@@ -14,6 +14,7 @@
 .idea/
 vendor/
 
-mio-console
-
 certs/
+
+agent/agent
+manager/manager

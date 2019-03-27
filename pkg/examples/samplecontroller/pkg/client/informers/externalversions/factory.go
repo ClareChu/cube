@@ -19,17 +19,17 @@ limitations under the License.
 package externalversions
 
 import (
-	reflect "reflect"
-	sync "sync"
-	time "time"
+	"reflect"
+	"sync"
+	"time"
 
-	versioned "hidevops.io/mio/pkg/examples/samplecontroller/pkg/client/clientset/versioned"
-	internalinterfaces "hidevops.io/mio/pkg/examples/samplecontroller/pkg/client/informers/externalversions/internalinterfaces"
-	samplecontroller "hidevops.io/mio/pkg/examples/samplecontroller/pkg/client/informers/externalversions/samplecontroller"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	runtime "k8s.io/apimachinery/pkg/runtime"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
-	cache "k8s.io/client-go/tools/cache"
+	"hidevops.io/cube/pkg/examples/samplecontroller/pkg/client/clientset/versioned"
+	"hidevops.io/cube/pkg/examples/samplecontroller/pkg/client/informers/externalversions/internalinterfaces"
+	"hidevops.io/cube/pkg/examples/samplecontroller/pkg/client/informers/externalversions/samplecontroller"
+	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/client-go/tools/cache"
 )
 
 type sharedInformerFactory struct {

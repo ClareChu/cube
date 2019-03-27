@@ -19,9 +19,9 @@ limitations under the License.
 package fake
 
 import (
-	clientset "hidevops.io/mio/pkg/examples/samplecontroller/pkg/client/clientset/versioned"
-	samplecontrollerv1alpha1 "hidevops.io/mio/pkg/examples/samplecontroller/pkg/client/clientset/versioned/typed/samplecontroller/v1alpha1"
-	fakesamplecontrollerv1alpha1 "hidevops.io/mio/pkg/examples/samplecontroller/pkg/client/clientset/versioned/typed/samplecontroller/v1alpha1/fake"
+	clientset "hidevops.io/cube/pkg/examples/samplecontroller/pkg/client/clientset/versioned"
+	samplecontrollerv1alpha1 "hidevops.io/cube/pkg/examples/samplecontroller/pkg/client/clientset/versioned/typed/samplecontroller/v1alpha1"
+	fakesamplecontrollerv1alpha1 "hidevops.io/cube/pkg/examples/samplecontroller/pkg/client/clientset/versioned/typed/samplecontroller/v1alpha1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"

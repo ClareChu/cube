@@ -19,10 +19,10 @@ limitations under the License.
 package v1alpha1
 
 import (
-	v1alpha1 "hidevops.io/mio/pkg/examples/samplecontroller/pkg/apis/samplecontroller/v1alpha1"
-	"hidevops.io/mio/pkg/examples/samplecontroller/pkg/client/clientset/versioned/scheme"
-	serializer "k8s.io/apimachinery/pkg/runtime/serializer"
-	rest "k8s.io/client-go/rest"
+	"hidevops.io/cube/pkg/examples/samplecontroller/pkg/apis/samplecontroller/v1alpha1"
+	"hidevops.io/cube/pkg/examples/samplecontroller/pkg/client/clientset/versioned/scheme"
+	"k8s.io/apimachinery/pkg/runtime/serializer"
+	"k8s.io/client-go/rest"
 )
 
 type SamplecontrollerV1alpha1Interface interface {

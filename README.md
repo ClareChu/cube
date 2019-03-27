@@ -1,40 +1,40 @@
-# Mio - CI/CD Platform
+# Cube - CI/CD Platform
 
 <p align="center">
-  <a href="https://travis-ci.org/hidevopsio/mio?branch=master">
-    <img src="https://travis-ci.org/hidevopsio/mio.svg?branch=master" alt="Build Status"/>
+  <a href="https://travis-ci.org/hidevopsio/cube?branch=master">
+    <img src="https://travis-ci.org/hidevopsio/cube.svg?branch=master" alt="Build Status"/>
   </a>
-  <a class="badge-align" href="https://www.codacy.com/app/john-deng/mio?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hidevopsio/mio&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/ee8ddbf56ece4f46a6efeb216c351a0f"/></a>
-  <a href="https://github.com/hidevopsio/mio">
-    <img src="https://tokei.rs/b1/github/hidevopsio/mio" />
+  <a class="badge-align" href="https://www.codacy.com/app/john-deng/cube?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hidevopsio/cube&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/ee8ddbf56ece4f46a6efeb216c351a0f"/></a>
+  <a href="https://github.com/hidevopsio/cube">
+    <img src="https://tokei.rs/b1/github/hidevopsio/cube" />
   </a>
-  <a href="https://codecov.io/gh/hidevopsio/mio">
-    <img src="https://codecov.io/gh/hidevopsio/mio/branch/master/graph/badge.svg" />
+  <a href="https://codecov.io/gh/hidevopsio/cube">
+    <img src="https://codecov.io/gh/hidevopsio/cube/branch/master/graph/badge.svg" />
   </a>
   <a href="https://opensource.org/licenses/Apache-2.0">
       <img src="https://img.shields.io/badge/License-Apache%202.0-green.svg" />
   </a>
-  <a href="https://goreportcard.com/report/hidevops.io/mio">
-      <img src="https://goreportcard.com/badge/hidevops.io/mio" />
+  <a href="https://goreportcard.com/report/hidevops.io/cube">
+      <img src="https://goreportcard.com/badge/hidevops.io/cube" />
   </a>
-  <a href="https://godoc.org/hidevops.io/mio">
+  <a href="https://godoc.org/hidevops.io/cube">
       <img src="https://godoc.org/github.com/golang/gddo?status.svg" />
   </a>
-  <a href="https://gitter.im/hidevopsio/mio">
+  <a href="https://gitter.im/hidevopsio/cube">
       <img src="https://img.shields.io/badge/GITTER-join%20chat-green.svg" />
   </a>
 </p>
 
 ## About
 
-Mio is a Continuous Integration and Continuous Delivery Platform built on container technology.
+Cube is a Continuous Integration and Continuous Delivery Platform built on container technology.
 
 ## 安装
 
 唯一要求需要[GO环境](https://golang.org/)
 
 ```bash
-go get -u github.com/hidevopsio/mio
+go get -u github.com/hidevopsio/cube
 ```
 
 如果使用GO版本在 `go1.11` 以下 请自行安装dep包管理工具。
@@ -83,13 +83,13 @@ cd console
 ###脚本大致内容
 
 ## console 代码打包linux
- GOOS=linux go build -o mio-console
+ GOOS=linux go build -o cube-console
 
 ## 镜像制作
 
-docker build -t docker-registry-default.app.example.io/demo/mio-console:v1 .
+docker build -t docker-registry-default.app.example.io/demo/cube-console:v1 .
 
-docker push docker-registry-default.app.example.io/demo/mio-console:v1
+docker push docker-registry-default.app.example.io/demo/cube-console:v1
 
 ```
 
@@ -100,25 +100,25 @@ apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
   labels:
-    app: mio-console
-  name: mio-console
+    app: cube-console
+  name: cube-console
   namespace: hidevopsio
   resourceVersion: '139885254'
-  selfLink: /apis/apps.openshift.io/v1/namespaces/demo/deploymentconfigs/mio-console
+  selfLink: /apis/apps.openshift.io/v1/namespaces/demo/deploymentconfigs/cube-console
   uid: d2bcdad9-d4ff-11e8-bb8c-005056935c80
 spec:
   replicas: 1
   selector:
-    app: mio-console
-    deploymentconfig: mio-console
+    app: cube-console
+    deploymentconfig: cube-console
   template:
     metadata:
       annotations:
         openshift.io/generated-by: OpenShiftWebConsole
       creationTimestamp: null
       labels:
-        app: mio-console
-        deploymentconfig: mio-console
+        app: cube-console
+        deploymentconfig: cube-console
     spec:
       containers:
         - env:
@@ -135,9 +135,9 @@ spec:
             - name: API_VERSION
               value: /api/v3
           image: >-
-            docker-registry.default.svc:5000/demo/mio-console@sha256:851f49987fbbf469cbe87c6c26160a1ce7cb1ce5bdb6b1b7d3795127b8a44436
+            docker-registry.default.svc:5000/demo/cube-console@sha256:851f49987fbbf469cbe87c6c26160a1ce7cb1ce5bdb6b1b7d3795127b8a44436
           imagePullPolicy: Always
-          name: mio-console
+          name: cube-console
           ports:
             - containerPort: 7575
               protocol: TCP
@@ -171,13 +171,13 @@ spec:
     - imageChangeParams:
         automatic: true
         containerNames:
-          - mio-console
+          - cube-console
         from:
           kind: ImageStreamTag
-          name: 'mio-console:v1'
+          name: 'cube-console:v1'
           namespace: demo
         lastTriggeredImage: >-
-          docker-registry.default.svc:5000/demo/mio-console@sha256:851f49987fbbf469cbe87c6c26160a1ce7cb1ce5bdb6b1b7d3795127b8a44436
+          docker-registry.default.svc:5000/demo/cube-console@sha256:851f49987fbbf469cbe87c6c26160a1ce7cb1ce5bdb6b1b7d3795127b8a44436
       type: ImageChange
 ```
 
@@ -227,7 +227,7 @@ kubectl apply -f .
  `buildConfig` 资源主要起到的作用是编译 打包代码 代码检测 镜像的编译等作用，以下是讲解buildconfig字段的含义。
 
 ```yaml
-apiVersion: mio.io/v1alpha1
+apiVersion: cube.io/v1alpha1
 kind: BuildConfig
 metadata:
   name: java
@@ -298,7 +298,7 @@ status:
 
 字段|类型|含义
 :---:|:---:|:---:
-|spec.baseImage|string|mio下node项目制作的镜像名称|
+|spec.baseImage|string|cube下node项目制作的镜像名称|
 |spec.cloneType|string|代码克隆模式|
 |spec.codeType|string|代码语言类型|
 |spec.dockerRegistry|string|镜像仓库地址|
@@ -334,7 +334,7 @@ status:
 `deploymentConfig` 主要是针对镜像deploy
 
 ```yaml
-apiVersion: mio.io/v1alpha1
+apiVersion: cube.io/v1alpha1
 kind: DeploymentConfig
 metadata:
   name: java
@@ -375,7 +375,7 @@ status:
 ### 3. serviceConfig
 
 ```yaml
-apiVersion: mio.io/v1alpha1
+apiVersion: cube.io/v1alpha1
 kind: ServiceConfig
 metadata:
   generation: 0

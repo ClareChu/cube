@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cube.fullname" . }}
+  namespace: hidevopsio
+  labels:
+    app.kubernetes.io/name: {{ include "cube.name" . }}
+    helm.sh/chart: {{ include "cube.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "cube.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "cube.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      volumes:
+      - hostPath:
+          path: /var/lib/docker
+          type: ''
+        name: volume1
+      - hostPath:
+          path: /var/run/docker.sock
+          type: ''
+        name: volume2
+      containers:
+      - env:
+        - name: APP_PROFILES_ACTIVE
+          value: dev
+        - name: TZ
+          value: {{ .Values.deployment.tz }}
+        - name: DOCKER_API_VERSION
+          value: '1.24'
+        - name: KUBE_WATCH_TIMEOUT
+          value: '20'
+        name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        volumeMounts:
+        - mountPath: /var/lib/docker
+          name: volume1
+        - mountPath: /var/run/docker.sock
+          name: volume2
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        - name: grpc
+          containerPort: 7575
+          protocol: TCP
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+            {{- with .Values.nodeSelector }}
+                nodeSelector:
+                  {{- toYaml . | nindent 8 }}
+                    {{- end }}
+                      {{- with .Values.affinity }}
+                          affinity:
+                            {{- toYaml . | nindent 8 }}
+                              {{- end }}
+                                {{- with .Values.tolerations }}
+                                    tolerations:
+                                      {{- toYaml . | nindent 8 }}
+                                        {{- end }}

@@ -1,0 +1,57 @@
+apiVersion: cube.io/v1alpha1
+kind: DeploymentConfig
+metadata:
+  name: java
+  namespace: templates
+spec:
+  dockerRegistry: docker-registry.default.svc:5000
+  env:
+  - name: starter
+    value: jav -jar
+  - name: TZ
+    value: Asia/Shanghai
+  - name: APP_OPTIONS
+    value: -Xms128m -Xmx512m -Xss512k
+  - name: SPRING_PROFILES_ACTIVE
+    value: dev
+  envType:
+  - remoteDeploy
+  - deploy
+  fromRegistry:
+  image: ""
+  livenessProbe:
+    exec:
+      command:
+      - curl
+      - --silent
+      - --show-error
+      - --fail
+      - http://localhost:8080/health
+    failureThreshold: 3
+    initialDelaySeconds: 60
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 1
+  nodeSelector:
+    a: b
+    c: d
+  port:
+  - containerPort: 8080
+    name: tcp-8080
+    protocol: TCP
+  profile: dev
+  readinessProbe:
+    exec:
+      command:
+      - curl
+      - --silent
+      - --show-error
+      - --fail
+      - http://localhost:8080/health
+    failureThreshold: 3
+    initialDelaySeconds: 60
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 1
+status:
+  lastVersion: 1

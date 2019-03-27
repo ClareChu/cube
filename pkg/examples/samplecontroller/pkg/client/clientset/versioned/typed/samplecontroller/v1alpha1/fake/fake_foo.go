@@ -19,13 +19,13 @@ limitations under the License.
 package fake
 
 import (
-	v1alpha1 "hidevops.io/mio/pkg/examples/samplecontroller/pkg/apis/samplecontroller/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	labels "k8s.io/apimachinery/pkg/labels"
-	schema "k8s.io/apimachinery/pkg/runtime/schema"
-	types "k8s.io/apimachinery/pkg/types"
-	watch "k8s.io/apimachinery/pkg/watch"
-	testing "k8s.io/client-go/testing"
+	"hidevops.io/cube/pkg/examples/samplecontroller/pkg/apis/samplecontroller/v1alpha1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/labels"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/watch"
+	"k8s.io/client-go/testing"
 )
 
 // FakeFoos implements FooInterface

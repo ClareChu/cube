@@ -6,6 +6,6 @@ chmod o+x generate-groups.sh
 
 
 ./generate-groups.sh all \
-hidevops.io/mio/pkg/client \
-hidevops.io/mio/pkg/apis \
-mio:v1alpha1
+hidevops.io/cube/pkg/client \
+hidevops.io/cube/pkg/apis \
+cube:v1alpha1

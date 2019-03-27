@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"crypto/tls"
 	"io"
 	"io/ioutil"
 	"net"
@@ -75,36 +74,6 @@ func setupMockServer(t *testing.T) {
 	}()
 	addr = ln.Addr()
 }
-
-func TestHttpsConnection(t *testing.T) {
-	transport := &Transport{
-		ConnectTimeout: 1 * time.Second,
-		RequestTimeout: 2 * time.Second,
-		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: true,
-		},
-	}
-	defer transport.Close()
-	client := &http.Client{Transport: transport}
-
-	req, _ := http.NewRequest("GET", "https://httpbin.org/ip", nil)
-	resp, err := client.Do(req)
-	if err != nil {
-		t.Fatalf("1st request failed - %s", err.Error())
-	}
-	_, err = ioutil.ReadAll(resp.Body)
-	if err != nil {
-		t.Fatalf("1st failed to read body - %s", err.Error())
-	}
-	resp.Body.Close()
-
-	req2, _ := http.NewRequest("GET", "https://httpbin.org/delay/5", nil)
-	_, err = client.Do(req2)
-	if err == nil {
-		t.Fatalf("HTTPS request should have timed out")
-	}
-}
-
 
 func TestSlowServer(t *testing.T) {
 	starter.Do(func() { setupMockServer(t) })

@@ -19,9 +19,9 @@ limitations under the License.
 package fake
 
 import (
-	v1alpha1 "hidevops.io/mio/pkg/examples/samplecontroller/pkg/client/clientset/versioned/typed/samplecontroller/v1alpha1"
-	rest "k8s.io/client-go/rest"
-	testing "k8s.io/client-go/testing"
+	"hidevops.io/cube/pkg/examples/samplecontroller/pkg/client/clientset/versioned/typed/samplecontroller/v1alpha1"
+	"k8s.io/client-go/rest"
+	"k8s.io/client-go/testing"
 )
 
 type FakeSamplecontrollerV1alpha1 struct {
