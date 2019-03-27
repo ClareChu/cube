@@ -53,6 +53,7 @@ func NewRootCommand(run *runCommand,
 
 // Run root command handler
 func (c *RootCommand) Run(args []string) error {
+	fmt.Printf("cube %v\n\n", appVersion)
 	c.Help()
 	return nil
 }
