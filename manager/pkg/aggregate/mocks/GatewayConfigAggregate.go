@@ -34,20 +34,6 @@ func (_m *GatewayConfigAggregate) Create(name string, pipelineName string, names
 	return r0, r1
 }
 
-// Gateway provides a mock function with given fields: gatewayConfig
-func (_m *GatewayConfigAggregate) Gateway(gatewayConfig *v1alpha1.GatewayConfig) error {
-	ret := _m.Called(gatewayConfig)
-
-	var r0 error
-	if rf, ok := ret.Get(0).(func(*v1alpha1.GatewayConfig) error); ok {
-		r0 = rf(gatewayConfig)
-	} else {
-		r0 = ret.Error(0)
-	}
-
-	return r0
-}
-
 // Template provides a mock function with given fields: cmd
 func (_m *GatewayConfigAggregate) Template(cmd *command.GatewayConfig) (*v1alpha1.GatewayConfig, error) {
 	ret := _m.Called(cmd)
