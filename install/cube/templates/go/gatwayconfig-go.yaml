@@ -1,0 +1,29 @@
+apiVersion: cube.io/v1alpha1
+kind: GatewayConfig
+metadata:
+  clusterName: ""
+  creationTimestamp: 2018-10-26T09:01:51Z
+  generation: 0
+  name: go
+  namespace: templates
+  resourceVersion: "97813107"
+  selfLink: /apis/cube.io/v1alpha1/namespaces/templates/gatewayconfigs/java
+  uid: c6efc1ea-d8fd-11e8-bff0-005056935c80
+spec:
+  eventType: null
+  hosts:
+    - 
+  httpIfTerminated: false
+  httpsOnly: false
+  kongAdminUrl:
+  preserveHost: true
+  profile:
+  retries: "5"
+  stripUri: true
+  upstreamConnectTimeout: 60000
+  upstreamReadTimeout: 60000
+  upstreamSendTimeout: 60000
+  upstreamUrl: ""
+  uris: null
+status:
+  metadata: {}

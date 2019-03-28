@@ -170,7 +170,7 @@ func (s *GatewayConfig) CreateIngress(gatewayConfig *v1alpha1.GatewayConfig) (er
 	}
 	if err != nil {
 		log.Errorf("get ingress err :%v", err)
-		_, err := s.ingress.Create(ingress)
+		_, err = s.ingress.Create(ingress)
 		log.Infof("create ingress err: %v", err)
 		return
 	}

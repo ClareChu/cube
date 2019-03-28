@@ -1,0 +1,23 @@
+apiVersion: cube.io/v1alpha1
+kind: GatewayConfig
+metadata:
+  name: go
+  namespace: hidevopsio
+spec:
+  eventType: null
+  hosts:
+    - dev1.apps.cloud2go.cn
+  httpIfTerminated: false
+  httpsOnly: false
+  kongAdminUrl:
+  preserveHost: true
+  profile:
+  retries: "5"
+  stripUri: true
+  upstreamConnectTimeout: 60000
+  upstreamReadTimeout: 60000
+  upstreamSendTimeout: 60000
+  upstreamUrl: ""
+  uris: null
+status:
+  metadata: {}
