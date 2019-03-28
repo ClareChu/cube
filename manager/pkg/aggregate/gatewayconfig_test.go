@@ -8,7 +8,9 @@ import (
 	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/cube/pkg/client/clientset/versioned/fake"
 	"hidevops.io/cube/pkg/starter/cube"
+	"hidevops.io/hioak/starter/kube"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	kubeFake "k8s.io/client-go/kubernetes/fake"
 	"testing"
 )
 
@@ -16,7 +18,10 @@ func TestGatewayConfigCreate(t *testing.T) {
 	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
 	gatewayClient := cube.NewGatewayConfig(clientSet)
 	pb := new(builder.PipelineBuilder)
-	gatewayAggregate := NewGatewayService(gatewayClient, pb)
+
+	client := kubeFake.NewSimpleClientset()
+	ingress := kube.NewIngress(client)
+	gatewayAggregate := NewGatewayService(gatewayClient, pb, ingress)
 	gc := &v1alpha1.GatewayConfig{
 		TypeMeta: v1.TypeMeta{
 			Kind:       constant.GatewayConfigKind,
