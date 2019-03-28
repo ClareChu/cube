@@ -15,10 +15,9 @@ items:
       name: go
     - eventTypes: service
       name: go
-    namespace: ""
-    nodeSelector: ""
+    - eventTypes: gateway
+      name: go
     profile: dev
-    project: ""
     version: v1
     branch: "master"
   status: {}

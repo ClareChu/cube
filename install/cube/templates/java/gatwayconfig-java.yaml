@@ -1,7 +1,7 @@
 apiVersion: cube.io/v1alpha1
 kind: GatewayConfig
 metadata:
-  name: go
+  name: java
   namespace: hidevopsio
 spec:
   eventType: null

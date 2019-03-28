@@ -1,18 +1,12 @@
 apiVersion: cube.io/v1alpha1
 kind: GatewayConfig
 metadata:
-  clusterName: ""
-  creationTimestamp: 2018-10-26T09:01:51Z
-  generation: 0
   name: go
-  namespace: templates
-  resourceVersion: "97813107"
-  selfLink: /apis/cube.io/v1alpha1/namespaces/templates/gatewayconfigs/java
-  uid: c6efc1ea-d8fd-11e8-bff0-005056935c80
+  namespace: hidevopsio
 spec:
   eventType: null
   hosts:
-    - 
+    - dev1.apps.cloud2go.cn
   httpIfTerminated: false
   httpsOnly: false
   kongAdminUrl:

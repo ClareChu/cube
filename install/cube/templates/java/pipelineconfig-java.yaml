@@ -15,15 +15,10 @@ items:
       name: java
     - eventTypes: service
       name: java
-    namespace: ""
-    nodeSelector: ""
+    - eventTypes: gateway
+      name: java
     profile: dev
-    project: ""
     version: v1
     branch: "master"
   status: {}
-kind: List
-metadata:
-  resourceVersion: ""
-  selfLink: ""
 
