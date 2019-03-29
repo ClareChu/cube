@@ -15,7 +15,7 @@ type IngressService interface {
 }
 
 type Ingress struct {
-	KongService
+	IngressService
 	ingress *kube.Ingress
 }
 
@@ -23,7 +23,7 @@ func init() {
 	app.Register(NewIngress)
 }
 
-func NewIngress(ingress *kube.Ingress) KongService {
+func NewIngress(ingress *kube.Ingress) IngressService {
 	return &Ingress{
 		ingress: ingress,
 	}
