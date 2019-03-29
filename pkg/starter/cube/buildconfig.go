@@ -29,7 +29,7 @@ func (b *BuildConfig) Create(build *v1alpha1.BuildConfig) (config *v1alpha1.Buil
 }
 
 func (b *BuildConfig) Get(name, namespace string) (config *v1alpha1.BuildConfig, err error) {
-	log.Info(fmt.Sprintf("get buildConfig app %s in namespace %s", name, namespace))
+	log.Infof("get buildConfig app %s in namespace %s", name, namespace)
 	result, err := b.clientSet.BuildConfigs(namespace).Get(name, v1.GetOptions{})
 	if err != nil {
 		return nil, err

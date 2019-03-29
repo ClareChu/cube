@@ -232,7 +232,6 @@ func (b *buildConfigServiceImpl) ImagePush(imagePushRequest *protobuf.ImagePushR
 
 func (b *buildConfigServiceImpl) GetImage(imagePushRequest *protobuf.ImagePushRequest) error {
 	log.Infof("get image: %v", imagePushRequest.ImageName)
-	fmt.Printf("xxxxxxxxxxx")
 	imageInfo := strings.Split(imagePushRequest.Tags[0], ":")
 	image := &docker.Image{
 		FromImage: imageInfo[0],
@@ -244,7 +243,6 @@ func (b *buildConfigServiceImpl) GetImage(imagePushRequest *protobuf.ImagePushRe
 		return err
 	}
 	b.CreateImage(imagePushRequest.ImageName, imagePushRequest.Namespace, imageInfo[1], imageSummary)
-	fmt.Printf("xxxxxxxxxxx")
 	return nil
 }
 
