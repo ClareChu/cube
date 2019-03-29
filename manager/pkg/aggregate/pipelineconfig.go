@@ -99,15 +99,13 @@ func (p *PipelineConfig) StartPipelineConfig(cmd *command.PipelineStart) (pipeli
 }
 
 func replaceProfile(cmd *command.PipelineStart, pipelineConfig *v1alpha1.PipelineConfig) {
-	if cmd.Version != "" && cmd.Profile != "" && cmd.Branch != "" {
+	if cmd.Version != "" {
 		pipelineConfig.Spec.Version = cmd.Version
+	}
+	if cmd.Profile != "" {
 		pipelineConfig.Spec.Profile = cmd.Profile
-		pipelineConfig.Spec.Branch = cmd.Branch
-	} else if cmd.Version != "" {
-		pipelineConfig.Spec.Version = cmd.Version
-	} else if cmd.Profile != "" {
-		pipelineConfig.Spec.Profile = cmd.Profile
-	} else if cmd.Branch != "" {
+	}
+	if cmd.Branch != "" {
 		pipelineConfig.Spec.Branch = cmd.Branch
 	}
 }
