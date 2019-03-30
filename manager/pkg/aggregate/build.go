@@ -90,7 +90,7 @@ func (b *Build) Create(buildConfig *v1alpha1.BuildConfig, pipelineName, version 
 		},
 	}
 	config, err := b.buildClient.Create(build)
-	log.Info("............config err:", config)
+	log.Info("config err:", config)
 	if err != nil {
 		log.Errorf("create build error :%v", err)
 		return
@@ -272,7 +272,7 @@ func (b *Build) DeployNode(build *v1alpha1.Build) error {
 	}
 	_, err := b.buildNode.Start(command)
 	if err != nil {
-		log.Errorf("deploy hinode err :%v", err)
+		log.Errorf("deploy agent err :%v", err)
 		return err
 	}
 	err = b.WatchPod(build.Name, build.Namespace)

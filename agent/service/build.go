@@ -173,7 +173,6 @@ func (b *buildConfigServiceImpl) Compile(compileRequest *protobuf.CompileRequest
 
 func (b *buildConfigServiceImpl) ImageBuild(imageBuildRequest *protobuf.ImageBuildRequest) error {
 	fmt.Printf("\n[INFO] image %v start build:\n", imageBuildRequest.Tags)
-
 	buildImage := &docker.Image{
 		Tags:       imageBuildRequest.Tags,
 		BuildFiles: pkg_utils.GetBuildFileBYDockerfile(imageBuildRequest.DockerFile),
@@ -208,7 +207,6 @@ func (b *buildConfigServiceImpl) ImageBuild(imageBuildRequest *protobuf.ImageBui
 func (b *buildConfigServiceImpl) ImagePush(imagePushRequest *protobuf.ImagePushRequest) error {
 
 	fmt.Printf("\n[INFO] image %v start push:\n", imagePushRequest)
-	fmt.Printf("xxxxxxxxxxx")
 	for _, imageName := range imagePushRequest.Tags {
 		imageInfo := strings.Split(imageName, ":")
 		pushImage := &docker.Image{
@@ -225,7 +223,6 @@ func (b *buildConfigServiceImpl) ImagePush(imagePushRequest *protobuf.ImagePushR
 
 	}
 	log.Info("push image success ")
-	fmt.Printf("xxxxxxxxxxx")
 	err := b.GetImage(imagePushRequest)
 	return err
 }

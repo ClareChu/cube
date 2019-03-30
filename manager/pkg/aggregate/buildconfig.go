@@ -19,18 +19,20 @@ type BuildConfigAggregate interface {
 
 type BuildConfig struct {
 	BuildConfigAggregate
-	buildConfigClient *cube.BuildConfig
-	buildAggregate    BuildAggregate
+	buildConfigClient   *cube.BuildConfig
+	buildAggregate      BuildAggregate
+	configMapsAggregate ConfigMapsAggregate
 }
 
 func init() {
 	app.Register(NewBuildConfigService)
 }
 
-func NewBuildConfigService(buildConfigClient *cube.BuildConfig, buildAggregate BuildAggregate) BuildConfigAggregate {
+func NewBuildConfigService(buildConfigClient *cube.BuildConfig, buildAggregate BuildAggregate, configMapsAggregate ConfigMapsAggregate) BuildConfigAggregate {
 	return &BuildConfig{
-		buildConfigClient: buildConfigClient,
-		buildAggregate:    buildAggregate,
+		buildConfigClient:   buildConfigClient,
+		buildAggregate:      buildAggregate,
+		configMapsAggregate: configMapsAggregate,
 	}
 }
 
@@ -71,6 +73,13 @@ func (s *BuildConfig) Create(name, pipelineName, namespace, sourceType, version,
 		log.Errorf("get build config template err: %v", err)
 		return nil, err
 	}
+	config, err := s.configMapsAggregate.Get(constant.DockerConstant, constant.TemplateDefaultNamespace)
+	if err != nil {
+		log.Errorf("get configMaps err :%v", err)
+	}
+	template.Spec.DockerAuthConfig.Username = config.Data[constant.Username]
+	template.Spec.DockerAuthConfig.Password = config.Data[constant.Password]
+	template.Spec.DockerRegistry = config.Data[constant.DockerRegistry]
 	buildConfig, err = s.buildConfigClient.Get(name, namespace)
 	buildConfigTemplate := new(v1alpha1.BuildConfig)
 	copier.Copy(buildConfigTemplate, template)
@@ -90,8 +99,9 @@ func (s *BuildConfig) Create(name, pipelineName, namespace, sourceType, version,
 	}
 	buildConfigTemplate.Spec.App = name
 	buildConfigTemplate.Spec.CloneConfig.Branch = branch
+
 	buildConfigTemplate.Spec.Tags = []string{template.Spec.DockerRegistry + "/" + namespace + "/" + name}
-	//TODO 如果存在创建 buildconfig 不存在新建buildconfig 创建完buildconfig 新建
+	//TODO 如果存在创建 buildConfig 不存在新建 buildConfig 创建完 buildConfig 新建
 	if err != nil {
 		buildConfigTemplate.Status.LastVersion = constant.InitLastVersion
 		buildConfig, err = s.buildConfigClient.Create(buildConfigTemplate)
