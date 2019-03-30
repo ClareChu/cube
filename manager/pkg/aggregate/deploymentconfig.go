@@ -10,6 +10,7 @@ import (
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/utils/copier"
 	"hidevops.io/hioak/starter/kube"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -82,10 +83,10 @@ func (d *DeploymentConfig) Create(name, pipelineName, namespace, sourceType, ver
 	if err == nil {
 		deploy.Spec = template.Spec
 		deploy.Spec.Profile = profile
+		deploy.Spec.Env = append(append(deploy.Spec.Env, corev1.EnvVar{Name: constant.AppName, Value: name}), corev1.EnvVar{Name: constant.AppVersion, Value: version})
 		deploy.Status.LastVersion = deploy.Status.LastVersion + 1
 		deploymentConfig, err = d.deploymentConfigClient.Update(name, namespace, deploy)
 		log.Infof("update deployment configs deploy :%v", deploymentConfig)
-		log.Infof("update deployment configs err :%v", err)
 	} else {
 		deploymentConfig.Status.LastVersion = constant.InitLastVersion
 		deploymentConfig.Spec.Profile = profile

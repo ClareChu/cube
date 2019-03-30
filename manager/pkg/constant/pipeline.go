@@ -18,9 +18,9 @@ const (
 	Service            = "service"
 	Gateway            = "gateway"
 	PipelineConfigName = "pipelineConfigName"
-	CodeType           = "CodeType"
+	CodeType           = "codeType"
 	BuildVersion       = "buildVersion"
 	Namespace          = "namespace"
-	AppVersion         = "appVersion"
-	AppName            = "appName"
+	AppVersion         = "APP_VERSION"
+	AppName            = "APP_NAME"
 )
