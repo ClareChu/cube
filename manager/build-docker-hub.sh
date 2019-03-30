@@ -3,8 +3,8 @@
 echo  "GOOS=linux go build"
  GOOS=linux go build -o manager
 
-docker build -t hidevops/manager:v1.0.6 .
+docker build -t hidevops/manager:v1.0.7 .
 
-docker push hidevops/manager:v1.0.6
+docker push hidevops/manager:v1.0.7
 
 

@@ -99,7 +99,6 @@ func (s *BuildConfig) Create(name, pipelineName, namespace, sourceType, version,
 	}
 	buildConfigTemplate.Spec.App = name
 	buildConfigTemplate.Spec.CloneConfig.Branch = branch
-
 	buildConfigTemplate.Spec.Tags = []string{template.Spec.DockerRegistry + "/" + namespace + "/" + name}
 	//TODO 如果存在创建 buildConfig 不存在新建 buildConfig 创建完 buildConfig 新建
 	if err != nil {
