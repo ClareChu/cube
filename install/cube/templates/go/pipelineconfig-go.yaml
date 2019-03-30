@@ -9,13 +9,13 @@ items:
     app: ""
     dockerRegistry: ""
     events:
-    - eventTypes: Build
+    - eventTypes: build
       name: go
-    - eventTypes: Deploy
+    - eventTypes: deploy
       name: go
-    - eventTypes: Service
+    - eventTypes: service
       name: go
-    - eventTypes: Gateway
+    - eventTypes: gateway
       name: go
     profile: dev
     version: v1

@@ -78,7 +78,9 @@ func (s *BuildConfig) Create(name, pipelineName, namespace, sourceType, version,
 		Name:      name,
 		Namespace: namespace,
 		Labels: map[string]string{
-			constant.CodeType: sourceType,
+			constant.CodeType:   sourceType,
+			constant.AppName:    name,
+			constant.AppVersion: version,
 		},
 	}
 

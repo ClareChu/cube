@@ -21,4 +21,6 @@ const (
 	CodeType           = "CodeType"
 	BuildVersion       = "buildVersion"
 	Namespace          = "namespace"
+	AppVersion         = "appVersion"
+	AppName            = "appName"
 )

@@ -9,13 +9,13 @@ items:
     app: ""
     dockerRegistry: ""
     events:
-    - eventTypes: Build
+    - eventTypes: build
       name: java
-    - eventTypes: Deploy
+    - eventTypes: deploy
       name: java
-    - eventTypes: Service
+    - eventTypes: service
       name: java
-    - eventTypes: Gateway
+    - eventTypes: gateway
       name: java
     profile: dev
     version: v1
