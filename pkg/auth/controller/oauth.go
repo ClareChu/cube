@@ -55,8 +55,8 @@ func (o *oauthController) GetByCode(code string) (response model.Response, err e
 	log.Debug("gitlab oauth2 login ")
 	//TODO 通过code  获取用户的 access token  和失效时间  通过时间来获取用户信息
 	response = new(model.BaseResponse)
-	s := url.QueryEscape(service.CallbackUrl)
-	session := service.NewClient(service.OauthUrl, service.AccessTokenUrl, service.ApplicationId, s, service.Secret)
+	auth, err := o.oauthService.GetConfiguration()
+	session := service.NewClient(service.OauthUrl, service.AccessTokenUrl, auth.ApplicationId, url.QueryEscape(auth.CallbackUrl), auth.Secret)
 	resp, err := o.sessionInterface.GetAccessToken(session, code)
 	if err != nil || resp.AccessToken == "" {
 		response.SetCode(http.StatusUnauthorized)
