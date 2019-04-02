@@ -69,16 +69,17 @@ func GetCliUpdateApi(server string) string {
 var Message = make(chan string)
 
 type PipelineStarts struct {
-	Name       string
-	Namespace  string
-	SourceCode string
-	Profile    string
-	Branch     string
-	Version    string
+	Name       string	`json:"name"`
+	Namespace  string	`json:"namespace"`
+	SourceCode string	`json:"sourceCode"`
+	Profile    string	`json:"profile"`
+	Branch     string	`json:"branch"`
+	Context    string	`json:"context"`
+	Version    string	`json:"version"`
 }
 
 type User struct {
-	Name   string
-	Token  string
-	Server string
+	Name   string	`json:"name"`
+	Token  string	`json:"token"`
+	Server string	`json:"server"`
 }
