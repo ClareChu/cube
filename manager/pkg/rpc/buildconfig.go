@@ -44,3 +44,16 @@ func (s *buildConfigServiceServerImpl) ImagePush(ctx context.Context, request *p
 	response := &protobuf.ImagePushResponse{}
 	return response, nil
 }
+
+func (s *buildConfigServiceServerImpl) Test(ctx context.Context, request *protobuf.TestsRequest) (*protobuf.TestsResponse, error) {
+	// response to client
+	response := &protobuf.TestsResponse{}
+	return response, nil
+}
+
+
+func (s *buildConfigServiceServerImpl) Command(ctx context.Context, request *protobuf.CommandRequest) (*protobuf.CommandResponse, error) {
+	// response to client
+	response := &protobuf.CommandResponse{}
+	return response, nil
+}

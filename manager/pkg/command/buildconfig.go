@@ -110,4 +110,5 @@ type BuildConfigTemplate struct {
 	Version      string   `json:"version"`
 	PipelineName string   `json:"pipelineName"`
 	Branch       string   `json:"branch"`
+	Context      string   `json:"context"`
 }
