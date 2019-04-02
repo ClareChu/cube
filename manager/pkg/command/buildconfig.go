@@ -55,6 +55,7 @@ type CompileCommand struct {
 	CompileCmd []*BuildCommand `protobuf:"bytes,1,rep,name=CompileCmd,proto3" json:"CompileCmd,omitempty"`
 	Namespace  string          `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	Name       string          `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Context    string          `protobuf:"bytes,4,opt,name=context,proto3" json:"context,omitempty"`
 }
 
 type ImageBuildCommand struct {

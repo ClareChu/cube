@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "io.devops.hinode.buildconfig";
+option java_package = "io.devops.cube/agent.buildconfig";
 option java_outer_classname = "BuildConfigProto";
 
 // target package name
@@ -32,13 +33,12 @@ service BuildConfigService {
     }
     rpc ImagePush (ImagePushRequest) returns (ImagePushResponse) {
     }
-    //    add
-    //    rpc test (TestsRequest) returns (TestsResponse) {
-    //    }
-    //    rpc command (CommandRequest) returns (CommandResponse) {
-    //    }
+    rpc test (TestsRequest) returns (TestsResponse) {
+    }
+    rpc command (CommandRequest) returns (CommandResponse) {
+    }
 }
-
+//rpc command (CommandRequest) returns (CommandResponse) {}
 //SourceCodePull
 message SourceCodePullRequest {
     string cloneType = 1;
@@ -50,6 +50,7 @@ message SourceCodePullRequest {
     int32 depth = 7;
     string namespace = 8;
     string name = 9;
+    string token = 10;
 }
 
 message SourceCodePullResponse {
@@ -63,6 +64,7 @@ message CompileRequest {
     repeated BuildCommand CompileCmd = 1;
     string namespace = 2;
     string name = 3;
+    string context  = 4;
 }
 message BuildCommand {
     string codeType = 1;

@@ -30,6 +30,7 @@ type BuildConfigService interface {
 	ImagePush(imagePushRequest *protobuf.ImagePushRequest) error
 	GetImage(imagePushRequest *protobuf.ImagePushRequest) error
 	CreateImage(name, namespace, tag string, imageSummary docker_types.ImageSummary) error
+	Cmd(command []*protobuf.BuildCommand) (err error)
 }
 
 type buildConfigServiceImpl struct {
@@ -94,85 +95,33 @@ func (b *buildConfigServiceImpl) Clone(sourceCodePullRequest *protobuf.SourceCod
 
 func (b *buildConfigServiceImpl) Compile(compileRequest *protobuf.CompileRequest) error {
 	log.Infof("compile start")
-
-	execCommand := func(CommandName string, Params []string) error {
-		cmd, bufioReader, err := pkg_utils.ExecCommand(CommandName, Params)
-		if err != nil {
-
-			return err
-		}
-
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-
-		if err = cmd.Start(); err != nil {
-			return err
-		}
-		for {
-			line, err2 := bufioReader.ReadString('\n')
-			if err2 != nil || io.EOF == err2 {
-				break
-			}
-
-			log.Infof(line)
-		}
-		if err = cmd.Wait(); err != nil {
-			return err
-		}
-		return nil
-	}
 	codeType := os.Getenv("CODE_TYPE")
 	if codeType == "" {
 		return fmt.Errorf("env CODE_TYPE get filed")
 	}
 
 	if types.JAVA == codeType {
-
 		pomXmlInfo, err := pkg_utils.GetPomXmlInfo("pom.xml")
 		if err != nil {
 			return err
 		}
-
 		projectName := fmt.Sprintf("%s-%s.%s", pomXmlInfo.ArtifactId, pomXmlInfo.Version, pomXmlInfo.Packaging)
-
 		log.Infof("project name %v", projectName)
 		compileRequest.CompileCmd = append(compileRequest.CompileCmd, &protobuf.BuildCommand{ExecType: string(string(cubev1alpha1.Script)),
 			Script: fmt.Sprintf("cp target/%s app.%s", projectName, pomXmlInfo.Packaging),
 		})
-
 	}
-
-	for _, cmd := range compileRequest.CompileCmd {
-		if cmd.ExecType == string(cubev1alpha1.Script) {
-			scriptPath, err := pkg_utils.GenScript(cmd.Script)
-			if err != nil {
-				return err
-			}
-
-			if err := execCommand("chmod", []string{"+x", scriptPath}); err != nil {
-				return err
-			}
-
-			if err := execCommand("sh", []string{"-c", scriptPath}); err != nil {
-				log.Errorf("Error compile filed err: %v", err)
-				return err
-			}
-			os.RemoveAll(scriptPath)
-			continue
-		}
-
-		if err := execCommand(cmd.CommandName, cmd.Params); err != nil {
-			log.Errorf("compile filed err : %v", err)
-			return err
-		}
+	//TODO 判断是否存在子模块
+	if compileRequest.Context != compileRequest.Name {
+		script := fmt.Sprintf("cd %s", compileRequest.Name)
+		b.Cmd([]*protobuf.BuildCommand{&protobuf.BuildCommand{Script: script,
+			ExecType: "script",}})
 	}
-
-	fmt.Print("\n[INFO] compile succeed\n")
-	return nil
+	return b.Cmd(compileRequest.CompileCmd)
 }
 
 func (b *buildConfigServiceImpl) ImageBuild(imageBuildRequest *protobuf.ImageBuildRequest) error {
-	fmt.Printf("\n[INFO] image %v start build:\n", imageBuildRequest.Tags)
+	log.Infof("image %v start build:", imageBuildRequest.Tags)
 	buildImage := &docker.Image{
 		Tags:       imageBuildRequest.Tags,
 		BuildFiles: pkg_utils.GetBuildFileBYDockerfile(imageBuildRequest.DockerFile),
@@ -294,4 +243,59 @@ func (b *buildConfigServiceImpl) CreateImage(name, namespace, tag string, imageS
 	}
 	_, err = b.imageStream.Update(name, namespace, image)
 	return err
+}
+
+func execCommand(CommandName string, Params []string) error {
+	cmd, bufioReader, err := pkg_utils.ExecCommand(CommandName, Params)
+	if err != nil {
+
+		return err
+	}
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	if err = cmd.Start(); err != nil {
+		return err
+	}
+	for {
+		line, err2 := bufioReader.ReadString('\n')
+		if err2 != nil || io.EOF == err2 {
+			break
+		}
+
+		log.Infof(line)
+	}
+	if err = cmd.Wait(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (b *buildConfigServiceImpl) Cmd(command []*protobuf.BuildCommand) (err error) {
+	for _, cmd := range command {
+		if cmd.ExecType == string(cubev1alpha1.Script) {
+			scriptPath, err := pkg_utils.GenScript(cmd.Script)
+			if err != nil {
+				return err
+			}
+
+			if err := execCommand("chmod", []string{"+x", scriptPath}); err != nil {
+				return err
+			}
+
+			if err := execCommand("sh", []string{"-c", scriptPath}); err != nil {
+				log.Errorf("Error compile filed err: %v", err)
+				return err
+			}
+			os.RemoveAll(scriptPath)
+			continue
+		}
+
+		if err := execCommand(cmd.CommandName, cmd.Params); err != nil {
+			log.Errorf("compile filed err : %v", err)
+			return err
+		}
+	}
+	return nil
 }

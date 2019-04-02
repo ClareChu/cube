@@ -149,7 +149,7 @@ func (p *Pipeline) Selector(pipeline *v1alpha1.Pipeline) (err error) {
 	switch eventType.EventTypes {
 	case constant.BuildPipeline:
 		go func() {
-			p.buildConfigAggregate.Create(pipeline.Labels[constant.PipelineConfigName], pipeline.Name, pipeline.Namespace, eventType.Name, pipeline.Spec.Version, pipeline.Spec.Branch)
+			p.buildConfigAggregate.Create(pipeline.Labels[constant.PipelineConfigName], pipeline.Name, pipeline.Namespace, eventType.Name, pipeline.Spec.Version, pipeline.Spec.Branch, pipeline.Spec.Context)
 		}()
 		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.BuildPipeline, constant.Created, "")
 		return

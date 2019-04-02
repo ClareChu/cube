@@ -8,12 +8,14 @@ import (
 
 type PipelineStart struct {
 	model.RequestBody
-	Name       string `json:"name"`
-	Namespace  string `json:"namespace"`
-	SourceCode string `json:"sourceCode"`
-	Version    string `json:"version"`
-	Profile    string `json:"profile"`
-	Branch     string `json:"branch"`
+	Name         string   `json:"name"`
+	Namespace    string   `json:"namespace"`
+	SourceCode   string   `json:"sourceCode"`
+	Version      string   `json:"version"`
+	Profile      string   `json:"profile"`
+	Branch       string   `json:"branch"`
+	Context      []string `json:"context"`
+	ParentModule string   `json:"parentModule"`
 }
 
 type PipelineConfigTemplate struct {

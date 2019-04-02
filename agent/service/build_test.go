@@ -167,3 +167,35 @@ func TestBuildConfigServiceImplCreateImage(t *testing.T) {
 	s := strings.Split("docker-registry-default.app.io/demo/hello-world@sha256:485a3c93699c107dbe6d8a265a75d282b0bc767b5780f60d45a18a923689cee2", "@")
 	fmt.Sprint(s)
 }
+
+func TestBuildConfigServiceImpl_Cmd(t *testing.T) {
+	c := &protobuf.BuildCommand{
+		ExecType: "script",
+		Script: "pwd",
+	}
+	var command []*protobuf.BuildCommand
+	command = append(command, c)
+	clientSet := cube_fake.NewSimpleClientset().CubeV1alpha1()
+	image := cube.NewImageStream(clientSet)
+	b := newBuildService(nil, image)
+	err := b.Cmd(command)
+	assert.Equal(t, nil, err)
+}
+
+func TestBuildConfigServiceImpl_Cmd1(t *testing.T) {
+	c := &protobuf.BuildCommand{
+		Script: "cd ../",
+		ExecType: "script",
+
+	}
+	c1 := &protobuf.BuildCommand{
+		CommandName:"ls",
+	}
+	var command []*protobuf.BuildCommand
+	command = append(append(command, c1), c)
+	clientSet := cube_fake.NewSimpleClientset().CubeV1alpha1()
+	image := cube.NewImageStream(clientSet)
+	b := newBuildService(nil, image)
+	err := b.Cmd(command)
+	assert.Equal(t, nil, err)
+}
