@@ -53,9 +53,21 @@ func (c *PipelineConfigController) Post(cmd *command.PipelineStart, properties *
 		if err != nil {
 			return
 		}
-		go func() {
-			_, err = c.pipelineConfigAggregate.StartPipelineConfig(cmd)
-		}()
+		if len(cmd.Context) == 0 {
+			cmd.ParentModule = cmd.Name
+			go func() {
+				_, err = c.pipelineConfigAggregate.StartPipelineConfig(cmd)
+			}()
+			return
+		}
+		for _, ct := range cmd.Context {
+			go func() {
+				cmd.ParentModule = cmd.Name
+				cmd.Name = ct
+				_, err = c.pipelineConfigAggregate.StartPipelineConfig(cmd)
+			}()
+		}
+
 	}
 	return
 }

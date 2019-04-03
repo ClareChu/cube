@@ -32,6 +32,7 @@ type runCommand struct {
 	sourcecode string
 	app        string
 	branch     string
+	context    string
 	verbose    bool
 	watch      bool
 }
@@ -48,6 +49,7 @@ func newRunCommand() *runCommand {
 	pf.StringVarP(&c.project, "project", "p", "", "--project=project-name")
 	pf.StringVarP(&c.app, "app", "a", "", "--app=my-app")
 	pf.StringVarP(&c.branch, "branch", "b", "", "--branch=master")
+	pf.StringVarP(&c.context, "context", "c", "", "--context=sub-module")
 	pf.StringVarP(&c.sourcecode, "sourcecode", "s", "", "--sourcecode=java")
 	pf.BoolVarP(&c.verbose, "verbose", "v", false, "--verbose")
 	pf.BoolVarP(&c.watch, "watch", "w", false, "--watch")
@@ -73,6 +75,7 @@ func (c *runCommand) Run(args []string) error {
 		SourceCode: c.sourcecode,
 		Profile:    c.profile,
 		Branch:     c.branch,
+		Context:    c.context,
 		Version:    c.version}
 	if err := api.PipelineStart(user, pss); err != nil {
 		return err

@@ -38,7 +38,8 @@ type PipelineSpec struct {
 	Namespace string   `json:"namespace"  protobuf:"bytes,5,opt,name=namespace"`
 	Version   string   `json:"version"  protobuf:"bytes,7,opt,name=version"`
 	Branch    string   `json:"branch" protobuf:"bytes,8,opt,name=branch"`
-	Events    []Events `json:"events" protobuf:"bytes,9,opt,name=events"`
+	Context   string   `json:"context" protobuf:"bytes,9,opt,name=context"`
+	Events    []Events `json:"events" protobuf:"bytes,10,opt,name=events"`
 }
 
 type Events struct {

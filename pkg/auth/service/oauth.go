@@ -11,9 +11,9 @@ import (
 )
 
 const (
-	ApplicationId  = "2c0296a841f08a0cd08f5c40bef100f39b311c019cd2f833d8e7ecdaf61014ef"
-	Secret         = "c99a788458ea0d7cdedb1405da8222fd0cc8b7367faa94715d901a1daba3da8c"
-	CallbackUrl    = "http://localhost:8081/oauth/code"
+	//ApplicationId  = "2c0296a841f08a0cd08f5c40bef100f39b311c019cd2f833d8e7ecdaf61014ef"
+	//Secret         = "c99a788458ea0d7cdedb1405da8222fd0cc8b7367faa94715d901a1daba3da8c"
+	//CallbackUrl    = "http://localhost:8081/oauth/code" 回调地址
 	OauthUrl       = "${SCM_URL}/oauth/authorize?client_id=${ApplicationId}&redirect_uri=${CallbackUrl}&response_type=code"
 	AccessTokenUrl = "${SCM_URL}/oauth/token?client_id=${ApplicationId}&redirect_uri=${CallbackUrl}&client_secret=${Secret}&code=${Code}&grant_type=authorization_code"
 )

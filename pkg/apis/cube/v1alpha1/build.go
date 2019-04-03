@@ -72,6 +72,7 @@ type BuildSpec struct {
 	DockerAuthConfig AuthConfig               `json:"dockerAuthConfig" protobuf:"bytes,12,opt,name=dockerAuthConfig"`
 	CommandGroup     map[string][]ExecCommand `json:"commandGroup" protobuf:"bytes,13,opt,name=commandGroup"`
 	App              string                   `json:"app" protobuf:"bytes,14,opt,name=app"`
+	Context          string                   `json:"context" protobuf:"bytes,15,opt,name=context"`
 }
 
 type DeployData struct {

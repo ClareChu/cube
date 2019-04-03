@@ -157,7 +157,7 @@ func (b *Build) SourceCodePull(build *v1alpha1.Build) error {
 	}
 	command := &command.SourceCodePullCommand{
 		CloneType: build.Spec.CloneType,
-		Url:       fmt.Sprintf("%s/%s/%s.git", configMaps.Data[constant.BaseUrl], build.Namespace, build.Labels[constant.BuildConfigName]),
+		Url:       fmt.Sprintf("%s/%s/%s.git", configMaps.Data[constant.BaseUrl], build.Namespace, build.Spec.Context),
 		Branch:    build.Spec.CloneConfig.Branch,
 		DstDir:    build.Spec.CloneConfig.DstDir,
 		Username:  build.Spec.CloneConfig.Username,
@@ -186,6 +186,7 @@ func (b *Build) Compile(build *v1alpha1.Build) error {
 		Name:       build.Name,
 		Namespace:  build.Namespace,
 		CompileCmd: buildCommands,
+		Context:    build.Spec.Context,
 	}
 
 	err := b.buildConfigService.Compile(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), "7575", command)

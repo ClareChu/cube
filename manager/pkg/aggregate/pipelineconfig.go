@@ -108,6 +108,9 @@ func replaceProfile(cmd *command.PipelineStart, pipelineConfig *v1alpha1.Pipelin
 	if cmd.Branch != "" {
 		pipelineConfig.Spec.Branch = cmd.Branch
 	}
+	if cmd.ParentModule != "" {
+		pipelineConfig.Spec.Context = cmd.ParentModule
+	}
 }
 
 func (p *PipelineConfig) Create(name, namespace string, pipelineConfig *v1alpha1.PipelineConfig) (*v1alpha1.PipelineConfig, error) {

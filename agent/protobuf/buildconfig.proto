@@ -64,6 +64,7 @@ message CompileRequest {
     repeated BuildCommand CompileCmd = 1;
     string namespace = 2;
     string name = 3;
+    string context  = 4;
 }
 message BuildCommand {
     string codeType = 1;
