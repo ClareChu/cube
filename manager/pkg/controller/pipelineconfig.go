@@ -8,6 +8,7 @@ import (
 	"hidevops.io/hiboot/pkg/at"
 	"hidevops.io/hiboot/pkg/model"
 	"hidevops.io/hiboot/pkg/starter/jwt"
+	"strings"
 )
 
 type PipelineConfigController struct {
@@ -63,7 +64,9 @@ func (c *PipelineConfigController) Post(cmd *command.PipelineStart, properties *
 		for _, ct := range cmd.Context {
 			go func() {
 				cmd.ParentModule = cmd.Name
-				cmd.Name = ct
+				cmd.Path = ct
+				paths := strings.Split(ct, "/")
+				cmd.Name = paths[len(paths) - 1]
 				_, err = c.pipelineConfigAggregate.StartPipelineConfig(cmd)
 			}()
 		}

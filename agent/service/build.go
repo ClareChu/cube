@@ -112,13 +112,10 @@ func (b *buildConfigServiceImpl) Compile(compileRequest *protobuf.CompileRequest
 		})
 	}
 	//TODO 判断是否存在子模块
-	if compileRequest.Context != compileRequest.Name {
-		dir := pkg_utils.GetCurrentDirectory()
-		dir = fmt.Sprintf("%s/%s", dir, compileRequest.Name)
-		err := os.Chdir(dir)
-		if err != nil {
-			return err
-		}
+	if compileRequest.Context != "" {
+		dir := fmt.Sprintf("%s/%s", pkg_utils.GetCurrentDirectory(), compileRequest.Context)
+		log.Infof("dir: %s", dir)
+		return os.Chdir(dir)
 	}
 	return b.Cmd(compileRequest.CompileCmd)
 }

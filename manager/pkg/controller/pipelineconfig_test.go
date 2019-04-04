@@ -9,6 +9,7 @@ import (
 	"hidevops.io/hiboot/pkg/starter/jwt"
 	"hidevops.io/hiboot/pkg/utils/io"
 	"net/http"
+	"strings"
 	"testing"
 	"time"
 )
@@ -55,4 +56,15 @@ func TestPipelineConfig(t *testing.T) {
 	t.Run("should pass with jwt token", func(t *testing.T) {
 		app.Get("/pipelineConfig/name/a/namespace/b").WithHeader("Authorization", token).Expect().Status(http.StatusOK)
 	})
+}
+
+func TestPipelineConfigController_Post(t *testing.T) {
+	path := "use/v/c/s/a"
+	log.Info(path)
+	s := strings.Split(path, "/")
+	for _, i := range s {
+		log.Info(i)
+	}
+	paths := s[len(s)-1]
+	log.Info("paths: ", paths)
 }
