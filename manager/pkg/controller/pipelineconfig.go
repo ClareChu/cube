@@ -54,6 +54,7 @@ func (c *PipelineConfigController) Post(cmd *command.PipelineStart, properties *
 		if err != nil {
 			return
 		}
+
 		if len(cmd.Context) == 0 {
 			cmd.ParentModule = cmd.Name
 			go func() {
