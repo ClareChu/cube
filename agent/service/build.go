@@ -113,9 +113,12 @@ func (b *buildConfigServiceImpl) Compile(compileRequest *protobuf.CompileRequest
 	}
 	//TODO 判断是否存在子模块
 	if compileRequest.Context != compileRequest.Name {
-		script := fmt.Sprintf("cd %s", compileRequest.Name)
-		b.Cmd([]*protobuf.BuildCommand{&protobuf.BuildCommand{Script: script,
-			ExecType: "script",}})
+		dir := pkg_utils.GetCurrentDirectory()
+		dir = fmt.Sprintf("%s/%s", dir, compileRequest.Name)
+		err := os.Chdir(dir)
+		if err != nil {
+			return err
+		}
 	}
 	return b.Cmd(compileRequest.CompileCmd)
 }

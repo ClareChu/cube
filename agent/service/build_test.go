@@ -184,18 +184,15 @@ func TestBuildConfigServiceImpl_Cmd(t *testing.T) {
 
 func TestBuildConfigServiceImpl_Cmd1(t *testing.T) {
 	c := &protobuf.BuildCommand{
-		Script: "cd ../",
-		ExecType: "script",
+		CommandName: "ls",
 
 	}
-	c1 := &protobuf.BuildCommand{
-		CommandName:"ls",
-	}
+	err := os.Chdir("/")
 	var command []*protobuf.BuildCommand
-	command = append(append(command, c1), c)
+	command = append(command, c)
 	clientSet := cube_fake.NewSimpleClientset().CubeV1alpha1()
 	image := cube.NewImageStream(clientSet)
 	b := newBuildService(nil, image)
-	err := b.Cmd(command)
+	err = b.Cmd(command)
 	assert.Equal(t, nil, err)
 }
