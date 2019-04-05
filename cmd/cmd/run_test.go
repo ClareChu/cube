@@ -29,7 +29,7 @@ func TestRunCommands(t *testing.T) {
 	})
 
 	t.Run("should run", func(t *testing.T) {
-		_, err := testApp.Run("run", "-s", "go", "-c", "submodule")
+		_, err := testApp.Run("run", "-s", "go", "-c", "abc/def,abc/def/hij")
 		assert.Equal(t, nil, err)
 	})
 

@@ -116,8 +116,8 @@ func StartInit(user *User, start *PipelineStarts) (*PipelineStarts, error) {
 	}
 	fmt.Println("app: ", start.Name)
 	fmt.Println("project: ", start.Namespace)
-	if start.Context != "" {
-		fmt.Println("context: ", start.Context)
+	for _, ctx := range start.Context {
+		fmt.Println("context: ", ctx)
 	}
 
 	//如果 SourceCode 为空，则从发送http请求获取 SourceCode 信息，
