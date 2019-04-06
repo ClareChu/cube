@@ -54,7 +54,6 @@ func (c *PipelineConfigController) Post(cmd *command.PipelineStart, properties *
 		if err != nil {
 			return
 		}
-
 		if len(cmd.Context) == 0 {
 			cmd.ParentModule = cmd.Name
 			go func() {
@@ -63,12 +62,21 @@ func (c *PipelineConfigController) Post(cmd *command.PipelineStart, properties *
 			return
 		}
 		for _, ct := range cmd.Context {
+			log.Info(ct)
+			paths := strings.Split(ct, "/")
+			name := paths[len(paths)-1]
+			command := command.PipelineStart{
+				Name: name,
+				Namespace: cmd.Namespace,
+				Version: cmd.Version,
+				Profile: cmd.Profile,
+				Path: ct,
+				ParentModule:cmd.Name,
+				SourceCode:cmd.SourceCode,
+				Branch: cmd.Branch,
+			}
 			go func() {
-				cmd.ParentModule = cmd.Name
-				cmd.Path = ct
-				paths := strings.Split(ct, "/")
-				cmd.Name = paths[len(paths) - 1]
-				_, err = c.pipelineConfigAggregate.StartPipelineConfig(cmd)
+				_, err = c.pipelineConfigAggregate.StartPipelineConfig(&command)
 			}()
 		}
 
