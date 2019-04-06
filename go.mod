@@ -3,15 +3,19 @@ module hidevops.io/cube
 go 1.12
 
 require (
+	cloud.google.com/go v0.36.0 // indirect
 	github.com/BurntSushi/toml v0.3.1
 	github.com/Joker/jade v1.0.0
 	github.com/Microsoft/go-winio v0.4.11
 	github.com/Shopify/goreferrer v0.0.0-20181106222321-ec9c9a553398
 	github.com/ajg/form v0.0.0-20160822230020-523a5da1a92f
+	github.com/alecthomas/gometalinter v3.0.0+incompatible
 	github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc
 	github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf
 	github.com/aymerick/raymond v2.0.2+incompatible
-	github.com/coreos/etcd v3.3.9+incompatible
+	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e
+	github.com/client9/misspell v0.3.4
+	github.com/coreos/etcd v3.3.10+incompatible
 	github.com/davecgh/go-spew v1.1.1
 	github.com/deckarep/golang-set v1.7.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
@@ -29,19 +33,22 @@ require (
 	github.com/ghodss/yaml v1.0.0
 	github.com/gogo/protobuf v1.1.1
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
+	github.com/golang/lint v0.0.0-20181026193005-c67002cb31c3
 	github.com/golang/mock v1.2.0
 	github.com/golang/protobuf v1.2.0
 	github.com/google/go-querystring v1.0.0
 	github.com/google/gofuzz v0.0.0-20170612174753-24818f796faf
+	github.com/google/shlex v0.0.0-20181106134648-c34317bd91bf
 	github.com/googleapis/gnostic v0.2.0
+	github.com/gordonklaus/ineffassign v0.0.0-20180909121442-1003c8bd00dc
 	github.com/gorilla/websocket v1.4.0
-	github.com/hashicorp/go-version v1.0.0
-	github.com/hashicorp/golang-lru v0.0.0-20180830032955-20f1fb78b074
+	github.com/hashicorp/golang-lru v0.5.0
 	github.com/hashicorp/hcl v1.0.0
 	github.com/howeyc/gopass v0.0.0-20170109162249-bf9dde6d0d2c
 	github.com/imdario/mergo v0.3.6
 	github.com/imkira/go-interpol v1.1.0
 	github.com/inconshreveable/go-update v0.0.0-20160112193335-8152e7eb6ccf
+	github.com/inconshreveable/mousetrap v1.0.0
 	github.com/iris-contrib/blackfriday v2.0.0+incompatible
 	github.com/iris-contrib/formBinder v0.0.0-20171010160137-ad9fb86c356f
 	github.com/iris-contrib/go.uuid v2.0.0+incompatible
@@ -51,30 +58,31 @@ require (
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99
 	github.com/jinzhu/copier v0.0.0-20180308034124-7e38e58719c3
 	github.com/json-iterator/go v1.1.5
+	github.com/juju/ansiterm v0.0.0-20180109212912-720a0952cc2a
 	github.com/juju/errors v0.0.0-20181118221551-089d3ea4e4d5
 	github.com/kataras/golog v0.0.0-20180321173939-03be10146386
-	github.com/kataras/iris v11.0.3+incompatible
+	github.com/kataras/iris v11.1.1+incompatible
 	github.com/kataras/pio v0.0.0-20180511174041-a9733b5b6b83
-	github.com/kataras/survey v2.0.0+incompatible
-	github.com/kevholditch/gokong v0.0.0-20180514071818-ab1e75d5f714
+	github.com/kevholditch/gokong v0.0.1
 	github.com/kevinburke/ssh_config v0.0.0-20180830205328-81db2a75821e
-	github.com/klauspost/compress v1.4.0
-	github.com/klauspost/cpuid v0.0.0-20180405133222-e7e905edc00e
+	github.com/klauspost/compress v1.4.1
+	github.com/klauspost/cpuid v1.2.0
 	github.com/konsorten/go-windows-terminal-sequences v1.0.1
+	github.com/lunixbochs/vtclean v1.0.0
 	github.com/magiconair/properties v1.8.0
 	github.com/manifoldco/promptui v0.3.2
 	github.com/mattn/go-colorable v0.0.9
 	github.com/mattn/go-isatty v0.0.4
-	github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b
 	github.com/microcosm-cc/bluemonday v1.0.1
 	github.com/mitchellh/go-homedir v1.0.0
 	github.com/mitchellh/mapstructure v1.1.2
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
 	github.com/modern-go/reflect2 v1.0.1
 	github.com/moul/http2curl v1.0.0
+	github.com/nicksnyder/go-i18n v1.10.0
 	github.com/openshift/api v3.9.0+incompatible
 	github.com/openshift/client-go v3.9.0+incompatible
-	github.com/parnurzeal/gorequest v0.0.0-20170220172057-a578a48e8d6c
+	github.com/parnurzeal/gorequest v0.2.15
 	github.com/pelletier/go-buffruneio v0.2.0
 	github.com/pelletier/go-toml v1.2.0
 	github.com/pkg/errors v0.8.0
@@ -87,11 +95,13 @@ require (
 	github.com/sony/sonyflake v0.0.0-20181109022403-6d5bd6181009
 	github.com/spf13/afero v1.1.2
 	github.com/spf13/cast v1.3.0
+	github.com/spf13/cobra v0.0.3
 	github.com/spf13/jwalterweatherman v1.0.0
 	github.com/spf13/pflag v1.0.3
 	github.com/src-d/gcfg v1.4.0
 	github.com/stretchr/objx v0.1.1
 	github.com/stretchr/testify v1.2.2
+	github.com/tsenart/deadcode v0.0.0-20160724212837-210d2dc333e9
 	github.com/valyala/bytebufferpool v1.0.0
 	github.com/xanzy/go-gitlab v0.0.0-20170825130035-896163fa8f7a
 	github.com/xanzy/ssh-agent v0.2.0
@@ -110,15 +120,16 @@ require (
 	google.golang.org/genproto v0.0.0-20190201180003-4b09977fb922
 	google.golang.org/grpc v1.17.0
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
+	gopkg.in/alecthomas/kingpin.v3-unstable v3.0.0-20180810215634-df19058c872c
 	gopkg.in/go-playground/validator.v8 v8.18.2
 	gopkg.in/inf.v0 v0.9.1
-	gopkg.in/ini.v1 v1.38.3
+	gopkg.in/ini.v1 v1.39.0
 	gopkg.in/src-d/go-billy.v4 v4.3.0
-	gopkg.in/src-d/go-git.v4 v4.7.1
+	gopkg.in/src-d/go-git.v4 v4.8.1
 	gopkg.in/warnings.v0 v0.1.2
 	gopkg.in/yaml.v2 v2.2.1
 	hidevops.io/hiboot v1.0.4
-	hidevops.io/hiboot-data v0.0.0-20181205113857-b2e7340dc1ea
+	hidevops.io/hiboot-data v1.0.0
 	hidevops.io/hioak v0.0.0-20190318022159-922d01765358
 	hidevops.io/viper v1.3.2
 	k8s.io/api v0.0.0-20180601181742-8b7507fac302
@@ -127,5 +138,5 @@ require (
 	k8s.io/client-go v7.0.0+incompatible
 	k8s.io/code-generator v0.0.0-20180601180426-9de8e796a74d
 	k8s.io/gengo v0.0.0-20181113154421-fd15ee9cc2f7
-	k8s.io/klog v0.0.0-20181113195958-a5bc97fbc634
+	k8s.io/klog v0.1.0
 )

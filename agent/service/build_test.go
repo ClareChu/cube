@@ -12,6 +12,7 @@ import (
 	"hidevops.io/cube/agent/service/mock"
 	cube_fake "hidevops.io/cube/pkg/client/clientset/versioned/fake"
 	"hidevops.io/cube/pkg/starter/cube"
+	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hioak/starter/docker"
 	"hidevops.io/hioak/starter/docker/fake"
 	"io"
@@ -187,7 +188,8 @@ func TestBuildConfigServiceImpl_Cmd1(t *testing.T) {
 		CommandName: "ls",
 
 	}
-	err := os.Chdir("/")
+	err := os.Chdir("mock")
+	log.Error(err)
 	var command []*protobuf.BuildCommand
 	command = append(command, c)
 	clientSet := cube_fake.NewSimpleClientset().CubeV1alpha1()

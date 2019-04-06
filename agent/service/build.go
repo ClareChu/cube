@@ -94,7 +94,7 @@ func (b *buildConfigServiceImpl) Clone(sourceCodePullRequest *protobuf.SourceCod
 }
 
 func (b *buildConfigServiceImpl) Compile(compileRequest *protobuf.CompileRequest) error {
-	log.Infof("compile start")
+	log.Infof("compile start:%v", compileRequest)
 	codeType := os.Getenv("CODE_TYPE")
 	if codeType == "" {
 		return fmt.Errorf("env CODE_TYPE get filed")
@@ -115,8 +115,13 @@ func (b *buildConfigServiceImpl) Compile(compileRequest *protobuf.CompileRequest
 	if compileRequest.Context != "" {
 		dir := fmt.Sprintf("%s/%s", pkg_utils.GetCurrentDirectory(), compileRequest.Context)
 		log.Infof("dir: %s", dir)
-		return os.Chdir(dir)
+		err := os.Chdir(dir)
+		if err != nil {
+			log.Errorf("check out dir: %v", err)
+			return err
+		}
 	}
+	log.Infof("dir: %s", pkg_utils.GetCurrentDirectory())
 	return b.Cmd(compileRequest.CompileCmd)
 }
 
@@ -137,8 +142,6 @@ func (b *buildConfigServiceImpl) ImageBuild(imageBuildRequest *protobuf.ImageBui
 		return err
 	}
 	file.Close()
-	//defer os.RemoveAll("Dockerfile")
-
 	imageBuildResponse, err := b.imageClient.BuildImage(buildImage)
 	if err != nil {
 		fmt.Printf("\nError image %v build filed\n", imageBuildRequest.Tags)
@@ -154,8 +157,7 @@ func (b *buildConfigServiceImpl) ImageBuild(imageBuildRequest *protobuf.ImageBui
 }
 
 func (b *buildConfigServiceImpl) ImagePush(imagePushRequest *protobuf.ImagePushRequest) error {
-
-	fmt.Printf("\n[INFO] image %v start push:\n", imagePushRequest)
+	log.Infof("image %v start push:", imagePushRequest)
 	for _, imageName := range imagePushRequest.Tags {
 		imageInfo := strings.Split(imageName, ":")
 		pushImage := &docker.Image{
@@ -166,10 +168,9 @@ func (b *buildConfigServiceImpl) ImagePush(imagePushRequest *protobuf.ImagePushR
 		}
 
 		if err := b.imageClient.PushImage(pushImage); err != nil {
-			fmt.Printf("\nError image %s push filed\n", imageName)
+			log.Errorf("Error image %s push filed", imageName)
 			return err
 		}
-
 	}
 	log.Info("push image success ")
 	err := b.GetImage(imagePushRequest)
@@ -273,29 +274,27 @@ func execCommand(CommandName string, Params []string) error {
 }
 
 func (b *buildConfigServiceImpl) Cmd(command []*protobuf.BuildCommand) (err error) {
+	log.Info("command: ", command)
 	for _, cmd := range command {
 		if cmd.ExecType == string(cubev1alpha1.Script) {
 			scriptPath, err := pkg_utils.GenScript(cmd.Script)
 			if err != nil {
 				return err
 			}
-
 			if err := execCommand("chmod", []string{"+x", scriptPath}); err != nil {
 				return err
 			}
-
 			if err := execCommand("sh", []string{"-c", scriptPath}); err != nil {
-				log.Errorf("Error compile filed err: %v", err)
+				log.Errorf("compile filed err: %v", err)
 				return err
 			}
 			os.RemoveAll(scriptPath)
 			continue
 		}
-
 		if err := execCommand(cmd.CommandName, cmd.Params); err != nil {
 			log.Errorf("compile filed err : %v", err)
 			return err
 		}
 	}
-	return nil
+	return
 }
