@@ -22,6 +22,19 @@ type PipelineAggregate interface {
 	Watch(name, namespace string) (pipeline *v1alpha1.Pipeline, err error)
 	Create(pipelineConfig *v1alpha1.PipelineConfig, sourceCode string) (*v1alpha1.Pipeline, error)
 	Selector(pipeline *v1alpha1.Pipeline) (err error)
+	InitReqParams(pipeline *v1alpha1.Pipeline, eventType string) (params *PipelineReqParams)
+}
+
+type PipelineReqParams struct {
+	Name         string
+	PipelineName string
+	Namespace    string
+	EventType    string
+	Version      string
+	Branch       string
+	Context      string
+	ParentModule string
+	Profile      string
 }
 
 type Pipeline struct {
@@ -146,10 +159,11 @@ func (p *Pipeline) Selector(pipeline *v1alpha1.Pipeline) (err error) {
 		eventType = pipeline.Spec.Events[len(pipeline.Status.Stages)]
 	}
 	log.Debugf("EventTypes : %v", eventType.EventTypes)
+	params := p.InitReqParams(pipeline, eventType.Name)
 	switch eventType.EventTypes {
 	case constant.BuildPipeline:
 		go func() {
-			p.buildConfigAggregate.Create(pipeline.Labels[constant.PipelineConfigName], pipeline.Name, pipeline.Namespace, eventType.Name, pipeline.Spec.Version, pipeline.Spec.Branch, pipeline.Spec.Context, pipeline.Spec.ParentModule)
+			p.buildConfigAggregate.Create(params)
 		}()
 		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.BuildPipeline, constant.Created, "")
 		return
@@ -171,8 +185,22 @@ func (p *Pipeline) Selector(pipeline *v1alpha1.Pipeline) (err error) {
 		}()
 		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.Gateway, constant.Created, "")
 	default:
-
 		return
+	}
+	return
+}
+
+func (p *Pipeline) InitReqParams(pipeline *v1alpha1.Pipeline, eventType string) (params *PipelineReqParams) {
+	params = &PipelineReqParams{
+		PipelineName: pipeline.Labels[constant.PipelineConfigName],
+		Name:         pipeline.Name,
+		Namespace:    pipeline.Namespace,
+		EventType:    eventType,
+		Version:      pipeline.Spec.Version,
+		Profile:      pipeline.Spec.Profile,
+		Branch:       pipeline.Spec.Branch,
+		Context:      pipeline.Spec.Context,
+		ParentModule: pipeline.Spec.ParentModule,
 	}
 	return
 }
