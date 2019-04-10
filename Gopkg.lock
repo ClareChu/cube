@@ -1349,7 +1349,7 @@
     "pkg/utils/validator",
   ]
   pruneopts = "NUT"
-  revision = "6fdd31903e65e2aac265236f06f166dfc9b2e2f8"
+  revision = "314f4cb6c89fd66cb75ce36a6fa40a4309d7b213"
 
 [[projects]]
   digest = "1:6db22dfed41da05846b975e4f580adfc4113f6e2d70e3d611aa2d7ea8db56eb1"
