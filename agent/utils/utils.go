@@ -11,9 +11,9 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
-	"os/exec"
 	"time"
 )
 
@@ -262,4 +262,14 @@ func StartCmd(commandRequest *protobuf.CommandRequest) error {
 		}
 	}
 	return nil
+}
+
+func GetCurrentDirectory() string {
+	pwd, err := os.Getwd()
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(pwd)
+	return pwd
+
 }

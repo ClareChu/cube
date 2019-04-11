@@ -3,10 +3,12 @@
 echo  "GOOS=linux go build"
  GOOS=linux go build -o manager
 
-docker build -t ${HOST}/hidevopsio/manager:v1 .
+export HOST=harbor.cloud2go.cn
 
-docker login -p $(oc whoami -t) -u unused ${HOST}
+docker build -t ${HOST}/hidevops/manager:v1.0.9 .
 
-docker push ${HOST}/hidevopsio/manager:v1
+docker login -p Harbor12345 -u admin ${HOST}
+
+docker push ${HOST}/hidevops/manager:v1.0.9
 
 

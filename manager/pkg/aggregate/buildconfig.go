@@ -13,7 +13,7 @@ import (
 
 type BuildConfigAggregate interface {
 	Template(buildConfigTemplate *command.BuildConfig) (buildConfig *v1alpha1.BuildConfig, err error)
-	Create(name, pipelineName, namespace, sourceType, version, branch, context string) (buildConfig *v1alpha1.BuildConfig, err error)
+	Create(params *PipelineReqParams) (buildConfig *v1alpha1.BuildConfig, err error)
 	Delete(name, namespace string) error
 }
 
@@ -66,9 +66,9 @@ func (s *BuildConfig) Template(buildConfigTemplate *command.BuildConfig) (buildC
 	return
 }
 
-func (s *BuildConfig) Create(name, pipelineName, namespace, sourceType, version, branch, context string) (buildConfig *v1alpha1.BuildConfig, err error) {
-	log.Debugf("build config create name :%v, namespace :%v", name, namespace)
-	template, err := s.buildConfigClient.Get(sourceType, constant.TemplateDefaultNamespace)
+func (s *BuildConfig) Create(params *PipelineReqParams) (buildConfig *v1alpha1.BuildConfig, err error) {
+	log.Debugf("build config create name :%v, namespace :%v", params.Name, params.Namespace)
+	template, err := s.buildConfigClient.Get(params.EventType, constant.TemplateDefaultNamespace)
 	if err != nil {
 		log.Errorf("get build config template err: %v", err)
 		return nil, err
@@ -80,16 +80,16 @@ func (s *BuildConfig) Create(name, pipelineName, namespace, sourceType, version,
 	template.Spec.DockerAuthConfig.Username = config.Data[constant.Username]
 	template.Spec.DockerAuthConfig.Password = config.Data[constant.Password]
 	template.Spec.DockerRegistry = config.Data[constant.DockerRegistry]
-	buildConfig, err = s.buildConfigClient.Get(name, namespace)
+	buildConfig, err = s.buildConfigClient.Get(params.Name, params.Namespace)
 	buildConfigTemplate := new(v1alpha1.BuildConfig)
 	copier.Copy(buildConfigTemplate, template)
 	buildConfigTemplate.ObjectMeta = v1.ObjectMeta{
-		Name:      name,
-		Namespace: namespace,
+		Name:      params.Name,
+		Namespace: params.Namespace,
 		Labels: map[string]string{
-			constant.CodeType:   sourceType,
-			constant.AppName:    name,
-			constant.AppVersion: version,
+			constant.CodeType:   params.EventType,
+			constant.AppName:    params.Name,
+			constant.AppVersion: params.Version,
 		},
 	}
 
@@ -97,10 +97,11 @@ func (s *BuildConfig) Create(name, pipelineName, namespace, sourceType, version,
 		Kind:       constant.BuildConfigKind,
 		APIVersion: constant.BuildConfigApiVersion,
 	}
-	buildConfigTemplate.Spec.App = name
-	buildConfigTemplate.Spec.CloneConfig.Branch = branch
-	buildConfigTemplate.Spec.Context = context
-	buildConfigTemplate.Spec.Tags = []string{template.Spec.DockerRegistry + "/" + namespace + "/" + name}
+	buildConfigTemplate.Spec.App = params.Name
+	buildConfigTemplate.Spec.CloneConfig.Branch = params.Branch
+	buildConfigTemplate.Spec.Context = params.Context
+	buildConfigTemplate.Spec.ParentModule = params.ParentModule
+	buildConfigTemplate.Spec.Tags = []string{template.Spec.DockerRegistry + "/" + params.Namespace + "/" + params.Name}
 	//TODO 如果存在创建 buildConfig 不存在新建 buildConfig 创建完 buildConfig 新建
 	if err != nil {
 		buildConfigTemplate.Status.LastVersion = constant.InitLastVersion
@@ -108,13 +109,13 @@ func (s *BuildConfig) Create(name, pipelineName, namespace, sourceType, version,
 	} else {
 		buildConfigTemplate.ObjectMeta = buildConfig.ObjectMeta
 		buildConfigTemplate.Status.LastVersion = buildConfig.Status.LastVersion + 1
-		buildConfig, err = s.buildConfigClient.Update(name, namespace, buildConfigTemplate)
+		buildConfig, err = s.buildConfigClient.Update(params.Name, params.Namespace, buildConfigTemplate)
 	}
 	if err != nil {
 		log.Errorf("create build config :%v", err)
 		return
 	}
 	//TODO 创建 build
-	_, err = s.buildAggregate.Create(buildConfig, pipelineName, version)
+	_, err = s.buildAggregate.Create(buildConfig, params.PipelineName, params.Version)
 	return
 }

@@ -83,7 +83,7 @@ func (b *buildSchedulerImpl) SourceCodePull(sourceCodePullRequest *protobuf.Sour
 		return
 	}
 
-	secret, err := b.secret.Get(bc.Labels["cube.io/buildConfig.name"], sourceCodePullRequest.Namespace)
+	secret, err := b.secret.Get(bc.Spec.ParentModule, sourceCodePullRequest.Namespace)
 	if err != nil {
 		log.Errorf("get secret err: %v", err)
 		////TODO update status

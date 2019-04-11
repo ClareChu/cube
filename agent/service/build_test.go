@@ -12,6 +12,7 @@ import (
 	"hidevops.io/cube/agent/service/mock"
 	cube_fake "hidevops.io/cube/pkg/client/clientset/versioned/fake"
 	"hidevops.io/cube/pkg/starter/cube"
+	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hioak/starter/docker"
 	"hidevops.io/hioak/starter/docker/fake"
 	"io"
@@ -184,18 +185,16 @@ func TestBuildConfigServiceImpl_Cmd(t *testing.T) {
 
 func TestBuildConfigServiceImpl_Cmd1(t *testing.T) {
 	c := &protobuf.BuildCommand{
-		Script: "cd ../",
-		ExecType: "script",
+		CommandName: "ls",
 
 	}
-	c1 := &protobuf.BuildCommand{
-		CommandName:"ls",
-	}
+	err := os.Chdir("mock")
+	log.Error(err)
 	var command []*protobuf.BuildCommand
-	command = append(append(command, c1), c)
+	command = append(command, c)
 	clientSet := cube_fake.NewSimpleClientset().CubeV1alpha1()
 	image := cube.NewImageStream(clientSet)
 	b := newBuildService(nil, image)
-	err := b.Cmd(command)
+	err = b.Cmd(command)
 	assert.Equal(t, nil, err)
 }

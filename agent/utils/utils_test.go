@@ -91,3 +91,8 @@ func TestStartCmd(t *testing.T) {
 
 	assert.Equal(t, nil, err)
 }
+
+func TestGetCurrentDirectory(t *testing.T) {
+	dir := GetCurrentDirectory()
+	log.Info(dir)
+}

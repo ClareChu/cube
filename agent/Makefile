@@ -1,5 +1,5 @@
 
-tag := v1.0.2
+tag := v1.0.5
 registries := docker.io
 group := hidevops
 image_name := agent
