@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "cube.fullname" . }}
-  namespace: hidevopsio
+  namespace: {{ .Values.namespace }}
   labels:
     app.kubernetes.io/name: {{ include "cube.name" . }}
     helm.sh/chart: {{ include "cube.chart" . }}
