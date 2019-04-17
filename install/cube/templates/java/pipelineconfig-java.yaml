@@ -4,7 +4,7 @@ items:
   kind: PipelineConfig
   metadata:
     name: java
-    namespace: hidevopsio
+    namespace: {{ .Values.namespace }}
   spec:
     app: ""
     dockerRegistry: ""

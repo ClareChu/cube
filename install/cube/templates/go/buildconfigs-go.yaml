@@ -2,7 +2,7 @@ apiVersion: cube.io/v1alpha1
 kind: BuildConfig
 metadata:
   name: go
-  namespace: hidevopsio
+  namespace: {{ .Values.namespace }}
 spec:
   app: ""
   baseImage: {{ .Values.go.nodeImage }}

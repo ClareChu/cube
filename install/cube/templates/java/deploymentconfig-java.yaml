@@ -3,7 +3,7 @@ kind: DeploymentConfig
 metadata:
   annotations:
   name: java
-  namespace: hidevopsio
+  namespace: {{ .Values.namespace }}
 spec:
   dockerRegistry: {{ .Values.docker.registy }}
   env:

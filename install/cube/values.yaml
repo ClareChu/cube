@@ -43,7 +43,7 @@ resources: {}
 
 nodeSelector: {}
 
-namespace: hidevopsio
+namespace: hidevopsio-dev
 
 tolerations: []
 

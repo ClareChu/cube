@@ -3,7 +3,7 @@ kind: DeploymentConfig
 metadata:
   annotations:
   name: go
-  namespace: hidevopsio
+  namespace: {{ .Values.namespace }}
 spec:
   dockerRegistry: {{ .Values.buildconfig.dockerRegistry }}
   env:

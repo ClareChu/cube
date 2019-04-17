@@ -2,7 +2,7 @@ apiVersion: cube.io/v1alpha1
 kind: BuildConfig
 metadata:
   name: java
-  namespace: hidevopsio
+  namespace: {{ .Values.namespace }}
 spec:
   app: ""
   baseImage: {{ .Values.java.nodeImage }}

@@ -4,7 +4,7 @@ metadata:
   labels:
     profile: dev
   name: go
-  namespace: hidevopsio
+  namespace: {{ .Values.namespace }}
 spec:
   ports:
   - name: http-8080
