@@ -1,7 +1,7 @@
 package aggregate
 
 import (
-	"github.com/magiconair/properties/assert"
+	"github.com/stretchr/testify/assert"
 	"hidevops.io/cube/manager/pkg/builder/mocks"
 	"hidevops.io/cube/manager/pkg/constant"
 	"hidevops.io/cube/pkg/apis/cube/v1alpha1"

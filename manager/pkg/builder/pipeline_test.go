@@ -2,7 +2,7 @@ package builder
 
 import (
 	"errors"
-	"github.com/magiconair/properties/assert"
+	"github.com/stretchr/testify/assert"
 	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/cube/pkg/client/clientset/versioned/fake"
 	"hidevops.io/cube/pkg/starter/cube"

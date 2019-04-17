@@ -1,7 +1,7 @@
 package cube
 
 import (
-	"github.com/magiconair/properties/assert"
+	"github.com/stretchr/testify/assert"
 	"hidevops.io/hioak/starter/kube"
 	"k8s.io/client-go/rest"
 	"testing"

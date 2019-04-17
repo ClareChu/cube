@@ -1,7 +1,7 @@
 package aggregate
 
 import (
-	"github.com/magiconair/properties/assert"
+	"github.com/stretchr/testify/assert"
 	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/hioak/starter/kube"
 	"k8s.io/client-go/kubernetes/fake"

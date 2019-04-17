@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/magiconair/properties/assert"
+	"github.com/stretchr/testify/assert"
 	gg "github.com/xanzy/go-gitlab"
 	gogitlab "github.com/xanzy/go-gitlab"
 	"hidevops.io/cube/manager/pkg/constant"

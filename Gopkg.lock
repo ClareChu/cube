@@ -1630,7 +1630,7 @@
     "github.com/jinzhu/copier",
     "github.com/kataras/iris/core/errors",
     "github.com/kevholditch/gokong",
-    "github.com/magiconair/properties/assert",
+    "github.com/stretchr/testify/assert"
     "github.com/manifoldco/promptui",
     "github.com/prometheus/common/log",
     "github.com/stretchr/testify/assert",
