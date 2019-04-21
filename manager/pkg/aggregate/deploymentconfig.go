@@ -16,7 +16,7 @@ import (
 
 type DeploymentConfigAggregate interface {
 	Template(cmd *command.DeploymentConfig) (deploymentConfig *v1alpha1.DeploymentConfig, err error)
-	Create(name, pipelineName, namespace, sourceType, version, buildVersion, profile string) (deploymentConfig *v1alpha1.DeploymentConfig, err error)
+	Create(param *command.PipelineReqParams, buildVersion string) (deploymentConfig *v1alpha1.DeploymentConfig, err error)
 }
 
 type DeploymentConfig struct {
@@ -63,10 +63,10 @@ func (d *DeploymentConfig) Template(cmd *command.DeploymentConfig) (deploymentCo
 	return
 }
 
-func (d *DeploymentConfig) Create(name, pipelineName, namespace, sourceType, version, buildVersion, profile string) (deploymentConfig *v1alpha1.DeploymentConfig, err error) {
-	log.Debugf("build config create name :%s, namespace : %s , sourceType : %s", name, namespace, sourceType)
+func (d *DeploymentConfig) Create(param *command.PipelineReqParams, buildVersion string) (deploymentConfig *v1alpha1.DeploymentConfig, err error) {
+	log.Debugf("build config create name :%s, namespace : %s , sourceType : %s", param.Name, param.Namespace, param.EventType)
 	deploymentConfig = new(v1alpha1.DeploymentConfig)
-	template, err := d.deploymentConfigClient.Get(sourceType, constant.TemplateDefaultNamespace)
+	template, err := d.deploymentConfigClient.Get(param.EventType, constant.TemplateDefaultNamespace)
 	if err != nil {
 		return nil, err
 	}
@@ -76,22 +76,22 @@ func (d *DeploymentConfig) Create(name, pipelineName, namespace, sourceType, ver
 		APIVersion: constant.DeploymentConfigApiVersion,
 	}
 	deploymentConfig.ObjectMeta = v1.ObjectMeta{
-		Name:      name,
-		Namespace: namespace,
+		Name:      param.Name,
+		Namespace: param.Namespace,
 	}
-	deploy, err := d.deploymentConfigClient.Get(name, namespace)
+	deploy, err := d.deploymentConfigClient.Get(param.Name, param.Namespace)
 	if err == nil {
 		deploy.Spec = template.Spec
-		deploy.Spec.Profile = profile
-		deploy.Spec.Env = append(append(deploy.Spec.Env, corev1.EnvVar{Name: constant.AppName, Value: name}), corev1.EnvVar{Name: constant.AppVersion, Value: version})
+		deploy.Spec.Profile = param.Profile
+		deploy.Spec.Env = append(append(deploy.Spec.Env, corev1.EnvVar{Name: constant.AppName, Value: param.Name}), corev1.EnvVar{Name: constant.AppVersion, Value: param.Version})
 		deploy.Status.LastVersion = deploy.Status.LastVersion + 1
-		deploymentConfig, err = d.deploymentConfigClient.Update(name, namespace, deploy)
+		deploymentConfig, err = d.deploymentConfigClient.Update(param.Name, param.Namespace, deploy)
 		log.Infof("update deployment configs deploy :%v", deploymentConfig)
 	} else {
 		deploymentConfig.Status.LastVersion = constant.InitLastVersion
-		deploymentConfig.Spec.Profile = profile
+		deploymentConfig.Spec.Profile = param.Profile
 		deploymentConfig, err = d.deploymentConfigClient.Create(deploymentConfig)
 	}
-	d.deploymentAggregate.Create(deploymentConfig, pipelineName, version, buildVersion)
+	d.deploymentAggregate.Create(deploymentConfig, param.PipelineName, param.Version, buildVersion)
 	return
 }

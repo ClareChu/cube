@@ -11,13 +11,13 @@ type ServiceConfigAggregate struct {
 	mock.Mock
 }
 
-// Create provides a mock function with given fields: name, pipelineName, namespace, sourceType, version, profile
-func (_m *ServiceConfigAggregate) Create(name string, pipelineName string, namespace string, sourceType string, version string, profile string) (*v1alpha1.ServiceConfig, error) {
-	ret := _m.Called(name, pipelineName, namespace, sourceType, version, profile)
+// Create provides a mock function with given fields: params
+func (_m *ServiceConfigAggregate) Create(params *command.PipelineReqParams) (*v1alpha1.ServiceConfig, error) {
+	ret := _m.Called(params)
 
 	var r0 *v1alpha1.ServiceConfig
-	if rf, ok := ret.Get(0).(func(string, string, string, string, string, string) *v1alpha1.ServiceConfig); ok {
-		r0 = rf(name, pipelineName, namespace, sourceType, version, profile)
+	if rf, ok := ret.Get(0).(func(*command.PipelineReqParams) *v1alpha1.ServiceConfig); ok {
+		r0 = rf(params)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*v1alpha1.ServiceConfig)
@@ -25,8 +25,8 @@ func (_m *ServiceConfigAggregate) Create(name string, pipelineName string, names
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(string, string, string, string, string, string) error); ok {
-		r1 = rf(name, pipelineName, namespace, sourceType, version, profile)
+	if rf, ok := ret.Get(1).(func(*command.PipelineReqParams) error); ok {
+		r1 = rf(params)
 	} else {
 		r1 = ret.Error(1)
 	}

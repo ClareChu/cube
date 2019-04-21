@@ -28,8 +28,16 @@ func TestServiceConfigCreate(t *testing.T) {
 	}
 	_, err := serviceAggregate.Template(cmd)
 	assert.Equal(t, nil, err)
-	pb.On("Update", "", "demo", "createService", "success", "").Return(nil)
-	_, err = serviceAggregate.Create("hello-world", "", "demo", "java", "v1", "dev")
+	pb.On("Update", "hello-world-1", "demo", "createService", "success", "").Return(nil)
+	param := &command.PipelineReqParams{
+		Name: "java",
+		PipelineName: "hello-world-1",
+		Namespace: "demo",
+		EventType: "java",
+		Version: "v1",
+		Profile: "dev",
+	}
+	_, err = serviceAggregate.Create(param)
 	assert.Equal(t, nil, err)
 	err = service.Create("java", "", constant.TemplateDefaultNamespace, "")
 	assert.Equal(t, nil, err)

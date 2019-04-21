@@ -60,6 +60,14 @@ func TestDeploymentConfigCreate(t *testing.T) {
 		},
 	}
 	deploymentAggregate.On("Create", d, "hello-world-1", "v1", "1").Return(nil, nil)
-	_, err = buildConfigAggregate.Create("hello-world", "hello-world-1", "demo", "java", "v1", "1", "dev")
+	param := &command.PipelineReqParams{
+		Name: "hello-world",
+		PipelineName: "hello-world-1",
+		Namespace: "demo",
+		EventType: "java",
+		Version: "v1",
+		Profile: "dev",
+	}
+	_, err = buildConfigAggregate.Create(param, "1")
 	assert.Equal(t, nil, err)
 }

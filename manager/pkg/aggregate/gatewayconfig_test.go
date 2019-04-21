@@ -58,6 +58,14 @@ func TestGatewayConfigCreate(t *testing.T) {
 	assert.Equal(t, nil, err)
 	gate.On("Create", gc1).Return(nil)
 	pb.On("Update", "", "hidevopsio", "createService", "success", "").Return(nil)
-	_, err = gatewayAggregate.Create("java", "", constant.TemplateDefaultNamespace, "java", "v1", "dev")
+	param := &command.PipelineReqParams{
+		Name: "java",
+		PipelineName: "",
+		Namespace: "hidevopsio",
+		EventType: "java",
+		Version: "v1",
+		Profile: "dev",
+	}
+	_, err = gatewayAggregate.Create(param)
 	assert.Equal(t, nil, err)
 }

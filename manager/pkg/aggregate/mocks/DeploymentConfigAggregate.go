@@ -11,13 +11,13 @@ type DeploymentConfigAggregate struct {
 	mock.Mock
 }
 
-// Create provides a mock function with given fields: name, pipelineName, namespace, sourceType, version, buildVersion, profile
-func (_m *DeploymentConfigAggregate) Create(name string, pipelineName string, namespace string, sourceType string, version string, buildVersion string, profile string) (*v1alpha1.DeploymentConfig, error) {
-	ret := _m.Called(name, pipelineName, namespace, sourceType, version, buildVersion, profile)
+// Create provides a mock function with given fields: param, buildVersion
+func (_m *DeploymentConfigAggregate) Create(param *command.PipelineReqParams, buildVersion string) (*v1alpha1.DeploymentConfig, error) {
+	ret := _m.Called(param, buildVersion)
 
 	var r0 *v1alpha1.DeploymentConfig
-	if rf, ok := ret.Get(0).(func(string, string, string, string, string, string, string) *v1alpha1.DeploymentConfig); ok {
-		r0 = rf(name, pipelineName, namespace, sourceType, version, buildVersion, profile)
+	if rf, ok := ret.Get(0).(func(*command.PipelineReqParams, string) *v1alpha1.DeploymentConfig); ok {
+		r0 = rf(param, buildVersion)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*v1alpha1.DeploymentConfig)
@@ -25,8 +25,8 @@ func (_m *DeploymentConfigAggregate) Create(name string, pipelineName string, na
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(string, string, string, string, string, string, string) error); ok {
-		r1 = rf(name, pipelineName, namespace, sourceType, version, buildVersion, profile)
+	if rf, ok := ret.Get(1).(func(*command.PipelineReqParams, string) error); ok {
+		r1 = rf(param, buildVersion)
 	} else {
 		r1 = ret.Error(1)
 	}

@@ -16,7 +16,7 @@ import (
 
 type ServiceConfigAggregate interface {
 	Template(cmd *command.ServiceConfig) (serviceConfig *v1alpha1.ServiceConfig, err error)
-	Create(name, pipelineName, namespace, sourceType, version, profile string) (serviceConfig *v1alpha1.ServiceConfig, err error)
+	Create(params *command.PipelineReqParams) (serviceConfig *v1alpha1.ServiceConfig, err error)
 	DeleteService(name, namespace string) (err error)
 }
 
@@ -62,18 +62,18 @@ func (s *ServiceConfig) Template(cmd *command.ServiceConfig) (serviceConfig *v1a
 	return
 }
 
-func (s *ServiceConfig) Create(name, pipelineName, namespace, sourceType, version, profile string) (serviceConfig *v1alpha1.ServiceConfig, err error) {
-	log.Debugf("build config create name :%s, namespace : %s , sourceType : %s", name, namespace, sourceType)
+func (s *ServiceConfig) Create(params *command.PipelineReqParams) (serviceConfig *v1alpha1.ServiceConfig, err error) {
+	log.Debugf("build config create name :%s, namespace : %s , sourceType : %s", params.Name, params.Namespace, params.EventType)
 	phase := constant.Success
 	serviceConfig = new(v1alpha1.ServiceConfig)
-	template, err := s.serviceConfigClient.Get(sourceType, constant.TemplateDefaultNamespace)
+	template, err := s.serviceConfigClient.Get(params.EventType, constant.TemplateDefaultNamespace)
 	if err != nil {
 		log.Infof("create service err : %v", err)
 		return nil, err
 	}
-	project := namespace
-	if profile != "" {
-		project = fmt.Sprintf("%s-%s", namespace, profile)
+	project := params.Namespace
+	if params.Profile != "" {
+		project = fmt.Sprintf("%s-%s", params.Namespace, params.Profile)
 	}
 	copier.Copy(serviceConfig, template)
 	serviceConfig.TypeMeta = v1.TypeMeta{
@@ -81,26 +81,26 @@ func (s *ServiceConfig) Create(name, pipelineName, namespace, sourceType, versio
 		APIVersion: constant.DeploymentConfigApiVersion,
 	}
 	serviceConfig.ObjectMeta = v1.ObjectMeta{
-		Name:      name,
+		Name:      params.Name,
 		Namespace: project,
 		Labels: map[string]string{
-			constant.CodeType: sourceType,
+			constant.CodeType: params.EventType,
 		},
 	}
-	deploy, err := s.serviceConfigClient.Get(name, project)
+	deploy, err := s.serviceConfigClient.Get(params.Name, project)
 	if err == nil {
 		deploy.Spec = template.Spec
-		serviceConfig, err = s.serviceConfigClient.Update(name, project, deploy)
+		serviceConfig, err = s.serviceConfigClient.Update(params.Name, project, deploy)
 	} else {
 		serviceConfig, err = s.serviceConfigClient.Create(serviceConfig)
 	}
 	err = s.CreateService(serviceConfig)
 	if err != nil {
 		phase = constant.Fail
-		log.Errorf("create service name %v err : %v", name, err)
+		log.Errorf("create service name %v err : %v", params.Name, err)
 	}
 	log.Info("create service success")
-	err = s.pipelineBuilder.Update(pipelineName, namespace, constant.CreateService, phase, "")
+	err = s.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.CreateService, phase, "")
 	return
 }
 

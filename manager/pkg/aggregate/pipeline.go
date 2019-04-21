@@ -158,19 +158,19 @@ func (p *Pipeline) Selector(pipeline *v1alpha1.Pipeline) (err error) {
 		return
 	case constant.Deploy:
 		go func() {
-			p.deploymentConfigAggregate.Create(pipeline.Labels[constant.PipelineConfigName], pipeline.Name, pipeline.Namespace, eventType.Name, pipeline.Spec.Version, pipeline.Labels[constant.BuildPipeline], pipeline.Spec.Profile)
+			p.deploymentConfigAggregate.Create(params, pipeline.Labels[constant.BuildPipeline])
 		}()
 		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.Deploy, constant.Created, "")
 		return
 	case constant.Service:
 		go func() {
-			p.serviceConfigAggregate.Create(pipeline.Labels[constant.PipelineConfigName], pipeline.Name, pipeline.Namespace, eventType.Name, pipeline.Spec.Version, pipeline.Spec.Profile)
+			p.serviceConfigAggregate.Create(params)
 		}()
 		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.Service, constant.Created, "")
 		return
 	case constant.Gateway:
 		go func() {
-			p.gatewayConfigAggregate.Create(pipeline.Labels[constant.PipelineConfigName], pipeline.Name, pipeline.Namespace, eventType.Name, pipeline.Spec.Version, pipeline.Spec.Profile)
+			p.gatewayConfigAggregate.Create(params)
 		}()
 		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.Gateway, constant.Created, "")
 	default:

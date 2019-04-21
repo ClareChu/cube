@@ -16,7 +16,7 @@ import (
 
 type GatewayConfigAggregate interface {
 	Template(cmd *command.GatewayConfig) (gatewayConfig *v1alpha1.GatewayConfig, err error)
-	Create(name, pipelineName, namespace, sourceType, version, profile string) (gatewayConfig *v1alpha1.GatewayConfig, err error)
+	Create(params *command.PipelineReqParams) (gatewayConfig *v1alpha1.GatewayConfig, err error)
 }
 
 type GatewayConfig struct {
@@ -60,21 +60,21 @@ func (s *GatewayConfig) Template(cmd *command.GatewayConfig) (gatewayConfig *v1a
 	return
 }
 
-func (s *GatewayConfig) Create(name, pipelineName, namespace, sourceType, version, profile string) (gatewayConfig *v1alpha1.GatewayConfig, err error) {
-	log.Debugf("gateway config create name :%s, namespace : %s , sourceType : %s", name, namespace, sourceType)
+func (s *GatewayConfig) Create(params *command.PipelineReqParams) (gatewayConfig *v1alpha1.GatewayConfig, err error) {
+	log.Debugf("gateway config create name :%s, namespace : %s , sourceType : %s", params.Name, params.Namespace, params.EventType)
 	phase := constant.Success
-	project := namespace
+	project := params.Namespace
 	gatewayConfig = new(v1alpha1.GatewayConfig)
-	if profile != "" {
-		namespace = fmt.Sprintf("%s-%s", namespace, profile)
+	if params.Profile != "" {
+		params.Namespace = fmt.Sprintf("%s-%s", params.Namespace, params.Profile)
 	}
-	template, err := s.gatewayConfigClient.Get(sourceType, constant.TemplateDefaultNamespace)
+	template, err := s.gatewayConfigClient.Get(params.EventType, constant.TemplateDefaultNamespace)
 	if err != nil {
 		return nil, err
 	}
-	template.Name = fmt.Sprintf("%s-%s", namespace, name)
-	template.Spec.UpstreamUrl = fmt.Sprintf("http://%s.%s.svc:8080", name, namespace)
-	uri := fmt.Sprintf("/%s/%s", project, name)
+	template.Name = fmt.Sprintf("%s-%s", params.Namespace, params.Name)
+	template.Spec.UpstreamUrl = fmt.Sprintf("http://%s.%s.svc:8080", params.Name, params.Namespace)
+	uri := fmt.Sprintf("/%s/%s", project, params.Name)
 	uri = strings.Replace(uri, "-", "/", -1)
 	template.Spec.Uris = []string{uri}
 	copier.Copy(gatewayConfig, template)
@@ -83,17 +83,17 @@ func (s *GatewayConfig) Create(name, pipelineName, namespace, sourceType, versio
 		APIVersion: constant.GatewayConfigApiVersion,
 	}
 	gatewayConfig.ObjectMeta = v1.ObjectMeta{
-		Name:      name,
-		Namespace: namespace,
+		Name:      params.Name,
+		Namespace: params.Namespace,
 		Labels: map[string]string{
-			constant.PipelineConfigName: pipelineName,
+			constant.PipelineConfigName: params.PipelineName,
 			constant.Namespace:          project,
 		},
 	}
-	gateway, err := s.gatewayConfigClient.Get(name, namespace)
+	gateway, err := s.gatewayConfigClient.Get(params.Name, params.Namespace)
 	if err == nil {
 		gateway.Spec = template.Spec
-		gatewayConfig, err = s.gatewayConfigClient.Update(name, namespace, gateway)
+		gatewayConfig, err = s.gatewayConfigClient.Update(params.Name, params.Namespace, gateway)
 	} else {
 		gatewayConfig, err = s.gatewayConfigClient.Create(gatewayConfig)
 	}
@@ -102,6 +102,7 @@ func (s *GatewayConfig) Create(name, pipelineName, namespace, sourceType, versio
 		log.Errorf("create gateway err : %v", err)
 		phase = constant.Fail
 	}
-	err = s.pipelineBuilder.Update(pipelineName, project, constant.CreateService, phase, "")
+
+	err = s.pipelineBuilder.Update(params.PipelineName, project, constant.CreateService, phase, "")
 	return
 }
