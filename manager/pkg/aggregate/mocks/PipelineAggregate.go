@@ -2,6 +2,7 @@
 
 package mocks
 
+import command "hidevops.io/cube/manager/pkg/command"
 import mock "github.com/stretchr/testify/mock"
 import v1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
 
@@ -54,6 +55,22 @@ func (_m *PipelineAggregate) Get(name string, namespace string) (*v1alpha1.Pipel
 	}
 
 	return r0, r1
+}
+
+// InitReqParams provides a mock function with given fields: pipeline, eventType
+func (_m *PipelineAggregate) InitReqParams(pipeline *v1alpha1.Pipeline, eventType string) *command.PipelineReqParams {
+	ret := _m.Called(pipeline, eventType)
+
+	var r0 *command.PipelineReqParams
+	if rf, ok := ret.Get(0).(func(*v1alpha1.Pipeline, string) *command.PipelineReqParams); ok {
+		r0 = rf(pipeline, eventType)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*command.PipelineReqParams)
+		}
+	}
+
+	return r0
 }
 
 // Selector provides a mock function with given fields: pipeline

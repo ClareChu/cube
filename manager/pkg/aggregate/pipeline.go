@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/jinzhu/copier"
 	"hidevops.io/cube/manager/pkg/builder"
+	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/cube/manager/pkg/constant"
 	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/cube/pkg/starter/cube"
@@ -22,19 +23,7 @@ type PipelineAggregate interface {
 	Watch(name, namespace string) (pipeline *v1alpha1.Pipeline, err error)
 	Create(pipelineConfig *v1alpha1.PipelineConfig, sourceCode string) (*v1alpha1.Pipeline, error)
 	Selector(pipeline *v1alpha1.Pipeline) (err error)
-	InitReqParams(pipeline *v1alpha1.Pipeline, eventType string) (params *PipelineReqParams)
-}
-
-type PipelineReqParams struct {
-	Name         string
-	PipelineName string
-	Namespace    string
-	EventType    string
-	Version      string
-	Branch       string
-	Context      string
-	ParentModule string
-	Profile      string
+	InitReqParams(pipeline *v1alpha1.Pipeline, eventType string) (params *command.PipelineReqParams)
 }
 
 type Pipeline struct {
@@ -190,8 +179,8 @@ func (p *Pipeline) Selector(pipeline *v1alpha1.Pipeline) (err error) {
 	return
 }
 
-func (p *Pipeline) InitReqParams(pipeline *v1alpha1.Pipeline, eventType string) (params *PipelineReqParams) {
-	params = &PipelineReqParams{
+func (p *Pipeline) InitReqParams(pipeline *v1alpha1.Pipeline, eventType string) (params *command.PipelineReqParams) {
+	params = &command.PipelineReqParams{
 		PipelineName: pipeline.Labels[constant.PipelineConfigName],
 		Name:         pipeline.Name,
 		Namespace:    pipeline.Namespace,

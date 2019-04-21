@@ -13,7 +13,7 @@ import (
 
 type BuildConfigAggregate interface {
 	Template(buildConfigTemplate *command.BuildConfig) (buildConfig *v1alpha1.BuildConfig, err error)
-	Create(params *PipelineReqParams) (buildConfig *v1alpha1.BuildConfig, err error)
+	Create(params *command.PipelineReqParams) (buildConfig *v1alpha1.BuildConfig, err error)
 	Delete(name, namespace string) error
 }
 
@@ -66,7 +66,7 @@ func (s *BuildConfig) Template(buildConfigTemplate *command.BuildConfig) (buildC
 	return
 }
 
-func (s *BuildConfig) Create(params *PipelineReqParams) (buildConfig *v1alpha1.BuildConfig, err error) {
+func (s *BuildConfig) Create(params *command.PipelineReqParams) (buildConfig *v1alpha1.BuildConfig, err error) {
 	log.Debugf("build config create name :%v, namespace :%v", params.Name, params.Namespace)
 	template, err := s.buildConfigClient.Get(params.EventType, constant.TemplateDefaultNamespace)
 	if err != nil {

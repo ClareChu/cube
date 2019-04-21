@@ -8,15 +8,17 @@ import (
 	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/cube/pkg/client/clientset/versioned/fake"
 	"hidevops.io/cube/pkg/starter/cube"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"testing"
 )
 
 func TestBuildConfigTemplate(t *testing.T) {
 	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
+	configMaps := new(mocks.ConfigMapsAggregate)
 	buildConfig := cube.NewBuildConfig(clientSet)
 	buildAggregate := new(mocks.BuildAggregate)
-	buildConfigAggregate := NewBuildConfigService(buildConfig, buildAggregate)
+	buildConfigAggregate := NewBuildConfigService(buildConfig, buildAggregate, configMaps)
 	bc := &command.BuildConfig{
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "java",
@@ -45,6 +47,15 @@ func TestBuildConfigTemplate(t *testing.T) {
 	}
 	_, err := buildConfigAggregate.Template(bc)
 	assert.Equal(t, nil, err)
+	config := &corev1.ConfigMap{
+		Data: map[string]string{
+			constant.Username : "",
+			constant.Password: "",
+			constant.DockerRegistry: "",
+		},
+	}
+	configMaps.On("Get", "docker", "hidevopsio").Return(config, nil)
 	buildAggregate.On("Create", build1, "hello-world-1", "v1").Return(nil, nil)
-	_, err = buildConfigAggregate.Create("hello-world", "hello-world-1", "demo", "java", "v1", "")
+	param := &command.PipelineReqParams{}
+	_, err = buildConfigAggregate.Create(param)
 }
