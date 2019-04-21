@@ -166,7 +166,7 @@ func (b *Build) SourceCodePull(build *v1alpha1.Build) error {
 		Name:      build.Name,
 	}
 
-	err = b.buildConfigService.SourceCodePull(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), "7575", command)
+	err = b.buildConfigService.SourceCodePull(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), constant.DefaultPort, command)
 	return err
 }
 
@@ -189,7 +189,7 @@ func (b *Build) Compile(build *v1alpha1.Build) error {
 		Context:    build.Spec.Context,
 	}
 
-	err := b.buildConfigService.Compile(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), "7575", command)
+	err := b.buildConfigService.Compile(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), constant.DefaultPort, command)
 	return err
 }
 
@@ -201,7 +201,7 @@ func (b *Build) ImageBuild(build *v1alpha1.Build) error {
 	command := &command.ImageBuildCommand{
 		App:        build.Spec.App,
 		S2IImage:   build.Spec.BaseImage,
-		Tags:       []string{build.Spec.Tags[0] + ":" + build.ObjectMeta.Labels[constant.Number], build.Spec.Tags[0] + ":latest"},
+		Tags:       []string{build.Spec.Tags[0] + ":" + build.ObjectMeta.Labels[constant.Number], build.Spec.Tags[0] + ":" + constant.DefaultTag},
 		DockerFile: build.Spec.DockerFile,
 		Name:       build.Name,
 		Namespace:  build.Namespace,
@@ -209,13 +209,13 @@ func (b *Build) ImageBuild(build *v1alpha1.Build) error {
 		Password:   build.Spec.DockerAuthConfig.Password,
 	}
 	log.Infof("build ImageBuild :%v", command)
-	err = b.buildConfigService.ImageBuild(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), "7575", command)
+	err = b.buildConfigService.ImageBuild(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), constant.DefaultPort, command)
 	return err
 }
 
 func (b *Build) ImagePush(build *v1alpha1.Build) error {
 	command := &command.ImagePushCommand{
-		Tags:      []string{build.Spec.Tags[0] + ":" + build.ObjectMeta.Labels[constant.Number], build.Spec.Tags[0] + ":latest"},
+		Tags:      []string{build.Spec.Tags[0] + ":" + build.ObjectMeta.Labels[constant.Number], build.Spec.Tags[0] + ":" + constant.DefaultTag},
 		Name:      build.Name,
 		Namespace: build.Namespace,
 		Username:  build.Spec.DockerAuthConfig.Username,
@@ -223,7 +223,7 @@ func (b *Build) ImagePush(build *v1alpha1.Build) error {
 		ImageName: build.ObjectMeta.Labels["name"],
 	}
 	log.Infof("ImagePush :%v", command)
-	err := b.buildConfigService.ImagePush(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), "7575", command)
+	err := b.buildConfigService.ImagePush(fmt.Sprintf("%s.%s.svc", build.Name, build.Namespace), constant.DefaultPort, command)
 	return err
 }
 

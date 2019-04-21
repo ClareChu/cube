@@ -14,4 +14,6 @@ const (
 	Ending                 = "ending"
 	PipelineName           = "pipelineName"
 	TimeoutSeconds   int64 = 60 * 60
+	DefaultTag             = "latest"
+	DefaultPort            = "7575"
 )
