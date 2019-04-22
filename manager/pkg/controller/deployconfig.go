@@ -32,7 +32,8 @@ func newDeploymentConfigController(deploymentConfigAggregate aggregate.Deploymen
 
 func (c *DeploymentConfigController) PostCreate(cmd *command.DeployConfigType) (model.Response, error) {
 	log.Debugf("create deployment config template: %v", cmd)
-	deploy, err := c.deploymentConfigAggregate.Create(cmd.Name, cmd.PipelineName, cmd.Namespace, cmd.SourceType, cmd.Version, "", "dev")
+	param := &command.PipelineReqParams{}
+	deploy, err := c.deploymentConfigAggregate.Create(param, "")
 	response := new(model.BaseResponse)
 	response.SetData(deploy)
 	return response, err

@@ -41,3 +41,15 @@ type StartPipeline struct {
 	App        string
 	Namespace  string
 }
+
+type PipelineReqParams struct {
+	Name         string `json:"name"`
+	PipelineName string `json:"pipeline_name"`
+	Namespace    string `json:"namespace"`
+	EventType    string `json:"event_type"`
+	Version      string `json:"version"`
+	Branch       string `json:"branch"`
+	Context      string `json:"context"`
+	ParentModule string `json:"parent_module"`
+	Profile      string `json:"profile"`
+}

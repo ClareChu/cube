@@ -79,7 +79,8 @@ func (c *BuildConfigController) PostWatch(command *command.PipelineStart) (model
 func (c *BuildConfigController) Post(template *command.BuildConfigTemplate) (model.Response, error) {
 	pipeline := new(v1alpha1.Pipeline)
 	copier.Copy(&pipeline, template)
-	build, err := c.buildConfigAggregate.Create(template.Name, template.PipelineName, template.Namespace, template.SourceType, template.Version, template.Branch, template.Context, "")
+	params := &command.PipelineReqParams{}
+	build, err := c.buildConfigAggregate.Create(params)
 	base := new(model.BaseResponse)
 	base.SetData(build)
 	return base, err
