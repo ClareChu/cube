@@ -17,6 +17,7 @@ type PipelineStart struct {
 	Context      []string `json:"context"`
 	ParentModule string   `json:"parentModule"`
 	Path         string   `json:"path"`
+	Project      string   `json:"project"`
 }
 
 type PipelineConfigTemplate struct {
@@ -52,4 +53,5 @@ type PipelineReqParams struct {
 	Context      string `json:"context"`
 	ParentModule string `json:"parent_module"`
 	Profile      string `json:"profile"`
+	Project      string `json:"project"`
 }

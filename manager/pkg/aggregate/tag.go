@@ -1,7 +1,6 @@
 package aggregate
 
 import (
-	"fmt"
 	"github.com/prometheus/common/log"
 	"hidevops.io/cube/manager/pkg/builder"
 	"hidevops.io/cube/manager/pkg/constant"
@@ -41,8 +40,7 @@ func (t *Tag) TagImage(deploy *v1alpha1.Deployment) error {
 		return err
 	}
 	tag := i.Spec.Tags[constant.Latest]
-	n := GetNamespace(deploy.Namespace, deploy.Spec.Profile)
-	is, err := t.imageStream.Get(deploy.Labels[constant.DeploymentConfig], n)
+	is, err := t.imageStream.Get(deploy.Labels[constant.DeploymentConfig], deploy.Namespace)
 	if err == nil {
 		imageStream := &v1alpha1.ImageStream{
 			ObjectMeta: is.ObjectMeta,
@@ -53,14 +51,14 @@ func (t *Tag) TagImage(deploy *v1alpha1.Deployment) error {
 				DockerImageRepository: strings.Split(i.Spec.DockerImageRepository, ":")[0] + ":latest",
 			},
 		}
-		_, err = t.imageStream.Update(deploy.Labels[constant.DeploymentConfig], n, imageStream)
+		_, err = t.imageStream.Update(deploy.Labels[constant.DeploymentConfig], deploy.Namespace, imageStream)
 		err = t.deploymentBuilder.Update(deploy.Name, deploy.Namespace, constant.RemoteDeploy, constant.Success)
 		return err
 	}
 	stream := &cubev1alpha1.ImageStream{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      deploy.Labels[constant.DeploymentConfig],
-			Namespace: n,
+			Namespace: deploy.Namespace,
 			Labels: map[string]string{
 				"app": deploy.Labels[constant.DeploymentConfig],
 			},
@@ -75,11 +73,4 @@ func (t *Tag) TagImage(deploy *v1alpha1.Deployment) error {
 	is, err = t.imageStream.Create(stream)
 	err = t.deploymentBuilder.Update(deploy.Name, deploy.Namespace, constant.RemoteDeploy, constant.Success)
 	return err
-}
-
-func GetNamespace(space, profile string) string {
-	if profile == "" {
-		return space
-	}
-	return fmt.Sprintf("%s-%s", space, profile)
 }

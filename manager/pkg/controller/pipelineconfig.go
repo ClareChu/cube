@@ -74,6 +74,7 @@ func (c *PipelineConfigController) Post(cmd *command.PipelineStart, properties *
 				ParentModule:cmd.Name,
 				SourceCode:cmd.SourceCode,
 				Branch: cmd.Branch,
+				Project: cmd.Project,
 			}
 			go func() {
 				_, err = c.pipelineConfigAggregate.StartPipelineConfig(&command)

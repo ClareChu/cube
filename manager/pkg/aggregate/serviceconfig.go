@@ -71,10 +71,6 @@ func (s *ServiceConfig) Create(params *command.PipelineReqParams) (serviceConfig
 		log.Infof("create service err : %v", err)
 		return nil, err
 	}
-	project := params.Namespace
-	if params.Profile != "" {
-		project = fmt.Sprintf("%s-%s", params.Namespace, params.Profile)
-	}
 	copier.Copy(serviceConfig, template)
 	serviceConfig.TypeMeta = v1.TypeMeta{
 		Kind:       constant.DeploymentConfigKind,
@@ -82,15 +78,15 @@ func (s *ServiceConfig) Create(params *command.PipelineReqParams) (serviceConfig
 	}
 	serviceConfig.ObjectMeta = v1.ObjectMeta{
 		Name:      params.Name,
-		Namespace: project,
+		Namespace: params.Namespace,
 		Labels: map[string]string{
 			constant.CodeType: params.EventType,
 		},
 	}
-	deploy, err := s.serviceConfigClient.Get(params.Name, project)
+	deploy, err := s.serviceConfigClient.Get(params.Name, params.Namespace)
 	if err == nil {
 		deploy.Spec = template.Spec
-		serviceConfig, err = s.serviceConfigClient.Update(params.Name, project, deploy)
+		serviceConfig, err = s.serviceConfigClient.Update(params.Name, params.Namespace, deploy)
 	} else {
 		serviceConfig, err = s.serviceConfigClient.Create(serviceConfig)
 	}

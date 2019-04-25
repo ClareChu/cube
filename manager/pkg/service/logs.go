@@ -224,16 +224,14 @@ func (l *KubeClientImpl) GetPipelineApp(namespace, name, new, profile, version s
 	if version == "" {
 		version = pipelineConfig.Spec.Version
 	}
-
-	nextStageNamespace := fmt.Sprintf("%s-%s", namespace, profile)
 	labelSelect := fmt.Sprintf("app=%s,version=%s", name, version)
 	intervals := 0
 	if new == "true" {
 		intervals = 100
 	}
-	go l.WatchPodStatus(nextStageNamespace, labelSelect, intervals, podMessage)
+	go l.WatchPodStatus(namespace, labelSelect, intervals, podMessage)
 
-	return nextStageNamespace, labelSelect, nil
+	return namespace, labelSelect, nil
 }
 
 func (l *KubeClientImpl) GetPodList(namespace string, opts meta_v1.ListOptions) (*corev1.PodList, error) {

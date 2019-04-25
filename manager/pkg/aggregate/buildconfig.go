@@ -9,12 +9,14 @@ import (
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	utils_copier "hidevops.io/hiboot/pkg/utils/copier"
 )
 
 type BuildConfigAggregate interface {
 	Template(buildConfigTemplate *command.BuildConfig) (buildConfig *v1alpha1.BuildConfig, err error)
 	Create(params *command.PipelineReqParams) (buildConfig *v1alpha1.BuildConfig, err error)
 	Delete(name, namespace string) error
+	initConfig(buildConfigTemplate *v1alpha1.BuildConfig, params *command.PipelineReqParams, template *v1alpha1.BuildConfig)
 }
 
 type BuildConfig struct {
@@ -97,11 +99,7 @@ func (s *BuildConfig) Create(params *command.PipelineReqParams) (buildConfig *v1
 		Kind:       constant.BuildConfigKind,
 		APIVersion: constant.BuildConfigApiVersion,
 	}
-	buildConfigTemplate.Spec.App = params.Name
-	buildConfigTemplate.Spec.CloneConfig.Branch = params.Branch
-	buildConfigTemplate.Spec.Context = params.Context
-	buildConfigTemplate.Spec.ParentModule = params.ParentModule
-	buildConfigTemplate.Spec.Tags = []string{template.Spec.DockerRegistry + "/" + params.Namespace + "/" + params.Name}
+	s.initConfig(buildConfigTemplate, params, template)
 	//TODO 如果存在创建 buildConfig 不存在新建 buildConfig 创建完 buildConfig 新建
 	if err != nil {
 		buildConfigTemplate.Status.LastVersion = constant.InitLastVersion
@@ -118,4 +116,10 @@ func (s *BuildConfig) Create(params *command.PipelineReqParams) (buildConfig *v1
 	//TODO 创建 build
 	_, err = s.buildAggregate.Create(buildConfig, params.PipelineName, params.Version)
 	return
+}
+
+func (s *BuildConfig) initConfig(buildConfigTemplate *v1alpha1.BuildConfig, params *command.PipelineReqParams, template *v1alpha1.BuildConfig) {
+	buildConfigTemplate.Spec.App = params.Name
+	buildConfigTemplate.Spec.Tags = []string{template.Spec.DockerRegistry + "/" + params.Namespace + "/" + params.Name}
+	utils_copier.Copy(&buildConfigTemplate.Spec, params)
 }

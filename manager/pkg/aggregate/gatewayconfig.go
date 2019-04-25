@@ -65,9 +65,6 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (gatewayConfig
 	phase := constant.Success
 	project := params.Namespace
 	gatewayConfig = new(v1alpha1.GatewayConfig)
-	if params.Profile != "" {
-		params.Namespace = fmt.Sprintf("%s-%s", params.Namespace, params.Profile)
-	}
 	template, err := s.gatewayConfigClient.Get(params.EventType, constant.TemplateDefaultNamespace)
 	if err != nil {
 		return nil, err

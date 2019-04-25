@@ -34,19 +34,13 @@ func (d *DeploymentConfig) CreateApp(deploy *v1alpha1.Deployment) error {
 	phase := constant.Success
 	app := deploy.Labels[constant.DeploymentConfig]
 	fullName := fmt.Sprintf("%s-%s", app, deploy.Spec.Version)
-	namespace := ""
-	if deploy.Spec.Profile == "" {
-		namespace = deploy.Namespace
-	} else {
-		namespace = deploy.Namespace + "-" + deploy.Spec.Profile
-	}
 	labels := map[string]string{
 		"app":     app,
 		"version": deploy.Spec.Version,
 	}
 	de := &openshift.DeploymentRequest{
 		Name:           app,
-		Namespace:      namespace,
+		Namespace:      deploy.Namespace,
 		FullName:       fullName,
 		Version:        deploy.Spec.Version,
 		Env:            deploy.Spec.Env,

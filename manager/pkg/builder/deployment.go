@@ -1,7 +1,6 @@
 package builder
 
 import (
-	"fmt"
 	"github.com/prometheus/common/log"
 	"hidevops.io/cube/manager/pkg/constant"
 	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
@@ -63,15 +62,14 @@ func (d *Deployment) Update(name, namespace, event, phase string) error {
 
 func (d *Deployment) CreateApp(deploy *v1alpha1.Deployment) error {
 	phase := constant.Success
-	namespace := GetNamespace(deploy.Namespace, deploy.Spec.Profile)
-	i, err := d.imageStream.Get(deploy.Labels[constant.DeploymentConfig], namespace)
+	i, err := d.imageStream.Get(deploy.Labels[constant.DeploymentConfig], deploy.Namespace)
 	if err != nil {
 		log.Errorf("get image err: %v", err)
 		return err
 	}
 	request := &kube.DeployRequest{
 		App:            deploy.Labels[constant.DeploymentConfig],
-		Namespace:      namespace,
+		Namespace:      deploy.Namespace,
 		Ports:          deploy.Spec.Port,
 		Replicas:       deploy.Spec.Replicas,
 		Version:        deploy.Spec.Version,
@@ -92,11 +90,4 @@ func (d *Deployment) CreateApp(deploy *v1alpha1.Deployment) error {
 	err = d.Update(deploy.Name, deploy.Namespace, constant.Deploy, phase)
 	log.Debugf("create app update pipeline :name %v,namespace %v,deploy %v, type:%v, error %v", deploy.Name, deploy.Namespace, constant.Deploy, phase, err)
 	return err
-}
-
-func GetNamespace(space, profile string) string {
-	if profile == "" {
-		return space
-	}
-	return fmt.Sprintf("%s-%s", space, profile)
 }
