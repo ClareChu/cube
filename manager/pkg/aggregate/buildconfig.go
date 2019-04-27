@@ -9,7 +9,6 @@ import (
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
-	utils_copier "hidevops.io/hiboot/pkg/utils/copier"
 )
 
 type BuildConfigAggregate interface {
@@ -120,6 +119,9 @@ func (s *BuildConfig) Create(params *command.PipelineReqParams) (buildConfig *v1
 
 func (s *BuildConfig) initConfig(buildConfigTemplate *v1alpha1.BuildConfig, params *command.PipelineReqParams, template *v1alpha1.BuildConfig) {
 	buildConfigTemplate.Spec.App = params.Name
+	buildConfigTemplate.Spec.CloneConfig.Branch = params.Branch
+	buildConfigTemplate.Spec.Context = params.Context
+	buildConfigTemplate.Spec.ParentModule = params.ParentModule
+	buildConfigTemplate.Spec.Project = params.Project
 	buildConfigTemplate.Spec.Tags = []string{template.Spec.DockerRegistry + "/" + params.Namespace + "/" + params.Name}
-	utils_copier.Copy(&buildConfigTemplate.Spec, params)
 }

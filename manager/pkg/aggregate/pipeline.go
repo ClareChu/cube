@@ -181,8 +181,8 @@ func (p *Pipeline) Selector(pipeline *v1alpha1.Pipeline) (err error) {
 
 func (p *Pipeline) InitReqParams(pipeline *v1alpha1.Pipeline, eventType string) (params *command.PipelineReqParams) {
 	params = &command.PipelineReqParams{
-		PipelineName: pipeline.Labels[constant.PipelineConfigName],
-		Name:         pipeline.Name,
+		PipelineName: pipeline.Name,
+		Name:         pipeline.Labels[constant.PipelineConfigName],
 		Namespace:    pipeline.Namespace,
 		EventType:    eventType,
 		Version:      pipeline.Spec.Version,

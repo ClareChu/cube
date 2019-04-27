@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/prometheus/common/log"
 	"hidevops.io/cube/manager/pkg/aggregate"
 	"hidevops.io/cube/manager/pkg/command"
@@ -40,6 +41,12 @@ func (c *PipelineConfigController) Post(cmd *command.PipelineStart, properties *
 	response = new(model.BaseResponse)
 	jwtProps, ok := properties.Items()
 	if ok {
+		if cmd.Namespace == "" {
+			if cmd.Profile == "" {
+				cmd.Namespace = cmd.Project
+			}
+			cmd.Namespace = fmt.Sprintf("%s-%s", cmd.Project, cmd.Profile)
+		}
 		username := jwtProps["username"]
 		password := jwtProps["password"]
 		token := jwtProps["access_token"]
@@ -66,15 +73,15 @@ func (c *PipelineConfigController) Post(cmd *command.PipelineStart, properties *
 			paths := strings.Split(ct, "/")
 			name := paths[len(paths)-1]
 			command := command.PipelineStart{
-				Name: name,
-				Namespace: cmd.Namespace,
-				Version: cmd.Version,
-				Profile: cmd.Profile,
-				Path: ct,
-				ParentModule:cmd.Name,
-				SourceCode:cmd.SourceCode,
-				Branch: cmd.Branch,
-				Project: cmd.Project,
+				Name:         name,
+				Namespace:    cmd.Namespace,
+				Version:      cmd.Version,
+				Profile:      cmd.Profile,
+				Path:         ct,
+				ParentModule: cmd.Name,
+				SourceCode:   cmd.SourceCode,
+				Branch:       cmd.Branch,
+				Project:      cmd.Project,
 			}
 			go func() {
 				_, err = c.pipelineConfigAggregate.StartPipelineConfig(&command)
