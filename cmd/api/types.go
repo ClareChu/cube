@@ -74,7 +74,7 @@ type PipelineStarts struct {
 	SourceCode string	`json:"sourceCode"`
 	Profile    string	`json:"profile"`
 	Branch     string	`json:"branch"`
-	Context    string	`json:"context"`
+	Context    []string	`json:"context"`
 	Version    string	`json:"version"`
 }
 
