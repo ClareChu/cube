@@ -37,7 +37,7 @@ func TestGatewayConfigCreate(t *testing.T) {
 		},
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "java",
-			Namespace: "hidevopsio-dev",
+			Namespace: "hidevopsio",
 			Labels: map[string]string{
 				constant.PipelineConfigName: "",
 				constant.Namespace:          "hidevopsio",
@@ -47,7 +47,7 @@ func TestGatewayConfigCreate(t *testing.T) {
 			Uris: []string{
 				"/hidevopsio/java",
 			},
-			UpstreamUrl:"http://java.hidevopsio-dev.svc:8080",
+			UpstreamUrl:"http://java.hidevopsio.svc:8080",
 
 		},
 	}

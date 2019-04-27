@@ -12,3 +12,4 @@ docker login -p Harbor12345 -u admin ${HOST}
 docker push ${HOST}/hidevops/manager:v1.1.1
 
 
+
