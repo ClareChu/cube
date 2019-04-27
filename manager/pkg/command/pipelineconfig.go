@@ -7,7 +7,7 @@ import (
 )
 
 type PipelineStart struct {
-	model.RequestBody
+	model.RequestBody	  `json:"omitempty"`
 	Name         string   `json:"name"`
 	Namespace    string   `json:"namespace"`
 	SourceCode   string   `json:"sourceCode"`
