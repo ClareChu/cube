@@ -67,5 +67,5 @@ java:
 
 go:
   nodeImage: hidevops/agent:v1.0.1
-  baseImage: clarechu/base-go:v1.0.0
-  goProxy: http://athens.apps.cloud2go.cn
+  baseImage: hidevops/base-go:v1.0.0
+  goProxy: http://goproxy.apps.hidevops.io
