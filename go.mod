@@ -7,13 +7,11 @@ require (
 	github.com/Nvveen/Gotty v0.0.0-20120604004816-cd527374f1e5 // indirect
 	github.com/Shopify/goreferrer v0.0.0-20181106222321-ec9c9a553398 // indirect
 	github.com/alecthomas/gometalinter v3.0.0+incompatible // indirect
-	github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973 // indirect
 	github.com/cenkalti/backoff v2.1.1+incompatible // indirect
 	github.com/containerd/continuity v0.0.0-20181203112020-004b46473808 // indirect
 	github.com/coreos/bbolt v1.3.2 // indirect
 	github.com/coreos/etcd v3.3.10+incompatible // indirect
 	github.com/coreos/go-semver v0.3.0 // indirect
-	github.com/coreos/go-systemd v0.0.0-20181012123002-c6f51f82210d // indirect
 	github.com/coreos/pkg v0.0.0-20180928190104-399ea9e2e55f // indirect
 	github.com/docker/docker v1.13.1
 	github.com/elazarl/goproxy v0.0.0-20190421051319-9d40249d3c2f // indirect
@@ -22,16 +20,12 @@ require (
 	github.com/golang/groupcache v0.0.0-20190129154638-5b532d6fd5ef // indirect
 	github.com/golang/mock v1.2.0
 	github.com/golang/protobuf v1.2.0
-	github.com/google/btree v0.0.0-20180813153112-4030bb1f1f0c // indirect
-	github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1 // indirect
 	github.com/gorilla/websocket v1.4.0
 	github.com/gotestyourself/gotestyourself v2.2.0+incompatible // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.0.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0 // indirect
-	github.com/grpc-ecosystem/grpc-gateway v1.5.0 // indirect
 	github.com/hashicorp/golang-lru v0.5.0 // indirect
 	github.com/inconshreveable/go-update v0.0.0-20160112193335-8152e7eb6ccf
-	github.com/iris-contrib/formBinder v0.0.0-20190104093907-fbd5963f41e1 // indirect
 	github.com/iris-contrib/go.uuid v2.0.0+incompatible
 	github.com/jinzhu/copier v0.0.0-20180308034124-7e38e58719c3
 	github.com/jonboulle/clockwork v0.1.0 // indirect
@@ -46,7 +40,6 @@ require (
 	github.com/klauspost/cpuid v1.2.0 // indirect
 	github.com/lunixbochs/vtclean v1.0.0 // indirect
 	github.com/manifoldco/promptui v0.3.2
-	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/nicksnyder/go-i18n v1.10.0 // indirect
 	github.com/onsi/ginkgo v1.8.0 // indirect
 	github.com/onsi/gomega v1.5.0 // indirect
@@ -55,10 +48,7 @@ require (
 	github.com/opencontainers/runc v0.1.1 // indirect
 	github.com/ory/dockertest v3.3.4+incompatible // indirect
 	github.com/parnurzeal/gorequest v0.2.15 // indirect
-	github.com/prometheus/client_golang v0.8.0 // indirect
-	github.com/prometheus/client_model v0.0.0-20180712105110-5c3871d89910 // indirect
 	github.com/prometheus/common v0.0.0-20181126121408-4724e9255275
-	github.com/prometheus/procfs v0.0.0-20180725123919-05ee40e3a273 // indirect
 	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/smartystreets/assertions v0.0.0-20180927180507-b2de0cb4f26d // indirect
 	github.com/smartystreets/goconvey v0.0.0-20180222194500-ef6db91d284a // indirect
@@ -68,30 +58,27 @@ require (
 	github.com/stretchr/testify v1.2.2
 	github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5 // indirect
 	github.com/ugorji/go v1.1.4 // indirect
+	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/xanzy/go-gitlab v0.0.0-20170825130035-896163fa8f7a
 	github.com/xeipuuv/gojsonschema v0.0.0-20181112162635-ac52e6811b56 // indirect
 	github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2 // indirect
 	github.com/yudai/pp v2.0.1+incompatible // indirect
 	go.etcd.io/bbolt v1.3.2 // indirect
-	go.uber.org/atomic v1.3.2 // indirect
 	go.uber.org/multierr v1.1.0 // indirect
 	go.uber.org/zap v1.9.1 // indirect
 	golang.org/x/net v0.0.0-20190213061140-3a22650c66bd
-	golang.org/x/sync v0.0.0-20181108010431-42b317875d0f // indirect
 	golang.org/x/sys v0.0.0-20181128092732-4ed8d59d0b35 // indirect
-	golang.org/x/time v0.0.0-20181108054448-85acf8d2951c // indirect
 	golang.org/x/tools v0.0.0-20181128225727-c5b00d9557fd // indirect
 	google.golang.org/grpc v1.17.0
 	gopkg.in/alecthomas/kingpin.v3-unstable v3.0.0-20180810215634-df19058c872c // indirect
-	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/ini.v1 v1.39.0 // indirect
 	gopkg.in/mgo.v2 v2.0.0-20180705113604-9856a29383ce // indirect
 	gopkg.in/ory-am/dockertest.v3 v3.3.4 // indirect
 	gopkg.in/src-d/go-git.v4 v4.8.1
 	gotest.tools v2.2.0+incompatible // indirect
-	hidevops.io/hiboot v1.0.4
-	hidevops.io/hiboot-data v1.0.0
-	hidevops.io/hioak v0.0.0-20190425062333-d50909512719
+	hidevops.io/hiboot v1.1.0
+	hidevops.io/hiboot-data v0.0.0-20190312161351-986d04659911
+	hidevops.io/hioak v0.0.0-20190427193456-c321bf2e6e89
 	k8s.io/api v0.0.0-20180601181742-8b7507fac302
 	k8s.io/apiextensions-apiserver v0.0.0-20180601203502-8e7f43002fec
 	k8s.io/apimachinery v0.0.0-20180601181227-17529ec7eadb

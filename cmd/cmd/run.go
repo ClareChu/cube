@@ -27,16 +27,6 @@ type runCommand struct {
 	cli.SubCommand
 
 	req api.PipelineRequest
-
-	profile    string
-	version    string
-	project    string
-	sourcecode string
-	app        string
-	branch     string
-	context    []string
-	verbose    bool
-	watch      bool
 }
 
 func newRunCommand() *runCommand {
@@ -73,28 +63,24 @@ func (c *runCommand) Run(args []string) error {
 	}
 
 	if err := api.PipelineStart(user, &c.req); err != nil {
+		log.Error(err)
 		return err
 	}
-	fmt.Println("[INFO] pipeline start succeed")
-	verbose := "false"
-	if c.verbose {
-		verbose = "true"
-	}
+	fmt.Println("Pipeline is started ...")
 
-	if c.watch {
+	if c.req.Watch {
 		time.Sleep(time.Second * 3)
-		var url = fmt.Sprintf("%s?namespace=%s&name=%s&sourcecode=%s&verbose=%s", api.GetBuildLogApi(user.Server), c.req.Namespace, c.req.Name, c.req.SourceCode, verbose)
+		var url = fmt.Sprintf("%s?namespace=%s&name=%s&sourcecode=%s&verbose=%t", api.GetBuildLogApi(user.Server), c.req.Namespace, c.req.Name, c.req.SourceCode, c.req.Verbose)
 
 		if err := api.ClientLoop(url, api.BuildLogOut); err != nil {
-			fmt.Println("[ERROR] log acquisition failed")
+			log.Error(err)
 			return err
 		}
-		fmt.Println("\n[INFO] image push success")
-		fmt.Println("\n[INFO] Application logs:")
+		fmt.Println("\nApplication logs:")
 		time.Sleep(time.Second * 1)
 		appUrl := fmt.Sprintf("%s?namespace=%s&name=%s&new=true&profile=%s&version=%s", api.GetAppLogApi(user.Server), c.req.Namespace, c.req.Name, c.req.Profile, c.req.Version)
 		if err := api.ClientLoop(appUrl, api.LogOut); err != nil {
-			fmt.Println("[ERROR] log acquisition failed")
+			log.Error(err)
 			return err
 		}
 	}
