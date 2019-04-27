@@ -73,7 +73,7 @@ type BuildSpec struct {
 	CommandGroup     map[string][]ExecCommand `json:"commandGroup" protobuf:"bytes,13,opt,name=commandGroup"`
 	App              string                   `json:"app" protobuf:"bytes,14,opt,name=app"`
 	Context          string                   `json:"context" protobuf:"bytes,15,opt,name=context"`
-	ParentModule     string                   `json:"parentModule" protobuf:"bytes,16,opt,name=parentModule"`
+	AppRoot          string                   `json:"appRoot" protobuf:"bytes,16,opt,name=appRoot"`
 	Project          string                   `json:"project" protobuf:"bytes,17,opt,name=project"`
 }
 

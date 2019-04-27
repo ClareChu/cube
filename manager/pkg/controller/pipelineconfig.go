@@ -62,7 +62,7 @@ func (c *PipelineConfigController) Post(cmd *command.PipelineStart, properties *
 			return
 		}
 		if len(cmd.Context) == 0 || cmd.Context[0] == "" {
-			cmd.ParentModule = cmd.Name
+			cmd.AppRoot = cmd.Name
 			go func() {
 				_, err = c.pipelineConfigAggregate.StartPipelineConfig(cmd)
 			}()
@@ -78,7 +78,7 @@ func (c *PipelineConfigController) Post(cmd *command.PipelineStart, properties *
 				Version:      cmd.Version,
 				Profile:      cmd.Profile,
 				Path:         ct,
-				ParentModule: cmd.Name,
+				AppRoot: cmd.Name,
 				SourceCode:   cmd.SourceCode,
 				Branch:       cmd.Branch,
 				Project:      cmd.Project,

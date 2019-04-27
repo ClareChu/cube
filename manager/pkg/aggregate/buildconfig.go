@@ -121,7 +121,7 @@ func (s *BuildConfig) initConfig(buildConfigTemplate *v1alpha1.BuildConfig, para
 	buildConfigTemplate.Spec.App = params.Name
 	buildConfigTemplate.Spec.CloneConfig.Branch = params.Branch
 	buildConfigTemplate.Spec.Context = params.Context
-	buildConfigTemplate.Spec.ParentModule = params.ParentModule
+	buildConfigTemplate.Spec.AppRoot = params.AppRoot
 	buildConfigTemplate.Spec.Project = params.Project
 	buildConfigTemplate.Spec.Tags = []string{template.Spec.DockerRegistry + "/" + params.Namespace + "/" + params.Name}
 }

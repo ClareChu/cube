@@ -7,17 +7,17 @@ import (
 )
 
 type PipelineStart struct {
-	model.RequestBody	  `json:"omitempty"`
-	Name         string   `json:"name"`
-	Namespace    string   `json:"namespace"`
-	SourceCode   string   `json:"sourceCode"`
-	Version      string   `json:"version"`
-	Profile      string   `json:"profile"`
-	Branch       string   `json:"branch"`
-	Context      []string `json:"context"`
-	ParentModule string   `json:"parentModule"`
-	Path         string   `json:"path"`
-	Project      string   `json:"project"`
+	model.RequestBody `json:"omitempty"`
+	Name              string   `json:"name"`
+	Namespace         string   `json:"namespace"`
+	SourceCode        string   `json:"sourceCode"`
+	Version           string   `json:"version"`
+	Profile           string   `json:"profile"`
+	Branch            string   `json:"branch"`
+	Context           []string `json:"context"`
+	AppRoot           string   `json:"appRoot"`
+	Path              string   `json:"path"`
+	Project           string   `json:"project"`
 }
 
 type PipelineConfigTemplate struct {
@@ -51,7 +51,7 @@ type PipelineReqParams struct {
 	Version      string `json:"version"`
 	Branch       string `json:"branch"`
 	Context      string `json:"context"`
-	ParentModule string `json:"parent_module"`
+	AppRoot      string `json:"app_root"`
 	Profile      string `json:"profile"`
 	Project      string `json:"project"`
 }
