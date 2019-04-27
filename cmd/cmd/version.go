@@ -20,7 +20,7 @@ import (
 	"hidevops.io/hiboot/pkg/app/cli"
 )
 
-const appVersion = "v1.0.0"
+const appVersion = "v1.0.2"
 
 // TODO: should get api version as well
 type versionCommand struct {

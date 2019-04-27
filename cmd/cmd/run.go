@@ -26,6 +26,8 @@ import (
 type runCommand struct {
 	cli.SubCommand
 
+	req api.PipelineRequest
+
 	profile    string
 	version    string
 	project    string
@@ -44,15 +46,16 @@ func newRunCommand() *runCommand {
 	c.Long = "Run run command"
 
 	pf := c.PersistentFlags()
-	pf.StringVarP(&c.profile, "profile", "P", "", "--profile=dev")
-	pf.StringVarP(&c.version, "version", "V", "", "--version=v1")
-	pf.StringVarP(&c.project, "project", "p", "", "--project=project-name")
-	pf.StringVarP(&c.app, "app", "a", "", "--app=my-app")
-	pf.StringVarP(&c.branch, "branch", "b", "", "--branch=master")
-	pf.StringSliceVarP(&c.context, "context", "c", []string{""}, "--context=sub-module")
-	pf.StringVarP(&c.sourcecode, "sourcecode", "s", "", "--sourcecode=java")
-	pf.BoolVarP(&c.verbose, "verbose", "v", false, "--verbose")
-	pf.BoolVarP(&c.watch, "watch", "w", false, "--watch")
+	pf.StringVarP(&c.req.Profile, "profile", "P", "", "--profile=dev")
+	pf.StringVarP(&c.req.Version, "version", "V", "", "--version=v1")
+	pf.StringVarP(&c.req.Project, "project", "p", "", "--project=project-name")
+	pf.StringVarP(&c.req.Namespace, "namespace", "n", "", "--namespace=project-name-dev")
+	pf.StringVarP(&c.req.Name, "app", "a", "", "--app=my-app")
+	pf.StringVarP(&c.req.Branch, "branch", "b", "", "--branch=master")
+	pf.StringSliceVarP(&c.req.Context, "context", "c", nil, "--context=sub-module")
+	pf.StringVarP(&c.req.SourceCode, "sourcecode", "s", "", "--sourcecode=java")
+	pf.BoolVarP(&c.req.Verbose, "verbose", "v", false, "--verbose")
+	pf.BoolVarP(&c.req.Watch, "watch", "w", false, "--watch")
 	return c
 }
 
@@ -69,15 +72,7 @@ func (c *runCommand) Run(args []string) error {
 		return err
 	}
 
-	pss := &api.PipelineStarts{
-		Name:       c.app,
-		Namespace:  c.project,
-		SourceCode: c.sourcecode,
-		Profile:    c.profile,
-		Branch:     c.branch,
-		Context:    c.context,
-		Version:    c.version}
-	if err := api.PipelineStart(user, pss); err != nil {
+	if err := api.PipelineStart(user, &c.req); err != nil {
 		return err
 	}
 	fmt.Println("[INFO] pipeline start succeed")
@@ -88,7 +83,7 @@ func (c *runCommand) Run(args []string) error {
 
 	if c.watch {
 		time.Sleep(time.Second * 3)
-		var url = fmt.Sprintf("%s?namespace=%s&name=%s&sourcecode=%s&verbose=%s", api.GetBuildLogApi(user.Server), pss.Namespace, pss.Name, pss.SourceCode, verbose)
+		var url = fmt.Sprintf("%s?namespace=%s&name=%s&sourcecode=%s&verbose=%s", api.GetBuildLogApi(user.Server), c.req.Namespace, c.req.Name, c.req.SourceCode, verbose)
 
 		if err := api.ClientLoop(url, api.BuildLogOut); err != nil {
 			fmt.Println("[ERROR] log acquisition failed")
@@ -97,7 +92,7 @@ func (c *runCommand) Run(args []string) error {
 		fmt.Println("\n[INFO] image push success")
 		fmt.Println("\n[INFO] Application logs:")
 		time.Sleep(time.Second * 1)
-		appUrl := fmt.Sprintf("%s?namespace=%s&name=%s&new=true&profile=%s&version=%s", api.GetAppLogApi(user.Server), pss.Namespace, pss.Name, pss.Profile, pss.Version)
+		appUrl := fmt.Sprintf("%s?namespace=%s&name=%s&new=true&profile=%s&version=%s", api.GetAppLogApi(user.Server), c.req.Namespace, c.req.Name, c.req.Profile, c.req.Version)
 		if err := api.ClientLoop(appUrl, api.LogOut); err != nil {
 			fmt.Println("[ERROR] log acquisition failed")
 			return err
