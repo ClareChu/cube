@@ -23,4 +23,6 @@ const (
 	Namespace          = "namespace"
 	AppVersion         = "APP_VERSION"
 	AppName            = "APP_NAME"
+	Default            = "default"
+	ApiGroup           = "cube"
 )

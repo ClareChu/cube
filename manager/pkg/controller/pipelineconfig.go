@@ -5,6 +5,7 @@ import (
 	"github.com/prometheus/common/log"
 	"hidevops.io/cube/manager/pkg/aggregate"
 	"hidevops.io/cube/manager/pkg/command"
+	"hidevops.io/cube/manager/pkg/constant"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/at"
 	"hidevops.io/hiboot/pkg/model"
@@ -16,16 +17,22 @@ type PipelineConfigController struct {
 	at.JwtRestController
 	pipelineConfigAggregate aggregate.PipelineConfigAggregate
 	secretAggregate         aggregate.SecretAggregate
+	namespaceAggregate      aggregate.NamespaceAggregate
+	roleAggregate           aggregate.RoleAggregate
+	roleBindingAggregate    aggregate.RoleBindingAggregate
 }
 
 func init() {
 	app.Register(newPipelineConfigController)
 }
 
-func newPipelineConfigController(pipelineConfigAggregate aggregate.PipelineConfigAggregate, secretAggregate aggregate.SecretAggregate) *PipelineConfigController {
+func newPipelineConfigController(pipelineConfigAggregate aggregate.PipelineConfigAggregate, secretAggregate aggregate.SecretAggregate, namespaceAggregate aggregate.NamespaceAggregate, roleAggregate aggregate.RoleAggregate, roleBindingAggregate aggregate.RoleBindingAggregate) *PipelineConfigController {
 	return &PipelineConfigController{
 		pipelineConfigAggregate: pipelineConfigAggregate,
 		secretAggregate:         secretAggregate,
+		namespaceAggregate:      namespaceAggregate,
+		roleAggregate:           roleAggregate,
+		roleBindingAggregate:    roleBindingAggregate,
 	}
 }
 
@@ -47,6 +54,13 @@ func (c *PipelineConfigController) Post(cmd *command.PipelineStart, properties *
 			}
 			cmd.Namespace = fmt.Sprintf("%s-%s", cmd.Project, cmd.Profile)
 		}
+		//TODO CREATE NAMESPACE
+		c.namespaceAggregate.Create(cmd.Namespace)
+		//TODO create role
+		c.roleAggregate.Create(constant.Default ,cmd.Namespace)
+		//TODO create rolebinding
+		c.roleBindingAggregate.Create(constant.Default ,cmd.Namespace)
+
 		username := jwtProps["username"]
 		password := jwtProps["password"]
 		token := jwtProps["access_token"]
@@ -73,15 +87,15 @@ func (c *PipelineConfigController) Post(cmd *command.PipelineStart, properties *
 			paths := strings.Split(ct, "/")
 			name := paths[len(paths)-1]
 			command := command.PipelineStart{
-				Name:         name,
-				Namespace:    cmd.Namespace,
-				Version:      cmd.Version,
-				Profile:      cmd.Profile,
-				Path:         ct,
-				AppRoot: cmd.Name,
-				SourceCode:   cmd.SourceCode,
-				Branch:       cmd.Branch,
-				Project:      cmd.Project,
+				Name:       name,
+				Namespace:  cmd.Namespace,
+				Version:    cmd.Version,
+				Profile:    cmd.Profile,
+				Path:       ct,
+				AppRoot:    cmd.Name,
+				SourceCode: cmd.SourceCode,
+				Branch:     cmd.Branch,
+				Project:    cmd.Project,
 			}
 			go func() {
 				_, err = c.pipelineConfigAggregate.StartPipelineConfig(&command)
