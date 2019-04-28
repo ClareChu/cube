@@ -59,7 +59,7 @@ func (c *logsCommand) Run(args []string) error {
 		return err
 	}
 
-	pss := &api.PipelineStarts{Name: c.app, Namespace: c.project, SourceCode: "_"}
+	pss := &api.PipelineRequest{Name: c.app, Namespace: c.project, SourceCode: "_"}
 	if _, err := api.StartInit(user, pss); err != nil {
 		return err
 	}

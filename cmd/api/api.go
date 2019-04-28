@@ -77,7 +77,7 @@ type BaseResponse struct {
 }
 
 //启动PipelineStart
-func PipelineStart(user *User, start *PipelineStarts) error {
+func PipelineStart(user *User, start *PipelineRequest) error {
 
 	if _, err := StartInit(user, start); err != nil {
 		return err
@@ -90,40 +90,36 @@ func PipelineStart(user *User, start *PipelineStarts) error {
 }
 
 //初始化Start数据信息
-func StartInit(user *User, start *PipelineStarts) (*PipelineStarts, error) {
+func StartInit(user *User, req *PipelineRequest) (*PipelineRequest, error) {
 
 	if user.Token == "" {
-		err := fmt.Errorf("token can not be empty,login to get")
+		err := fmt.Errorf("please login first")
 		return nil, err
-	}
-	if start.Name == "" && start.Namespace == "" {
-		name, namespace, err := GetProjectInfoByCurrPath()
-		if err != nil {
-			return nil, err
-		}
-
-		start.Namespace = namespace
-		start.Name = name
 	}
 
-	if start.Name == "" && start.Namespace != "" {
-		err := fmt.Errorf("app can not be empty")
+	name, project, err := GetProjectInfoByCurrPath()
+	if err != nil {
 		return nil, err
 	}
-	if start.Name != "" && start.Namespace == "" {
-		err := fmt.Errorf("project can not be empty")
-		return nil, err
+
+	if req.Name == "" {
+		req.Name = name
 	}
-	fmt.Println("app: ", start.Name)
-	fmt.Println("project: ", start.Namespace)
-	for _, ctx := range start.Context {
+	if req.Project == "" {
+		req.Project = project
+	}
+
+	fmt.Println("app: ", req.Name)
+	fmt.Println("project: ", req.Project)
+	fmt.Println("namespace: ", req.Namespace)
+	for _, ctx := range req.Context {
 		fmt.Println("context: ", ctx)
 	}
 
 	//如果 SourceCode 为空，则从发送http请求获取 SourceCode 信息，
 	//如果SourceCode获取失败。则尝试本地推断SourceCode信息
-	if start.SourceCode == "" {
-		codeType, err := GetSourceCodeType(GetSourceCodeTypeApi(user.Server, start.Name, start.Namespace), user.Token)
+	if req.SourceCode == "" {
+		codeType, err := GetSourceCodeType(GetSourceCodeTypeApi(user.Server, req.Name, req.Namespace), user.Token)
 		if err != nil {
 
 			//如果发送http请求获取不到代码类型，则做本地补偿检测
@@ -135,16 +131,16 @@ func StartInit(user *User, start *PipelineStarts) (*PipelineStarts, error) {
 			}
 			codeType = codeTypeStr
 		}
-		start.SourceCode = codeType
+		req.SourceCode = codeType
 
-		fmt.Println("source code: ", start.SourceCode)
+		fmt.Println("source code: ", req.SourceCode)
 	}
 
-	return start, nil
+	return req, nil
 }
 
 //通过HTTP请求,启动 pipeline
-func Start(start PipelineStarts, url, token string) error {
+func Start(start PipelineRequest, url, token string) error {
 
 	jsonByte, err := json.Marshal(start)
 	//fmt.Println("PipelineStart", string(jsonByte))
