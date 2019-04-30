@@ -56,12 +56,20 @@ func (c *PipelineConfigController) Post(cmd *command.PipelineStart, properties *
 			}
 		}
 		//TODO CREATE NAMESPACE
-		c.namespaceAggregate.InitNamespace(cmd.Namespace)
+		err = c.namespaceAggregate.InitNamespace(cmd.Namespace)
+		if err != nil {
+			return
+		}
 		//TODO create role
-		c.roleAggregate.Create(constant.Default ,cmd.Namespace)
+		err = c.roleAggregate.Create(constant.Default ,cmd.Namespace)
+		if err != nil {
+			return
+		}
 		//TODO create rolebinding
-		c.roleBindingAggregate.Create(constant.Default ,cmd.Namespace)
-
+		err = c.roleBindingAggregate.Create(constant.Default ,cmd.Namespace)
+		if err != nil {
+			return
+		}
 		username := jwtProps["username"]
 		password := jwtProps["password"]
 		token := jwtProps["access_token"]

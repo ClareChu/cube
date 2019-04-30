@@ -2,9 +2,12 @@ package aggregate
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/ddliu/go-httpclient"
+	"hidevops.io/cube/manager/pkg/constant"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
+	"hidevops.io/hiboot/pkg/utils/crypto/base64"
 	"hidevops.io/hioak/starter/kube"
 	"k8s.io/api/core/v1"
 	meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -27,16 +30,18 @@ type Metadata struct {
 
 type Namespace struct {
 	NamespaceAggregate
-	namespace *kube.Namespace
+	namespace  *kube.Namespace
+	configMaps *kube.ConfigMaps
 }
 
 func init() {
 	app.Register(NewNamespace)
 }
 
-func NewNamespace(namespace *kube.Namespace) NamespaceAggregate {
+func NewNamespace(namespace *kube.Namespace, configMaps *kube.ConfigMaps) NamespaceAggregate {
 	return &Namespace{
-		namespace: namespace,
+		namespace:  namespace,
+		configMaps: configMaps,
 	}
 }
 
@@ -48,6 +53,8 @@ func (n *Namespace) InitNamespace(namespace string) error {
 	err = n.HarborCreate(namespace)
 	return err
 }
+
+const HarborCreateNamespaceApi = "/api/projects"
 
 func (n *Namespace) Create(ns string) error {
 	namespace := &v1.Namespace{
@@ -66,7 +73,13 @@ func (n *Namespace) Create(ns string) error {
 }
 
 func (n *Namespace) HarborCreate(namespace string) error {
-	httpclient.WithHeader("Authorization", "Basic YWRtaW46SGFyYm9yMTIzNDU=")
+	config, err := n.configMaps.Get(constant.DockerConstant, constant.TemplateDefaultNamespace)
+	if err != nil {
+		return err
+	}
+	auth := fmt.Sprintf("%s:%s", config.Data[constant.Username], config.Data[constant.Password])
+	basic := fmt.Sprintf("%s %s", constant.Basic, base64.EncodeToString(auth))
+	httpclient.WithHeader(constant.Authorization, basic)
 	params := &HarborNamespace{
 		ProjectName: namespace,
 		Metadata: Metadata{
@@ -77,7 +90,7 @@ func (n *Namespace) HarborCreate(namespace string) error {
 	if err != nil {
 		return err
 	}
-	res, err := httpclient.PostJson("http://harbor.cloud2go.cn/api/projects", b)
+	res, err := httpclient.PostJson(fmt.Sprintf("http://%s/%s", config.Data[constant.DockerRegistry], HarborCreateNamespaceApi), b)
 	if err != nil {
 		return err
 	}

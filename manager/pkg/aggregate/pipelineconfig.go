@@ -1,13 +1,13 @@
 package aggregate
 
 import (
-	"github.com/jinzhu/copier"
 	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/cube/manager/pkg/constant"
 	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
+	"hidevops.io/hiboot/pkg/utils/copier"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -99,23 +99,9 @@ func (p *PipelineConfig) StartPipelineConfig(cmd *command.PipelineStart) (pipeli
 }
 
 func replaceProfile(cmd *command.PipelineStart, pipelineConfig *v1alpha1.PipelineConfig) {
-	if cmd.Version != "" {
-		pipelineConfig.Spec.Version = cmd.Version
-	}
-	if cmd.Project != "" {
-		pipelineConfig.Spec.Project = cmd.Project
-	}
-	if cmd.Profile != "" {
-		pipelineConfig.Spec.Profile = cmd.Profile
-	}
-	if cmd.Branch != "" {
-		pipelineConfig.Spec.Branch = cmd.Branch
-	}
+	copier.Copy(&pipelineConfig.Spec, cmd, copier.IgnoreEmptyValue)
 	if cmd.Path != "" {
 		pipelineConfig.Spec.Context = cmd.Path
-	}
-	if cmd.AppRoot != "" {
-		pipelineConfig.Spec.AppRoot = cmd.AppRoot
 	}
 }
 

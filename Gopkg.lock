@@ -250,6 +250,12 @@
   revision = "883fe33ffc4344bad1ecd881f61afd5ec5d80e0a"
 
 [[projects]]
+  name = "github.com/golang/mock"
+  packages = ["gomock"]
+  revision = "51421b967af1f557f93a59e0057aaf15ca02e29c"
+  version = "v1.2.0"
+
+[[projects]]
   name = "github.com/golang/protobuf"
   packages = [
     "proto",
@@ -1096,7 +1102,7 @@
     "pkg/utils/str",
     "pkg/utils/validator"
   ]
-  revision = "3285b508a3e4d634554ffc874acbcb876e092a82"
+  revision = "4ee64b5d3cca0bb61b19de12a75dd80d5b04f8f3"
   version = "v1.1.0"
 
 [[projects]]
@@ -1111,9 +1117,11 @@
   packages = [
     "starter",
     "starter/docker",
+    "starter/docker/fake",
     "starter/kube",
     "starter/openshift",
     "starter/scm",
+    "starter/scm/git",
     "starter/scm/gitlab",
     "starter/scm/gitlab/fake"
   ]
@@ -1345,6 +1353,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f30f85b0f01afbc482d6de107ddc49bedbe5e02a18f00b4a9784e4d50c5ce9b2"
+  inputs-digest = "eef259a0d004fbeb463a4c2ddbc4b7033733c5e9dc539a8bde713f578ee8de4d"
   solver-name = "gps-cdcl"
   solver-version = 1

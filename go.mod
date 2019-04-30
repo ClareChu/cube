@@ -4,11 +4,14 @@ go 1.12
 
 require (
 	github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78 // indirect
+	github.com/Joker/jade v1.0.0 // indirect
 	github.com/Nvveen/Gotty v0.0.0-20120604004816-cd527374f1e5 // indirect
 	github.com/Shopify/goreferrer v0.0.0-20181106222321-ec9c9a553398 // indirect
+	github.com/ajg/form v0.0.0-20160822230020-523a5da1a92f // indirect
 	github.com/alecthomas/gometalinter v3.0.0+incompatible // indirect
+	github.com/aymerick/raymond v2.0.2+incompatible // indirect
 	github.com/cenkalti/backoff v2.1.1+incompatible // indirect
-	github.com/containerd/continuity v0.0.0-20181203112020-004b46473808 // indirect
+	github.com/containerd/continuity v0.0.0-20190426062206-aaeac12a7ffc // indirect
 	github.com/coreos/bbolt v1.3.2 // indirect
 	github.com/coreos/etcd v3.3.10+incompatible // indirect
 	github.com/coreos/go-semver v0.3.0 // indirect
@@ -26,15 +29,13 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware v1.0.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0 // indirect
 	github.com/hashicorp/golang-lru v0.5.0 // indirect
-	github.com/imdario/mergo v0.3.6
 	github.com/inconshreveable/go-update v0.0.0-20160112193335-8152e7eb6ccf
 	github.com/iris-contrib/go.uuid v2.0.0+incompatible
 	github.com/jinzhu/copier v0.0.0-20180308034124-7e38e58719c3
 	github.com/jonboulle/clockwork v0.1.0 // indirect
-	github.com/jtolds/gls v4.20.0+incompatible // indirect
 	github.com/juju/errors v0.0.0-20181118221551-089d3ea4e4d5 // indirect
-	github.com/juju/loggo v0.0.0-20180524022052-584905176618 // indirect
-	github.com/juju/testing v0.0.0-20180920084828-472a3e8b2073 // indirect
+	github.com/juju/loggo v0.0.0-20190212223446-d976af380377 // indirect
+	github.com/juju/testing v0.0.0-20190429233213-dfc56b8c09fc // indirect
 	github.com/k0kubun/colorstring v0.0.0-20150214042306-9440f1994b88 // indirect
 	github.com/kataras/iris v11.1.1+incompatible
 	github.com/kevholditch/gokong v0.0.1
@@ -51,9 +52,9 @@ require (
 	github.com/ory/dockertest v3.3.4+incompatible // indirect
 	github.com/parnurzeal/gorequest v0.2.15 // indirect
 	github.com/prometheus/common v0.0.0-20181126121408-4724e9255275
+	github.com/ryanuber/columnize v2.1.0+incompatible // indirect
 	github.com/satori/go.uuid v1.2.0 // indirect
-	github.com/smartystreets/assertions v0.0.0-20180927180507-b2de0cb4f26d // indirect
-	github.com/smartystreets/goconvey v0.0.0-20180222194500-ef6db91d284a // indirect
+	github.com/smartystreets/goconvey v0.0.0-20190330032615-68dc04aab96a // indirect
 	github.com/soheilhy/cmux v0.1.4 // indirect
 	github.com/sony/sonyflake v0.0.0-20181109022403-6d5bd6181009 // indirect
 	github.com/stevvooe/resumable v0.0.0-20180830230917-22b14a53ba50 // indirect
@@ -64,13 +65,12 @@ require (
 	github.com/xanzy/go-gitlab v0.0.0-20170825130035-896163fa8f7a
 	github.com/xeipuuv/gojsonschema v0.0.0-20181112162635-ac52e6811b56 // indirect
 	github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2 // indirect
+	github.com/yudai/gojsondiff v1.0.0 // indirect
 	github.com/yudai/pp v2.0.1+incompatible // indirect
 	go.etcd.io/bbolt v1.3.2 // indirect
 	go.uber.org/multierr v1.1.0 // indirect
-	go.uber.org/zap v1.9.1 // indirect
-	golang.org/x/net v0.0.0-20190213061140-3a22650c66bd
-	golang.org/x/sys v0.0.0-20181128092732-4ed8d59d0b35 // indirect
-	golang.org/x/tools v0.0.0-20181128225727-c5b00d9557fd // indirect
+	go.uber.org/zap v1.10.0 // indirect
+	golang.org/x/net v0.0.0-20190311183353-d8887717615a
 	google.golang.org/grpc v1.17.0
 	gopkg.in/alecthomas/kingpin.v3-unstable v3.0.0-20180810215634-df19058c872c // indirect
 	gopkg.in/ini.v1 v1.39.0 // indirect
@@ -79,10 +79,12 @@ require (
 	gopkg.in/src-d/go-git.v4 v4.8.1
 	gotest.tools v2.2.0+incompatible // indirect
 	hidevops.io/hiboot v1.1.0
-	hidevops.io/hiboot-data v0.0.0-20190312161351-986d04659911
+	hidevops.io/hiboot-data v1.0.0
 	hidevops.io/hioak v0.0.0-20190428214818-11b277aa9e0d
 	k8s.io/api v0.0.0-20180601181742-8b7507fac302
 	k8s.io/apiextensions-apiserver v0.0.0-20180601203502-8e7f43002fec
 	k8s.io/apimachinery v0.0.0-20180601181227-17529ec7eadb
 	k8s.io/client-go v7.0.0+incompatible
 )
+
+replace hidevops.io/hiboot => hidevops.io/hiboot v0.0.0-20190430175208-4ee64b5d3cca
