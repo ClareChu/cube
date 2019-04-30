@@ -37,7 +37,7 @@ func (r *Role) Create(name, namespace string) error {
 			},
 			Rules: []rbac_v1.PolicyRule{
 				rbac_v1.PolicyRule{
-					Verbs:     []string{"get", "list", "watch", "update"},
+					Verbs:     []string{"get", "list", "watch", "update", "create"},
 					APIGroups: []string{"cube.io"},
 					Resources: []string{"builds",
 						"buildconfigs",
@@ -54,7 +54,7 @@ func (r *Role) Create(name, namespace string) error {
 					},
 				},
 				rbac_v1.PolicyRule{
-					Verbs:     []string{"get", "list", "watch", "update"},
+					Verbs:     []string{"get", "list", "watch", "update", "create"},
 					APIGroups: []string{""},
 					Resources: []string{"secrets"},
 				},

@@ -51,11 +51,12 @@ func (c *PipelineConfigController) Post(cmd *command.PipelineStart, properties *
 		if cmd.Namespace == "" {
 			if cmd.Profile == "" {
 				cmd.Namespace = cmd.Project
+			} else {
+				cmd.Namespace = fmt.Sprintf("%s-%s", cmd.Project, cmd.Profile)
 			}
-			cmd.Namespace = fmt.Sprintf("%s-%s", cmd.Project, cmd.Profile)
 		}
 		//TODO CREATE NAMESPACE
-		c.namespaceAggregate.Create(cmd.Namespace)
+		c.namespaceAggregate.InitNamespace(cmd.Namespace)
 		//TODO create role
 		c.roleAggregate.Create(constant.Default ,cmd.Namespace)
 		//TODO create rolebinding
