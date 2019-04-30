@@ -102,6 +102,9 @@ func replaceProfile(cmd *command.PipelineStart, pipelineConfig *v1alpha1.Pipelin
 	if cmd.Version != "" {
 		pipelineConfig.Spec.Version = cmd.Version
 	}
+	if cmd.Project != "" {
+		pipelineConfig.Spec.Project = cmd.Project
+	}
 	if cmd.Profile != "" {
 		pipelineConfig.Spec.Profile = cmd.Profile
 	}
