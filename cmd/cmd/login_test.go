@@ -24,7 +24,7 @@ func TestLoginCommands(t *testing.T) {
 	testApp := cli.NewTestApplication(t, NewRootCommand)
 
 	t.Run("should login filed", func(t *testing.T) {
-		_, err := testApp.Run("login")
+		_, err := testApp.Run("login", "-u", "test", "-p", "tE5t1100")
 		assert.NotEqual(t, nil, err)
 	})
 }

@@ -24,6 +24,9 @@ import (
 
 type loginCommand struct {
 	cli.SubCommand
+
+	username string
+	password string
 }
 
 func newLoginCommand() *loginCommand {
@@ -31,7 +34,9 @@ func newLoginCommand() *loginCommand {
 	c.Use = "login"
 	c.Short = "Log in to a cube/client"
 	c.Long = "Run login command"
-
+	pf := c.PersistentFlags()
+	pf.StringVarP(&c.username, "username", "u", "", "--username=your-username")
+	pf.StringVarP(&c.password, "password", "p", "", "--password=your-password")
 	return c
 }
 
@@ -41,9 +46,12 @@ func init() {
 
 func (c *loginCommand) Run(args []string) error {
 	log.Debug("handle login command")
-
-	username := api.GetInput(api.USERNAME)
-	password := api.GetInput(api.PASSWORD)
+	if c.username == "" {
+		c.username = api.GetInput(api.USERNAME)
+	}
+	if c.password == "" {
+		c.password = api.GetInput(api.PASSWORD)
+	}
 
 	user, filePath, err := api.ReadConfig()
 	if err != nil {
@@ -51,7 +59,7 @@ func (c *loginCommand) Run(args []string) error {
 		return err
 	}
 
-	if token, err := api.Login(api.GetLoginApi(user.Server), username, password); err != nil {
+	if token, err := api.Login(api.GetLoginApi(user.Server), c.username, c.password); err != nil {
 		return err
 	} else {
 		user.Token = token

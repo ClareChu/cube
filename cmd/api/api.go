@@ -222,10 +222,9 @@ func Login(url, username, password string) (token string, err error) {
 		//return "",errors.New("login request failed,please check if the server is correct")
 	}
 	if token == "" {
-		return token, errors.New("token get failed")
+		return token, err
 	}
-	err = nil
-	return token, err
+	return token, nil
 }
 
 //获取用户HOME目录
