@@ -85,6 +85,7 @@ require (
 	k8s.io/apiextensions-apiserver v0.0.0-20180601203502-8e7f43002fec
 	k8s.io/apimachinery v0.0.0-20180601181227-17529ec7eadb
 	k8s.io/client-go v7.0.0+incompatible
+	k8s.io/code-generator v0.0.0-20190511023357-639c964206c2 // indirect
 )
 
 replace hidevops.io/hiboot => hidevops.io/hiboot v0.0.0-20190430175208-4ee64b5d3cca

@@ -2,6 +2,7 @@ package aggregate
 
 import (
 	"fmt"
+	//"gopkg.in/src-d/enry.v1"
 	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/cube/manager/pkg/constant"
 	"hidevops.io/hiboot/pkg/app"
@@ -43,14 +44,19 @@ func NewStartService(pipelineConfigAggregate PipelineConfigAggregate,
 }
 
 func (s *Start) Init(cmd *command.PipelineStart, propMap map[string]string) (err error) {
-	if cmd.Namespace == "" {
-		if cmd.Profile == "" {
-			cmd.Namespace = cmd.Project
-		} else {
-			cmd.Namespace = fmt.Sprintf("%s-%s", cmd.Project, cmd.Profile)
+	//todo 通过URL部署项目
+	/*	if cmd.Url != "" {
+			if strings.Contains(cmd.Url, "https://") || strings.Contains(cmd.Url, "http://") {
+				url := strings.Split(cmd.Url, "//")[1]
+				cmd.Project = strings.Split(url, "/")[1]
+				cmd.Namespace = strings.Split(url, "/")[2]
+			}
 		}
-	}
-	//TODO init profile   create k8s namespace  serviceAccount default create role and rolebinding
+		langs := enry.GetLanguagesByFilename("Gemfile", []byte("<content>"), []string{})
+		log.Info(langs)*/
+	//TODO 获取Namespace的值
+	s.GetNamespace(cmd)
+	//TODO init profile   create k8s namespace  serviceAccount default create role and roleBinding
 	err = s.CreateProfile(cmd.Namespace)
 	if err != nil {
 		return
@@ -83,12 +89,23 @@ func (s *Start) Init(cmd *command.PipelineStart, propMap map[string]string) (err
 			SourceCode: cmd.SourceCode,
 			Branch:     cmd.Branch,
 			Project:    cmd.Project,
+			Envs:       cmd.Envs,
 		}
 		go func() {
 			_, err = s.pipelineConfigAggregate.StartPipelineConfig(&command)
 		}()
 	}
 	return
+}
+
+func (s *Start) GetNamespace(cmd *command.PipelineStart) {
+	if cmd.Namespace == "" {
+		if cmd.Profile == "" {
+			cmd.Namespace = cmd.Project
+		} else {
+			cmd.Namespace = fmt.Sprintf("%s-%s", cmd.Project, cmd.Profile)
+		}
+	}
 }
 
 func (s *Start) CreateProfile(namespace string) (err error) {
@@ -120,4 +137,9 @@ func (s *Start) CreateSecret(cmd *command.PipelineStart, propMap map[string]stri
 	}
 	err = s.secretAggregate.Create(secret)
 	return err
+}
+
+func (s *Start) GetLanguagesType() error {
+
+	return nil
 }

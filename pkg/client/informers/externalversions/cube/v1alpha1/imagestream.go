@@ -21,7 +21,7 @@ package v1alpha1
 import (
 	time "time"
 
-	cubev1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	cube_v1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	versioned "hidevops.io/cube/pkg/client/clientset/versioned"
 	internalinterfaces "hidevops.io/cube/pkg/client/informers/externalversions/internalinterfaces"
 	v1alpha1 "hidevops.io/cube/pkg/client/listers/cube/v1alpha1"
@@ -70,7 +70,7 @@ func NewFilteredImageStreamInformer(client versioned.Interface, namespace string
 				return client.CubeV1alpha1().ImageStreams(namespace).Watch(options)
 			},
 		},
-		&cubev1alpha1.ImageStream{},
+		&cube_v1alpha1.ImageStream{},
 		resyncPeriod,
 		indexers,
 	)
@@ -81,7 +81,7 @@ func (f *imageStreamInformer) defaultInformer(client versioned.Interface, resync
 }
 
 func (f *imageStreamInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&cubev1alpha1.ImageStream{}, f.defaultInformer)
+	return f.factory.InformerFor(&cube_v1alpha1.ImageStream{}, f.defaultInformer)
 }
 
 func (f *imageStreamInformer) Lister() v1alpha1.ImageStreamLister {

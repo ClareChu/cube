@@ -48,6 +48,11 @@ func (_m *BuildConfigAggregate) Delete(name string, namespace string) error {
 	return r0
 }
 
+// InitConfig provides a mock function with given fields: buildConfigTemplate, params, template
+func (_m *BuildConfigAggregate) InitConfig(buildConfigTemplate *v1alpha1.BuildConfig, params *command.PipelineReqParams, template *v1alpha1.BuildConfig) {
+	_m.Called(buildConfigTemplate, params, template)
+}
+
 // Template provides a mock function with given fields: buildConfigTemplate
 func (_m *BuildConfigAggregate) Template(buildConfigTemplate *command.BuildConfig) (*v1alpha1.BuildConfig, error) {
 	ret := _m.Called(buildConfigTemplate)

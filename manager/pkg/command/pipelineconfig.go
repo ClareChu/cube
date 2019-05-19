@@ -8,16 +8,18 @@ import (
 
 type PipelineStart struct {
 	model.RequestBody `json:"omitempty"`
-	Name              string   `json:"name"`
-	Namespace         string   `json:"namespace"`
-	SourceCode        string   `json:"sourceCode"`
-	Version           string   `json:"version"`
-	Profile           string   `json:"profile"`
-	Branch            string   `json:"branch"`
-	Context           []string `json:"context"`
-	AppRoot           string   `json:"appRoot"`
-	Path              string   `json:"path"`
-	Project           string   `json:"project"`
+	Name              string            `json:"name"`
+	Namespace         string            `json:"namespace"`
+	SourceCode        string            `json:"sourceCode"`
+	Version           string            `json:"version"`
+	Profile           string            `json:"profile"`
+	Branch            string            `json:"branch"`
+	Context           []string          `json:"context"`
+	AppRoot           string            `json:"appRoot"`
+	Path              string            `json:"path"`
+	Project           string            `json:"project"`
+	Url               string            `json:"url"`
+	Envs              map[string]string `json:"envs"`
 }
 
 type PipelineConfigTemplate struct {

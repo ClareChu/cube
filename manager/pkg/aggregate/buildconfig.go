@@ -15,7 +15,7 @@ type BuildConfigAggregate interface {
 	Template(buildConfigTemplate *command.BuildConfig) (buildConfig *v1alpha1.BuildConfig, err error)
 	Create(params *command.PipelineReqParams) (buildConfig *v1alpha1.BuildConfig, err error)
 	Delete(name, namespace string) error
-	initConfig(buildConfigTemplate *v1alpha1.BuildConfig, params *command.PipelineReqParams, template *v1alpha1.BuildConfig)
+	InitConfig(buildConfigTemplate *v1alpha1.BuildConfig, params *command.PipelineReqParams, template *v1alpha1.BuildConfig)
 }
 
 type BuildConfig struct {
@@ -98,7 +98,7 @@ func (s *BuildConfig) Create(params *command.PipelineReqParams) (buildConfig *v1
 		Kind:       constant.BuildConfigKind,
 		APIVersion: constant.BuildConfigApiVersion,
 	}
-	s.initConfig(buildConfigTemplate, params, template)
+	s.InitConfig(buildConfigTemplate, params, template)
 	//TODO 如果存在创建 buildConfig 不存在新建 buildConfig 创建完 buildConfig 新建
 	if err != nil {
 		buildConfigTemplate.Status.LastVersion = constant.InitLastVersion
@@ -117,7 +117,7 @@ func (s *BuildConfig) Create(params *command.PipelineReqParams) (buildConfig *v1
 	return
 }
 
-func (s *BuildConfig) initConfig(buildConfigTemplate *v1alpha1.BuildConfig, params *command.PipelineReqParams, template *v1alpha1.BuildConfig) {
+func (s *BuildConfig) InitConfig(buildConfigTemplate *v1alpha1.BuildConfig, params *command.PipelineReqParams, template *v1alpha1.BuildConfig) {
 	buildConfigTemplate.Spec.App = params.Name
 	buildConfigTemplate.Spec.CloneConfig.Branch = params.Branch
 	buildConfigTemplate.Spec.Context = params.Context

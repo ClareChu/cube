@@ -21,7 +21,7 @@ package v1alpha1
 import (
 	time "time"
 
-	cubev1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	cube_v1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	versioned "hidevops.io/cube/pkg/client/clientset/versioned"
 	internalinterfaces "hidevops.io/cube/pkg/client/informers/externalversions/internalinterfaces"
 	v1alpha1 "hidevops.io/cube/pkg/client/listers/cube/v1alpha1"
@@ -70,7 +70,7 @@ func NewFilteredPipelineInformer(client versioned.Interface, namespace string, r
 				return client.CubeV1alpha1().Pipelines(namespace).Watch(options)
 			},
 		},
-		&cubev1alpha1.Pipeline{},
+		&cube_v1alpha1.Pipeline{},
 		resyncPeriod,
 		indexers,
 	)
@@ -81,7 +81,7 @@ func (f *pipelineInformer) defaultInformer(client versioned.Interface, resyncPer
 }
 
 func (f *pipelineInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&cubev1alpha1.Pipeline{}, f.defaultInformer)
+	return f.factory.InformerFor(&cube_v1alpha1.Pipeline{}, f.defaultInformer)
 }
 
 func (f *pipelineInformer) Lister() v1alpha1.PipelineLister {

@@ -21,7 +21,7 @@ package v1alpha1
 import (
 	time "time"
 
-	cubev1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	cube_v1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	versioned "hidevops.io/cube/pkg/client/clientset/versioned"
 	internalinterfaces "hidevops.io/cube/pkg/client/informers/externalversions/internalinterfaces"
 	v1alpha1 "hidevops.io/cube/pkg/client/listers/cube/v1alpha1"
@@ -70,7 +70,7 @@ func NewFilteredGatewayConfigInformer(client versioned.Interface, namespace stri
 				return client.CubeV1alpha1().GatewayConfigs(namespace).Watch(options)
 			},
 		},
-		&cubev1alpha1.GatewayConfig{},
+		&cube_v1alpha1.GatewayConfig{},
 		resyncPeriod,
 		indexers,
 	)
@@ -81,7 +81,7 @@ func (f *gatewayConfigInformer) defaultInformer(client versioned.Interface, resy
 }
 
 func (f *gatewayConfigInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&cubev1alpha1.GatewayConfig{}, f.defaultInformer)
+	return f.factory.InformerFor(&cube_v1alpha1.GatewayConfig{}, f.defaultInformer)
 }
 
 func (f *gatewayConfigInformer) Lister() v1alpha1.GatewayConfigLister {

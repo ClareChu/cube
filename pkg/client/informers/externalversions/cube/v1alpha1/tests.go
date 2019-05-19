@@ -21,7 +21,7 @@ package v1alpha1
 import (
 	time "time"
 
-	cubev1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	cube_v1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	versioned "hidevops.io/cube/pkg/client/clientset/versioned"
 	internalinterfaces "hidevops.io/cube/pkg/client/informers/externalversions/internalinterfaces"
 	v1alpha1 "hidevops.io/cube/pkg/client/listers/cube/v1alpha1"
@@ -70,7 +70,7 @@ func NewFilteredTestsInformer(client versioned.Interface, namespace string, resy
 				return client.CubeV1alpha1().Testses(namespace).Watch(options)
 			},
 		},
-		&cubev1alpha1.Tests{},
+		&cube_v1alpha1.Tests{},
 		resyncPeriod,
 		indexers,
 	)
@@ -81,7 +81,7 @@ func (f *testsInformer) defaultInformer(client versioned.Interface, resyncPeriod
 }
 
 func (f *testsInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&cubev1alpha1.Tests{}, f.defaultInformer)
+	return f.factory.InformerFor(&cube_v1alpha1.Tests{}, f.defaultInformer)
 }
 
 func (f *testsInformer) Lister() v1alpha1.TestsLister {

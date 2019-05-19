@@ -269,6 +269,17 @@
   version = "v1.2.0"
 
 [[projects]]
+  name = "github.com/google/go-cmp"
+  packages = [
+    "cmp",
+    "cmp/internal/diff",
+    "cmp/internal/function",
+    "cmp/internal/value"
+  ]
+  revision = "3af367b6b30c263d47e8895973edcca9a49cf029"
+  version = "v0.2.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/google/go-querystring"
   packages = ["query"]
@@ -749,6 +760,12 @@
   version = "v1.4.0"
 
 [[projects]]
+  name = "github.com/src-d/go-oniguruma"
+  packages = ["."]
+  revision = "304256cb638a6afd1cc7d6810be34447abc398bf"
+  version = "v1.1.0"
+
+[[projects]]
   name = "github.com/stretchr/objx"
   packages = ["."]
   revision = "477a77ecc69700c7cdeb1fa9e129548e1c1c393c"
@@ -763,6 +780,12 @@
   ]
   revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
   version = "v1.2.2"
+
+[[projects]]
+  name = "github.com/toqueteos/trie"
+  packages = ["."]
+  revision = "683ae57f27ac5c2afec902631ed8b9cda1d0f481"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "master"
@@ -1000,6 +1023,18 @@
   version = "v1.39.0"
 
 [[projects]]
+  name = "gopkg.in/src-d/enry.v1"
+  packages = [
+    ".",
+    "data",
+    "data/rule",
+    "internal/tokenizer",
+    "regex"
+  ]
+  revision = "ab3c26b46dfaf8281bf78f2e998111e6a40829bf"
+  version = "v1.7.3"
+
+[[projects]]
   name = "gopkg.in/src-d/go-billy.v4"
   packages = [
     ".",
@@ -1059,6 +1094,12 @@
   version = "v4.8.1"
 
 [[projects]]
+  name = "gopkg.in/toqueteos/substring.v1"
+  packages = ["."]
+  revision = "c5f61671513240ddf5563635cc4a90e9f3ae4710"
+  version = "v1.0.2"
+
+[[projects]]
   name = "gopkg.in/warnings.v0"
   packages = ["."]
   revision = "ec4a0fea49c7b46c2aeb0b51aac55779c607e52b"
@@ -1069,6 +1110,18 @@
   packages = ["."]
   revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
   version = "v2.2.1"
+
+[[projects]]
+  name = "gotest.tools"
+  packages = [
+    "assert",
+    "assert/cmp",
+    "internal/difflib",
+    "internal/format",
+    "internal/source"
+  ]
+  revision = "1083505acf35a0bd8a696b26837e1fb3187a7a83"
+  version = "v2.3.0"
 
 [[projects]]
   name = "hidevops.io/hiboot"
@@ -1094,6 +1147,7 @@
     "pkg/system/types",
     "pkg/utils/cmap",
     "pkg/utils/copier",
+    "pkg/utils/crypto/base64",
     "pkg/utils/idgen",
     "pkg/utils/io",
     "pkg/utils/mapstruct",
@@ -1353,6 +1407,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "eef259a0d004fbeb463a4c2ddbc4b7033733c5e9dc539a8bde713f578ee8de4d"
+  inputs-digest = "a8cb0a46d866c98ab9595d4b04b5fe00c3e781f73bd8682fbf3df3b08acd36f1"
   solver-name = "gps-cdcl"
   solver-version = 1

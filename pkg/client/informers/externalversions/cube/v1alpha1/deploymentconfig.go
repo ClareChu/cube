@@ -21,7 +21,7 @@ package v1alpha1
 import (
 	time "time"
 
-	cubev1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	cube_v1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	versioned "hidevops.io/cube/pkg/client/clientset/versioned"
 	internalinterfaces "hidevops.io/cube/pkg/client/informers/externalversions/internalinterfaces"
 	v1alpha1 "hidevops.io/cube/pkg/client/listers/cube/v1alpha1"
@@ -70,7 +70,7 @@ func NewFilteredDeploymentConfigInformer(client versioned.Interface, namespace s
 				return client.CubeV1alpha1().DeploymentConfigs(namespace).Watch(options)
 			},
 		},
-		&cubev1alpha1.DeploymentConfig{},
+		&cube_v1alpha1.DeploymentConfig{},
 		resyncPeriod,
 		indexers,
 	)
@@ -81,7 +81,7 @@ func (f *deploymentConfigInformer) defaultInformer(client versioned.Interface, r
 }
 
 func (f *deploymentConfigInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&cubev1alpha1.DeploymentConfig{}, f.defaultInformer)
+	return f.factory.InformerFor(&cube_v1alpha1.DeploymentConfig{}, f.defaultInformer)
 }
 
 func (f *deploymentConfigInformer) Lister() v1alpha1.DeploymentConfigLister {
