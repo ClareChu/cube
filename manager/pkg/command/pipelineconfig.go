@@ -3,23 +3,24 @@ package command
 import (
 	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/hiboot/pkg/model"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 type PipelineStart struct {
 	model.RequestBody `json:"omitempty"`
-	Name              string            `json:"name"`
-	Namespace         string            `json:"namespace"`
-	SourceCode        string            `json:"sourceCode"`
-	Version           string            `json:"version"`
-	Profile           string            `json:"profile"`
-	Branch            string            `json:"branch"`
-	Context           []string          `json:"context"`
-	AppRoot           string            `json:"appRoot"`
-	Path              string            `json:"path"`
-	Project           string            `json:"project"`
-	Url               string            `json:"url"`
-	Envs              map[string]string `json:"envs"`
+	Name              string          `json:"name"`
+	Namespace         string          `json:"namespace"`
+	SourceCode        string          `json:"sourceCode"`
+	Version           string          `json:"version"`
+	Profile           string          `json:"profile"`
+	Branch            string          `json:"branch"`
+	Context           []string        `json:"context"`
+	AppRoot           string          `json:"appRoot"`
+	Path              string          `json:"path"`
+	Project           string          `json:"project"`
+	Url               string          `json:"url"`
+	Env               []corev1.EnvVar `json:"env"`
 }
 
 type PipelineConfigTemplate struct {
@@ -46,14 +47,15 @@ type StartPipeline struct {
 }
 
 type PipelineReqParams struct {
-	Name         string `json:"name"`
-	PipelineName string `json:"pipeline_name"`
-	Namespace    string `json:"namespace"`
-	EventType    string `json:"event_type"`
-	Version      string `json:"version"`
-	Branch       string `json:"branch"`
-	Context      string `json:"context"`
-	AppRoot      string `json:"app_root"`
-	Profile      string `json:"profile"`
-	Project      string `json:"project"`
+	Name         string          `json:"name"`
+	PipelineName string          `json:"pipeline_name"`
+	Namespace    string          `json:"namespace"`
+	EventType    string          `json:"event_type"`
+	Version      string          `json:"version"`
+	Branch       string          `json:"branch"`
+	Context      string          `json:"context"`
+	AppRoot      string          `json:"app_root"`
+	Profile      string          `json:"profile"`
+	Project      string          `json:"project"`
+	Env          []corev1.EnvVar `json:"env"`
 }

@@ -191,6 +191,7 @@ func (p *Pipeline) InitReqParams(pipeline *v1alpha1.Pipeline, eventType string) 
 		Context:      pipeline.Spec.Context,
 		AppRoot:      pipeline.Spec.AppRoot,
 		Project:      pipeline.Spec.Project,
+		Env:          pipeline.Spec.Env,
 	}
 	return
 }

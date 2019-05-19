@@ -89,7 +89,7 @@ func (s *Start) Init(cmd *command.PipelineStart, propMap map[string]string) (err
 			SourceCode: cmd.SourceCode,
 			Branch:     cmd.Branch,
 			Project:    cmd.Project,
-			Envs:       cmd.Envs,
+			Env:       cmd.Env,
 		}
 		go func() {
 			_, err = s.pipelineConfigAggregate.StartPipelineConfig(&command)

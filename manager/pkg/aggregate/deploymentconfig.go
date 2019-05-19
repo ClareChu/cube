@@ -81,10 +81,7 @@ func (d *DeploymentConfig) Create(param *command.PipelineReqParams, buildVersion
 	}
 	deploy, err := d.deploymentConfigClient.Get(param.Name, param.Namespace)
 	if err == nil {
-		deploy.Spec = template.Spec
-		deploy.Spec.Profile = param.Profile
-		deploy.Spec.Env = append(append(deploy.Spec.Env, corev1.EnvVar{Name: constant.AppName, Value: param.Name}), corev1.EnvVar{Name: constant.AppVersion, Value: param.Version})
-		deploy.Status.LastVersion = deploy.Status.LastVersion + 1
+		d.initDeployConfig(deploy, template, param)
 		deploymentConfig, err = d.deploymentConfigClient.Update(param.Name, param.Namespace, deploy)
 		log.Infof("update deployment configs deploy :%v", deploymentConfig)
 	} else {
@@ -94,4 +91,14 @@ func (d *DeploymentConfig) Create(param *command.PipelineReqParams, buildVersion
 	}
 	d.deploymentAggregate.Create(deploymentConfig, param.PipelineName, param.Version, buildVersion)
 	return
+}
+
+func (d *DeploymentConfig) initDeployConfig(deploy *v1alpha1.DeploymentConfig, template *v1alpha1.DeploymentConfig, param *command.PipelineReqParams) {
+	deploy.Spec = template.Spec
+	deploy.Spec.Profile = param.Profile
+	for _, e := range deploy.Spec.Env {
+		deploy.Spec.Env = append(deploy.Spec.Env, e)
+	}
+	deploy.Spec.Env = append(append(deploy.Spec.Env, corev1.EnvVar{Name: constant.AppName, Value: param.Name}), corev1.EnvVar{Name: constant.AppVersion, Value: param.Version})
+	deploy.Status.LastVersion = deploy.Status.LastVersion + 1
 }

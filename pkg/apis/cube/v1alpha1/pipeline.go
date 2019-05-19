@@ -1,6 +1,7 @@
 package v1alpha1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -32,16 +33,16 @@ type Pipeline struct {
 }
 
 type PipelineSpec struct {
-	App       string            `json:"app"  protobuf:"bytes,1,opt,name=app"`
-	Profile   string            `json:"profile"  protobuf:"bytes,2,opt,name=profile"`
-	Project   string            `json:"project"  protobuf:"bytes,3,opt,name=project"`
-	Namespace string            `json:"namespace"  protobuf:"bytes,5,opt,name=namespace"`
-	Version   string            `json:"version"  protobuf:"bytes,7,opt,name=version"`
-	Branch    string            `json:"branch" protobuf:"bytes,8,opt,name=branch"`
-	Context   string            `json:"context" protobuf:"bytes,9,opt,name=context"`
-	AppRoot   string            `json:"appRoot" protobuf:"bytes,10,opt,name=appRoot"`
+	App       string          `json:"app"  protobuf:"bytes,1,opt,name=app"`
+	Profile   string          `json:"profile"  protobuf:"bytes,2,opt,name=profile"`
+	Project   string          `json:"project"  protobuf:"bytes,3,opt,name=project"`
+	Namespace string          `json:"namespace"  protobuf:"bytes,5,opt,name=namespace"`
+	Version   string          `json:"version"  protobuf:"bytes,7,opt,name=version"`
+	Branch    string          `json:"branch" protobuf:"bytes,8,opt,name=branch"`
+	Context   string          `json:"context" protobuf:"bytes,9,opt,name=context"`
+	AppRoot   string          `json:"appRoot" protobuf:"bytes,10,opt,name=appRoot"`
 	Events    []Events          `json:"events" protobuf:"bytes,11,opt,name=events"`
-	Envs      map[string]string `json:"envs" protobuf:"bytes,12,opt,name=envs"`
+	Env       []corev1.EnvVar `json:"env" protobuf:"bytes,12,opt,name=env"`
 }
 
 type Events struct {

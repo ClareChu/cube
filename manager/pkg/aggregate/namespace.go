@@ -54,7 +54,7 @@ func (n *Namespace) InitNamespace(namespace string) error {
 	return err
 }
 
-const HarborCreateNamespaceApi = "/api/projects"
+const HarborCreateNamespaceApi = "api/projects"
 
 func (n *Namespace) Create(ns string) error {
 	namespace := &v1.Namespace{
