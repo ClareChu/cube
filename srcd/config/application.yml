@@ -1,0 +1,11 @@
+# filename should be application.yml
+
+app:
+  project: hidevopsio
+  name: srcd
+  profiles:
+    include:
+    - grpc
+
+logging:
+  level: debug
