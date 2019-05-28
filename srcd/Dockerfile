@@ -5,16 +5,31 @@ ENV APP_ROOT=/opt/app-root \
     PATH=${APP_BIN}:$PATH \
     TZ='Asia/Shanghai' \
     GO111MODULE=on \
-    DOCKER_API_VERSION=1.24
+    DOCKER_API_VERSION=1.24 \
+    HOME="/root/app-root" \
+    WORKSPACE="/root/workspace"
 
-RUN  mkdir -p ${APP_BIN} ${APP_ROOT} ${HOME}\
+RUN  mkdir -p ${APP_BIN} ${APP_ROOT} ${HOME} ${WORKSPACE} \
      && apk update \
      && apk upgrade \
-     && apk add git
+     && apk add git \
+     && apk add make \
+     && apk add bash
 
-WORKDIR  ${HOME}/
+WORKDIR  ${HOME}
+
+
+RUN git clone https://github.com/src-d/enry.git
+
+WORKDIR  ${HOME}/enry
+
+RUN make build
+RUN    mv ${HOME}/enry/build/bin/enry /usr/local/bin/
+
 COPY config ${HOME}/config
 COPY srcd ${HOME}/srcd
+
+WORKDIR  ${HOME}
 
 EXPOSE 7575
 EXPOSE 8080
