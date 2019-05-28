@@ -73,7 +73,6 @@ func (b *buildConfigServiceImpl) Clone(sourceCodePullRequest *protobuf.SourceCod
 		Username: sourceCodePullRequest.Username,
 		Password: sourceCodePullRequest.Password},
 	)
-	//	tokenAuth := transport.AuthMethod(&http.TokenAuth{Token: sourceCodePullRequest.Password})
 
 	referenceName := fmt.Sprintf("refs/heads/%s", sourceCodePullRequest.Branch)
 	codePath, err := scmgit.NewRepository(cloneFunc).Clone(&git.CloneOptions{URL: sourceCodePullRequest.Url,
@@ -226,7 +225,7 @@ func (b *buildConfigServiceImpl) CreateImage(name, namespace, tag string, imageS
 	if err != nil {
 		log.Errorf("get image: %v", err)
 		_, err := b.imageStream.Create(stream)
-		log.Info("create image stream error :%v", err)
+		log.Infof("create image stream error :%v", err)
 		return err
 	}
 	delete(image.Spec.Tags, tag)

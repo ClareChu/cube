@@ -77,7 +77,7 @@ require (
 	gopkg.in/mgo.v2 v2.0.0-20180705113604-9856a29383ce // indirect
 	gopkg.in/ory-am/dockertest.v3 v3.3.4 // indirect
 	gopkg.in/src-d/go-git.v4 v4.8.1
-	gotest.tools v2.2.0+incompatible // indirect
+	gotest.tools v2.2.0+incompatible
 	hidevops.io/hiboot v1.1.0
 	hidevops.io/hiboot-data v1.0.0
 	hidevops.io/hioak v0.0.0-20190428214818-11b277aa9e0d
