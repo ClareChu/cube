@@ -24,7 +24,8 @@ RUN git clone https://github.com/src-d/enry.git
 WORKDIR  ${HOME}/enry
 
 RUN make build
-RUN    mv ${HOME}/enry/build/bin/enry /usr/local/bin/
+RUN mv ${HOME}/enry/build/bin/enry /usr/local/bin/
+RUN    rm -rf ${HOME}/enry
 
 COPY config ${HOME}/config
 COPY srcd ${HOME}/srcd
