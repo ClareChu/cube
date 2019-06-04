@@ -1,12 +1,13 @@
+GROUP := hidevops
+BINARY := agent
 
-tag := v1.0.8
-group := hidevops
-image_name := agent-java-jar
-binary := agent
+JAVA_TAG := v1.0.8
+JAVA_IMAGE_NAME := agent-java-jar
 
-dockerimage := $(group)/$(image_name):$(tag)
 
-all : build-linux docker-build docker-login docker-push clear
+JAVA_DOCKER_IMAGES := $(GROUP)/$(JAVA_IMAGE_NAME):$(JAVA_TAG)
+
+all : build-linux java_build clear
 
 build-linux :
 	@echo "build"
@@ -35,3 +36,6 @@ clear :
 
 docker-login:
 	docker login -u hidevopsio -p @d0ck12.c0m
+
+
+
