@@ -68,6 +68,9 @@ func (n *Namespace) Create(ns string) error {
 	_, err := n.namespace.Get(ns, options)
 	if err != nil {
 		_, err = n.namespace.Create(namespace)
+		if err != nil {
+			log.Info("create namespace err :%v", err)
+		}
 	}
 	return err
 }

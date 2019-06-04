@@ -32,7 +32,7 @@ spec:
     envs:
       CODE_TYPE: java
       DOCKER_API_VERSION: "1.24"
-      MAVEN_MIRROR_URL: {{ .Values.buildconfig.mavenMirrorUrl }}
+      MAVEN_NEXUS_REPO: {{ .Values.buildconfig.mavenMirrorUrl }}
     hostPathVolumes:
     - name: "docker"
       volumeSource: /var/lib/docker

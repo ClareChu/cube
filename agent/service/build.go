@@ -223,7 +223,7 @@ func (b *buildConfigServiceImpl) CreateImage(name, namespace, tag string, imageS
 	}
 	stream.Spec = spec
 	if err != nil {
-		log.Errorf("get image: %v", err)
+		log.Debugf("get image: %v", err)
 		_, err := b.imageStream.Create(stream)
 		log.Infof("create image stream error :%v", err)
 		return err

@@ -58,14 +58,14 @@ deployment:
   tz: "Asia/Shanghai"
 
 buildconfig:
-  mavenMirrorUrl: "http://nexus.cloud2go.cn/repository/maven-public/"
+  mavenMirrorUrl: "http://nexus.cloud2go.cn/repository/"
 
 
 java:
-  nodeImage: hidevops/agent-java:v1.0.1
+  nodeImage: hidevops/agent-java-jar:v1.0.7
   baseImage: hidevops/base-java:v1.0.0
 
 go:
   nodeImage: hidevops/agent:v1.0.7
-  baseImage: hidevops/base-go:v1.0.0
+  baseImage: hidevops/base-go:v1.1.1
   goProxy: http://goproxy.apps.hidevops.io
