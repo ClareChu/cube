@@ -63,7 +63,7 @@ func (s *ServiceConfig) Template(cmd *command.ServiceConfig) (serviceConfig *v1a
 }
 
 func (s *ServiceConfig) Create(params *command.PipelineReqParams) (serviceConfig *v1alpha1.ServiceConfig, err error) {
-	log.Debugf("build config create name :%s, namespace : %s , sourceType : %s", params.Name, params.Namespace, params.EventType)
+	log.Debugf("create service name :%s, namespace : %s , sourceType : %s", params.Name, params.Namespace, params.EventType)
 	phase := constant.Success
 	serviceConfig = new(v1alpha1.ServiceConfig)
 	template, err := s.serviceConfigClient.Get(params.EventType, constant.TemplateDefaultNamespace)

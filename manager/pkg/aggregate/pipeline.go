@@ -21,7 +21,7 @@ import (
 type PipelineAggregate interface {
 	Get(name, namespace string) (*v1alpha1.Pipeline, error)
 	Watch(name, namespace string) (pipeline *v1alpha1.Pipeline, err error)
-	Create(pipelineConfig *v1alpha1.PipelineConfig, sourceCode string) (*v1alpha1.Pipeline, error)
+	Create(pipelineConfig *v1alpha1.PipelineConfig, templateName string) (*v1alpha1.Pipeline, error)
 	Selector(pipeline *v1alpha1.Pipeline) (err error)
 	InitReqParams(pipeline *v1alpha1.Pipeline, eventType string) (params *command.PipelineReqParams)
 }
@@ -57,7 +57,7 @@ func (p *Pipeline) Get(name, namespace string) (*v1alpha1.Pipeline, error) {
 	return config, err
 }
 
-func (p *Pipeline) Create(pipelineConfig *v1alpha1.PipelineConfig, sourceCode string) (*v1alpha1.Pipeline, error) {
+func (p *Pipeline) Create(pipelineConfig *v1alpha1.PipelineConfig, templateName string) (*v1alpha1.Pipeline, error) {
 	log.Debugf("create pipeline :%v", pipelineConfig)
 	number := fmt.Sprintf("%d", pipelineConfig.Status.LastVersion)
 	nameVersion := pipelineConfig.Name + "-" + number
@@ -75,7 +75,7 @@ func (p *Pipeline) Create(pipelineConfig *v1alpha1.PipelineConfig, sourceCode st
 			constant.Version:            pipelineConfig.Spec.Version,
 			constant.Number:             number,
 			constant.PipelineConfigName: pipelineConfig.Name,
-			constant.CodeType:           sourceCode,
+			constant.CodeType:           templateName,
 		},
 	}
 	pipeline.Status = v1alpha1.PipelineStatus{

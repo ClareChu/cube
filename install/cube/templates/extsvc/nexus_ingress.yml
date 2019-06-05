@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nexus
+  namespace: dev
+spec:
+  rules:
+  - host: nexus.apps.cloud2go.cn
+    http:
+      paths:
+      - backend:
+          serviceName: nexus
+          servicePort: 8081
+        path: /
+status:
+  loadBalancer: {}

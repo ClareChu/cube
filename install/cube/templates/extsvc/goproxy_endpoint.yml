@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: goproxy
+  namespace: dev
+subsets:
+- addresses:
+  - ip: 13.76.153.245
+  ports:
+  - port: 3000
+    protocol: TCP

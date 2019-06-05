@@ -35,11 +35,11 @@ func (n *Notify) Create(notify *v1alpha1.Notify) (*v1alpha1.Notify, error) {
 	return n.notify.Create(notify)
 }
 
-func (n *Notify) CreateNotify(name, namespace, profile, sourceCode string) (notify *v1alpha1.Notify, err error) {
+func (n *Notify) CreateNotify(name, namespace, profile, templateName string) (notify *v1alpha1.Notify, err error) {
 	log.Info("create notify ")
 	uid, err := uuid.NewV4()
 	name = fmt.Sprintf("%s-%s", name, uid)
-	notifyTemplate, err := n.notify.Get(sourceCode, constant.TemplateDefaultNamespace)
+	notifyTemplate, err := n.notify.Get(templateName, constant.TemplateDefaultNamespace)
 	log.Infof("create templates :%v", notifyTemplate)
 	if err != nil {
 		return

@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  generation: 1
+  name: goproxy
+  namespace: dev
+spec:
+  rules:
+  - host: goproxy-hidevopsio.apps.cloud2go.cn
+    http:
+      paths:
+      - backend:
+          serviceName: goproxy
+          servicePort: 3000
+        path: /
+status:
+  loadBalancer: {}

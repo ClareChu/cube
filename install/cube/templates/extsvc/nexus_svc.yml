@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: 2019-06-04T06:35:42Z
+  name: nexus
+  namespace: dev
+  resourceVersion: "136504"
+  selfLink: /api/v1/namespaces/dev/services/nexus
+  uid: f9f91b26-8692-11e9-9884-005056ac31ae
+spec:
+  clusterIP: 10.68.40.199
+  externalTrafficPolicy: Cluster
+  ports:
+  - nodePort: 24745
+    port: 8081
+    protocol: TCP
+    targetPort: 8081
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}

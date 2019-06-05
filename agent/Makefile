@@ -1,13 +1,13 @@
-GROUP := hidevops
-BINARY := agent
 
-JAVA_TAG := v1.0.8
-JAVA_IMAGE_NAME := agent-java-jar
+tag := v1.1.4
+registries := docker.io
+group := hidevops
+image_name := agent
+binary := agent
 
+dockerimage := $(registries)/$(group)/$(image_name):$(tag)
 
-JAVA_DOCKER_IMAGES := $(GROUP)/$(JAVA_IMAGE_NAME):$(JAVA_TAG)
-
-all : build-linux java_build clear
+all : build-linux docker-build docker-push clear
 
 build-linux :
 	@echo "build"
@@ -23,8 +23,7 @@ gotest :
 	go test -v
 
 docker-build :
-	@echo "docker build -t  ."
-	# frep Dockerfile.tmpl:Dockerfile.password -e PASSWORD=P@55w0dx
+	@echo "docker build -t $(dockerimage) ."
 	docker build -t $(dockerimage) .
 
 docker-push :
@@ -33,9 +32,3 @@ docker-push :
 
 clear :
 	rm -rf $(binary)
-
-docker-login:
-	docker login -u hidevopsio -p @d0ck12.c0m
-
-
-

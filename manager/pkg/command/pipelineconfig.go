@@ -11,7 +11,7 @@ type PipelineStart struct {
 	model.RequestBody `json:"omitempty"`
 	Name              string          `json:"name"`
 	Namespace         string          `json:"namespace"`
-	SourceCode        string          `json:"sourceCode"`
+	TemplateName      string          `json:"templateName"`
 	Version           string          `json:"version"`
 	Profile           string          `json:"profile"`
 	Branch            string          `json:"branch"`

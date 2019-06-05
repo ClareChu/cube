@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: goproxy
+  namespace: dev
+spec:
+  clusterIP: 10.68.171.22
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

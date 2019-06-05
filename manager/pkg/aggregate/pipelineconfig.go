@@ -68,7 +68,7 @@ func (p *PipelineConfig) StartPipelineConfig(cmd *command.PipelineStart) (pipeli
 	log.Debugf("PipelineConfig get name: %v, namespace: %v", cmd.Name, cmd.Namespace)
 	lastVersion := 1
 	//TODO get pipeline template
-	pipelineConfigTemplate, err := p.pipelineConfigClient.Get(cmd.SourceCode, constant.TemplateDefaultNamespace)
+	pipelineConfigTemplate, err := p.pipelineConfigClient.Get(cmd.TemplateName, constant.TemplateDefaultNamespace)
 	if err != nil {
 		log.Errorf("PipelineConfig get template : %v", err)
 		return
@@ -92,7 +92,7 @@ func (p *PipelineConfig) StartPipelineConfig(cmd *command.PipelineStart) (pipeli
 	}
 	if err == nil {
 		//TODO 	创建 pipeline
-		_, err = p.pipelineAggregate.Create(pipelineConfig, cmd.SourceCode)
+		_, err = p.pipelineAggregate.Create(pipelineConfig, cmd.TemplateName)
 		return
 	}
 	return

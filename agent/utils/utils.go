@@ -24,6 +24,12 @@ type ResourceString struct {
 	ArtifactId   string   `xml:"artifactId"`
 	Version      string   `xml:"version"`
 	Packaging    string   `xml:"packaging"`
+	Build        Build    `xml:"build"`
+	ProjectName  string   `xml:"projectName"`
+}
+
+type Build struct {
+	FinalName string `xml:"finalName"`
 }
 
 func GetPomXmlInfo(pomName string) (*ResourceString, error) {
@@ -47,8 +53,13 @@ func GetPomXmlInfo(pomName string) (*ResourceString, error) {
 	if resource.Packaging == "" {
 		resource.Packaging = "jar"
 	}
+	log.Info("resource %v", resource)
+	if resource.Build.FinalName == "" {
+		resource.ProjectName = fmt.Sprintf("%s-%s.%s", resource.ArtifactId, resource.Version, resource.Packaging)
 
-	//projectName := fmt.Sprintf("%s-%s.%s",resource.ArtifactId,resource.Version,resource.Packaging)
+	} else {
+		resource.ProjectName = fmt.Sprintf("%s.%s", resource.Build.FinalName, resource.Packaging)
+	}
 	return resource, nil
 }
 

@@ -80,16 +80,16 @@ func (s *Start) Init(cmd *command.PipelineStart, propMap map[string]string) (err
 		paths := strings.Split(ct, "/")
 		name := paths[len(paths)-1]
 		command := command.PipelineStart{
-			Name:       name,
-			Namespace:  cmd.Namespace,
-			Version:    cmd.Version,
-			Profile:    cmd.Profile,
-			Path:       ct,
-			AppRoot:    cmd.Name,
-			SourceCode: cmd.SourceCode,
-			Branch:     cmd.Branch,
-			Project:    cmd.Project,
-			Env:       cmd.Env,
+			Name:         name,
+			Namespace:    cmd.Namespace,
+			Version:      cmd.Version,
+			Profile:      cmd.Profile,
+			Path:         ct,
+			AppRoot:      cmd.Name,
+			TemplateName: cmd.TemplateName,
+			Branch:       cmd.Branch,
+			Project:      cmd.Project,
+			Env:          cmd.Env,
 		}
 		go func() {
 			_, err = s.pipelineConfigAggregate.StartPipelineConfig(&command)

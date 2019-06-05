@@ -104,10 +104,9 @@ func (b *buildConfigServiceImpl) Compile(compileRequest *protobuf.CompileRequest
 		if err != nil {
 			return err
 		}
-		projectName := fmt.Sprintf("%s-%s.%s", pomXmlInfo.ArtifactId, pomXmlInfo.Version, pomXmlInfo.Packaging)
-		log.Infof("project name %v", projectName)
+		log.Info("pomXmlInfo: %v", pomXmlInfo)
 		compileRequest.CompileCmd = append(compileRequest.CompileCmd, &protobuf.BuildCommand{ExecType: string(string(cubev1alpha1.Script)),
-			Script: fmt.Sprintf("cp target/%s app.%s", projectName, pomXmlInfo.Packaging),
+			Script: fmt.Sprintf("cp target/%s app.%s", pomXmlInfo.ProjectName, pomXmlInfo.Packaging),
 		})
 	}
 	//TODO 判断是否存在子模块

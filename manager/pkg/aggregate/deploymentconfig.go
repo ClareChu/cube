@@ -17,6 +17,7 @@ import (
 type DeploymentConfigAggregate interface {
 	Template(cmd *command.DeploymentConfig) (deploymentConfig *v1alpha1.DeploymentConfig, err error)
 	Create(param *command.PipelineReqParams, buildVersion string) (deploymentConfig *v1alpha1.DeploymentConfig, err error)
+	initDeployConfig(deploy *v1alpha1.DeploymentConfig, template *v1alpha1.DeploymentConfig, param *command.PipelineReqParams)
 }
 
 type DeploymentConfig struct {
