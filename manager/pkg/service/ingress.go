@@ -36,6 +36,8 @@ func (i *Ingress) CreateIngress(gatewayConfig *v1alpha1.GatewayConfig) (err erro
 		ObjectMeta: v1.ObjectMeta{
 			Annotations: map[string]string{
 				"traefik.ingress.kubernetes.io/rewrite-target": "/",
+				"kubernetes.io/ingress.class": "traefik",
+				"traefik.frontend.rule.type":"PathPrefixStrip",
 			},
 			Name:      gatewayConfig.Name,
 			Namespace: gatewayConfig.Namespace,

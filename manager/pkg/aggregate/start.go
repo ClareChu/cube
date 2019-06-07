@@ -54,6 +54,9 @@ func (s *Start) Init(cmd *command.PipelineStart, propMap map[string]string) (err
 		}
 		langs := enry.GetLanguagesByFilename("Gemfile", []byte("<content>"), []string{})
 		log.Info(langs)*/
+	if cmd.AppRoot == "" {
+		cmd.AppRoot = cmd.Name
+	}
 	//TODO 获取Namespace的值
 	s.GetNamespace(cmd)
 	//TODO init profile   create k8s namespace  serviceAccount default create role and roleBinding
@@ -69,7 +72,6 @@ func (s *Start) Init(cmd *command.PipelineStart, propMap map[string]string) (err
 	}
 
 	if len(cmd.Context) == 0 || cmd.Context[0] == "" {
-		cmd.AppRoot = cmd.Name
 		go func() {
 			_, err = s.pipelineConfigAggregate.StartPipelineConfig(cmd)
 		}()
@@ -131,7 +133,7 @@ func (s *Start) CreateSecret(cmd *command.PipelineStart, propMap map[string]stri
 	secret := &command.Secret{
 		Username:  propMap["username"],
 		Password:  propMap["password"],
-		Name:      cmd.Name,
+		Name:      cmd.AppRoot,
 		Namespace: cmd.Namespace,
 		Token:     propMap["access_token"],
 	}
