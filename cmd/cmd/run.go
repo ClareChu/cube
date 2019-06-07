@@ -43,7 +43,7 @@ func newRunCommand() *runCommand {
 	pf.StringVarP(&c.req.Name, "app", "a", "", "--app=my-app")
 	pf.StringVarP(&c.req.Branch, "branch", "b", "", "--branch=master")
 	pf.StringSliceVarP(&c.req.Context, "context", "c", nil, "--context=sub-module")
-	pf.StringVarP(&c.req.SourceCode, "sourcecode", "s", "", "--sourcecode=java")
+	pf.StringVarP(&c.req.TemplateName, "template", "t", "", "--templateName=java")
 	pf.BoolVarP(&c.req.Verbose, "verbose", "v", false, "--verbose")
 	pf.BoolVarP(&c.req.Watch, "watch", "w", false, "--watch")
 	return c
@@ -53,7 +53,7 @@ func init() {
 	app.Register(newRunCommand)
 }
 
-//cube run --project=demo --app=hello-world --sourcecode=java --verbose=true
+//cube run --project=demo --app=hello-world --template=java --verbose=true
 func (c *runCommand) Run(args []string) error {
 	log.Debug("handle run command")
 
@@ -70,7 +70,7 @@ func (c *runCommand) Run(args []string) error {
 
 	if c.req.Watch {
 		time.Sleep(time.Second * 3)
-		var url = fmt.Sprintf("%s?namespace=%s&name=%s&sourcecode=%s&verbose=%t", api.GetBuildLogApi(user.Server), c.req.Namespace, c.req.Name, c.req.SourceCode, c.req.Verbose)
+		var url = fmt.Sprintf("%s?namespace=%s&name=%s&sourcecode=%s&verbose=%t", api.GetBuildLogApi(user.Server), c.req.Namespace, c.req.Name, c.req.TemplateName, c.req.Verbose)
 
 		if err := api.ClientLoop(url, api.BuildLogOut); err != nil {
 			log.Error(err)

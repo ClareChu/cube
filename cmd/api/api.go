@@ -118,22 +118,22 @@ func StartInit(user *User, req *PipelineRequest) (*PipelineRequest, error) {
 
 	//如果 SourceCode 为空，则从发送http请求获取 SourceCode 信息，
 	//如果SourceCode获取失败。则尝试本地推断SourceCode信息
-	if req.SourceCode == "" {
+	if req.TemplateName == "" {
 		codeType, err := GetSourceCodeType(GetSourceCodeTypeApi(user.Server, req.Name, req.Namespace), user.Token)
 		if err != nil {
 
 			//如果发送http请求获取不到代码类型，则做本地补偿检测
 			codeTypeStr, errs := sourceCodeSpot()
 			if errs != nil {
-				fmt.Println("[ERROR] source code get failed")
+				fmt.Println("[ERROR] template get failed")
 				fmt.Println("[ERROR] ", err)
 				os.Exit(0)
 			}
 			codeType = codeTypeStr
 		}
-		req.SourceCode = codeType
+		req.TemplateName = codeType
 
-		fmt.Println("source code: ", req.SourceCode)
+		fmt.Println("template: ", req.TemplateName)
 	}
 
 	return req, nil

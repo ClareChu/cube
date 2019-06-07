@@ -59,7 +59,7 @@ func (c *logsCommand) Run(args []string) error {
 		return err
 	}
 
-	pss := &api.PipelineRequest{Name: c.app, Namespace: c.project, SourceCode: "_"}
+	pss := &api.PipelineRequest{Name: c.app, Namespace: c.project, TemplateName: "_"}
 	if _, err := api.StartInit(user, pss); err != nil {
 		return err
 	}
@@ -68,7 +68,7 @@ func (c *logsCommand) Run(args []string) error {
 	if c.verbose {
 		verbose = "true"
 	}
-	var url = fmt.Sprintf("%s?namespace=%s&name=%s&sourcecode=%s&verbose=%s", api.GetBuildLogApi(user.Server), pss.Namespace, pss.Name, pss.SourceCode, verbose)
+	var url = fmt.Sprintf("%s?namespace=%s&name=%s&sourcecode=%s&verbose=%s", api.GetBuildLogApi(user.Server), pss.Namespace, pss.Name, pss.TemplateName, verbose)
 	if err := api.ClientLoop(url, api.BuildLogOut); err != nil {
 		fmt.Println("[ERROR] log acquisition failed")
 		os.Exit(0)

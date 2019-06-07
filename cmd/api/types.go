@@ -69,20 +69,20 @@ func GetCliUpdateApi(server string) string {
 var Message = make(chan string)
 
 type PipelineRequest struct {
-	Name       string	`json:"name"`
-	Project   string	`json:"project"`
-	Namespace  string	`json:"namespace"`
-	SourceCode string	`json:"sourceCode"`
-	Profile    string	`json:"profile"`
-	Branch     string	`json:"branch"`
-	Context    []string	`json:"context"`
-	Version    string	`json:"version"`
-	Verbose    bool	    `json:"verbose"`
-	Watch      bool	    `json:"watch"`
+	Name         string   `json:"name"`
+	Project      string   `json:"project"`
+	Namespace    string   `json:"namespace"`
+	TemplateName string   `json:"templateName"`
+	Profile      string   `json:"profile"`
+	Branch       string   `json:"branch"`
+	Context      []string `json:"context"`
+	Version      string   `json:"version"`
+	Verbose      bool     `json:"verbose"`
+	Watch        bool     `json:"watch"`
 }
 
 type User struct {
-	Name   string	`json:"name"`
-	Token  string	`json:"token"`
-	Server string	`json:"server"`
+	Name   string `json:"name"`
+	Token  string `json:"token"`
+	Server string `json:"server"`
 }
