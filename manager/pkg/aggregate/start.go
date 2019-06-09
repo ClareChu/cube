@@ -2,6 +2,9 @@ package aggregate
 
 import (
 	"fmt"
+	"github.com/jinzhu/copier"
+	"hidevops.io/cube/manager/pkg/service"
+
 	//"gopkg.in/src-d/enry.v1"
 	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/cube/manager/pkg/constant"
@@ -23,6 +26,7 @@ type Start struct {
 	namespaceAggregate      NamespaceAggregate
 	roleAggregate           RoleAggregate
 	roleBindingAggregate    RoleBindingAggregate
+	appService              service.AppService
 }
 
 func init() {
@@ -33,17 +37,25 @@ func NewStartService(pipelineConfigAggregate PipelineConfigAggregate,
 	secretAggregate SecretAggregate,
 	namespaceAggregate NamespaceAggregate,
 	roleAggregate RoleAggregate,
-	roleBindingAggregate RoleBindingAggregate) StartAggregate {
+	roleBindingAggregate RoleBindingAggregate,
+	appService service.AppService) StartAggregate {
 	return &Start{
 		pipelineConfigAggregate: pipelineConfigAggregate,
 		secretAggregate:         secretAggregate,
 		roleAggregate:           roleAggregate,
 		roleBindingAggregate:    roleBindingAggregate,
 		namespaceAggregate:      namespaceAggregate,
+		appService:              appService,
 	}
 }
 
 func (s *Start) Init(cmd *command.PipelineStart, propMap map[string]string) (err error) {
+	//TODO 获取cmd
+	app, err := s.appService.Get(fmt.Sprintf("%s-%s-%s", cmd.Project, cmd.Name, cmd.Version), constant.TemplateDefaultNamespace)
+	if err == nil {
+		cmd = &command.PipelineStart{}
+		copier.Copy(cmd, app.Spec)
+	}
 	//todo 通过URL部署项目
 	/*	if cmd.Url != "" {
 			if strings.Contains(cmd.Url, "https://") || strings.Contains(cmd.Url, "http://") {
