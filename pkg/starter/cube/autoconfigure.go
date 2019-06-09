@@ -174,3 +174,15 @@ func (c *configuration) ImageStream(restConfig *kube.RestConfig) *ImageStream {
 	}
 	return nil
 }
+
+func (c *configuration) App(restConfig *kube.RestConfig) *App {
+	if restConfig != nil {
+		clientSet, err := v1alpha1.NewForConfig(restConfig.Config)
+		if err != nil {
+			log.Errorf("v1alpha1.NewForConfig %v", err)
+			return nil
+		}
+		return NewApp(clientSet)
+	}
+	return nil
+}

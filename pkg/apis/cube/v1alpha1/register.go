@@ -54,6 +54,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&NotifyList{},
 		&ImageStream{},
 		&ImageStreamList{},
+		&App{},
+		&AppList{},
 	)
 
 	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)

@@ -28,6 +28,10 @@ type FakeCubeV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeCubeV1alpha1) Apps(namespace string) v1alpha1.AppInterface {
+	return &FakeApps{c, namespace}
+}
+
 func (c *FakeCubeV1alpha1) Builds(namespace string) v1alpha1.BuildInterface {
 	return &FakeBuilds{c, namespace}
 }

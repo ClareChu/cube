@@ -18,6 +18,14 @@ limitations under the License.
 
 package v1alpha1
 
+// AppListerExpansion allows custom methods to be added to
+// AppLister.
+type AppListerExpansion interface{}
+
+// AppNamespaceListerExpansion allows custom methods to be added to
+// AppNamespaceLister.
+type AppNamespaceListerExpansion interface{}
+
 // BuildListerExpansion allows custom methods to be added to
 // BuildLister.
 type BuildListerExpansion interface{}

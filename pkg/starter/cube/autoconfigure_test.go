@@ -81,4 +81,7 @@ func TestCubeConfig(t *testing.T) {
 	assert.Equal(t, (*ImageStream)(nil), imagesStream)
 
 	imagesStream = configuration.ImageStream(config)
+
+	app := configuration.App(nil)
+	assert.Equal(t, (*App)(nil), app)
 }

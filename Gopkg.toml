@@ -46,7 +46,7 @@ required = [
 
 [[constraint]]
   name = "hidevops.io/hiboot"
-  ranch = "master"
+  branch = "master"
 
 [[constraint]]
   name = "hidevops.io/hioak"

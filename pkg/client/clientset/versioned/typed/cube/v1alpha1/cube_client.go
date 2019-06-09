@@ -27,6 +27,7 @@ import (
 
 type CubeV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	AppsGetter
 	BuildsGetter
 	BuildConfigsGetter
 	DeploymentsGetter
@@ -45,6 +46,10 @@ type CubeV1alpha1Interface interface {
 // CubeV1alpha1Client is used to interact with features provided by the cube.io group.
 type CubeV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *CubeV1alpha1Client) Apps(namespace string) AppInterface {
+	return newApps(c, namespace)
 }
 
 func (c *CubeV1alpha1Client) Builds(namespace string) BuildInterface {
