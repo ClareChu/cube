@@ -40,6 +40,7 @@ func NewRootCommand(run *runCommand,
 	logs *logsCommand,
 	set *setCommand,
 	info *infoCommand,
+	app *appCommand,
 	version *versionCommand,
 ) *RootCommand {
 	c := new(RootCommand)
@@ -47,7 +48,7 @@ func NewRootCommand(run *runCommand,
 	c.Short = "cube command"
 	c.Long = "Run cube command"
 	c.ValidArgs = []string{"baz"}
-	c.Add(run, login, logs, set, info, version)
+	c.Add(run, login, logs, set, info, version, app)
 	return c
 }
 

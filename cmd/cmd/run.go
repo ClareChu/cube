@@ -42,8 +42,10 @@ func newRunCommand() *runCommand {
 	pf.StringVarP(&c.req.Namespace, "namespace", "n", "", "--namespace=project-name-dev")
 	pf.StringVarP(&c.req.Name, "app", "a", "", "--app=my-app")
 	pf.StringVarP(&c.req.Branch, "branch", "b", "", "--branch=master")
+	pf.StringVarP(&c.req.AppRoot, "appRoot", "r", "", "--appRoot=your-app-root")
 	pf.StringSliceVarP(&c.req.Context, "context", "c", nil, "--context=sub-module")
-	pf.StringVarP(&c.req.TemplateName, "template", "t", "", "--templateName=java")
+	pf.StringVarP(&c.req.TemplateName, "template", "t", "", "--template=java")
+	pf.StringSliceVarP(&c.req.EnvVar, "env", "e", nil, "--env=your-app-env")
 	pf.BoolVarP(&c.req.Verbose, "verbose", "v", false, "--verbose")
 	pf.BoolVarP(&c.req.Watch, "watch", "w", false, "--watch")
 	return c

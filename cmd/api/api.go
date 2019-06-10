@@ -11,10 +11,11 @@ import (
 	"github.com/manifoldco/promptui"
 	xwebsocket "golang.org/x/net/websocket"
 	"gopkg.in/src-d/go-git.v4"
+	"hidevops.io/cube/cmd/cmd"
 	"hidevops.io/hiboot/pkg/model"
 	hiboot_io "hidevops.io/hiboot/pkg/utils/io"
-
 	"io/ioutil"
+	corev1 "k8s.io/api/core/v1"
 	"log"
 	"net/http"
 	"net/url"
@@ -95,6 +96,15 @@ func StartInit(user *User, req *PipelineRequest) (*PipelineRequest, error) {
 	if user.Token == "" {
 		err := fmt.Errorf("please login first")
 		return nil, err
+	}
+	if len(req.EnvVar) != 0 {
+		for _, ev := range req.EnvVar {
+			e := corev1.EnvVar{
+				Name: strings.Split(ev, "=")[0],
+				Value:strings.Split(ev, "=")[1],
+			}
+			req.Env = append(req.Env, e)
+		}
 	}
 
 	name, project, err := GetProjectInfoByCurrPath()
@@ -225,6 +235,54 @@ func Login(url, username, password string) (token string, err error) {
 		return token, err
 	}
 	return token, nil
+}
+
+
+func App(app *cmd.AppRequest, url, token string) (err error) {
+
+	jsonByte, err := json.Marshal(app)
+	if err != nil {
+		fmt.Println("Login Failed ", err)
+		return err
+	}
+	if len(app.EnvVar) != 0 {
+		for _, ev := range app.EnvVar {
+			e := corev1.EnvVar{
+				Name: strings.Split(ev, "=")[0],
+				Value:strings.Split(ev, "=")[1],
+			}
+			app.Env = append(app.Env, e)
+		}
+	}
+	myToken := model.BaseResponse{}
+	client := &http.Client{Timeout: time.Second * 5}
+	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(jsonByte))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
+	resp, err := client.Do(req)
+	resData := model.BaseResponse{}
+	if err == nil {
+		defer resp.Body.Close()
+		byteResp, _ := ioutil.ReadAll(resp.Body)
+		err = json.Unmarshal(byteResp, &myToken)
+		if err := json.Unmarshal(byteResp, &resData); err != nil {
+			return err
+		}
+
+		if resData.Code != 200 {
+			fmt.Println("resp", string(byteResp))
+			return errors.New("create app filed")
+		}
+	} else {
+		//隐藏登陆完整URL信息
+		errs := strings.Split(err.Error(), ":")
+		err = errors.New(errs[len(errs)-1])
+		fmt.Println("ERROR ", err)
+		fmt.Println("Startup failed,Please check if the server is correct")
+		os.Exit(0)
+		//return "",errors.New("login request failed,please check if the server is correct")
+	}
+	return nil
 }
 
 //获取用户HOME目录

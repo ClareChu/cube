@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	corev1 "k8s.io/api/core/v1"
 	"runtime"
 	"strings"
 )
@@ -23,6 +24,13 @@ func GetPipelineStartApi(server string) string {
 		server = DEFAULT_SERVER
 	}
 	return fmt.Sprintf("%s/pipelineConfig", server)
+}
+
+func GetCreateAppApi(server string) string {
+	if server == "" {
+		server = DEFAULT_SERVER
+	}
+	return fmt.Sprintf("%s/app", server)
 }
 
 func GetLoginApi(server string) string {
@@ -69,16 +77,19 @@ func GetCliUpdateApi(server string) string {
 var Message = make(chan string)
 
 type PipelineRequest struct {
-	Name         string   `json:"name"`
-	Project      string   `json:"project"`
-	Namespace    string   `json:"namespace"`
-	TemplateName string   `json:"templateName"`
-	Profile      string   `json:"profile"`
-	Branch       string   `json:"branch"`
-	Context      []string `json:"context"`
-	Version      string   `json:"version"`
-	Verbose      bool     `json:"verbose"`
-	Watch        bool     `json:"watch"`
+	Name         string          `json:"name"`
+	Project      string          `json:"project"`
+	Namespace    string          `json:"namespace"`
+	TemplateName string          `json:"templateName"`
+	Profile      string          `json:"profile"`
+	Branch       string          `json:"branch"`
+	AppRoot      string          `json:"appRoot"`
+	Context      []string        `json:"context"`
+	Version      string          `json:"version"`
+	Verbose      bool            `json:"verbose"`
+	Watch        bool            `json:"watch"`
+	Env          []corev1.EnvVar `json:"env"`
+	EnvVar       []string        `json:"envVar"`
 }
 
 type User struct {

@@ -43,14 +43,3 @@ func (c *PipelineConfigController) Post(cmd *command.PipelineStart, properties *
 	}
 	return
 }
-
-
-func (c *PipelineConfigController) PostRun(cmd *command.PipelineStart, properties *jwt.TokenProperties) (response model.Response, err error) {
-	log.Debugf("starter pipeline : %v", cmd)
-	response = new(model.BaseResponse)
-	jwtProps, ok := properties.Items()
-	if ok {
-		err = c.startAggregate.Init(cmd, jwtProps)
-	}
-	return
-}

@@ -1,6 +1,7 @@
 package v1alpha1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -24,18 +25,18 @@ type App struct {
 }
 
 type AppSpec struct {
-	Name         string              `json:"name, omitempty" protobuf:"bytes,1,opt,name=name"`
-	Namespace    string              `json:"namespace, omitempty" protobuf:"bytes,2,opt,name=namespace"`
-	TemplateName string              `json:"templateName, omitempty" protobuf:"bytes,3,opt,name=templateName"`
-	Version      string              `json:"version, omitempty" protobuf:"bytes,4,opt,name=version"`
-	Profile      string              `json:"profile, omitempty" protobuf:"bytes,5,opt,name=profile"`
-	Branch       string              `json:"branch, omitempty" protobuf:"bytes,6,opt,name=branch"`
-	Context      []string            `json:"context, omitempty" protobuf:"bytes,7,opt,name=context"`
-	AppRoot      string              `json:"appRoot, omitempty" protobuf:"bytes,8,opt,name=appRoot"`
-	Path         string              `json:"path, omitempty" protobuf:"bytes,9,opt,name=path"`
-	Project      string              `json:"project, omitempty" protobuf:"bytes,10,opt,name=project"`
-	Url          string              `json:"url, omitempty" protobuf:"bytes,11,opt,name=url"`
-	Env          []map[string]string `json:"env, omitempty" protobuf:"bytes,12,opt,name=env"`
+	Name         string          `json:"name, omitempty" protobuf:"bytes,1,opt,name=name"`
+	Namespace    string          `json:"namespace, omitempty" protobuf:"bytes,2,opt,name=namespace"`
+	TemplateName string          `json:"templateName, omitempty" protobuf:"bytes,3,opt,name=templateName"`
+	Version      string          `json:"version, omitempty" protobuf:"bytes,4,opt,name=version"`
+	Profile      string          `json:"profile, omitempty" protobuf:"bytes,5,opt,name=profile"`
+	Branch       string          `json:"branch, omitempty" protobuf:"bytes,6,opt,name=branch"`
+	Context      []string        `json:"context, omitempty" protobuf:"bytes,7,opt,name=context"`
+	AppRoot      string          `json:"appRoot, omitempty" protobuf:"bytes,8,opt,name=appRoot"`
+	Path         string          `json:"path, omitempty" protobuf:"bytes,9,opt,name=path"`
+	Project      string          `json:"project, omitempty" protobuf:"bytes,10,opt,name=project"`
+	Url          string          `json:"url, omitempty" protobuf:"bytes,11,opt,name=url"`
+	Env          []corev1.EnvVar `json:"env, omitempty" protobuf:"bytes,12,opt,name=env"`
 }
 
 type AppStatus struct {
