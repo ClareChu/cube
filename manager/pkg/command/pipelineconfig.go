@@ -9,16 +9,16 @@ import (
 
 type PipelineStart struct {
 	model.RequestBody `json:"omitempty"`
-	Name              string          `json:"name,omitempty"`
+	Name              string          `json:"name" validate:"required"`
 	Namespace         string          `json:"namespace"`
 	TemplateName      string          `json:"templateName"`
-	Version           string          `json:"version,omitempty"`
+	Version           string          `json:"version" default:"v1"`
 	Profile           string          `json:"profile"`
 	Branch            string          `json:"branch"`
 	Context           []string        `json:"context"`
 	AppRoot           string          `json:"appRoot"`
 	Path              string          `json:"path"`
-	Project           string          `json:"project,omitempty"`
+	Project           string          `json:"project" validate:"required"`
 	Url               string          `json:"url"`
 	Env               []corev1.EnvVar `json:"env"`
 }
