@@ -19,3 +19,4 @@ certs/
 agent/agent
 manager/manager
 srcd/srcd
+cmd/cube
