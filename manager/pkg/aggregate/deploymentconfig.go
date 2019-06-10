@@ -97,7 +97,9 @@ func (d *DeploymentConfig) Create(param *command.PipelineReqParams, buildVersion
 func (d *DeploymentConfig) initDeployConfig(deploy *v1alpha1.DeploymentConfig, template *v1alpha1.DeploymentConfig, param *command.PipelineReqParams) {
 	deploy.Spec = template.Spec
 	deploy.Spec.Profile = param.Profile
-	for _, e := range deploy.Spec.Env {
+	log.Info("---------env---------")
+	log.Infof("env:%v", param.Env)
+	for _, e := range param.Env {
 		deploy.Spec.Env = append(deploy.Spec.Env, e)
 	}
 	deploy.Spec.Env = append(append(deploy.Spec.Env, corev1.EnvVar{Name: constant.AppName, Value: param.Name}), corev1.EnvVar{Name: constant.AppVersion, Value: param.Version})
