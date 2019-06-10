@@ -11,7 +11,6 @@ import (
 	"github.com/manifoldco/promptui"
 	xwebsocket "golang.org/x/net/websocket"
 	"gopkg.in/src-d/go-git.v4"
-	"hidevops.io/cube/cmd/cmd"
 	"hidevops.io/hiboot/pkg/model"
 	hiboot_io "hidevops.io/hiboot/pkg/utils/io"
 	"io/ioutil"
@@ -238,13 +237,7 @@ func Login(url, username, password string) (token string, err error) {
 }
 
 
-func App(app *cmd.AppRequest, url, token string) (err error) {
-
-	jsonByte, err := json.Marshal(app)
-	if err != nil {
-		fmt.Println("Login Failed ", err)
-		return err
-	}
+func App(app *AppRequest, server, token string) (err error) {
 	if len(app.EnvVar) != 0 {
 		for _, ev := range app.EnvVar {
 			e := corev1.EnvVar{
@@ -256,9 +249,14 @@ func App(app *cmd.AppRequest, url, token string) (err error) {
 	}
 	myToken := model.BaseResponse{}
 	client := &http.Client{Timeout: time.Second * 5}
-	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(jsonByte))
+	jsonByte, err := json.Marshal(app)
+	if err != nil {
+		return err
+	}
+	req, _ := http.NewRequest("POST", GetCreateAppApi(server), bytes.NewBuffer(jsonByte))
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
+
 	resp, err := client.Do(req)
 	resData := model.BaseResponse{}
 	if err == nil {
@@ -268,11 +266,8 @@ func App(app *cmd.AppRequest, url, token string) (err error) {
 		if err := json.Unmarshal(byteResp, &resData); err != nil {
 			return err
 		}
-
-		if resData.Code != 200 {
-			fmt.Println("resp", string(byteResp))
-			return errors.New("create app filed")
-		}
+		fmt.Println("CREATE APP SUCCESS !!!")
+		fmt.Println("resp", string(byteResp))
 	} else {
 		//隐藏登陆完整URL信息
 		errs := strings.Split(err.Error(), ":")

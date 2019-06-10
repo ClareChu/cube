@@ -5,29 +5,14 @@ import (
 	"hidevops.io/cube/cmd/api"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/app/cli"
-	corev1 "k8s.io/api/core/v1"
 )
 
-type AppRequest struct {
-	Name         string          `json:"name"`
-	Namespace    string          `json:"namespace"`
-	TemplateName string          `json:"templateName"`
-	Version      string          `json:"version"`
-	Profile      string          `json:"profile"`
-	Branch       string          `json:"branch"`
-	Context      []string        `json:"context"`
-	AppRoot      string          `json:"appRoot"`
-	Path         string          `json:"path"`
-	Project      string          `json:"project"`
-	Url          string          `json:"url"`
-	Env          []corev1.EnvVar `json:"env"`
-	EnvVar       []string        `json:"envVar"`
-}
+
 
 type appCommand struct {
 	cli.SubCommand
 
-	Req AppRequest
+	Req api.AppRequest
 }
 
 func newAppCommand() *appCommand {
@@ -54,11 +39,11 @@ func init() {
 }
 
 func (c *appCommand) Run(args []string) (err error) {
-	log.Infof("create app :%v", c)
+	log.Infof("start create app")
 	user, _, err := api.ReadConfig()
 	if err != nil {
 		return err
 	}
-	err = api.App(&c.Req, api.GetCreateAppApi(user.Server), user.Token)
+	err = api.App(&c.Req, user.Server, user.Token)
 	return
 }

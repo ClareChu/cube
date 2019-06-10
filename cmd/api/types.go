@@ -97,3 +97,20 @@ type User struct {
 	Token  string `json:"token"`
 	Server string `json:"server"`
 }
+
+
+type AppRequest struct {
+	Name         string          `json:"name"`
+	Namespace    string          `json:"namespace"`
+	TemplateName string          `json:"templateName"`
+	Version      string          `json:"version"`
+	Profile      string          `json:"profile"`
+	Branch       string          `json:"branch"`
+	Context      []string        `json:"context"`
+	AppRoot      string          `json:"appRoot"`
+	Path         string          `json:"path"`
+	Project      string          `json:"project"`
+	Url          string          `json:"url"`
+	Env          []corev1.EnvVar `json:"env"`
+	EnvVar       []string        `json:"envVar"`
+}
