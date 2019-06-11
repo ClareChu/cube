@@ -56,6 +56,7 @@ func (s *Start) Init(cmd *command.PipelineStart, propMap map[string]string) (err
 		cmd = &command.PipelineStart{}
 		copier.Copy(cmd, app.Spec)
 	}
+	log.Infof("get app : %s", err)
 	//todo 通过URL部署项目
 	/*	if cmd.Url != "" {
 			if strings.Contains(cmd.Url, "https://") || strings.Contains(cmd.Url, "http://") {

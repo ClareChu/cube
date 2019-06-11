@@ -37,7 +37,7 @@ func newRunCommand() *runCommand {
 
 	pf := c.PersistentFlags()
 	pf.StringVarP(&c.req.Profile, "profile", "P", "", "--profile=dev")
-	pf.StringVarP(&c.req.Version, "version", "V", "", "--version=v1")
+	pf.StringVarP(&c.req.Version, "version", "V", "v1", "--version=v1")
 	pf.StringVarP(&c.req.Project, "project", "p", "", "--project=project-name")
 	pf.StringVarP(&c.req.Namespace, "namespace", "n", "", "--namespace=project-name-dev")
 	pf.StringVarP(&c.req.Name, "app", "a", "", "--app=my-app")
@@ -58,7 +58,7 @@ func init() {
 //cube run --project=demo --app=hello-world --template=java --verbose=true
 func (c *runCommand) Run(args []string) error {
 	log.Debug("handle run command")
-
+	watch := c.req.Watch
 	user, _, err := api.ReadConfig()
 	if err != nil {
 		return err
@@ -69,11 +69,15 @@ func (c *runCommand) Run(args []string) error {
 		return err
 	}
 	fmt.Println("Pipeline is started ...")
-
-	if c.req.Watch {
+	if err := api.GetApp(user, &c.req); err != nil {
+		log.Error(err)
+		return err
+	}
+	fmt.Println("get app ...", c.req)
+	if watch {
 		time.Sleep(time.Second * 3)
 		var url = fmt.Sprintf("%s?namespace=%s&name=%s&sourcecode=%s&verbose=%t", api.GetBuildLogApi(user.Server), c.req.Namespace, c.req.Name, c.req.TemplateName, c.req.Verbose)
-
+		fmt.Println("url :", url)
 		if err := api.ClientLoop(url, api.BuildLogOut); err != nil {
 			log.Error(err)
 			return err

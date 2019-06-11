@@ -56,6 +56,13 @@ func GetAppLogApi(server string) string {
 	return url
 }
 
+func GetAppApi(server, name string) string {
+	if server == "" {
+		server = DEFAULT_SERVER
+	}
+	return  fmt.Sprintf("%s/app/name/%s", server, name)
+}
+
 func GetSourceCodeTypeApi(server, name, namespace string) string {
 	if server == "" {
 		server = DEFAULT_SERVER

@@ -24,7 +24,7 @@ func newAppCommand() *appCommand {
 	pf.StringVarP(&c.Req.Name, "name", "n", "", "--name=your-name")
 	pf.StringVarP(&c.Req.Namespace, "namespace", "s", "", "--namespace=your-k8s-namespace")
 	pf.StringVarP(&c.Req.TemplateName, "template", "t", "", "--template=your-template-name")
-	pf.StringVarP(&c.Req.Version, "version", "v", "", "--version=your-app-version")
+	pf.StringVarP(&c.Req.Version, "version", "v", "v1", "--version=your-app-version")
 	pf.StringVarP(&c.Req.Profile, "profile", "P", "", "--profile=your-app-profile")
 	pf.StringVarP(&c.Req.Branch, "branch", "b", "", "--branch=your-app-branch")
 	pf.StringVarP(&c.Req.Project, "project", "p", "", "--project=your-gitlab-app-name")

@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/gorilla/websocket"
 	"github.com/inconshreveable/go-update"
+	"github.com/jinzhu/copier"
 	"github.com/manifoldco/promptui"
 	xwebsocket "golang.org/x/net/websocket"
 	"gopkg.in/src-d/go-git.v4"
@@ -76,6 +77,12 @@ type BaseResponse struct {
 	Data    map[string]interface{} `json:"data"`
 }
 
+type BaResponse struct {
+	Code    int             `json:"code"`
+	Message string          `json:"message"`
+	Data    PipelineRequest `json:"data"`
+}
+
 //启动PipelineStart
 func PipelineStart(user *User, start *PipelineRequest) error {
 
@@ -85,6 +92,40 @@ func PipelineStart(user *User, start *PipelineRequest) error {
 
 	if err := Start(*start, GetPipelineStartApi(user.Server), user.Token); err != nil {
 		return err
+	}
+	return nil
+}
+
+//GetApp 获取app的资源
+func GetApp(user *User, start *PipelineRequest) error {
+	url := GetAppApi(user.Server, fmt.Sprintf("%s-%s-%s", start.Project, start.Name, start.Version))
+	client := &http.Client{Timeout: time.Second * 5}
+	req, _ := http.NewRequest("GET", url, nil)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", user.Token))
+	resp, err := client.Do(req)
+	if err != nil {
+		//隐藏登陆完整URL信息
+		errs := strings.Split(err.Error(), ":")
+		err = errors.New(errs[len(errs)-1])
+		fmt.Println("[ERROR] ", err)
+		os.Exit(0)
+		//return errors.New("Startup failed,Please check if the server is correct")
+	}
+	defer resp.Body.Close()
+	byteResp, _ := ioutil.ReadAll(resp.Body)
+	resData := BaResponse{}
+
+	if err := json.Unmarshal(byteResp, &resData); err != nil {
+		return err
+	}
+	copier.Copy(start, resData.Data)
+	if start.Namespace == "" {
+		if start.Profile != "" {
+			start.Namespace = fmt.Sprintf("%s-%s", start.Project, start.Profile)
+		} else {
+			start.Namespace = start.Project
+		}
 	}
 	return nil
 }
@@ -99,8 +140,8 @@ func StartInit(user *User, req *PipelineRequest) (*PipelineRequest, error) {
 	if len(req.EnvVar) != 0 {
 		for _, ev := range req.EnvVar {
 			e := corev1.EnvVar{
-				Name: strings.Split(ev, "=")[0],
-				Value:strings.Split(ev, "=")[1],
+				Name:  strings.Split(ev, "=")[0],
+				Value: strings.Split(ev, "=")[1],
 			}
 			req.Env = append(req.Env, e)
 		}
@@ -123,26 +164,6 @@ func StartInit(user *User, req *PipelineRequest) (*PipelineRequest, error) {
 	fmt.Println("namespace: ", req.Namespace)
 	for _, ctx := range req.Context {
 		fmt.Println("context: ", ctx)
-	}
-
-	//如果 SourceCode 为空，则从发送http请求获取 SourceCode 信息，
-	//如果SourceCode获取失败。则尝试本地推断SourceCode信息
-	if req.TemplateName == "" {
-		codeType, err := GetSourceCodeType(GetSourceCodeTypeApi(user.Server, req.Name, req.Namespace), user.Token)
-		if err != nil {
-
-			//如果发送http请求获取不到代码类型，则做本地补偿检测
-			codeTypeStr, errs := sourceCodeSpot()
-			if errs != nil {
-				fmt.Println("[ERROR] template get failed")
-				fmt.Println("[ERROR] ", err)
-				os.Exit(0)
-			}
-			codeType = codeTypeStr
-		}
-		req.TemplateName = codeType
-
-		fmt.Println("template: ", req.TemplateName)
 	}
 
 	return req, nil
@@ -236,13 +257,12 @@ func Login(url, username, password string) (token string, err error) {
 	return token, nil
 }
 
-
 func App(app *AppRequest, server, token string) (err error) {
 	if len(app.EnvVar) != 0 {
 		for _, ev := range app.EnvVar {
 			e := corev1.EnvVar{
-				Name: strings.Split(ev, "=")[0],
-				Value:strings.Split(ev, "=")[1],
+				Name:  strings.Split(ev, "=")[0],
+				Value: strings.Split(ev, "=")[1],
 			}
 			app.Env = append(app.Env, e)
 		}
@@ -253,6 +273,7 @@ func App(app *AppRequest, server, token string) (err error) {
 	if err != nil {
 		return err
 	}
+	fmt.Println("get json :", app)
 	req, _ := http.NewRequest("POST", GetCreateAppApi(server), bytes.NewBuffer(jsonByte))
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
