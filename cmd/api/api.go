@@ -161,7 +161,6 @@ func StartInit(user *User, req *PipelineRequest) (*PipelineRequest, error) {
 
 	fmt.Println("app: ", req.Name)
 	fmt.Println("project: ", req.Project)
-	fmt.Println("namespace: ", req.Namespace)
 	for _, ctx := range req.Context {
 		fmt.Println("context: ", ctx)
 	}

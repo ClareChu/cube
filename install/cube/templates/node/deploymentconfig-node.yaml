@@ -1,0 +1,28 @@
+apiVersion: cube.io/v1alpha1
+kind: DeploymentConfig
+metadata:
+  annotations:
+  name: go
+  namespace: {{ .Values.namespace }}
+spec:
+  dockerRegistry: {{ .Values.buildconfig.dockerRegistry }}
+  env:
+  - name: TZ
+    value: Asia/Shanghai
+  - name: APP_PROFILES_ACTIVE
+    value: dev
+  envType:
+  - remoteDeploy
+  - deploy
+  fromRegistry: {{ .Values.buildconfig.fromRegistry }}
+  port:
+  - containerPort: 8080
+    name: http-8080
+    protocol: TCP
+  - containerPort: 7575
+    name: grpc-7575
+    protocol: TCP
+  profile: dev
+status:
+  lastVersion: 1
+

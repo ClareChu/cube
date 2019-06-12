@@ -21,8 +21,8 @@ func newAppCommand() *appCommand {
 	c.Short = "create app"
 	c.Long = "create app command"
 	pf := c.PersistentFlags()
-	pf.StringVarP(&c.Req.Name, "name", "n", "", "--name=your-name")
-	pf.StringVarP(&c.Req.Namespace, "namespace", "s", "", "--namespace=your-k8s-namespace")
+	pf.StringVarP(&c.Req.Name, "app", "a", "", "--name=your-app-name")
+	pf.StringVarP(&c.Req.Namespace, "namespace", "n", "", "--namespace=your-k8s-namespace")
 	pf.StringVarP(&c.Req.TemplateName, "template", "t", "", "--template=your-template-name")
 	pf.StringVarP(&c.Req.Version, "version", "v", "v1", "--version=your-app-version")
 	pf.StringVarP(&c.Req.Profile, "profile", "P", "", "--profile=your-app-profile")
