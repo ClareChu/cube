@@ -51,7 +51,7 @@ func NewStartService(pipelineConfigAggregate PipelineConfigAggregate,
 
 func (s *Start) Init(cmd *command.PipelineStart, propMap map[string]string) (err error) {
 	//TODO 获取cmd
-	app, err := s.appService.Get(fmt.Sprintf("%s-%s-%s", cmd.Project, cmd.Name, cmd.Version), constant.TemplateDefaultNamespace)
+	app, err := s.appService.Get(fmt.Sprintf("%s-%s-%s", cmd.Project, cmd.AppRoot, cmd.Version), constant.TemplateDefaultNamespace)
 	if err == nil {
 		cmd = &command.PipelineStart{}
 		copier.Copy(cmd, app.Spec)

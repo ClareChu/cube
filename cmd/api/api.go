@@ -98,7 +98,7 @@ func PipelineStart(user *User, start *PipelineRequest) error {
 
 //GetApp 获取app的资源
 func GetApp(user *User, start *PipelineRequest) error {
-	url := GetAppApi(user.Server, fmt.Sprintf("%s-%s-%s", start.Project, start.Name, start.Version))
+	url := GetAppApi(user.Server, fmt.Sprintf("%s-%s-%s", start.Project, start.AppRoot, start.Version))
 	client := &http.Client{Timeout: time.Second * 5}
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Set("Content-Type", "application/json")
@@ -131,10 +131,10 @@ func GetApp(user *User, start *PipelineRequest) error {
 }
 
 //初始化Start数据信息
-func StartInit(user *User, req *PipelineRequest) (*PipelineRequest, error) {
+func StartInit(user *User, req *PipelineRequest) (pr *PipelineRequest, err error) {
 
 	if user.Token == "" {
-		err := fmt.Errorf("please login first")
+		err = fmt.Errorf("please login first")
 		return nil, err
 	}
 	if len(req.EnvVar) != 0 {
@@ -147,19 +147,19 @@ func StartInit(user *User, req *PipelineRequest) (*PipelineRequest, error) {
 		}
 	}
 
-	name, project, err := GetProjectInfoByCurrPath()
-	if err != nil {
-		return nil, err
+	if req.AppRoot == "" || req.Project == "" {
+		req.AppRoot, req.Project, err = GetProjectInfoByCurrPath()
+		if err != nil {
+			return nil, err
+		}
 	}
-
 	if req.Name == "" {
-		req.Name = name
+		req.Name = req.AppRoot
 	}
-	if req.Project == "" {
-		req.Project = project
+	if req.Namespace == "" {
+		req.Namespace = req.Project
 	}
-
-	fmt.Println("app: ", req.Name)
+	fmt.Println("app: ", req.AppRoot)
 	fmt.Println("project: ", req.Project)
 	for _, ctx := range req.Context {
 		fmt.Println("context: ", ctx)
@@ -257,6 +257,19 @@ func Login(url, username, password string) (token string, err error) {
 }
 
 func App(app *AppRequest, server, token string) (err error) {
+	if app.AppRoot == "" || app.Project == "" {
+		app.AppRoot, app.Project, err = GetProjectInfoByCurrPath()
+		if err != nil {
+			return
+		}
+	}
+	if app.Name == "" {
+		app.Name = app.AppRoot
+	}
+	if app.Namespace == "" {
+		app.Namespace = app.Project
+	}
+
 	if len(app.EnvVar) != 0 {
 		for _, ev := range app.EnvVar {
 			e := corev1.EnvVar{
@@ -286,8 +299,16 @@ func App(app *AppRequest, server, token string) (err error) {
 		if err := json.Unmarshal(byteResp, &resData); err != nil {
 			return err
 		}
-		fmt.Println("CREATE APP SUCCESS !!!")
 		fmt.Println("resp", string(byteResp))
+		fmt.Println("-----------------------")
+		if resData.Code == 200 {
+			fmt.Println("CREATE APP SUCCESS !!!")
+
+		} else {
+			fmt.Println("CREATE APP Error !!!")
+		}
+		fmt.Println("-----------------------")
+
 	} else {
 		//隐藏登陆完整URL信息
 		errs := strings.Split(err.Error(), ":")

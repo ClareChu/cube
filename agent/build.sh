@@ -45,3 +45,17 @@ docker push hidevops/agent-go:v1.1.1
 
 
 rm -rf agent
+
+
+## docker build node
+
+cp docker/node/Dockerfile  Dockerfile
+
+docker build -t hidevops/agent-node:v1.1.1 .
+
+rm -rf Dockerfile
+
+docker push hidevops/agent-node:v1.1.1
+
+
+rm -rf agent

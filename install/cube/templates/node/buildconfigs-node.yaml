@@ -1,7 +1,7 @@
 apiVersion: cube.io/v1alpha1
 kind: BuildConfig
 metadata:
-  name: go
+  name: node
   namespace: {{ .Values.namespace }}
 spec:
   app: ""
@@ -13,7 +13,7 @@ spec:
     url: ""
     username: ""
   cloneType: ""
-  codeType: go
+  codeType: node
   compileCmd:
   - commandName: pwd
   - Script: GOOS=linux go build -o app
@@ -23,9 +23,8 @@ spec:
     execType: script
   deployData:
     envs:
-      CODE_TYPE: go
+      CODE_TYPE: node
       DOCKER_API_VERSION: "1.24"
-      GOPROXY: {{ .Values.go.goProxy }}
     hostPathVolumes:
     - name: "docker"
       volumeSource: /var/lib/docker
@@ -46,10 +45,9 @@ spec:
     username: {{ .Values.docker.username }}
   dockerFile:
   - FROM clarechu/base-go:v1.0.0
-  - ENV  TZ="Asia/Shanghai"
-  - COPY ./app ${APP_BIN}
-  - COPY ./config ${APP_ROOT}/config
-  - CMD ["app"]
+  - COPY .  /root/
+  - WORKDIR /root/svr
+  - ENTRYPOINT ["npm", "start"]
   dockerRegistry: {{ .Values.docker.registy }}
   nodeService: ""
   tasks:

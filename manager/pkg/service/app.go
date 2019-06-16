@@ -34,7 +34,7 @@ func newAppCommand(appClient *cube.App) AppService {
 }
 
 func (a *AppServiceImpl) Create(cmd *command.PipelineStart) (app *v1alpha1.App, err error) {
-	name := fmt.Sprintf("%s-%s-%s", cmd.Project, cmd.Name, cmd.Version)
+	name := fmt.Sprintf("%s-%s-%s", cmd.Project, cmd.AppRoot, cmd.Version)
 	namespace := constant.TemplateDefaultNamespace
 	app1, err := a.Get(name, namespace)
 	app = &v1alpha1.App{}

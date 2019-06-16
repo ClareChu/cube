@@ -15,7 +15,9 @@
 package cmd
 
 import (
+	"github.com/prometheus/common/log"
 	"github.com/stretchr/testify/assert"
+	"hidevops.io/cube/cmd/api"
 	"hidevops.io/hiboot/pkg/app/cli"
 	"testing"
 )
@@ -35,6 +37,9 @@ func TestRunCommands(t *testing.T) {
 
 }
 
-func Test111(t *testing.T) {
-
+func TestGetProject(t *testing.T) {
+	a, b, err := api.GetProjectInfoByCurrPath()
+	assert.Equal(t, nil, err)
+	log.Infof("a : %v", a)
+	log.Infof("b : %v", b)
 }

@@ -1,20 +1,20 @@
 apiVersion: cube.io/v1alpha1
 kind: PipelineConfig
 metadata:
-  name: go
+  name: node
   namespace: {{ .Values.namespace }}
 spec:
   app: ""
   dockerRegistry: ""
   events:
   - eventTypes: build
-    name: go
+    name: node
   - eventTypes: deploy
-    name: go
+    name: node
   - eventTypes: service
-    name: go
+    name: node
   - eventTypes: gateway
-    name: go
+    name: node
   profile: dev
   version: v1
   branch: "master"

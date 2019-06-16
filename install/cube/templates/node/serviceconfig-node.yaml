@@ -3,7 +3,7 @@ kind: ServiceConfig
 metadata:
   labels:
     profile: dev
-  name: go
+  name: node
   namespace: {{ .Values.namespace }}
 spec:
   ports:
@@ -11,9 +11,9 @@ spec:
     port: 8080
     protocol: TCP
     targetPort: 8080
-  - name: grpc-7575
-    port: 7575
+  - name: http-8085
+    port: 8085
     protocol: TCP
-    targetPort: 7575
+    targetPort: 8085
 status:
   metadata: {}
