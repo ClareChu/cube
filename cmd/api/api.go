@@ -110,12 +110,10 @@ func GetApp(user *User, start *PipelineRequest) error {
 		err = errors.New(errs[len(errs)-1])
 		fmt.Println("[ERROR] ", err)
 		os.Exit(0)
-		//return errors.New("Startup failed,Please check if the server is correct")
 	}
 	defer resp.Body.Close()
 	byteResp, _ := ioutil.ReadAll(resp.Body)
 	resData := BaResponse{}
-
 	if err := json.Unmarshal(byteResp, &resData); err != nil {
 		return err
 	}

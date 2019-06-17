@@ -29,6 +29,8 @@ type logsCommand struct {
 	profile string
 	project string
 	app     string
+	version string
+
 	verbose bool
 }
 
@@ -42,7 +44,8 @@ func newLogsCommand() *logsCommand {
 	pf.StringVarP(&c.profile, "profile", "P", "dev", "--profile=test")
 	pf.StringVarP(&c.project, "project", "p", "", "--project=project-name")
 	pf.StringVarP(&c.app, "app", "a", "", "--app=my-app")
-	pf.BoolVarP(&c.verbose, "verbose", "v", false, "--verbose")
+	//pf.StringVarP(&c.Version, "version", "V", "v1", "--version=my-app-version")
+	//pf.BoolVarP(&c.verbose, "verbose", "v", false, "--verbose")
 	return c
 }
 
@@ -59,19 +62,25 @@ func (c *logsCommand) Run(args []string) error {
 		return err
 	}
 
-	pss := &api.PipelineRequest{Name: c.app, Namespace: c.project, TemplateName: "_"}
-	if _, err := api.StartInit(user, pss); err != nil {
+	pss := &api.PipelineRequest{AppRoot: c.app, Project: c.project, Version: "v1"}
+	if _, err = api.StartInit(user, pss); err != nil {
 		return err
 	}
-
-	verbose := "false"
-	if c.verbose {
-		verbose = "true"
+	err = api.GetApp(user, pss)
+	if err != nil {
+		log.Error(err)
+		return err
 	}
-	var url = fmt.Sprintf("%s?namespace=%s&name=%s&sourcecode=%s&verbose=%s", api.GetBuildLogApi(user.Server), pss.Namespace, pss.Name, pss.TemplateName, verbose)
-	if err := api.ClientLoop(url, api.BuildLogOut); err != nil {
+	appUrl := fmt.Sprintf("%s?namespace=%s&name=%s&new=true&profile=%s&version=%s", api.GetAppLogApi(user.Server), pss.Namespace, pss.Name, pss.Profile, pss.Version)
+	fmt.Println("url: ", appUrl)
+	if err := api.ClientLoop(appUrl, api.BuildLogOut); err != nil {
 		fmt.Println("[ERROR] log acquisition failed")
 		os.Exit(0)
 	}
+	if err := api.ClientLoop(appUrl, api.LogOut); err != nil {
+		log.Error(err)
+		return err
+	}
+
 	return nil
 }

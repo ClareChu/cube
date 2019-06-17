@@ -85,6 +85,8 @@ func (c *runCommand) Run(args []string) error {
 		fmt.Println("\nApplication logs:")
 		time.Sleep(time.Second * 1)
 		appUrl := fmt.Sprintf("%s?namespace=%s&name=%s&new=true&profile=%s&version=%s", api.GetAppLogApi(user.Server), c.req.Namespace, c.req.Name, c.req.Profile, c.req.Version)
+		fmt.Println("----------------------------------", url)
+		fmt.Println("appUrl :", appUrl)
 		if err := api.ClientLoop(appUrl, api.LogOut); err != nil {
 			log.Error(err)
 			return err
