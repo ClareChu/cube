@@ -1,5 +1,7 @@
 # grpc client configs
 
+a: b
+
 grpc:
   server:
     enabled: true
