@@ -3,11 +3,11 @@ package aggregate
 import (
 	"fmt"
 	"github.com/iris-contrib/go.uuid"
-	"github.com/prometheus/common/log"
 	"hidevops.io/cube/manager/pkg/constant"
 	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
+	"hidevops.io/hiboot/pkg/log"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 

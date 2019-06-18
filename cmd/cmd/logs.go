@@ -20,7 +20,7 @@ import (
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/app/cli"
 	"hidevops.io/hiboot/pkg/log"
-	"os"
+	"time"
 )
 
 type logsCommand struct {
@@ -56,7 +56,6 @@ func init() {
 //cube/client log --profile=test --project=demo --app=hello-world --sourcecode=java --verbose=true
 func (c *logsCommand) Run(args []string) error {
 	log.Debug("handle logs command")
-
 	user, _, err := api.ReadConfig()
 	if err != nil {
 		return err
@@ -72,15 +71,13 @@ func (c *logsCommand) Run(args []string) error {
 		return err
 	}
 	appUrl := fmt.Sprintf("%s?namespace=%s&name=%s&new=true&profile=%s&version=%s", api.GetAppLogApi(user.Server), pss.Namespace, pss.Name, pss.Profile, pss.Version)
-	fmt.Println("url: ", appUrl)
-	if err := api.ClientLoop(appUrl, api.BuildLogOut); err != nil {
-		fmt.Println("[ERROR] log acquisition failed")
-		os.Exit(0)
-	}
+	fmt.Println("\nApplication logs:")
+	time.Sleep(time.Second * 1)
+	fmt.Println("----------------------------------", appUrl)
+	fmt.Println("appUrl :", appUrl)
 	if err := api.ClientLoop(appUrl, api.LogOut); err != nil {
 		log.Error(err)
 		return err
 	}
-
 	return nil
 }

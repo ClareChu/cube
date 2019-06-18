@@ -71,6 +71,7 @@ require (
 	go.uber.org/multierr v1.1.0 // indirect
 	go.uber.org/zap v1.10.0 // indirect
 	golang.org/x/net v0.0.0-20190311183353-d8887717615a
+	golang.org/x/tools v0.0.0-20190328211700-ab21143f2384
 	google.golang.org/grpc v1.17.0
 	gopkg.in/alecthomas/kingpin.v3-unstable v3.0.0-20180810215634-df19058c872c // indirect
 	gopkg.in/ini.v1 v1.39.0 // indirect

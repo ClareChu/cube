@@ -1,13 +1,13 @@
 package aggregate
 
 import (
-	"github.com/prometheus/common/log"
 	"hidevops.io/cube/manager/pkg/builder"
 	"hidevops.io/cube/manager/pkg/constant"
 	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	cubev1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
+	"hidevops.io/hiboot/pkg/log"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"strings"
 )

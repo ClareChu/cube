@@ -1,11 +1,11 @@
 package builder
 
 import (
-	"github.com/prometheus/common/log"
 	"hidevops.io/cube/manager/pkg/constant"
 	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
+	"hidevops.io/hiboot/pkg/log"
 	"time"
 )
 
