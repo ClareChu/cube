@@ -70,7 +70,7 @@ func (c *logsCommand) Run(args []string) error {
 		log.Error(err)
 		return err
 	}
-	appUrl := fmt.Sprintf("%s?namespace=%s&name=%s&new=true&profile=%s&version=%s", api.GetAppLogApi(user.Server), pss.Namespace, pss.Name, pss.Profile, pss.Version)
+	appUrl := fmt.Sprintf("%s?namespace=%s&name=%s&new=%s&profile=%s&version=%s", api.GetAppLogApi(user.Server), pss.Namespace, pss.Name, "", pss.Profile, pss.Version)
 	fmt.Println("\nApplication logs:")
 	time.Sleep(time.Second * 1)
 	fmt.Println("----------------------------------", appUrl)
