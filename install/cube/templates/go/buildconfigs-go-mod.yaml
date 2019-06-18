@@ -1,11 +1,11 @@
 apiVersion: cube.io/v1alpha1
 kind: BuildConfig
 metadata:
-  name: go
-  namespace: {{ .Values.namespace }}
+  name: go-mod
+  namespace: hidevopsio
 spec:
   app: ""
-  baseImage: {{ .Values.go.nodeImage }}
+  baseImage: hidevops/base-go:v1.1.1
   cloneConfig:
     branch: ""
     dstDir: /opt/app-root/src
@@ -16,7 +16,7 @@ spec:
   codeType: go
   compileCmd:
   - commandName: pwd
-  - Script: GOOS=linux go build -o app
+  - Script: GOOS=linux go build -mod vendor  -o app
     execType: script
   - commandName: pwd
   - Script: ls
@@ -25,7 +25,7 @@ spec:
     envs:
       CODE_TYPE: go
       DOCKER_API_VERSION: "1.24"
-      GOPROXY: {{ .Values.go.goProxy }}
+      GOPROXY:
     hostPathVolumes:
     - name: "docker"
       volumeSource: /var/lib/docker
@@ -41,17 +41,12 @@ spec:
     - 8080
     - 7575
     replicas: 1
-  dockerAuthConfig:
-    password: {{ .Values.docker.password }}
-    username: {{ .Values.docker.username }}
   dockerFile:
   - FROM clarechu/base-go:v1.0.0
   - ENV  TZ="Asia/Shanghai"
   - COPY ./app ${APP_BIN}
   - COPY ./config ${APP_ROOT}/config
   - CMD ["app"]
-  dockerRegistry: {{ .Values.docker.registy }}
-  nodeService: ""
   tasks:
   - name: createService
   - name: deployNode
