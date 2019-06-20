@@ -2,12 +2,12 @@ package scheduler
 
 import (
 	"fmt"
-	"github.com/prometheus/common/log"
 	"gopkg.in/src-d/go-git.v4"
 	"hidevops.io/cube/agent/protobuf"
 	"hidevops.io/cube/agent/service"
 	pkg_utils "hidevops.io/cube/agent/utils"
 	"hidevops.io/hiboot/pkg/app"
+	"hidevops.io/hiboot/pkg/log"
 	utilsio "hidevops.io/hiboot/pkg/utils/io"
 	"hidevops.io/hioak/starter/kube"
 	corev1 "k8s.io/api/core/v1"
@@ -83,7 +83,6 @@ func (b *buildSchedulerImpl) SourceCodePull(sourceCodePullRequest *protobuf.Sour
 		return
 	}
 
-
 	secret, err := b.secret.Get(bc.Spec.AppRoot, sourceCodePullRequest.Namespace)
 	if err != nil {
 		log.Errorf("get secret err: %v", err)
@@ -101,12 +100,12 @@ func (b *buildSchedulerImpl) SourceCodePull(sourceCodePullRequest *protobuf.Sour
 		//TODO update status
 		b.buildConfigClient.UpdateBuildStatus(sourceCodePullRequest.Namespace, sourceCodePullRequest.Name, service.SourceCodePull, service.Fail)
 	}
+
+	dataCache[fmtName(CODEPATH, sourceCodePullRequest.Namespace, sourceCodePullRequest.Name)] = codePath
+	log.Infof("data cache: ", dataCache)
+
 	//TODO update status
 	b.buildConfigClient.UpdateBuildStatus(sourceCodePullRequest.Namespace, sourceCodePullRequest.Name, service.SourceCodePull, service.Success)
-
-	log.Infof("code path: %s", codePath)
-	dataCache[fmtName(CODEPATH, sourceCodePullRequest.Namespace, sourceCodePullRequest.Name)] = codePath
-	fmt.Println("data cache: ", dataCache)
 }
 
 func (b *buildSchedulerImpl) SourceCodeCompiles(compileRequest *protobuf.CompileRequest) {
@@ -138,15 +137,6 @@ func (b *buildSchedulerImpl) SourceCodeCompiles(compileRequest *protobuf.Compile
 }
 
 func (b *buildSchedulerImpl) SourceCodeImageBuild(imageBuildRequest *protobuf.ImageBuildRequest) {
-	codePathKey := fmtName(CODEPATH, imageBuildRequest.Namespace, imageBuildRequest.Name)
-
-	if _, ok := dataCache[codePathKey]; !ok {
-		log.Errorf("code path not found")
-		//TODO update status
-		b.buildConfigClient.UpdateBuildStatus(imageBuildRequest.Namespace, imageBuildRequest.Name, service.ImageBuild, service.Fail)
-		return
-	}
-
 	if err := b.buildConfigService.ImageBuild(imageBuildRequest); err != nil {
 		log.Errorf("build image: %v", err)
 		//TODO update status
@@ -176,15 +166,6 @@ func (b *buildSchedulerImpl) SourceCodeImagePush(imagePushRequest *protobuf.Imag
 }
 
 func (b *buildSchedulerImpl) SourceCodeTest(testRequest *protobuf.TestsRequest) {
-	codePathKey := fmtName(CODEPATH, testRequest.Namespace, testRequest.Name)
-
-	if _, ok := dataCache[codePathKey]; !ok {
-		log.Errorf("code path not found")
-		//TODO update status
-		b.buildConfigClient.UpdateBuildStatus(testRequest.Namespace, testRequest.Name, service.SourceCodeTest, service.Fail)
-		return
-	}
-
 	if err := pkg_utils.TestStart(testRequest); err != nil {
 		log.Errorf("test start err: %v", err)
 		//TODO update status
@@ -195,15 +176,6 @@ func (b *buildSchedulerImpl) SourceCodeTest(testRequest *protobuf.TestsRequest) 
 }
 
 func (b *buildSchedulerImpl) EnvMakeUp(commandRequest *protobuf.CommandRequest) {
-
-	codePathKey := fmtName(CODEPATH, commandRequest.Namespace, commandRequest.Name)
-
-	if _, ok := dataCache[codePathKey]; !ok {
-		log.Errorf("code path not found")
-		//TODO update status
-		b.buildConfigClient.UpdateBuildStatus(commandRequest.Namespace, commandRequest.Name, service.Command, service.Fail)
-		return
-	}
 
 	if err := pkg_utils.StartCmd(commandRequest); err != nil {
 		log.Errorf("start cmd err: %v", err)

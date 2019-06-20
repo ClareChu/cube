@@ -2,10 +2,10 @@ package service
 
 import (
 	"fmt"
-	"github.com/prometheus/common/log"
 	cubev1alpha1 "hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
+	"hidevops.io/hiboot/pkg/log"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/watch"
 	"time"

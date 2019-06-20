@@ -11,13 +11,7 @@ RUN  mkdir -p ${APP_BIN} ${APP_ROOT} ${HOME}\
      && apk update \
      && apk upgrade \
      && apk add git  \
-     && apk add --no-cache python2.7 \
-     && python2.7 -m ensurepip && \
-        rm -r /usr/lib/python*/ensurepip && \
-        pip install --upgrade pip setuptools && \
-            if [ ! -e /usr/bin/pip ]; then ln -s pip /usr/bin/pip ; fi && \
-            if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python2.7 /usr/bin/python; fi && \
-            rm -r /root/.cache
+     && apk add --no-cache python2.7
 
 WORKDIR  ${APP_ROOT}/
 COPY config ${APP_ROOT}/config
