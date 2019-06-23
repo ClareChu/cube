@@ -1,13 +1,13 @@
 package controller
 
 import (
-	"github.com/prometheus/common/log"
 	"hidevops.io/cube/manager/pkg/aggregate"
 	"hidevops.io/cube/manager/pkg/builder"
 	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/at"
+	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/model"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -55,14 +55,11 @@ func (c *DeploymentConfigController) PostApp(app *App) (model.Response, error) {
 				"app":     "hello-world",
 				"version": "v1",
 			},
-			Port: []corev1.ContainerPort{
-				corev1.ContainerPort{
-					ContainerPort: 8080,
-					Protocol:      "TCP",
-				},
-				corev1.ContainerPort{
-					ContainerPort: 7575,
-					Protocol:      "TCP",
+			Container: corev1.Container{
+				Ports: []corev1.ContainerPort{
+					corev1.ContainerPort{
+						Name: "http",
+					},
 				},
 			},
 		},

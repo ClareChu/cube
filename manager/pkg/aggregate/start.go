@@ -104,7 +104,7 @@ func (s *Start) Init(cmd *command.PipelineStart, propMap map[string]string) (err
 			TemplateName: cmd.TemplateName,
 			Branch:       cmd.Branch,
 			Project:      cmd.Project,
-			Env:          cmd.Env,
+			Container:    cmd.Container,
 		}
 		go func() {
 			_, err = s.pipelineConfigAggregate.StartPipelineConfig(&command)
@@ -113,6 +113,7 @@ func (s *Start) Init(cmd *command.PipelineStart, propMap map[string]string) (err
 	return
 }
 
+//GetNamespace Profile
 func (s *Start) GetNamespace(cmd *command.PipelineStart) {
 	if cmd.Namespace == "" {
 		if cmd.Profile == "" {

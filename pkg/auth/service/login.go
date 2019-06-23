@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/prometheus/common/log"
 	"hidevops.io/cube/manager/pkg/constant"
 	"hidevops.io/hiboot/pkg/app"
+	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hioak/starter/kube"
 	"hidevops.io/hioak/starter/scm"
 	"hidevops.io/hioak/starter/scm/gitlab"

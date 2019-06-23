@@ -6,22 +6,23 @@ metadata:
   namespace: {{ .Values.namespace }}
 spec:
   dockerRegistry: {{ .Values.buildconfig.dockerRegistry }}
-  env:
-  - name: TZ
-    value: Asia/Shanghai
-  - name: APP_PROFILES_ACTIVE
-    value: dev
+  container:
+    env:
+    - name: TZ
+      value: Asia/Shanghai
+    - name: APP_PROFILES_ACTIVE
+      value: dev
+    ports:
+      - containerPort: 8080
+        name: http-8080
+        protocol: TCP
+      - containerPort: 7575
+        name: grpc-7575
+        protocol: TCP
   envType:
   - remoteDeploy
   - deploy
   fromRegistry: {{ .Values.buildconfig.fromRegistry }}
-  port:
-  - containerPort: 8080
-    name: http-8080
-    protocol: TCP
-  - containerPort: 7575
-    name: grpc-7575
-    protocol: TCP
   profile: dev
 status:
   lastVersion: 1

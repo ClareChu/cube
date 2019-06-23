@@ -1,10 +1,10 @@
 package cmd
 
 import (
-	"github.com/prometheus/common/log"
 	"hidevops.io/cube/cmd/api"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/app/cli"
+	"hidevops.io/hiboot/pkg/log"
 )
 
 type appCommand struct {
@@ -29,6 +29,7 @@ func newAppCommand() *appCommand {
 	pf.StringArrayVarP(&c.Req.Context, "context", "c", nil, "--context=your-context")
 	pf.StringVarP(&c.Req.AppRoot, "appRoot", "r", "", "--appRoot=your-app-root")
 	pf.StringArrayVarP(&c.Req.EnvVar, "envVar", "e", nil, "--env=your-env")
+	pf.StringArrayVarP(&c.Req.Container.Command, "cmd", "c", nil, "--env=your-cmd")
 	return c
 }
 

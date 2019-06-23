@@ -6,26 +6,27 @@ metadata:
   namespace: {{ .Values.namespace }}
 spec:
   dockerRegistry: {{ .Values.docker.registy }}
-  env:
-  - name: starter
-    value: jav -jar
-  - name: TZ
-    value: Asia/Shanghai
-  - name: APP_OPTIONS
-    value: -Xms128m -Xmx512m -Xss512k
-  - name: SPRING_PROFILES_ACTIVE
-    value: dev
+  container:
+    env:
+    - name: starter
+      value: jav -jar
+    - name: TZ
+      value: Asia/Shanghai
+    - name: APP_OPTIONS
+      value: -Xms128m -Xmx512m -Xss512k
+    - name: SPRING_PROFILES_ACTIVE
+      value: dev
+    ports:
+    - containerPort: 8080
+      name: http-8080
+      protocol: TCP
+    - containerPort: 7575
+      name: grpc-7575
+      protocol: TCP
   envType:
   - remoteDeploy
   - deploy
   fromRegistry: {{ .Values.docker.registy }}
-  port:
-  - containerPort: 8080
-    name: tcp-8080
-    protocol: TCP
-  - containerPort: 7575
-    name: grpc-7575
-    protocol: TCP
   profile: dev
 status:
   lastVersion: 1

@@ -60,7 +60,7 @@ func GetAppApi(server, name string) string {
 	if server == "" {
 		server = DEFAULT_SERVER
 	}
-	return  fmt.Sprintf("%s/app/name/%s", server, name)
+	return fmt.Sprintf("%s/app/name/%s", server, name)
 }
 
 func GetSourceCodeTypeApi(server, name, namespace string) string {
@@ -84,19 +84,19 @@ func GetCliUpdateApi(server string) string {
 var Message = make(chan string)
 
 type PipelineRequest struct {
-	Name         string          `json:"name"`
-	Project      string          `json:"project"`
-	Namespace    string          `json:"namespace"`
-	TemplateName string          `json:"templateName"`
-	Profile      string          `json:"profile"`
-	Branch       string          `json:"branch"`
-	AppRoot      string          `json:"appRoot"`
-	Context      []string        `json:"context"`
-	Version      string          `json:"version"`
-	Verbose      bool            `json:"verbose"`
-	Watch        bool            `json:"watch"`
-	Env          []corev1.EnvVar `json:"env"`
-	EnvVar       []string        `json:"envVar"`
+	Name         string           `json:"name"`
+	Project      string           `json:"project"`
+	Namespace    string           `json:"namespace"`
+	TemplateName string           `json:"templateName"`
+	Profile      string           `json:"profile"`
+	Branch       string           `json:"branch"`
+	AppRoot      string           `json:"appRoot"`
+	Context      []string         `json:"context"`
+	Version      string           `json:"version"`
+	Verbose      bool             `json:"verbose"`
+	Watch        bool             `json:"watch"`
+	Container    corev1.Container `json:"container"`
+	EnvVar       []string         `json:"envVar"`
 }
 
 type User struct {
@@ -105,19 +105,18 @@ type User struct {
 	Server string `json:"server"`
 }
 
-
 type AppRequest struct {
-	Name         string          `json:"name"`
-	Namespace    string          `json:"namespace"`
-	TemplateName string          `json:"templateName"`
-	Version      string          `json:"version"`
-	Profile      string          `json:"profile"`
-	Branch       string          `json:"branch"`
-	Context      []string        `json:"context"`
-	AppRoot      string          `json:"appRoot"`
-	Path         string          `json:"path"`
-	Project      string          `json:"project"`
-	Url          string          `json:"url"`
-	Env          []corev1.EnvVar `json:"env"`
-	EnvVar       []string        `json:"envVar"`
+	Name         string           `json:"name"`
+	Namespace    string           `json:"namespace"`
+	TemplateName string           `json:"templateName"`
+	Version      string           `json:"version"`
+	Profile      string           `json:"profile"`
+	Branch       string           `json:"branch"`
+	Context      []string         `json:"context"`
+	AppRoot      string           `json:"appRoot"`
+	Path         string           `json:"path"`
+	Project      string           `json:"project"`
+	Url          string           `json:"url"`
+	EnvVar       []string         `json:"envVar"`
+	Container    corev1.Container `json:"container"`
 }

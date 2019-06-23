@@ -141,7 +141,7 @@ func StartInit(user *User, req *PipelineRequest) (pr *PipelineRequest, err error
 				Name:  strings.Split(ev, "=")[0],
 				Value: strings.Split(ev, "=")[1],
 			}
-			req.Env = append(req.Env, e)
+			req.Container.Env = append(req.Container.Env, e)
 		}
 	}
 
@@ -274,7 +274,7 @@ func App(app *AppRequest, server, token string) (err error) {
 				Name:  strings.Split(ev, "=")[0],
 				Value: strings.Split(ev, "=")[1],
 			}
-			app.Env = append(app.Env, e)
+			app.Container.Env = append(app.Container.Env, e)
 		}
 	}
 	myToken := model.BaseResponse{}

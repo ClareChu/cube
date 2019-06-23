@@ -9,18 +9,18 @@ import (
 
 type PipelineStart struct {
 	model.RequestBody `json:"omitempty"`
-	Name              string          `json:"name" validate:"required"`
-	Namespace         string          `json:"namespace"`
-	TemplateName      string          `json:"templateName"`
-	Version           string          `json:"version" default:"v1"`
-	Profile           string          `json:"profile"`
-	Branch            string          `json:"branch"`
-	Context           []string        `json:"context"`
-	AppRoot           string          `json:"appRoot"`
-	Path              string          `json:"path"`
-	Project           string          `json:"project" validate:"required"`
-	Url               string          `json:"url"`
-	Env               []corev1.EnvVar `json:"env"`
+	Name              string           `json:"name" validate:"required"`
+	Namespace         string           `json:"namespace"`
+	TemplateName      string           `json:"templateName"`
+	Version           string           `json:"version" default:"v1"`
+	Profile           string           `json:"profile"`
+	Branch            string           `json:"branch"`
+	Context           []string         `json:"context"`
+	AppRoot           string           `json:"appRoot"`
+	Path              string           `json:"path"`
+	Project           string           `json:"project" validate:"required"`
+	Url               string           `json:"url"`
+	Container         corev1.Container `json:"container"`
 }
 
 type PipelineConfigTemplate struct {
@@ -47,15 +47,15 @@ type StartPipeline struct {
 }
 
 type PipelineReqParams struct {
-	Name         string          `json:"name"`
-	PipelineName string          `json:"pipeline_name"`
-	Namespace    string          `json:"namespace"`
-	EventType    string          `json:"event_type"`
-	Version      string          `json:"version"`
-	Branch       string          `json:"branch"`
-	Context      string          `json:"context"`
-	AppRoot      string          `json:"app_root"`
-	Profile      string          `json:"profile"`
-	Project      string          `json:"project"`
-	Env          []corev1.EnvVar `json:"env"`
+	Name         string           `json:"name"`
+	PipelineName string           `json:"pipeline_name"`
+	Namespace    string           `json:"namespace"`
+	EventType    string           `json:"event_type"`
+	Version      string           `json:"version"`
+	Branch       string           `json:"branch"`
+	Context      string           `json:"context"`
+	AppRoot      string           `json:"app_root"`
+	Profile      string           `json:"profile"`
+	Project      string           `json:"project"`
+	Container    corev1.Container `json:"container"`
 }

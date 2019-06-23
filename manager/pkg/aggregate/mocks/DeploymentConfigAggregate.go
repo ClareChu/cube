@@ -34,6 +34,11 @@ func (_m *DeploymentConfigAggregate) Create(param *command.PipelineReqParams, bu
 	return r0, r1
 }
 
+// InitDeployConfig provides a mock function with given fields: deploy, template, param
+func (_m *DeploymentConfigAggregate) InitDeployConfig(deploy *v1alpha1.DeploymentConfig, template *v1alpha1.DeploymentConfig, param *command.PipelineReqParams) {
+	_m.Called(deploy, template, param)
+}
+
 // Template provides a mock function with given fields: cmd
 func (_m *DeploymentConfigAggregate) Template(cmd *command.DeploymentConfig) (*v1alpha1.DeploymentConfig, error) {
 	ret := _m.Called(cmd)

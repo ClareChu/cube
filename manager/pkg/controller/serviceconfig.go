@@ -1,11 +1,11 @@
 package controller
 
 import (
-	"github.com/prometheus/common/log"
 	"hidevops.io/cube/manager/pkg/aggregate"
 	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/at"
+	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/model"
 )
 

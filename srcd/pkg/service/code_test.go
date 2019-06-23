@@ -1,10 +1,10 @@
 package service
 
 import (
-	"github.com/prometheus/common/log"
 	"gopkg.in/src-d/go-git.v4"
 	"gotest.tools/assert"
 	"hidevops.io/cube/srcd/pkg/entity"
+	"hidevops.io/hiboot/pkg/log"
 	"testing"
 )
 

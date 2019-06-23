@@ -11,13 +11,13 @@ type PipelineAggregate struct {
 	mock.Mock
 }
 
-// Create provides a mock function with given fields: pipelineConfig, sourceCode
-func (_m *PipelineAggregate) Create(pipelineConfig *v1alpha1.PipelineConfig, sourceCode string) (*v1alpha1.Pipeline, error) {
-	ret := _m.Called(pipelineConfig, sourceCode)
+// Create provides a mock function with given fields: pipelineConfig, templateName
+func (_m *PipelineAggregate) Create(pipelineConfig *v1alpha1.PipelineConfig, templateName string) (*v1alpha1.Pipeline, error) {
+	ret := _m.Called(pipelineConfig, templateName)
 
 	var r0 *v1alpha1.Pipeline
 	if rf, ok := ret.Get(0).(func(*v1alpha1.PipelineConfig, string) *v1alpha1.Pipeline); ok {
-		r0 = rf(pipelineConfig, sourceCode)
+		r0 = rf(pipelineConfig, templateName)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*v1alpha1.Pipeline)
@@ -26,7 +26,7 @@ func (_m *PipelineAggregate) Create(pipelineConfig *v1alpha1.PipelineConfig, sou
 
 	var r1 error
 	if rf, ok := ret.Get(1).(func(*v1alpha1.PipelineConfig, string) error); ok {
-		r1 = rf(pipelineConfig, sourceCode)
+		r1 = rf(pipelineConfig, templateName)
 	} else {
 		r1 = ret.Error(1)
 	}

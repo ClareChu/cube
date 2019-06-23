@@ -17,7 +17,7 @@ import (
 type DeploymentConfigAggregate interface {
 	Template(cmd *command.DeploymentConfig) (deploymentConfig *v1alpha1.DeploymentConfig, err error)
 	Create(param *command.PipelineReqParams, buildVersion string) (deploymentConfig *v1alpha1.DeploymentConfig, err error)
-	initDeployConfig(deploy *v1alpha1.DeploymentConfig, template *v1alpha1.DeploymentConfig, param *command.PipelineReqParams)
+	InitDeployConfig(deploy *v1alpha1.DeploymentConfig, template *v1alpha1.DeploymentConfig, param *command.PipelineReqParams)
 }
 
 type DeploymentConfig struct {
@@ -82,7 +82,7 @@ func (d *DeploymentConfig) Create(param *command.PipelineReqParams, buildVersion
 	}
 	deploy, err := d.deploymentConfigClient.Get(param.Name, param.Namespace)
 	if err == nil {
-		d.initDeployConfig(deploy, template, param)
+		d.InitDeployConfig(deploy, template, param)
 		deploymentConfig, err = d.deploymentConfigClient.Update(param.Name, param.Namespace, deploy)
 		log.Infof("update deployment configs deploy :%v", deploymentConfig)
 	} else {
@@ -94,14 +94,16 @@ func (d *DeploymentConfig) Create(param *command.PipelineReqParams, buildVersion
 	return
 }
 
-func (d *DeploymentConfig) initDeployConfig(deploy *v1alpha1.DeploymentConfig, template *v1alpha1.DeploymentConfig, param *command.PipelineReqParams) {
+func (d *DeploymentConfig) InitDeployConfig(deploy *v1alpha1.DeploymentConfig, template *v1alpha1.DeploymentConfig, param *command.PipelineReqParams) {
 	deploy.Spec = template.Spec
 	deploy.Spec.Profile = param.Profile
+	copier.Copy(&deploy.Spec.Container, &param.Container, copier.IgnoreEmptyValue)
+	deploy.Spec.Container.Name = param.Name
 	log.Info("---------env---------")
-	log.Infof("env:%v", param.Env)
-	for _, e := range param.Env {
-		deploy.Spec.Env = append(deploy.Spec.Env, e)
+	log.Infof("env:%v", param.Container.Env)
+	for _, e := range param.Container.Env {
+		deploy.Spec.Container.Env = append(deploy.Spec.Container.Env, e)
 	}
-	deploy.Spec.Env = append(append(deploy.Spec.Env, corev1.EnvVar{Name: constant.AppName, Value: param.Name}), corev1.EnvVar{Name: constant.AppVersion, Value: param.Version})
+	deploy.Spec.Container.Env = append(append(deploy.Spec.Container.Env, corev1.EnvVar{Name: constant.AppName, Value: param.Name}), corev1.EnvVar{Name: constant.AppVersion, Value: param.Version})
 	deploy.Status.LastVersion = deploy.Status.LastVersion + 1
 }

@@ -60,6 +60,7 @@ require (
 	github.com/stevvooe/resumable v0.0.0-20180830230917-22b14a53ba50 // indirect
 	github.com/stretchr/testify v1.2.2
 	github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5 // indirect
+	github.com/toqueteos/trie v1.0.0 // indirect
 	github.com/ugorji/go v1.1.4 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/xanzy/go-gitlab v0.0.0-20170825130035-896163fa8f7a
@@ -77,7 +78,9 @@ require (
 	gopkg.in/ini.v1 v1.39.0 // indirect
 	gopkg.in/mgo.v2 v2.0.0-20180705113604-9856a29383ce // indirect
 	gopkg.in/ory-am/dockertest.v3 v3.3.4 // indirect
+	gopkg.in/src-d/enry.v1 v1.7.3
 	gopkg.in/src-d/go-git.v4 v4.8.1
+	gopkg.in/toqueteos/substring.v1 v1.0.2 // indirect
 	gotest.tools v2.2.0+incompatible
 	hidevops.io/hiboot v1.1.0
 	hidevops.io/hiboot-data v1.0.0

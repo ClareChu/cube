@@ -1,12 +1,18 @@
 package builder
 
 import (
-	"github.com/prometheus/common/log"
+	"fmt"
+	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/cube/manager/pkg/constant"
 	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
+	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hioak/starter/kube"
+	corev1 "k8s.io/api/core/v1"
+	extensionsV1beta1 "k8s.io/api/extensions/v1beta1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/intstr"
 	"time"
 )
 
@@ -67,22 +73,16 @@ func (d *Deployment) CreateApp(deploy *v1alpha1.Deployment) error {
 		log.Errorf("get image err: %v", err)
 		return err
 	}
-	request := &kube.DeployRequest{
-		App:            deploy.Labels[constant.DeploymentConfig],
-		Namespace:      deploy.Namespace,
-		Ports:          deploy.Spec.Port,
-		Replicas:       deploy.Spec.Replicas,
-		Version:        deploy.Spec.Version,
-		Labels:         deploy.Spec.Labels,
-		ReadinessProbe: deploy.Spec.ReadinessProbe,
-		NodeSelector:   deploy.Spec.NodeSelector,
-		LivenessProbe:  deploy.Spec.LivenessProbe,
-		Env:            deploy.Spec.Env,
-		Volumes:        deploy.Spec.Volumes,
-		VolumeMounts:   deploy.Spec.VolumeMounts,
-		DockerImage:    i.Spec.Tags[constant.Latest].DockerImageReference,
+	deploy.Spec.Container.Image = i.Spec.Tags[constant.Latest].DockerImageReference
+	dd := &command.DeployData{
+		Name:      deploy.Labels[constant.DeploymentConfig],
+		Namespace: deploy.Namespace,
+		Container: deploy.Spec.Container,
+		Volumes:   deploy.Spec.Volumes,
+		Replicas:  deploy.Spec.Replicas,
+		Version:   deploy.Spec.Version,
 	}
-	_, err = d.deployment.Deploy(request)
+	_, err = d.Create(dd)
 	if err != nil {
 		log.Errorf("create app :%v", err)
 		phase = constant.Fail
@@ -90,4 +90,69 @@ func (d *Deployment) CreateApp(deploy *v1alpha1.Deployment) error {
 	err = d.Update(deploy.Name, deploy.Namespace, constant.Deploy, phase)
 	log.Debugf("create app update pipeline :name %v,namespace %v,deploy %v, type:%v, error %v", deploy.Name, deploy.Namespace, constant.Deploy, phase, err)
 	return err
+}
+
+func int32Ptr(i int32) *int32 { return &i }
+
+func (d *Deployment) Create(dd *command.DeployData) (*extensionsV1beta1.Deployment, error) {
+	runAsRoot := false
+	dpm := &extensionsV1beta1.Deployment{
+		TypeMeta: metav1.TypeMeta{
+			Kind:       "Deployment",
+			APIVersion: "extensions/v1beta1",
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      fmt.Sprintf("%s-%s", dd.Name, dd.Version),
+			Namespace: dd.Namespace,
+			Labels: map[string]string{
+				"app":     dd.Name,
+				"version": dd.Version,
+			},
+		},
+
+		Spec: extensionsV1beta1.DeploymentSpec{
+			Replicas: dd.Replicas,
+			Strategy: extensionsV1beta1.DeploymentStrategy{
+				Type: extensionsV1beta1.RollingUpdateDeploymentStrategyType,
+				RollingUpdate: &extensionsV1beta1.RollingUpdateDeployment{
+					MaxUnavailable: &intstr.IntOrString{
+						Type:   intstr.Int,
+						IntVal: int32(0),
+					},
+					MaxSurge: &intstr.IntOrString{
+						Type:   intstr.Int,
+						IntVal: int32(1),
+					},
+				},
+			},
+			RevisionHistoryLimit: int32Ptr(10),
+			Template: corev1.PodTemplateSpec{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: dd.Name,
+					Labels: map[string]string{
+						"app":     dd.Name,
+						"version": dd.Version,
+					},
+				},
+				Spec: corev1.PodSpec{
+					SecurityContext: &corev1.PodSecurityContext{
+						RunAsNonRoot: &runAsRoot,
+					},
+					NodeSelector: dd.NodeSelector,
+					Containers: []corev1.Container{
+						dd.Container,
+					},
+					Volumes: dd.Volumes,
+				},
+			},
+		},
+	}
+
+	dp, err := d.deployment.Get(fmt.Sprintf("%s-%s", dd.Name, dd.Version), dd.Namespace, metav1.GetOptions{})
+	if err == nil {
+		dpm.ObjectMeta = dp.ObjectMeta
+		err = d.deployment.Update(dpm)
+		return nil, err
+	}
+	return d.deployment.Create(dpm)
 }

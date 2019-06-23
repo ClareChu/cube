@@ -37,8 +37,7 @@ type DeploymentConfigSpec struct {
 	Version          string               `json:"version" protobuf:"bytes,10,opt,name=version"`
 	DockerAuthConfig AuthConfig           `json:"dockerAuthConfig" protobuf:"bytes,11,opt,name=dockerAuthConfig"`
 	Volumes          []corev1.Volume      `json:"volume" protobuf:"bytes,12,opt,name=volume"`
-	VolumeMounts     []corev1.VolumeMount `json:"volumeMounts" protobuf:"bytes,13,opt,name=volumeMounts"`
-	Container        corev1.Container     `json:"container" protobuf:"bytes,14,opt,name=container"`
+	Container        corev1.Container     `json:"container" protobuf:"bytes,13,opt,name=container"`
 }
 
 type DeploymentConfigStatus struct {

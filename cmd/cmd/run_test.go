@@ -15,10 +15,10 @@
 package cmd
 
 import (
-	"github.com/prometheus/common/log"
 	"github.com/stretchr/testify/assert"
 	"hidevops.io/cube/cmd/api"
 	"hidevops.io/hiboot/pkg/app/cli"
+	"hidevops.io/hiboot/pkg/log"
 	"testing"
 )
 

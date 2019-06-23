@@ -9,8 +9,6 @@ spec:
   env:
   - name: TZ
     value: Asia/Shanghai
-  - name: APP_PROFILES_ACTIVE
-    value: dev
   envType:
   - remoteDeploy
   - deploy

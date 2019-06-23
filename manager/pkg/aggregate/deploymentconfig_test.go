@@ -10,6 +10,7 @@ import (
 	"hidevops.io/cube/pkg/client/clientset/versioned/fake"
 	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hioak/starter/kube"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	kubeFake "k8s.io/client-go/kubernetes/fake"
 	"testing"
@@ -61,13 +62,78 @@ func TestDeploymentConfigCreate(t *testing.T) {
 	}
 	deploymentAggregate.On("Create", d, "hello-world-1", "v1", "1").Return(nil, nil)
 	param := &command.PipelineReqParams{
-		Name: "hello-world",
+		Name:         "hello-world",
 		PipelineName: "hello-world-1",
-		Namespace: "demo",
-		EventType: "java",
-		Version: "v1",
-		Profile: "dev",
+		Namespace:    "demo",
+		EventType:    "java",
+		Version:      "v1",
+		Profile:      "dev",
 	}
 	_, err = buildConfigAggregate.Create(param, "1")
 	assert.Equal(t, nil, err)
+}
+
+func TestDeploymentConfig(t *testing.T) {
+	buildConfigAggregate := NewDeploymentConfigService(nil, nil, nil, nil)
+	deploy := &v1alpha1.DeploymentConfig{
+		Spec: v1alpha1.DeploymentConfigSpec{
+			Container: corev1.Container{
+				Env: []corev1.EnvVar{
+					corev1.EnvVar{
+						Name: "c",
+						Value: "d",
+					},
+				},
+				Command: []string{"a", "s"},
+				Ports: []corev1.ContainerPort{
+					corev1.ContainerPort{
+						Name: "http-8082",
+						Protocol: corev1.ProtocolTCP,
+						ContainerPort: 8082,
+					},
+				},
+			},
+		},
+	}
+	template := &v1alpha1.DeploymentConfig{
+		Spec: v1alpha1.DeploymentConfigSpec{
+			Container: corev1.Container{
+				Env: []corev1.EnvVar{
+					corev1.EnvVar{
+						Name: "c",
+						Value: "d",
+					},
+				},
+				Command: []string{"a", "s"},
+				Ports: []corev1.ContainerPort{
+					corev1.ContainerPort{
+						Name: "http-8082",
+						Protocol: corev1.ProtocolTCP,
+						ContainerPort: 8082,
+					},
+				},
+			},
+		},
+	}
+	param := &command.PipelineReqParams{
+		Container: corev1.Container{
+			Env: []corev1.EnvVar{
+				corev1.EnvVar{
+					Name: "a",
+					Value: "b",
+				},
+			},
+			Command: []string{"a", "b"},
+			Ports: []corev1.ContainerPort{
+				corev1.ContainerPort{
+					Name: "http-8081",
+					Protocol: corev1.ProtocolTCP,
+					ContainerPort: 8081,
+				},
+			},
+		},
+	}
+	buildConfigAggregate.InitDeployConfig(deploy, template, param)
+	assert.Equal(t, deploy.Spec.Container.Command[1], param.Container.Command[1])
+	assert.Equal(t, deploy.Spec.Container.Command[0], param.Container.Command[0])
 }

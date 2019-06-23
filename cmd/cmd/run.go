@@ -48,6 +48,7 @@ func newRunCommand() *runCommand {
 	pf.StringSliceVarP(&c.req.EnvVar, "env", "e", nil, "--env=your-app-env")
 	pf.BoolVarP(&c.req.Verbose, "verbose", "v", false, "--verbose")
 	pf.BoolVarP(&c.req.Watch, "watch", "w", false, "--watch")
+	pf.StringArrayVarP(&c.req.Container.Command, "cmd", "C", nil, "--env=your-cmd")
 	return c
 }
 
