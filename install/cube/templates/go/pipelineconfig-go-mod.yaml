@@ -1,14 +1,14 @@
 apiVersion: cube.io/v1alpha1
 kind: PipelineConfig
 metadata:
-  name: go-mod
+  name: go-mod-vendor
   namespace: hidevopsio
 spec:
   app: ""
   dockerRegistry: ""
   events:
   - eventTypes: build
-    name: go-mod
+    name: go-mod-vendor
   - eventTypes: deploy
     name: go
   - eventTypes: service

@@ -7,8 +7,6 @@ import (
 	"hidevops.io/hiboot/pkg/app/cli"
 )
 
-
-
 type appCommand struct {
 	cli.SubCommand
 
@@ -44,6 +42,8 @@ func (c *appCommand) Run(args []string) (err error) {
 	if err != nil {
 		return err
 	}
+	var value1 complex64 = 3.1 + 5i
+	value1 = value1 + 1
 	err = api.App(&c.Req, user.Server, user.Token)
 	return
 }

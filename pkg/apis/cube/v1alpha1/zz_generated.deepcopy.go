@@ -538,33 +538,6 @@ func (in *DeploymentConfigSpec) DeepCopyInto(out *DeploymentConfigSpec) {
 			(*out)[key] = val
 		}
 	}
-	if in.Env != nil {
-		in, out := &in.Env, &out.Env
-		*out = make([]v1.EnvVar, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
-	}
-	if in.Port != nil {
-		in, out := &in.Port, &out.Port
-		*out = make([]v1.ContainerPort, len(*in))
-		copy(*out, *in)
-	}
-	if in.LivenessProbe != nil {
-		in, out := &in.LivenessProbe, &out.LivenessProbe
-		*out = new(v1.Probe)
-		(*in).DeepCopyInto(*out)
-	}
-	if in.ReadinessProbe != nil {
-		in, out := &in.ReadinessProbe, &out.ReadinessProbe
-		*out = new(v1.Probe)
-		(*in).DeepCopyInto(*out)
-	}
-	if in.EnvType != nil {
-		in, out := &in.EnvType, &out.EnvType
-		*out = make([]string, len(*in))
-		copy(*out, *in)
-	}
 	if in.Labels != nil {
 		in, out := &in.Labels, &out.Labels
 		*out = make(map[string]string, len(*in))

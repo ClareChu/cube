@@ -1,11 +1,11 @@
 apiVersion: cube.io/v1alpha1
 kind: BuildConfig
 metadata:
-  name: go-mod
+  name: go-mod-vendor
   namespace: hidevopsio
 spec:
   app: ""
-  baseImage: hidevops/base-go:v1.1.1
+  baseImage: hidevops/agent-go:v1.1.1
   cloneConfig:
     branch: ""
     dstDir: /opt/app-root/src
@@ -45,7 +45,6 @@ spec:
   - FROM clarechu/base-go:v1.0.0
   - ENV  TZ="Asia/Shanghai"
   - COPY ./app ${APP_BIN}
-  - COPY ./config ${APP_ROOT}/config
   - CMD ["app"]
   tasks:
   - name: createService
