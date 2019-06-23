@@ -330,7 +330,7 @@ func (b *Build) Selector(build *v1alpha1.Build) (err error) {
 		err = b.Update(build, "", constant.Complete)
 		log.Info("update pipeline aggregate")
 		err = b.pipelineBuilder.Update(build.ObjectMeta.Labels[constant.PipelineName], build.Namespace, constant.BuildPipeline, constant.Success, build.ObjectMeta.Labels[constant.Number])
-		err = fmt.Errorf("build is ending")
+		log.Debug("build is ending")
 	default:
 
 	}

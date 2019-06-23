@@ -162,7 +162,7 @@ func (d *Deployment) Selector(deploy *v1alpha1.Deployment) error {
 		err = d.deploymentBuilder.Update(deploy.Name, deploy.Namespace, constant.Deploy, constant.Created)
 	case constant.Ending:
 		err = d.pipelineBuilder.Update(deploy.ObjectMeta.Labels[constant.PipelineName], deploy.Namespace, constant.Deploy, deploy.Status.Phase, deploy.ObjectMeta.Labels[constant.Number])
-		err = fmt.Errorf("build is ending")
+		log.Errorf("build is ending")
 	default:
 
 	}

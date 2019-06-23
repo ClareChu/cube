@@ -97,6 +97,9 @@ func (d *DeploymentConfig) InitDeployConfig(deploy *v1alpha1.DeploymentConfig, t
 	deploy.Spec = template.Spec
 	deploy.Spec.Profile = param.Profile
 	copier.Copy(&deploy.Spec.Container, &param.Container, copier.IgnoreEmptyValue)
+	for _, e := range template.Spec.Container.Env {
+		deploy.Spec.Container.Env = append(deploy.Spec.Container.Env, e	)
+	}
 	deploy.Spec.Container.Name = param.Name
 	deploy.Spec.Container.Env = append(append(deploy.Spec.Container.Env, corev1.EnvVar{Name: constant.AppName, Value: param.Name}), corev1.EnvVar{Name: constant.AppVersion, Value: param.Version})
 	deploy.Status.LastVersion = deploy.Status.LastVersion + 1

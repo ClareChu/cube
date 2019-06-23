@@ -26,10 +26,10 @@ func newAppCommand() *appCommand {
 	pf.StringVarP(&c.Req.Profile, "profile", "P", "", "--profile=your-app-profile")
 	pf.StringVarP(&c.Req.Branch, "branch", "b", "", "--branch=your-app-branch")
 	pf.StringVarP(&c.Req.Project, "project", "p", "", "--project=your-gitlab-app-name")
-	pf.StringArrayVarP(&c.Req.Context, "context", "c", nil, "--context=your-context")
+	pf.StringArrayVarP(&c.Req.Context, "context", "C", nil, "--context=your-context")
 	pf.StringVarP(&c.Req.AppRoot, "appRoot", "r", "", "--appRoot=your-app-root")
 	pf.StringArrayVarP(&c.Req.EnvVar, "envVar", "e", nil, "--env=your-env")
-	pf.StringArrayVarP(&c.Req.Container.Command, "cmd", "c", nil, "--env=your-cmd")
+	pf.StringArrayVarP(&c.Req.Container.Command, "cmd", "c", nil, "--cmd=your-cmd")
 	return c
 }
 

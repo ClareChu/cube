@@ -43,12 +43,12 @@ func newRunCommand() *runCommand {
 	pf.StringVarP(&c.req.Name, "app", "a", "", "--app=my-app")
 	pf.StringVarP(&c.req.Branch, "branch", "b", "", "--branch=master")
 	pf.StringVarP(&c.req.AppRoot, "appRoot", "r", "", "--appRoot=your-app-root")
-	pf.StringSliceVarP(&c.req.Context, "context", "c", nil, "--context=sub-module")
+	pf.StringSliceVarP(&c.req.Context, "context", "C", nil, "--context=sub-module")
 	pf.StringVarP(&c.req.TemplateName, "template", "t", "", "--template=java")
 	pf.StringSliceVarP(&c.req.EnvVar, "env", "e", nil, "--env=your-app-env")
 	pf.BoolVarP(&c.req.Verbose, "verbose", "v", false, "--verbose")
 	pf.BoolVarP(&c.req.Watch, "watch", "w", false, "--watch")
-	pf.StringArrayVarP(&c.req.Container.Command, "cmd", "C", nil, "--env=your-cmd")
+	pf.StringArrayVarP(&c.req.Container.Command, "cmd", "c", nil, "--cmd=your-cmd")
 	return c
 }
 
@@ -75,7 +75,7 @@ func (c *runCommand) Run(args []string) error {
 		return err
 	}
 	fmt.Println("get app ...", c.req)
-	if watch {
+	if !watch {
 		time.Sleep(time.Second * 3)
 		var url = fmt.Sprintf("%s?namespace=%s&name=%s&sourcecode=%s&verbose=%t", api.GetBuildLogApi(user.Server), c.req.Namespace, c.req.Name, c.req.TemplateName, c.req.Verbose)
 		fmt.Println("url :", url)
