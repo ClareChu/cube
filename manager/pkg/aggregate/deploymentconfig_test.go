@@ -117,12 +117,6 @@ func TestDeploymentConfig(t *testing.T) {
 	}
 	param := &command.PipelineReqParams{
 		Container: corev1.Container{
-			Env: []corev1.EnvVar{
-				corev1.EnvVar{
-					Name: "a",
-					Value: "b",
-				},
-			},
 			Command: []string{"a", "b"},
 			Ports: []corev1.ContainerPort{
 				corev1.ContainerPort{
@@ -136,4 +130,6 @@ func TestDeploymentConfig(t *testing.T) {
 	buildConfigAggregate.InitDeployConfig(deploy, template, param)
 	assert.Equal(t, deploy.Spec.Container.Command[1], param.Container.Command[1])
 	assert.Equal(t, deploy.Spec.Container.Command[0], param.Container.Command[0])
+	assert.Equal(t, deploy.Spec.Container.Env[0].Name, template.Spec.Container.Env[0].Name)
+	assert.Equal(t, deploy.Spec.Container.Env[0].Value, template.Spec.Container.Env[0].Value)
 }
