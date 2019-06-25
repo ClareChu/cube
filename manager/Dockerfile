@@ -8,6 +8,12 @@ ENV APP_ROOT=/opt/app-root \
     PATH=${APP_BIN}:$PATH \
     TZ='Asia/Shanghai'
 
+ADD certs/* /tmp/cert/
+RUN apk add --no-cache ca-certificates && \
+    mkdir /usr/share/ca-certificates/extra && \
+    cp -R /tmp/cert/*.crt /usr/local/share/ca-certificates/ && \
+    update-ca-certificates
+
 RUN  mkdir -p ${APP_BIN} ${APP_ROOT} \
      && apk update \
      && apk upgrade \
