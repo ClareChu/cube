@@ -8,11 +8,7 @@ ENV APP_ROOT=/opt/app-root \
     PATH=${APP_BIN}:$PATH \
     TZ='Asia/Shanghai'
 
-ADD certs/* /tmp/cert/
-RUN apk add --no-cache ca-certificates && \
-    mkdir /usr/share/ca-certificates/extra && \
-    cp -R /tmp/cert/*.crt /usr/local/share/ca-certificates/ && \
-    update-ca-certificates
+ADD certs /tmp/cert/
 
 RUN  mkdir -p ${APP_BIN} ${APP_ROOT} \
      && apk update \
@@ -21,6 +17,10 @@ RUN  mkdir -p ${APP_BIN} ${APP_ROOT} \
      && apk add -U tzdata ttf-dejavu busybox-extras curl bash\
      && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
      && adduser -u 1001 -S -G root -g 0 -D -h ${APP_ROOT} -s /sbin/nologin go
+
+RUN mkdir /usr/share/ca-certificates/extra && \
+    cp -R /tmp/cert/*.crt /usr/local/share/ca-certificates/ && \
+    update-ca-certificates
 
 COPY ./manager ${APP_BIN}
 COPY ./config ${APP_ROOT}/config

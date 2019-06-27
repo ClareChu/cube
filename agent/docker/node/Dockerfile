@@ -10,8 +10,13 @@ ENV APP_ROOT=/opt/app-root \
 RUN  mkdir -p ${APP_BIN} ${APP_ROOT} ${HOME}\
      && apk update \
      && apk upgrade \
-     && apk add git  \
-     && apk add --no-cache python2.7
+     && apk add git
+
+ADD certs/* /tmp/cert/
+RUN apk add --no-cache ca-certificates && \
+    mkdir /usr/share/ca-certificates/extra && \
+    cp -R /tmp/cert/*.crt /usr/local/share/ca-certificates/ && \
+    update-ca-certificates
 
 WORKDIR  ${APP_ROOT}/
 COPY config ${APP_ROOT}/config

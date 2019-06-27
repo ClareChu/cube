@@ -12,6 +12,12 @@ RUN  mkdir -p ${APP_BIN} ${APP_ROOT} ${HOME}\
      && apk upgrade \
      && apk add git
 
+ADD certs/* /tmp/cert/
+RUN apk add --no-cache ca-certificates && \
+    mkdir /usr/share/ca-certificates/extra && \
+    cp -R /tmp/cert/*.crt /usr/local/share/ca-certificates/ && \
+    update-ca-certificates
+
 WORKDIR  ${HOME}/
 COPY config ${HOME}/config
 COPY agent ${HOME}/agent

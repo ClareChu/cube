@@ -18,6 +18,13 @@ RUN  mkdir -p ${APP_BIN} ${APP_ROOT} \
 
 WORKDIR ${APP_ROOT}
 
+
+ADD certs/* /tmp/cert/
+RUN apk add --no-cache ca-certificates && \
+    mkdir /usr/share/ca-certificates/extra && \
+    cp -R /tmp/cert/*.crt /usr/local/share/ca-certificates/ && \
+    update-ca-certificates
+
 ## install maven
 
 RUN wget http://mirror.bit.edu.cn/apache/maven/maven-3/3.6.1/binaries/apache-maven-3.6.1-bin.tar.gz \
