@@ -44,7 +44,7 @@ func newLogsCommand() *logsCommand {
 	pf.StringVarP(&c.profile, "profile", "P", "dev", "--profile=test")
 	pf.StringVarP(&c.project, "project", "p", "", "--project=project-name")
 	pf.StringVarP(&c.app, "app", "a", "", "--app=my-app")
-	//pf.StringVarP(&c.Version, "version", "V", "v1", "--version=my-app-version")
+	pf.StringVarP(&c.version, "version", "V", "v1", "--version=my-app-version")
 	//pf.BoolVarP(&c.verbose, "verbose", "v", false, "--verbose")
 	return c
 }
@@ -61,7 +61,7 @@ func (c *logsCommand) Run(args []string) error {
 		return err
 	}
 
-	pss := &api.PipelineRequest{AppRoot: c.app, Project: c.project, Version: "v1"}
+	pss := &api.PipelineRequest{AppRoot: c.app, Project: c.project, Version: c.version}
 	if _, err = api.StartInit(user, pss); err != nil {
 		return err
 	}
