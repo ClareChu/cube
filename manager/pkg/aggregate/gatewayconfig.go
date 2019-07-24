@@ -11,7 +11,6 @@ import (
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/utils/copier"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
-	"strings"
 )
 
 type GatewayConfigAggregate interface {
@@ -72,7 +71,6 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (gatewayConfig
 	template.Name = fmt.Sprintf("%s-%s", params.Namespace, params.Name)
 	template.Spec.UpstreamUrl = fmt.Sprintf("http://%s.%s.svc:8080", params.Name, params.Namespace)
 	uri := fmt.Sprintf("/%s/%s", project, params.Name)
-	uri = strings.Replace(uri, "-", "/", -1)
 	template.Spec.Uris = []string{uri}
 	copier.Copy(gatewayConfig, template)
 	gatewayConfig.TypeMeta = v1.TypeMeta{

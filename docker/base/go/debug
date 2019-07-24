@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+dlv attach --api-version=2 --log --headless --listen=:2345 $(pgrep ${APP_NAME}) /root/workspace/${APP_NAME}
