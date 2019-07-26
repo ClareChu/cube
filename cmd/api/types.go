@@ -97,6 +97,7 @@ type PipelineRequest struct {
 	Watch        bool             `json:"watch"`
 	Container    corev1.Container `json:"container"`
 	EnvVar       []string         `json:"envVar"`
+	Ports        []string         `json:"ports"`
 }
 
 type User struct {
@@ -119,4 +120,5 @@ type AppRequest struct {
 	Url          string           `json:"url"`
 	EnvVar       []string         `json:"envVar"`
 	Container    corev1.Container `json:"container"`
+	Ports        []string         `json:"ports"`
 }

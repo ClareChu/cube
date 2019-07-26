@@ -30,6 +30,7 @@ func newAppCommand() *appCommand {
 	pf.StringVarP(&c.Req.AppRoot, "appRoot", "r", "", "--appRoot=your-app-root")
 	pf.StringArrayVarP(&c.Req.EnvVar, "envVar", "e", nil, "--env=your-env")
 	pf.StringArrayVarP(&c.Req.Container.Command, "cmd", "c", nil, "--cmd=your-cmd")
+	pf.StringArrayVarP(&c.Req.Ports, "Ports", "o", nil, "--cmd=your-port")
 	return c
 }
 

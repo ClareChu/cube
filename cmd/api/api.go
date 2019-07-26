@@ -268,6 +268,26 @@ func App(app *AppRequest, server, token string) (err error) {
 		app.Namespace = app.Project
 	}
 
+	//if len(app.Ports) != 0 {
+	//	for _, po := range app.Ports {
+	//		//TODO 查找内部需要暴露的端口
+	//	 	port, err := strconv.ParseInt(strings.Split(po, ":")[0],10,32)
+	//		if err != nil {
+	//			return err
+	//		}
+	//	 	//TODO 判断协议
+	//		if port {}
+	//
+	//		p := corev1.ContainerPort{
+	//			ContainerPort:  int32(port),
+	//			Name:  strings.Split(po, ":")[0],
+	//			Protocol:
+	//
+	//		}
+	//		app.Container.Ports = append(app.Container.Ports, p)
+	//	}
+	//}
+
 	if len(app.EnvVar) != 0 {
 		for _, ev := range app.EnvVar {
 			e := corev1.EnvVar{

@@ -6,7 +6,7 @@
 
 export GROUP=hidevops
 export BINARY=agent
-export TAG=v1.1.3
+export TAG=v1.1.5
 
 
 GOOS=linux go build -o agent
@@ -27,32 +27,32 @@ docker login -u admin -p Harbor12345 harbor.cloud2go.cn
 
 cp docker/java/Dockerfile  Dockerfile
 
-docker build -t harbor.cloud2go.cn/hidevops/agent-java-jar:v1.1.3 .
+docker build -t harbor.cloud2go.cn/hidevops/agent-java-jar:v1.1.5 .
 
 rm -rf Dockerfile
 
-docker push harbor.cloud2go.cn/hidevops/agent-java-jar:v1.1.3
+docker push harbor.cloud2go.cn/hidevops/agent-java-jar:v1.1.5
 
 ## docker build go
 
 cp docker/go/Dockerfile  Dockerfile
 
-docker build -t harbor.cloud2go.cn/hidevops/agent-go:v1.1.3 .
+docker build -t harbor.cloud2go.cn/hidevops/agent-go:v1.1.5 .
 
 rm -rf Dockerfile
 
-docker push harbor.cloud2go.cn/hidevops/agent-go:v1.1.3
+docker push harbor.cloud2go.cn/hidevops/agent-go:v1.1.5
 
 
 ## docker build node
 
 cp docker/node/Dockerfile  Dockerfile
 
-docker build -t harbor.cloud2go.cn/hidevops/agent-node:v1.1.3 .
+docker build -t harbor.cloud2go.cn/hidevops/agent-node:v1.1.5 .
 
 rm -rf Dockerfile
 
-docker push harbor.cloud2go.cn/hidevops/agent-node:v1.1.3
+docker push harbor.cloud2go.cn/hidevops/agent-node:v1.1.5
 
 
 rm -rf agent

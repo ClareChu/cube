@@ -10,7 +10,7 @@ ENV APP_ROOT=/opt/app-root \
 RUN  mkdir -p ${APP_BIN} ${APP_ROOT} ${HOME}\
      && apk update \
      && apk upgrade \
-     && apk add git
+     && apk add git gcc libc-dev
 
 ADD certs/* /tmp/cert/
 RUN apk add --no-cache ca-certificates && \

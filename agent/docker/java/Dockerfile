@@ -12,7 +12,7 @@ RUN  mkdir -p ${APP_BIN} ${APP_ROOT} \
      && apk update \
      && apk upgrade \
      && apk --no-cache add ca-certificates iputils\
-     && apk add -U tzdata ttf-dejavu busybox-extras curl bash git curl\
+     && apk add -U tzdata ttf-dejavu busybox-extras curl bash git curl libc-dev\
      && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
      && adduser -u 1001 -S -G root -g 0 -D -h ${APP_ROOT} -s /sbin/nologin java
 
