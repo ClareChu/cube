@@ -98,6 +98,6 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (gatewayConfig
 		phase = constant.Fail
 	}
 
-	err = s.pipelineBuilder.Update(params.PipelineName, project, constant.CreateService, phase, "")
+	err = s.pipelineBuilder.Update(params.PipelineName, project, constant.Gateway, phase, "")
 	return
 }

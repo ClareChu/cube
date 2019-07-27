@@ -42,10 +42,10 @@ const (
 func (i *imageStreamServiceImpl) CreateImage(params *command.PipelineReqParams) error {
 	err := i.Create(params.Name, params.Namespace, params.Images)
 	if err != nil {
-		i.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.CreateService, constant.Fail, "")
+		i.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.ImageStream, constant.Fail, "")
 		return err
 	}
-	err = i.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.CreateService, constant.Success, "")
+	err = i.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.ImageStream, constant.Success, "")
 	return err
 }
 

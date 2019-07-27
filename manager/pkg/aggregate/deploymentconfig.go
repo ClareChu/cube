@@ -93,6 +93,7 @@ func (d *DeploymentConfig) Create(param *command.PipelineReqParams, buildVersion
 	return
 }
 
+//TODO 初始化 init deploy config
 func (d *DeploymentConfig) InitDeployConfig(deploy *v1alpha1.DeploymentConfig, template *v1alpha1.DeploymentConfig, param *command.PipelineReqParams) {
 	deploy.Spec = template.Spec
 	deploy.Spec.Profile = param.Profile
@@ -114,7 +115,27 @@ func (d *DeploymentConfig) InitDeployConfig(deploy *v1alpha1.DeploymentConfig, t
 		}
 		envVars = append(envVars, envVar)
 	}
+	if param.Volume.Name != "" {
+		deploy.Spec.Volumes = []corev1.Volume{
+			corev1.Volume{
+				Name: param.Volume.Name,
+				VolumeSource: corev1.VolumeSource{
+					PersistentVolumeClaim: &corev1.PersistentVolumeClaimVolumeSource{
+						ClaimName: param.Volume.Name,
+					},
+				},
+			},
+		}
+		deploy.Spec.Container.VolumeMounts = []corev1.VolumeMount{
+			corev1.VolumeMount{
+				Name: param.Volume.Name,
+				MountPath: param.Volume.Workspace,
+			},
+		}
+	}
+
 	deploy.Spec.Container.Name = param.Name
+
 	deploy.Spec.Container.Env = envVars
 	deploy.Status.LastVersion = deploy.Status.LastVersion + 1
 }

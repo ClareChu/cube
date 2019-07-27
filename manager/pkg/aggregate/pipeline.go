@@ -35,13 +35,18 @@ type Pipeline struct {
 	serviceConfigAggregate    ServiceConfigAggregate
 	gatewayConfigAggregate    GatewayConfigAggregate
 	imageStreamAggregate      ImageStreamAggregate
+	volumeAggregate           VolumeAggregate
 }
 
 func init() {
 	app.Register(NewPipelineService)
 }
 
-func NewPipelineService(pipelineClient *cube.Pipeline, buildConfigAggregate BuildConfigAggregate, deploymentConfigAggregate DeploymentConfigAggregate, pipelineBuilder builder.PipelineBuilder, serviceConfigAggregate ServiceConfigAggregate, gatewayConfigAggregate GatewayConfigAggregate, imageStreamAggregate ImageStreamAggregate) PipelineAggregate {
+func NewPipelineService(pipelineClient *cube.Pipeline,
+	buildConfigAggregate BuildConfigAggregate, deploymentConfigAggregate DeploymentConfigAggregate,
+	pipelineBuilder builder.PipelineBuilder, serviceConfigAggregate ServiceConfigAggregate,
+	gatewayConfigAggregate GatewayConfigAggregate, imageStreamAggregate ImageStreamAggregate,
+	volumeAggregate VolumeAggregate) PipelineAggregate {
 	return &Pipeline{
 		pipelineClient:            pipelineClient,
 		buildConfigAggregate:      buildConfigAggregate,
@@ -50,6 +55,7 @@ func NewPipelineService(pipelineClient *cube.Pipeline, buildConfigAggregate Buil
 		serviceConfigAggregate:    serviceConfigAggregate,
 		gatewayConfigAggregate:    gatewayConfigAggregate,
 		imageStreamAggregate:      imageStreamAggregate,
+		volumeAggregate:           volumeAggregate,
 	}
 }
 
@@ -159,16 +165,16 @@ func (p *Pipeline) Selector(pipeline *v1alpha1.Pipeline) (err error) {
 		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.BuildPipeline, constant.Created, "")
 		return
 	case constant.Deploy:
+		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.Deploy, constant.Created, "")
 		go func() {
 			p.deploymentConfigAggregate.Create(params, pipeline.Labels[constant.BuildPipeline])
 		}()
-		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.Deploy, constant.Created, "")
 		return
 	case constant.Service:
+		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.Service, constant.Created, "")
 		go func() {
 			p.serviceConfigAggregate.Create(params)
 		}()
-		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.Service, constant.Created, "")
 		return
 	case constant.Gateway:
 		go func() {
@@ -180,6 +186,12 @@ func (p *Pipeline) Selector(pipeline *v1alpha1.Pipeline) (err error) {
 			p.imageStreamAggregate.CreateImage(params)
 		}()
 		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.ImageStream, constant.Created, "")
+	case constant.Volume:
+		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.Volume, constant.Created, "")
+		go func() {
+			p.volumeAggregate.Create(params)
+		}()
+
 	default:
 		return
 	}
@@ -200,6 +212,7 @@ func (p *Pipeline) InitReqParams(pipeline *v1alpha1.Pipeline, eventType string) 
 		Project:      pipeline.Spec.Project,
 		Container:    pipeline.Spec.Container,
 		Images:       pipeline.Spec.Images,
+		Volume:       pipeline.Spec.Volumes,
 	}
 	return
 }

@@ -10,6 +10,7 @@ const (
 	DeployNode             = "deployNode"
 	CreateService          = "createService"
 	DeleteDeployment       = "deleteDeployment"
+	Volume                 = "volume"
 	Complete               = "complete"
 	Ending                 = "ending"
 	PipelineName           = "pipelineName"
