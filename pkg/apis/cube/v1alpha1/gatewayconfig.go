@@ -25,7 +25,8 @@ type GatewayConfig struct {
 
 type GatewaySpec struct {
 	Hosts                  []string `json:"hosts" protobuf:"bytes,1,opt,name=hosts"`
-	Profile                string   `json:"profile" protobuf:"bytes,1,opt,name=profile"`
+	Port                   int32    `json:"port" protobuf:"bytes,15,opt,name=port"`
+	Profile                string   `json:"profile" protobuf:"bytes,2,opt,name=profile"`
 	Uris                   []string `json:"uris" protobuf:"bytes,3,opt,name=uris"`
 	UpstreamUrl            string   `json:"upstreamUrl" protobuf:"bytes,4,opt,name=upstreamUrl"`
 	StripUri               bool     `json:"stripUri" protobuf:"bytes,5,opt,name=stripUri"`

@@ -43,6 +43,7 @@ type PipelineSpec struct {
 	AppRoot   string           `json:"appRoot" protobuf:"bytes,8,opt,name=appRoot"`
 	Events    []Events         `json:"events" protobuf:"bytes,9,opt,name=events"`
 	Container corev1.Container `json:"container" protobuf:"bytes,10,opt,name=container"`
+	Images    []string         `json:"images"`
 }
 
 type Events struct {
