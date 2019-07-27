@@ -34,13 +34,14 @@ type Pipeline struct {
 	pipelineBuilder           builder.PipelineBuilder
 	serviceConfigAggregate    ServiceConfigAggregate
 	gatewayConfigAggregate    GatewayConfigAggregate
+	imageStreamAggregate      ImageStreamAggregate
 }
 
 func init() {
 	app.Register(NewPipelineService)
 }
 
-func NewPipelineService(pipelineClient *cube.Pipeline, buildConfigAggregate BuildConfigAggregate, deploymentConfigAggregate DeploymentConfigAggregate, pipelineBuilder builder.PipelineBuilder, serviceConfigAggregate ServiceConfigAggregate, gatewayConfigAggregate GatewayConfigAggregate) PipelineAggregate {
+func NewPipelineService(pipelineClient *cube.Pipeline, buildConfigAggregate BuildConfigAggregate, deploymentConfigAggregate DeploymentConfigAggregate, pipelineBuilder builder.PipelineBuilder, serviceConfigAggregate ServiceConfigAggregate, gatewayConfigAggregate GatewayConfigAggregate, imageStreamAggregate ImageStreamAggregate) PipelineAggregate {
 	return &Pipeline{
 		pipelineClient:            pipelineClient,
 		buildConfigAggregate:      buildConfigAggregate,
@@ -48,6 +49,7 @@ func NewPipelineService(pipelineClient *cube.Pipeline, buildConfigAggregate Buil
 		pipelineBuilder:           pipelineBuilder,
 		serviceConfigAggregate:    serviceConfigAggregate,
 		gatewayConfigAggregate:    gatewayConfigAggregate,
+		imageStreamAggregate:      imageStreamAggregate,
 	}
 }
 
@@ -173,6 +175,11 @@ func (p *Pipeline) Selector(pipeline *v1alpha1.Pipeline) (err error) {
 			p.gatewayConfigAggregate.Create(params)
 		}()
 		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.Gateway, constant.Created, "")
+	case constant.ImageStream:
+		go func() {
+			p.imageStreamAggregate.CreateImage(params)
+		}()
+		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.ImageStream, constant.Created, "")
 	default:
 		return
 	}
@@ -192,6 +199,7 @@ func (p *Pipeline) InitReqParams(pipeline *v1alpha1.Pipeline, eventType string) 
 		AppRoot:      pipeline.Spec.AppRoot,
 		Project:      pipeline.Spec.Project,
 		Container:    pipeline.Spec.Container,
+		Images:       pipeline.Spec.Images,
 	}
 	return
 }

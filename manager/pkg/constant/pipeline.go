@@ -17,6 +17,7 @@ const (
 	Created            = "created"
 	Service            = "service"
 	Gateway            = "gateway"
+	ImageStream        = "imageStream"
 	PipelineConfigName = "pipelineConfigName"
 	CodeType           = "codeType"
 	BuildVersion       = "buildVersion"

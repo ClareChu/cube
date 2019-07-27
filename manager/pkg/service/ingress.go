@@ -36,8 +36,8 @@ func (i *Ingress) CreateIngress(gatewayConfig *v1alpha1.GatewayConfig) (err erro
 		ObjectMeta: v1.ObjectMeta{
 			Annotations: map[string]string{
 				"traefik.ingress.kubernetes.io/rewrite-target": "/",
-				"kubernetes.io/ingress.class": "traefik",
-				"traefik.frontend.rule.type":"PathPrefixStrip",
+				"kubernetes.io/ingress.class":                  "traefik",
+				"traefik.frontend.rule.type":                   "PathPrefixStrip",
 			},
 			Name:      gatewayConfig.Name,
 			Namespace: gatewayConfig.Namespace,
@@ -54,7 +54,7 @@ func (i *Ingress) CreateIngress(gatewayConfig *v1alpha1.GatewayConfig) (err erro
 									Backend: v1beta1.IngressBackend{
 										ServiceName: gatewayConfig.Name,
 										ServicePort: intstr.IntOrString{
-											IntVal: 8080,
+											IntVal: gatewayConfig.Spec.Port,
 										},
 									},
 								},

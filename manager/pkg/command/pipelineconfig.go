@@ -20,7 +20,26 @@ type PipelineStart struct {
 	Path              string           `json:"path"`
 	Project           string           `json:"project" validate:"required"`
 	Url               string           `json:"url"`
+	Domain            string           `json:"domain"`
 	Container         corev1.Container `json:"container"`
+	Images            []string         `json:"images"`
+	Volume            Volume           `json:"volume"`
+	Rules             []Rules          `json:"rules"`
+	Callback          string           `json:"callback"`
+	IsApp             bool             `json:"isApp"`
+}
+
+type Rules struct {
+	Host string
+	Path string
+}
+
+type Volume struct {
+	Workspace        string
+	User             string
+	Size             string
+	Storage          string
+	StorageClassName string
 }
 
 type PipelineConfigTemplate struct {
@@ -58,4 +77,5 @@ type PipelineReqParams struct {
 	Profile      string           `json:"profile"`
 	Project      string           `json:"project"`
 	Container    corev1.Container `json:"container"`
+	Images       []string         `json:"images"`
 }
