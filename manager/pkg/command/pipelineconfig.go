@@ -9,23 +9,25 @@ import (
 
 type PipelineStart struct {
 	model.RequestBody `json:"omitempty"`
-	Name              string           `json:"name" validate:"required"`
-	Namespace         string           `json:"namespace"`
-	TemplateName      string           `json:"templateName"`
-	Version           string           `json:"version" default:"v1"`
-	Profile           string           `json:"profile"`
-	Branch            string           `json:"branch"`
-	Context           []string         `json:"context"`
-	AppRoot           string           `json:"appRoot"`
-	Path              string           `json:"path"`
-	Project           string           `json:"project" validate:"required"`
-	Url               string           `json:"url"`
-	Domain            string           `json:"domain"`
-	Container         corev1.Container `json:"container"`
-	Images            []string         `json:"images"`
-	Volumes           v1alpha1.Volumes `json:"volumes"`
-	Callback          string           `json:"callback"`
-	IsApp             bool             `json:"isApp"`
+	Name              string   `json:"name" validate:"required"`
+	Namespace         string   `json:"namespace"`
+	TemplateName      string   `json:"templateName"`
+	Version           string   `json:"version" default:"v1"`
+	Profile           string   `json:"profile"`
+	Branch            string   `json:"branch"`
+	Context           []string `json:"context"`
+	AppRoot           string   `json:"appRoot"`
+	//获取path 的目录
+	Path    string `json:"path"`
+	Project string `json:"project" validate:"required"`
+	//gitUrl
+	Url       string           `json:"url"`
+	Ingress   v1alpha1.Ingress `json:"ingress"`
+	Container corev1.Container `json:"container"`
+	Images    []string         `json:"images"`
+	Volumes   v1alpha1.Volumes `json:"volumes"`
+	Callback  string           `json:"callback"`
+	IsApp     bool             `json:"isApp"`
 }
 
 type PipelineConfigTemplate struct {
@@ -65,4 +67,5 @@ type PipelineReqParams struct {
 	Container    corev1.Container `json:"container"`
 	Images       []string         `json:"images"`
 	Volume       v1alpha1.Volumes `json:"volume"`
+	Ingress      v1alpha1.Ingress `json:"ingress"`
 }

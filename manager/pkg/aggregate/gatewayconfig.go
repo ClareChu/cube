@@ -71,6 +71,9 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (gatewayConfig
 	template.Name = fmt.Sprintf("%s-%s", params.Namespace, params.Name)
 	template.Spec.UpstreamUrl = fmt.Sprintf("http://%s.%s.svc:8080", params.Name, params.Namespace)
 	uri := fmt.Sprintf("/%s/%s", project, params.Name)
+	if params.Ingress.Path != "" {
+		uri = params.Ingress.Path
+	}
 	template.Spec.Uris = []string{uri}
 	copier.Copy(gatewayConfig, template)
 	gatewayConfig.TypeMeta = v1.TypeMeta{
@@ -97,7 +100,6 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (gatewayConfig
 		log.Errorf("create gateway err : %v", err)
 		phase = constant.Fail
 	}
-
 	err = s.pipelineBuilder.Update(params.PipelineName, project, constant.Gateway, phase, "")
 	return
 }

@@ -107,6 +107,7 @@ func (s *Start) Init(cmd *command.PipelineStart, propMap map[string]string) (err
 			Container:    cmd.Container,
 			Images:       cmd.Images,
 			Volumes:      cmd.Volumes,
+			Ingress:      cmd.Ingress,
 		}
 		go func() {
 			_, err = s.pipelineConfigAggregate.StartPipelineConfig(&command)

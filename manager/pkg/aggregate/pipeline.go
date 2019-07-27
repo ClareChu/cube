@@ -213,6 +213,7 @@ func (p *Pipeline) InitReqParams(pipeline *v1alpha1.Pipeline, eventType string) 
 		Container:    pipeline.Spec.Container,
 		Images:       pipeline.Spec.Images,
 		Volume:       pipeline.Spec.Volumes,
+		Ingress:      pipeline.Spec.Ingress,
 	}
 	return
 }
