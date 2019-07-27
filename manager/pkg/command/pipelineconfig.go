@@ -24,14 +24,8 @@ type PipelineStart struct {
 	Container         corev1.Container `json:"container"`
 	Images            []string         `json:"images"`
 	Volumes           v1alpha1.Volumes `json:"volumes"`
-	Rules             []Rules          `json:"rules"`
 	Callback          string           `json:"callback"`
 	IsApp             bool             `json:"isApp"`
-}
-
-type Rules struct {
-	Host string `json:"host"`
-	Path string `json:"path"`
 }
 
 type PipelineConfigTemplate struct {
