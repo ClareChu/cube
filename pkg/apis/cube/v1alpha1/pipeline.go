@@ -45,9 +45,14 @@ type PipelineSpec struct {
 	Container corev1.Container `json:"container" protobuf:"bytes,10,opt,name=container"`
 	Images    []string         `json:"images" protobuf:"bytes,10,opt,name=images"`
 	Volumes   Volumes          `json:"volumes" protobuf:"bytes,11,opt,name=volumes"`
-	Domain    string           `json:"domain" protobuf:"bytes,12,opt,name=damain"`
+	Domain    string           `json:"domain" protobuf:"bytes,12,opt,name=domain"`
 	Url       string           `json:"url" protobuf:"bytes,13,opt,name=url"`
-	Path      string           `json:"path" protobuf:"bytes,14,opt,name=path"`
+	Ingress   Ingress          `json:"ingress" protobuf:"bytes,14,opt,name=ingress"`
+}
+
+type Ingress struct {
+	Path   string `json:"path" protobuf:"bytes,1,opt,name=path"`
+	Domain string `json:"domain" protobuf:"bytes,2,opt,name=domain"`
 }
 
 type Volumes struct {
