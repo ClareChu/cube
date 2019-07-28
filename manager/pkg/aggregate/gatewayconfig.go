@@ -11,6 +11,7 @@ import (
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/utils/copier"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	"strings"
 )
 
 type GatewayConfigAggregate interface {
@@ -74,7 +75,16 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (gatewayConfig
 	if params.Ingress.Path != "" {
 		uri = params.Ingress.Path
 	}
-	template.Spec.Uris = []string{uri}
+	if params.Ingress.Path != "" {
+		container := strings.Index(params.Ingress.Path, "/")
+		if container == -1 || container != 0 {
+			uri = fmt.Sprintf("/%s", params.Ingress.Path)
+		} else {
+			uri = params.Ingress.Path
+		}
+		template.Spec.Uris = []string{uri}
+	}
+	template.Spec.Hosts = []string{params.Ingress.Domain}
 	copier.Copy(gatewayConfig, template)
 	gatewayConfig.TypeMeta = v1.TypeMeta{
 		Kind:       constant.GatewayConfigKind,

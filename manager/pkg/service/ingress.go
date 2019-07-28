@@ -31,7 +31,7 @@ func NewIngress(ingress *kube.Ingress) IngressService {
 
 func (i *Ingress) CreateIngress(gatewayConfig *v1alpha1.GatewayConfig) (err error) {
 	log.Debugf("create ingress name: %v  namespace: %v", gatewayConfig.Name, gatewayConfig.Namespace)
-	ing, err := i.ingress.Get(gatewayConfig.Name, gatewayConfig.Namespace, v1.GetOptions{})
+	ing, err := i.ingress.Get(gatewayConfig.Namespace, gatewayConfig.Name, v1.GetOptions{})
 	ingress := &v1beta1.Ingress{
 		ObjectMeta: v1.ObjectMeta{
 			Annotations: map[string]string{
