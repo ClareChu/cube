@@ -2,6 +2,7 @@ package builder
 
 import (
 	"fmt"
+	"github.com/jinzhu/copier"
 	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/cube/manager/pkg/constant"
 	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
@@ -12,7 +13,6 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	extensionsV1beta1 "k8s.io/api/extensions/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/util/intstr"
 	"time"
 )
 
@@ -74,14 +74,10 @@ func (d *Deployment) CreateApp(deploy *v1alpha1.Deployment) error {
 		return err
 	}
 	deploy.Spec.Container.Image = i.Spec.Tags[constant.Latest].DockerImageReference
-	dd := &command.DeployData{
-		Name:      deploy.Labels[constant.DeploymentConfig],
-		Namespace: deploy.Namespace,
-		Container: deploy.Spec.Container,
-		Volumes:   deploy.Spec.Volumes,
-		Replicas:  deploy.Spec.Replicas,
-		Version:   deploy.Spec.Version,
-	}
+	dd := &command.DeployData{}
+	copier.Copy(dd, &deploy.Spec)
+	dd.Name = deploy.Labels[constant.DeploymentConfig]
+	dd.Namespace = deploy.Namespace
 	_, err = d.Create(dd)
 	if err != nil {
 		log.Errorf("create app :%v", err)
@@ -96,6 +92,12 @@ func int32Ptr(i int32) *int32 { return &i }
 
 func (d *Deployment) Create(dd *command.DeployData) (*extensionsV1beta1.Deployment, error) {
 	runAsRoot := false
+	containers := []corev1.Container{}
+	if dd.InitContainer.Name != "" {
+		containers = append(containers, dd.InitContainer)
+	} else {
+		containers = nil
+	}
 	dpm := &extensionsV1beta1.Deployment{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "Deployment",
@@ -111,20 +113,8 @@ func (d *Deployment) Create(dd *command.DeployData) (*extensionsV1beta1.Deployme
 		},
 
 		Spec: extensionsV1beta1.DeploymentSpec{
-			Replicas: dd.Replicas,
-			Strategy: extensionsV1beta1.DeploymentStrategy{
-				Type: extensionsV1beta1.RollingUpdateDeploymentStrategyType,
-				RollingUpdate: &extensionsV1beta1.RollingUpdateDeployment{
-					MaxUnavailable: &intstr.IntOrString{
-						Type:   intstr.Int,
-						IntVal: int32(0),
-					},
-					MaxSurge: &intstr.IntOrString{
-						Type:   intstr.Int,
-						IntVal: int32(1),
-					},
-				},
-			},
+			Replicas:             dd.Replicas,
+			Strategy:             dd.Strategy,
 			RevisionHistoryLimit: int32Ptr(10),
 			Template: corev1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
@@ -142,6 +132,7 @@ func (d *Deployment) Create(dd *command.DeployData) (*extensionsV1beta1.Deployme
 					Containers: []corev1.Container{
 						dd.Container,
 					},
+					InitContainers: containers,
 					Volumes: dd.Volumes,
 				},
 			},

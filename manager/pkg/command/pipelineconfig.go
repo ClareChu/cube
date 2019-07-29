@@ -21,13 +21,14 @@ type PipelineStart struct {
 	Path    string `json:"path"`
 	Project string `json:"project" validate:"required"`
 	//gitUrl
-	Url       string           `json:"url"`
-	Ingress   v1alpha1.Ingress `json:"ingress"`
-	Container corev1.Container `json:"container"`
-	Images    []string         `json:"images"`
-	Volumes   v1alpha1.Volumes `json:"volumes"`
-	Callback  string           `json:"callback"`
-	IsApp     bool             `json:"isApp"`
+	Url           string           `json:"url"`
+	Ingress       v1alpha1.Ingress `json:"ingress"`
+	Container     corev1.Container `json:"container"`
+	InitContainer corev1.Container `json:"initContainer"`
+	Images        []string         `json:"images"`
+	Volumes       v1alpha1.Volumes `json:"volumes"`
+	Callback      string           `json:"callback"`
+	IsApp         bool             `json:"isApp"`
 }
 
 type PipelineConfigTemplate struct {
@@ -54,18 +55,19 @@ type StartPipeline struct {
 }
 
 type PipelineReqParams struct {
-	Name         string           `json:"name"`
-	PipelineName string           `json:"pipeline_name"`
-	Namespace    string           `json:"namespace"`
-	EventType    string           `json:"event_type"`
-	Version      string           `json:"version"`
-	Branch       string           `json:"branch"`
-	Context      string           `json:"context"`
-	AppRoot      string           `json:"app_root"`
-	Profile      string           `json:"profile"`
-	Project      string           `json:"project"`
-	Container    corev1.Container `json:"container"`
-	Images       []string         `json:"images"`
-	Volume       v1alpha1.Volumes `json:"volume"`
-	Ingress      v1alpha1.Ingress `json:"ingress"`
+	Name          string           `json:"name"`
+	PipelineName  string           `json:"pipeline_name"`
+	Namespace     string           `json:"namespace"`
+	EventType     string           `json:"event_type"`
+	Version       string           `json:"version"`
+	Branch        string           `json:"branch"`
+	Context       string           `json:"context"`
+	AppRoot       string           `json:"app_root"`
+	Profile       string           `json:"profile"`
+	Project       string           `json:"project"`
+	Container     corev1.Container `json:"container"`
+	InitContainer corev1.Container `json:"initContainer"`
+	Images        []string         `json:"images"`
+	Volumes       v1alpha1.Volumes `json:"volumes"`
+	Ingress       v1alpha1.Ingress `json:"ingress"`
 }

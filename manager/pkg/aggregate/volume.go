@@ -36,11 +36,11 @@ func NewVolumeService(persistentVolumeClaim *kube.PersistentVolumeClaim, pipelin
 }
 
 func (v *volumeServiceImpl) Create(params *command.PipelineReqParams) (err error) {
-	if params.Volume.Name == "" {
+	if params.Volumes.Name == "" {
 		err = v.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.CreateService, constant.Success, "")
 		return err
 	}
-	err = v.CreateVolume(params.Namespace, params.Volume)
+	err = v.CreateVolume(params.Namespace, params.Volumes)
 	if err != nil {
 		v.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.CreateService, constant.Fail, "")
 		return err
@@ -69,7 +69,7 @@ func (v *volumeServiceImpl) CreateVolume(namespace string, volume v1alpha1.Volum
 			Namespace: namespace,
 		},
 		Spec: corev1.PersistentVolumeClaimSpec{
-			AccessModes:      []corev1.PersistentVolumeAccessMode{corev1.ReadWriteOnce},
+			AccessModes:      []corev1.PersistentVolumeAccessMode{corev1.ReadWriteMany},
 			StorageClassName: &volume.StorageClassName,
 			Resources: corev1.ResourceRequirements{
 				Requests: corev1.ResourceList{

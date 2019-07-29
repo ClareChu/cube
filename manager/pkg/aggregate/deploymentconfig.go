@@ -9,9 +9,10 @@ import (
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/utils/copier"
-	"hidevops.io/hioak/starter/kube"
 	corev1 "k8s.io/api/core/v1"
+	extensionsV1beta1 "k8s.io/api/extensions/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
 type DeploymentConfigAggregate interface {
@@ -23,7 +24,6 @@ type DeploymentConfigAggregate interface {
 type DeploymentConfig struct {
 	DeploymentConfigAggregate
 	deploymentConfigClient *cube.DeploymentConfig
-	deployment             *kube.Deployment
 	pipelineBuilder        builder.PipelineBuilder
 	deploymentAggregate    DeploymentAggregate
 }
@@ -32,10 +32,9 @@ func init() {
 	app.Register(NewDeploymentConfigService)
 }
 
-func NewDeploymentConfigService(deploymentConfigClient *cube.DeploymentConfig, deployment *kube.Deployment, pipelineBuilder builder.PipelineBuilder, deploymentAggregate DeploymentAggregate) DeploymentConfigAggregate {
+func NewDeploymentConfigService(deploymentConfigClient *cube.DeploymentConfig, pipelineBuilder builder.PipelineBuilder, deploymentAggregate DeploymentAggregate) DeploymentConfigAggregate {
 	return &DeploymentConfig{
 		deploymentConfigClient: deploymentConfigClient,
-		deployment:             deployment,
 		pipelineBuilder:        pipelineBuilder,
 		deploymentAggregate:    deploymentAggregate,
 	}
@@ -115,27 +114,54 @@ func (d *DeploymentConfig) InitDeployConfig(deploy *v1alpha1.DeploymentConfig, t
 		}
 		envVars = append(envVars, envVar)
 	}
-	if param.Volume.Name != "" {
+	if param.Volumes.Name != "" {
+		deploy.Spec.Strategy.Type = extensionsV1beta1.RecreateDeploymentStrategyType
 		deploy.Spec.Volumes = []corev1.Volume{
 			corev1.Volume{
-				Name: param.Volume.Name,
+				Name: param.Volumes.Name,
 				VolumeSource: corev1.VolumeSource{
 					PersistentVolumeClaim: &corev1.PersistentVolumeClaimVolumeSource{
-						ClaimName: param.Volume.Name,
+						ClaimName: param.Volumes.Name,
 					},
 				},
 			},
 		}
 		deploy.Spec.Container.VolumeMounts = []corev1.VolumeMount{
 			corev1.VolumeMount{
-				Name: param.Volume.Name,
-				MountPath: param.Volume.Workspace,
+				Name:      param.Volumes.Name,
+				MountPath: param.Volumes.Workspace,
+			},
+		}
+	} else {
+		deploy.Spec.Strategy = extensionsV1beta1.DeploymentStrategy{
+			Type: extensionsV1beta1.RollingUpdateDeploymentStrategyType,
+			RollingUpdate: &extensionsV1beta1.RollingUpdateDeployment{
+				MaxUnavailable: &intstr.IntOrString{
+					Type:   intstr.Int,
+					IntVal: int32(0),
+				},
+				MaxSurge: &intstr.IntOrString{
+					Type:   intstr.Int,
+					IntVal: int32(1),
+				},
 			},
 		}
 	}
-
+	if param.InitContainer.Name != "" {
+		deploy.Spec.InitContainer = corev1.Container{
+			Name:            param.InitContainer.Name,
+			Image:           param.InitContainer.Image,
+			Command:         param.InitContainer.Command,
+			ImagePullPolicy: corev1.PullAlways,
+			VolumeMounts: []corev1.VolumeMount{
+				corev1.VolumeMount{
+					Name:      param.Volumes.Name,
+					MountPath: param.Volumes.Workspace,
+				},
+			},
+		}
+	}
 	deploy.Spec.Container.Name = param.Name
-
 	deploy.Spec.Container.Env = envVars
 	deploy.Status.LastVersion = deploy.Status.LastVersion + 1
 }

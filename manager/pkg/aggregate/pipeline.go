@@ -199,21 +199,11 @@ func (p *Pipeline) Selector(pipeline *v1alpha1.Pipeline) (err error) {
 }
 
 func (p *Pipeline) InitReqParams(pipeline *v1alpha1.Pipeline, eventType string) (params *command.PipelineReqParams) {
-	params = &command.PipelineReqParams{
-		PipelineName: pipeline.Name,
-		Name:         pipeline.Labels[constant.PipelineConfigName],
-		Namespace:    pipeline.Namespace,
-		EventType:    eventType,
-		Version:      pipeline.Spec.Version,
-		Profile:      pipeline.Spec.Profile,
-		Branch:       pipeline.Spec.Branch,
-		Context:      pipeline.Spec.Context,
-		AppRoot:      pipeline.Spec.AppRoot,
-		Project:      pipeline.Spec.Project,
-		Container:    pipeline.Spec.Container,
-		Images:       pipeline.Spec.Images,
-		Volume:       pipeline.Spec.Volumes,
-		Ingress:      pipeline.Spec.Ingress,
-	}
+	params = &command.PipelineReqParams{}
+	copier.Copy(params, &pipeline.Spec)
+	params.EventType = eventType
+	params.Name = pipeline.Labels[constant.PipelineConfigName]
+	params.PipelineName = pipeline.Name
+	params.Namespace = pipeline.Namespace
 	return
 }
