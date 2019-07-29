@@ -2,6 +2,7 @@ package v1alpha1
 
 import (
 	corev1 "k8s.io/api/core/v1"
+	appsv1 "k8s.io/api/extensions/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -25,19 +26,21 @@ type DeploymentConfig struct {
 }
 
 type DeploymentConfigSpec struct {
-	NodeSelector     map[string]string    `json:"nodeSelector" protobuf:"bytes,1,opt,name=nodeSelector"`
-	Image            string               `json:"image"  protobuf:"bytes,2,opt,name=image"`
-	EnvType          []string             `json:"envType" protobuf:"bytes,3,opt,name=envType"`
-	Labels           map[string]string    `json:"labels"  protobuf:"bytes,4,opt,name=labels"`
-	DockerRegistry   string               `json:"dockerRegistry" protobuf:"bytes,5,opt,name=dockerRegistry"`
-	Replicas         *int32               `json:"replicas" protobuf:"bytes,6,opt,name=replicas"`
-	Profile          string               `json:"profile"  protobuf:"bytes,7,opt,name=profile"`
-	FromRegistry     string               `json:"fromRegistry" protobuf:"bytes,8,opt,name=fromRegistry"`
-	Tag              string               `json:"tag" protobuf:"bytes,9,opt,name=tag"`
-	Version          string               `json:"version" protobuf:"bytes,10,opt,name=version"`
-	DockerAuthConfig AuthConfig           `json:"dockerAuthConfig" protobuf:"bytes,11,opt,name=dockerAuthConfig"`
-	Volumes          []corev1.Volume      `json:"volume" protobuf:"bytes,12,opt,name=volume"`
-	Container        corev1.Container     `json:"container" protobuf:"bytes,13,opt,name=container"`
+	NodeSelector     map[string]string         `json:"nodeSelector" protobuf:"bytes,1,opt,name=nodeSelector"`
+	Image            string                    `json:"image"  protobuf:"bytes,2,opt,name=image"`
+	EnvType          []string                  `json:"envType" protobuf:"bytes,3,opt,name=envType"`
+	Labels           map[string]string         `json:"labels"  protobuf:"bytes,4,opt,name=labels"`
+	DockerRegistry   string                    `json:"dockerRegistry" protobuf:"bytes,5,opt,name=dockerRegistry"`
+	Replicas         *int32                    `json:"replicas" protobuf:"bytes,6,opt,name=replicas"`
+	Profile          string                    `json:"profile"  protobuf:"bytes,7,opt,name=profile"`
+	FromRegistry     string                    `json:"fromRegistry" protobuf:"bytes,8,opt,name=fromRegistry"`
+	Tag              string                    `json:"tag" protobuf:"bytes,9,opt,name=tag"`
+	Version          string                    `json:"version" protobuf:"bytes,10,opt,name=version"`
+	DockerAuthConfig AuthConfig                `json:"dockerAuthConfig" protobuf:"bytes,11,opt,name=dockerAuthConfig"`
+	Volumes          []corev1.Volume           `json:"volume" protobuf:"bytes,12,opt,name=volume"`
+	Container        corev1.Container          `json:"container" protobuf:"bytes,13,opt,name=container"`
+	Strategy         appsv1.DeploymentStrategy `json:"strategy,omitempty" protobuf:"bytes,14,opt,name=strategy"`
+	InitContainer    corev1.Container          `json:"initContainer" protobuf:"bytes,15,opt,name=initContainer"`
 }
 
 type DeploymentConfigStatus struct {

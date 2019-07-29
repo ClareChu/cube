@@ -33,21 +33,22 @@ type Pipeline struct {
 }
 
 type PipelineSpec struct {
-	App       string           `json:"app"  protobuf:"bytes,1,opt,name=app"`
-	Profile   string           `json:"profile"  protobuf:"bytes,2,opt,name=profile"`
-	Project   string           `json:"project"  protobuf:"bytes,3,opt,name=project"`
-	Namespace string           `json:"namespace"  protobuf:"bytes,4,opt,name=namespace"`
-	Version   string           `json:"version"  protobuf:"bytes,5,opt,name=version"`
-	Branch    string           `json:"branch" protobuf:"bytes,6,opt,name=branch"`
-	Context   string           `json:"context" protobuf:"bytes,7,opt,name=context"`
-	AppRoot   string           `json:"appRoot" protobuf:"bytes,8,opt,name=appRoot"`
-	Events    []Events         `json:"events" protobuf:"bytes,9,opt,name=events"`
-	Container corev1.Container `json:"container" protobuf:"bytes,10,opt,name=container"`
-	Images    []string         `json:"images" protobuf:"bytes,10,opt,name=images"`
-	Volumes   Volumes          `json:"volumes" protobuf:"bytes,11,opt,name=volumes"`
-	Domain    string           `json:"domain" protobuf:"bytes,12,opt,name=domain"`
-	Url       string           `json:"url" protobuf:"bytes,13,opt,name=url"`
-	Ingress   Ingress          `json:"ingress" protobuf:"bytes,14,opt,name=ingress"`
+	App           string           `json:"app"  protobuf:"bytes,1,opt,name=app"`
+	Profile       string           `json:"profile"  protobuf:"bytes,2,opt,name=profile"`
+	Project       string           `json:"project"  protobuf:"bytes,3,opt,name=project"`
+	Namespace     string           `json:"namespace"  protobuf:"bytes,4,opt,name=namespace"`
+	Version       string           `json:"version"  protobuf:"bytes,5,opt,name=version"`
+	Branch        string           `json:"branch" protobuf:"bytes,6,opt,name=branch"`
+	Context       string           `json:"context" protobuf:"bytes,7,opt,name=context"`
+	AppRoot       string           `json:"appRoot" protobuf:"bytes,8,opt,name=appRoot"`
+	Events        []Events         `json:"events" protobuf:"bytes,9,opt,name=events"`
+	Container     corev1.Container `json:"container" protobuf:"bytes,10,opt,name=container"`
+	Images        []string         `json:"images" protobuf:"bytes,10,opt,name=images"`
+	Volumes       Volumes          `json:"volumes" protobuf:"bytes,11,opt,name=volumes"`
+	Domain        string           `json:"domain" protobuf:"bytes,12,opt,name=domain"`
+	Url           string           `json:"url" protobuf:"bytes,13,opt,name=url"`
+	Ingress       Ingress          `json:"ingress" protobuf:"bytes,14,opt,name=ingress"`
+	InitContainer corev1.Container `json:"initContainer" protobuf:"bytes,11,opt,name=initContainer"`
 }
 
 type Ingress struct {
