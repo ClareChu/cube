@@ -36,6 +36,7 @@ type Pipeline struct {
 	gatewayConfigAggregate    GatewayConfigAggregate
 	imageStreamAggregate      ImageStreamAggregate
 	volumeAggregate           VolumeAggregate
+	callbackAggregate         CallbackAggregate
 }
 
 func init() {
@@ -46,7 +47,8 @@ func NewPipelineService(pipelineClient *cube.Pipeline,
 	buildConfigAggregate BuildConfigAggregate, deploymentConfigAggregate DeploymentConfigAggregate,
 	pipelineBuilder builder.PipelineBuilder, serviceConfigAggregate ServiceConfigAggregate,
 	gatewayConfigAggregate GatewayConfigAggregate, imageStreamAggregate ImageStreamAggregate,
-	volumeAggregate VolumeAggregate) PipelineAggregate {
+	volumeAggregate VolumeAggregate,
+	callbackAggregate CallbackAggregate) PipelineAggregate {
 	return &Pipeline{
 		pipelineClient:            pipelineClient,
 		buildConfigAggregate:      buildConfigAggregate,
@@ -56,6 +58,7 @@ func NewPipelineService(pipelineClient *cube.Pipeline,
 		gatewayConfigAggregate:    gatewayConfigAggregate,
 		imageStreamAggregate:      imageStreamAggregate,
 		volumeAggregate:           volumeAggregate,
+		callbackAggregate:         callbackAggregate,
 	}
 }
 
@@ -177,10 +180,11 @@ func (p *Pipeline) Selector(pipeline *v1alpha1.Pipeline) (err error) {
 		}()
 		return
 	case constant.Gateway:
+		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.Gateway, constant.Created, "")
 		go func() {
 			p.gatewayConfigAggregate.Create(params)
 		}()
-		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.Gateway, constant.Created, "")
+
 	case constant.ImageStream:
 		go func() {
 			p.imageStreamAggregate.CreateImage(params)
@@ -191,7 +195,11 @@ func (p *Pipeline) Selector(pipeline *v1alpha1.Pipeline) (err error) {
 		go func() {
 			p.volumeAggregate.Create(params)
 		}()
-
+	case constant.CallBack:
+		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.CallBack, constant.Created, "")
+		go func() {
+			p.callbackAggregate.Create(params)
+		}()
 	default:
 		return
 	}

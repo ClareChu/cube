@@ -50,7 +50,7 @@ require (
 	github.com/opencontainers/image-spec v1.0.1 // indirect
 	github.com/opencontainers/runc v0.1.1 // indirect
 	github.com/ory/dockertest v3.3.4+incompatible // indirect
-	github.com/parnurzeal/gorequest v0.2.15 // indirect
+	github.com/parnurzeal/gorequest v0.2.15
 	github.com/prometheus/common v0.0.0-20181126121408-4724e9255275
 	github.com/ryanuber/columnize v2.1.0+incompatible // indirect
 	github.com/satori/go.uuid v1.2.0 // indirect

@@ -42,10 +42,10 @@ func (v *volumeServiceImpl) Create(params *command.PipelineReqParams) (err error
 	}
 	err = v.CreateVolume(params.Namespace, params.Volumes)
 	if err != nil {
-		v.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.CreateService, constant.Fail, "")
+		v.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.Volume, constant.Fail, "")
 		return err
 	}
-	err = v.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.CreateService, constant.Success, "")
+	err = v.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.Volume, constant.Success, "")
 	return err
 }
 

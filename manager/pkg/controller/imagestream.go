@@ -12,6 +12,7 @@ type ImageStreamController struct {
 	at.RestController
 	imageStreamAggregate aggregate.ImageStreamAggregate
 	volumeAggregate      aggregate.VolumeAggregate
+	callbackAggregate    aggregate.CallbackAggregate
 }
 
 func init() {
@@ -19,10 +20,12 @@ func init() {
 }
 
 func newImageStreamControllerController(imageStreamAggregate aggregate.ImageStreamAggregate,
-	volumeAggregate aggregate.VolumeAggregate) *ImageStreamController {
+	volumeAggregate aggregate.VolumeAggregate,
+	callbackAggregate aggregate.CallbackAggregate) *ImageStreamController {
 	return &ImageStreamController{
 		imageStreamAggregate: imageStreamAggregate,
 		volumeAggregate:      volumeAggregate,
+		callbackAggregate:    callbackAggregate,
 	}
 }
 
@@ -47,6 +50,18 @@ func (i *ImageStreamController) Post(is *ImageStream) (rep model.Response, err e
 
 func (i *ImageStreamController) PostVolume(v *Volumes) (rep model.Response, err error) {
 	err = i.volumeAggregate.CreateVolume(v.Namespace, v.Volume)
+	rep = new(model.BaseResponse)
+	return
+}
+
+type Watch struct {
+	model.RequestBody
+	Name      string `json:"name"`
+	Namespace string `json:"namespace"`
+}
+
+func (i *ImageStreamController) PostWatch(w *Watch) (rep model.Response, err error) {
+	err = i.callbackAggregate.WatchPod(w.Name, w.Namespace)
 	rep = new(model.BaseResponse)
 	return
 }

@@ -9,6 +9,7 @@ const (
 	PushImage              = "pushImage"
 	DeployNode             = "deployNode"
 	CreateService          = "createService"
+	CallBack               = "callback"
 	DeleteDeployment       = "deleteDeployment"
 	Volume                 = "volume"
 	Complete               = "complete"
