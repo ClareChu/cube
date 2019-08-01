@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: hidevops/manager
-  tag: v1.0.2
+  tag: v1.4.5
   pullPolicy: Always
 
 nameOverride: "manager"
@@ -62,10 +62,10 @@ buildconfig:
 
 
 java:
-  nodeImage: hidevops/agent-java-jar:v1.0.7
+  nodeImage: harbor.cloud2go.cn/hidevops/agent-java:v1.1.5
   baseImage: hidevops/base-java:v1.0.0
 
 go:
-  nodeImage: hidevops/agent:v1.0.7
-  baseImage: hidevops/base-go:v1.1.1
+  nodeImage: hidevops/base-go:v1.0.0
+  baseImage: harbor.cloud2go.cn/hidevops/agent-go:v1.1.5
   goProxy: http://goproxy.apps.hidevops.io

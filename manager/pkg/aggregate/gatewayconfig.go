@@ -82,8 +82,9 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (gatewayConfig
 		} else {
 			uri = params.Ingress.Path
 		}
-		template.Spec.Uris = []string{uri}
+
 	}
+	template.Spec.Uris = []string{uri}
 	template.Spec.Hosts = []string{params.Ingress.Domain}
 	copier.Copy(gatewayConfig, template)
 	gatewayConfig.TypeMeta = v1.TypeMeta{

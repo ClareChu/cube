@@ -31,9 +31,9 @@ func newImageStreamControllerController(imageStreamAggregate aggregate.ImageStre
 
 type ImageStream struct {
 	model.RequestBody
-	Name      string   `json:"name"`
-	Namespace string   `json:"namespace"`
-	Images    []string `json:"images"`
+	Name      string `json:"name"`
+	Namespace string `json:"namespace"`
+	Images    string `json:"images"`
 }
 
 type Volumes struct {

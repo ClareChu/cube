@@ -51,6 +51,7 @@ type PipelineSpec struct {
 	InitContainer corev1.Container `json:"initContainer" protobuf:"bytes,15,opt,name=initContainer"`
 	Callback      string           `json:"callback" protobuf:"bytes,16,opt,name=callback"`
 	Id            string           `json:"id" protobuf:"bytes,17,opt,name=callback"`
+	Token         string           `json:"token" protobuf:"bytes,18,opt,name=token"`
 }
 
 type Ingress struct {

@@ -153,6 +153,7 @@ func (d *DeploymentConfig) InitDeployConfig(deploy *v1alpha1.DeploymentConfig, t
 			Image:           param.InitContainer.Image,
 			Command:         param.InitContainer.Command,
 			ImagePullPolicy: corev1.PullAlways,
+			Env:             param.InitContainer.Env,
 			VolumeMounts: []corev1.VolumeMount{
 				corev1.VolumeMount{
 					Name:      param.Volumes.Name,

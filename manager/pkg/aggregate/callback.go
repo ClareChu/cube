@@ -43,7 +43,7 @@ func NewCallbackService(pipelineBuilder builder.PipelineBuilder, pod *kube.Pod) 
 
 func (v *Callback) Create(params *command.PipelineReqParams) (err error) {
 	err = v.WatchPod(params.Name, params.Namespace)
-	err = v.Send(params.Callback, params.Id, params.Name, params.Namespace, err.Error())
+	err = v.Send(params.Callback, params.Id, params.Name, params.Namespace, params.Token, err.Error())
 	if err != nil {
 		v.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.CallBack, constant.Fail, "")
 		return err
@@ -114,7 +114,7 @@ type Data struct {
 	Status    string `json:"status"`
 }
 
-func (v *Callback) Send(callbackUrl, id, name, namespace, status string) error {
+func (v *Callback) Send(callbackUrl, id, name, namespace, token, status string) error {
 	rep := &model.BaseResponse{
 		Code:    200,
 		Message: "success",
@@ -125,7 +125,7 @@ func (v *Callback) Send(callbackUrl, id, name, namespace, status string) error {
 			Status:    status,
 		},
 	}
-	_, _, errs := gorequest.New().Get(callbackUrl).Send(rep).End()
+	_, _, errs := gorequest.New().Get(callbackUrl).Set(constant.Authorization, token).Send(rep).End()
 	if errs != nil {
 		return errors.New("http get callback url")
 	}

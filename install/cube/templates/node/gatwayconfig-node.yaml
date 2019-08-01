@@ -1,6 +1,10 @@
 apiVersion: cube.io/v1alpha1
 kind: GatewayConfig
 metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.frontend.rule.type: PathPrefixStrip
+    traefik.ingress.kubernetes.io/rewrite-target: /
   name: node
   namespace: {{ .Values.namespace }}
 spec:

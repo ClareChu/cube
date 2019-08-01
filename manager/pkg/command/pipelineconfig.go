@@ -30,6 +30,7 @@ type PipelineStart struct {
 	Volumes       v1alpha1.Volumes `json:"volumes"`
 	Callback      string           `json:"callback"`
 	IsApp         bool             `json:"isApp"`
+	Token         string           `json:"token"`
 }
 
 type PipelineConfigTemplate struct {
@@ -73,4 +74,5 @@ type PipelineReqParams struct {
 	Volumes       v1alpha1.Volumes `json:"volumes"`
 	Ingress       v1alpha1.Ingress `json:"ingress"`
 	Callback      string           `json:"callback"`
+	Token         string           `json:"token"`
 }
