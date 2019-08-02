@@ -162,6 +162,7 @@ func (d *DeploymentConfig) InitDeployConfig(deploy *v1alpha1.DeploymentConfig, t
 			},
 		}
 	}
+	deploy.Spec.ForceUpdate = param.ForceUpdate
 	deploy.Spec.Container.Name = param.Name
 	deploy.Spec.Container.Env = envVars
 	deploy.Status.LastVersion = deploy.Status.LastVersion + 1

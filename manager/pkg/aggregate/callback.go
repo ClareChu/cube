@@ -21,6 +21,7 @@ import (
 
 type CallbackAggregate interface {
 	WatchPod(name, namespace string) error
+	GetPod(name, namespace string) (ready bool, err error)
 	Create(params *command.PipelineReqParams) (err error)
 }
 
@@ -42,8 +43,12 @@ func NewCallbackService(pipelineBuilder builder.PipelineBuilder, pod *kube.Pod) 
 }
 
 func (v *Callback) Create(params *command.PipelineReqParams) (err error) {
-	err = v.WatchPod(params.Name, params.Namespace)
-	err = v.Send(params.Callback, params.Id, params.Name, params.Namespace, params.Token, err.Error())
+	ready, err := v.GetPod(params.Name, params.Namespace)
+	if !ready {
+		err = v.WatchPod(params.Name, params.Namespace)
+	}
+	url := params.Ingress.Domain + params.Ingress.Path
+	err = v.Send(params.Callback, params.Name, params.Namespace, params.Token, err.Error(), url, params.Id)
 	if err != nil {
 		v.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.CallBack, constant.Fail, "")
 		return err
@@ -108,13 +113,17 @@ func (v *Callback) WatchPod(name, namespace string) error {
 
 type Data struct {
 	model.RequestBody
-	Id        string `json:"id"`
+	Id        int    `json:"id"`
 	Name      string `json:"name"`
 	Namespace string `json:"namespace"`
 	Status    string `json:"status"`
+	Url       string `json:"url"`
 }
 
-func (v *Callback) Send(callbackUrl, id, name, namespace, token, status string) error {
+func (v *Callback) Send(callbackUrl, name, namespace, token, status, url string, id int) error {
+	log.Infof("******************************************************************")
+	log.Infof("callback url: %s", callbackUrl)
+	log.Infof("token: %s", token)
 	rep := &model.BaseResponse{
 		Code:    200,
 		Message: "success",
@@ -123,11 +132,29 @@ func (v *Callback) Send(callbackUrl, id, name, namespace, token, status string) 
 			Name:      name,
 			Namespace: namespace,
 			Status:    status,
+			Url:       url,
 		},
 	}
-	_, _, errs := gorequest.New().Get(callbackUrl).Set(constant.Authorization, token).Send(rep).End()
+	_, body, errs := gorequest.New().Get(callbackUrl).Set(constant.Authorization, token).Send(rep).End()
+	log.Infof("response : %s", body)
 	if errs != nil {
 		return errors.New("http get callback url")
 	}
 	return nil
+}
+
+func (v *Callback) GetPod(name, namespace string) (ready bool, err error) {
+	log.Infof("*** get pod ****")
+	listOptions := v1.ListOptions{
+		LabelSelector:  fmt.Sprintf("app=%s", name),
+	}
+	pods, err := v.pod.GetPodList(namespace, listOptions)
+	if err != nil || len(pods.Items) == 0 {
+		return false, nil
+	}
+	if len(pods.Items[0].Status.ContainerStatuses) == 0 {
+		return ready, errors.New("running")
+	}
+	ready = pods.Items[0].Status.ContainerStatuses[0].Ready
+	return ready, errors.New("ready")
 }

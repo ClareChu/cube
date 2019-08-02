@@ -2,14 +2,12 @@ package aggregate
 
 import (
 	"fmt"
-	"github.com/jinzhu/copier"
-	"hidevops.io/cube/manager/pkg/service"
-
-	//"gopkg.in/src-d/enry.v1"
 	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/cube/manager/pkg/constant"
+	"hidevops.io/cube/manager/pkg/service"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
+	"hidevops.io/hiboot/pkg/utils/copier"
 	"strings"
 )
 
@@ -53,8 +51,7 @@ func (s *Start) Init(cmd *command.PipelineStart, propMap map[string]string) (err
 	//TODO 获取cmd
 	app, err := s.appService.Get(fmt.Sprintf("%s-%s-%s", cmd.Project, cmd.AppRoot, cmd.Version), constant.TemplateDefaultNamespace)
 	if err == nil && !cmd.IsApp {
-		cmd = &command.PipelineStart{}
-		copier.Copy(cmd, app.Spec)
+		copier.Copy(cmd, app.Spec, copier.IgnoreEmptyValue)
 	}
 	log.Infof("get app : %s", err)
 	//todo 通过URL部署项目

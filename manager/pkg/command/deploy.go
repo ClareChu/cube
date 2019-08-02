@@ -16,4 +16,5 @@ type DeployData struct {
 	Version       string
 	Strategy      appsv1.DeploymentStrategy
 	InitContainer corev1.Container
+	ForceUpdate   bool
 }

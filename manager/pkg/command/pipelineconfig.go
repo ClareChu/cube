@@ -9,7 +9,8 @@ import (
 
 type PipelineStart struct {
 	model.RequestBody `json:"omitempty"`
-	Id                string   `json:"id"`
+	Id                int      `json:"id"`
+	ForceUpdate       bool     `json:"forceUpdate" default:"true"`
 	Name              string   `json:"name" validate:"required"`
 	Namespace         string   `json:"namespace"`
 	TemplateName      string   `json:"templateName"`
@@ -57,7 +58,8 @@ type StartPipeline struct {
 }
 
 type PipelineReqParams struct {
-	Id            string           `json:"id"`
+	Id            int              `json:"id"`
+	ForceUpdate   bool             `json:"forceUpdate"`
 	Name          string           `json:"name"`
 	PipelineName  string           `json:"pipeline_name"`
 	Namespace     string           `json:"namespace"`

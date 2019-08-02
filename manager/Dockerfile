@@ -8,7 +8,7 @@ ENV APP_ROOT=/opt/app-root \
     PATH=${APP_BIN}:$PATH \
     TZ='Asia/Shanghai'
 
-ADD ../agent/certs /tmp/cert/
+ADD certs /tmp/cert/
 
 RUN  mkdir -p ${APP_BIN} ${APP_ROOT} \
      && apk update \

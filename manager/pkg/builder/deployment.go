@@ -133,17 +133,24 @@ func (d *Deployment) Create(dd *command.DeployData) (*extensionsV1beta1.Deployme
 						dd.Container,
 					},
 					InitContainers: containers,
-					Volumes: dd.Volumes,
+					Volumes:        dd.Volumes,
 				},
 			},
 		},
 	}
 
 	dp, err := d.deployment.Get(fmt.Sprintf("%s-%s", dd.Name, dd.Version), dd.Namespace, metav1.GetOptions{})
+	log.Infof("*** deploy is exist *** %s", dd.ForceUpdate)
 	if err == nil {
-		dpm.ObjectMeta = dp.ObjectMeta
-		err = d.deployment.Update(dpm)
-		return nil, err
+		if dd.ForceUpdate {
+			log.Infof("****  update deploy app dpm  ***")
+			dpm.ObjectMeta = dp.ObjectMeta
+			err = d.deployment.Update(dpm)
+			return nil, err
+		}
+		return dp, err
+
 	}
+	log.Infof("****  create deploy app dpm  ***")
 	return d.deployment.Create(dpm)
 }
