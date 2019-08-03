@@ -21,7 +21,6 @@ import (
 
 type CallbackAggregate interface {
 	WatchPod(name, namespace string) error
-	GetPod(name, namespace string) (ready bool, err error)
 	Create(params *command.PipelineReqParams) (err error)
 }
 
@@ -29,21 +28,23 @@ type Callback struct {
 	CallbackAggregate
 	pipelineBuilder builder.PipelineBuilder
 	pod             *kube.Pod
+	podBuilder      builder.PodBuilder
 }
 
 func init() {
 	app.Register(NewCallbackService)
 }
 
-func NewCallbackService(pipelineBuilder builder.PipelineBuilder, pod *kube.Pod) CallbackAggregate {
+func NewCallbackService(pipelineBuilder builder.PipelineBuilder, podBuilder builder.PodBuilder, pod *kube.Pod) CallbackAggregate {
 	return &Callback{
-		pod:             pod,
+		podBuilder:      podBuilder,
 		pipelineBuilder: pipelineBuilder,
+		pod:             pod,
 	}
 }
 
 func (v *Callback) Create(params *command.PipelineReqParams) (err error) {
-	ready, err := v.GetPod(params.Name, params.Namespace)
+	ready, err := v.podBuilder.GetPod(params.Name, params.Namespace)
 	if !ready {
 		err = v.WatchPod(params.Name, params.Namespace)
 	}
@@ -100,9 +101,8 @@ func (v *Callback) WatchPod(name, namespace string) error {
 						}
 					}
 				}
-				log.Infof("update event type :%v", pod.Status)
+				log.Debugf("update event type :%v", pod.Status)
 			case watch.Deleted:
-				log.Info("Deleted: ", event.Object)
 			default:
 				log.Error("Failed")
 				return errors.New("failed")
@@ -141,20 +141,4 @@ func (v *Callback) Send(callbackUrl, name, namespace, token, status, url string,
 		return errors.New("http get callback url")
 	}
 	return nil
-}
-
-func (v *Callback) GetPod(name, namespace string) (ready bool, err error) {
-	log.Infof("*** get pod ****")
-	listOptions := v1.ListOptions{
-		LabelSelector:  fmt.Sprintf("app=%s", name),
-	}
-	pods, err := v.pod.GetPodList(namespace, listOptions)
-	if err != nil || len(pods.Items) == 0 {
-		return false, nil
-	}
-	if len(pods.Items[0].Status.ContainerStatuses) == 0 {
-		return ready, errors.New("running")
-	}
-	ready = pods.Items[0].Status.ContainerStatuses[0].Ready
-	return ready, errors.New("ready")
 }

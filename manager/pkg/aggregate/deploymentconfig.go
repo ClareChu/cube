@@ -162,6 +162,22 @@ func (d *DeploymentConfig) InitDeployConfig(deploy *v1alpha1.DeploymentConfig, t
 			},
 		}
 	}
+	if deploy.Spec.ReadinessProbe.InitialDelaySeconds != 0 {
+		url := param.Ingress.Domain + param.Ingress.Path
+		deploy.Spec.ReadinessProbe.Exec = &corev1.ExecAction{
+			Command: []string{"curl", "-I", url},
+		}
+		deploy.Spec.Container.ReadinessProbe = &deploy.Spec.ReadinessProbe
+	}
+
+	if deploy.Spec.LivenessProbe.InitialDelaySeconds != 0 {
+		url := param.Ingress.Domain + param.Ingress.Path
+		deploy.Spec.ReadinessProbe.Exec = &corev1.ExecAction{
+			Command: []string{"curl", "-I", url},
+		}
+		deploy.Spec.Container.LivenessProbe = &deploy.Spec.LivenessProbe
+	}
+	log.Debugf("=====  InitialDelaySeconds ===== %d", deploy.Spec.ReadinessProbe.InitialDelaySeconds)
 	deploy.Spec.ForceUpdate = param.ForceUpdate
 	deploy.Spec.Container.Name = param.Name
 	deploy.Spec.Container.Env = envVars

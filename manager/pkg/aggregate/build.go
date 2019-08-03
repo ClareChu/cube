@@ -409,9 +409,8 @@ func (b *Build) WatchPod(name, namespace string) error {
 						}
 					}
 				}
-				log.Infof("update event type :%v", pod.Status)
+				log.Debugf("update event type :%v", pod.Status)
 			case watch.Deleted:
-				log.Info("Deleted: ", event.Object)
 				return nil
 			default:
 				log.Error("Failed")

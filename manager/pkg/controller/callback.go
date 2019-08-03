@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"hidevops.io/cube/manager/pkg/aggregate"
+	"hidevops.io/cube/manager/pkg/builder"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/at"
 	"hidevops.io/hiboot/pkg/log"
@@ -10,16 +10,16 @@ import (
 
 type CallbackController struct {
 	at.RestController
-	callbackAggregate aggregate.CallbackAggregate
+	podBuilder builder.PodBuilder
 }
 
 func init() {
 	app.Register(newCallbackController)
 }
 
-func newCallbackController(callbackAggregate aggregate.CallbackAggregate) *CallbackController {
+func newCallbackController(podBuilder builder.PodBuilder) *CallbackController {
 	return &CallbackController{
-		callbackAggregate: callbackAggregate,
+		podBuilder, podBuilder,
 	}
 }
 
@@ -32,5 +32,5 @@ type Rep struct {
 
 func (c *CallbackController) Get() {
 	log.Infof("get info success")
-	c.callbackAggregate.GetPod("ide-my-app22-37-v1-5b5d6d55cc-j9mzw", "test")
+	c.podBuilder.GetPod("ide-my-app22-37-v1-5b5d6d55cc-j9mzw", "test")
 }

@@ -73,17 +73,14 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (gatewayConfig
 	template.Spec.UpstreamUrl = fmt.Sprintf("http://%s.%s.svc:8080", params.Name, params.Namespace)
 	uri := fmt.Sprintf("/%s/%s", project, params.Name)
 	if params.Ingress.Path != "" {
-		uri = params.Ingress.Path
-	}
-	if params.Ingress.Path != "" {
 		container := strings.Index(params.Ingress.Path, "/")
 		if container == -1 || container != 0 {
 			uri = fmt.Sprintf("/%s", params.Ingress.Path)
 		} else {
 			uri = params.Ingress.Path
 		}
-
 	}
+	uri = fmt.Sprintf("%s%s", uri, template.Spec.RegexPath)
 	template.Spec.Uris = []string{uri}
 	if params.Ingress.Domain != "" {
 		template.Spec.Hosts = []string{params.Ingress.Domain}
@@ -102,6 +99,9 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (gatewayConfig
 		},
 	}
 	gateway, err := s.gatewayConfigClient.Get(params.Name, params.Namespace)
+	if template.Annotations != nil {
+		gateway.Annotations = template.Annotations
+	}
 	if err == nil {
 		gateway.Spec = template.Spec
 		gatewayConfig, err = s.gatewayConfigClient.Update(params.Name, params.Namespace, gateway)

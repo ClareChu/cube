@@ -26,17 +26,19 @@ type Deployment struct {
 	deploymentClient *cube.Deployment
 	deployment       *kube.Deployment
 	imageStream      *cube.ImageStream
+	podBuilder       PodBuilder
 }
 
 func init() {
 	app.Register(newDeploymentService)
 }
 
-func newDeploymentService(deploymentClient *cube.Deployment, deployment *kube.Deployment, imageStream *cube.ImageStream) DeploymentBuilder {
+func newDeploymentService(deploymentClient *cube.Deployment, deployment *kube.Deployment, imageStream *cube.ImageStream, podBuilder PodBuilder) DeploymentBuilder {
 	return &Deployment{
 		deploymentClient: deploymentClient,
 		deployment:       deployment,
 		imageStream:      imageStream,
+		podBuilder:       podBuilder,
 	}
 }
 
@@ -131,8 +133,10 @@ func (d *Deployment) Create(dd *command.DeployData) (*extensionsV1beta1.Deployme
 					NodeSelector: dd.NodeSelector,
 					Containers: []corev1.Container{
 						dd.Container,
+
 					},
 					InitContainers: containers,
+
 					Volumes:        dd.Volumes,
 				},
 			},
@@ -142,11 +146,17 @@ func (d *Deployment) Create(dd *command.DeployData) (*extensionsV1beta1.Deployme
 	dp, err := d.deployment.Get(fmt.Sprintf("%s-%s", dd.Name, dd.Version), dd.Namespace, metav1.GetOptions{})
 	log.Infof("*** deploy is exist *** %s", dd.ForceUpdate)
 	if err == nil {
+		dpm.ObjectMeta = dp.ObjectMeta
+
 		if dd.ForceUpdate {
 			log.Infof("****  update deploy app dpm  ***")
-			dpm.ObjectMeta = dp.ObjectMeta
 			err = d.deployment.Update(dpm)
 			return nil, err
+		} else {
+			ready, _ := d.podBuilder.GetPod(dd.Name, dd.Namespace)
+			if !ready {
+				err = d.deployment.Update(dpm)
+			}
 		}
 		return dp, err
 
