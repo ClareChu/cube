@@ -1,0 +1,15 @@
+apiVersion: cube.io/v1alpha1
+kind: ServiceConfig
+metadata:
+  creationTimestamp: 2019-07-28T16:52:31Z
+  generation: 1
+  name: ide
+  namespace: hidevopsio
+spec:
+  ports:
+    - name: http-8443
+      port: 8443
+      protocol: TCP
+      targetPort: 8443
+  selector: null
+  type: NodePort

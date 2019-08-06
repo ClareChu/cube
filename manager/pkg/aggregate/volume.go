@@ -17,10 +17,12 @@ import (
 type VolumeAggregate interface {
 	Create(params *command.PipelineReqParams) error
 	CreateVolume(namespace string, volume v1alpha1.Volumes) error
+	Delete(name, namespace string) error
 }
 
 type volumeServiceImpl struct {
 	persistentVolumeClaim *kube.PersistentVolumeClaim
+	persistentVolume      *kube.PersistentVolume
 	pipelineBuilder       builder.PipelineBuilder
 }
 
@@ -28,10 +30,12 @@ func init() {
 	app.Register(NewVolumeService)
 }
 
-func NewVolumeService(persistentVolumeClaim *kube.PersistentVolumeClaim, pipelineBuilder builder.PipelineBuilder) VolumeAggregate {
+func NewVolumeService(persistentVolumeClaim *kube.PersistentVolumeClaim, pipelineBuilder builder.PipelineBuilder,
+	persistentVolume *kube.PersistentVolume) VolumeAggregate {
 	return &volumeServiceImpl{
 		persistentVolumeClaim: persistentVolumeClaim,
 		pipelineBuilder:       pipelineBuilder,
+		persistentVolume:      persistentVolume,
 	}
 }
 
@@ -84,4 +88,21 @@ func (v *volumeServiceImpl) CreateVolume(namespace string, volume v1alpha1.Volum
 
 func Validate(volumes v1alpha1.Volumes) bool {
 	return false
+}
+
+func (v *volumeServiceImpl) Delete(name, namespace string) error {
+	options := v1.GetOptions{}
+	pvc, err := v.persistentVolumeClaim.Get(name, namespace, options)
+	if err != nil {
+		return nil
+	}
+	deleteOptions := &v1.DeleteOptions{}
+	//delete pvc
+	err = v.persistentVolumeClaim.Delete(name, namespace, deleteOptions)
+	if err != nil {
+		return nil
+	}
+	//delete pv
+	v.persistentVolume.Delete(pvc.Spec.VolumeName, deleteOptions)
+	return nil
 }

@@ -1,0 +1,24 @@
+apiVersion: cube.io/v1alpha1
+kind: GatewayConfig
+metadata:
+  generation: 1
+  name: ide
+  namespace: hidevopsio
+spec:
+  hosts:
+    - dev.apps.cloud2go.cn
+  httpIfTerminated: false
+  httpsOnly: false
+  kongAdminUrl: null
+  port: 8443
+  preserveHost: true
+  profile: null
+  retries: "5"
+  stripUri: true
+  upstreamConnectTimeout: 60000
+  upstreamReadTimeout: 60000
+  upstreamSendTimeout: 60000
+  upstreamUrl: ""
+  uris: null
+status:
+  metadata: {}

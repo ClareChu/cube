@@ -18,6 +18,7 @@ type ServiceConfigAggregate interface {
 	Template(cmd *command.ServiceConfig) (serviceConfig *v1alpha1.ServiceConfig, err error)
 	Create(params *command.PipelineReqParams) (serviceConfig *v1alpha1.ServiceConfig, err error)
 	DeleteService(name, namespace string) (err error)
+	Delete(name, namespace string) (err error)
 }
 
 type ServiceConfig struct {
@@ -116,5 +117,10 @@ func (s *ServiceConfig) DeleteService(name, namespace string) (err error) {
 			return
 		}
 	}
+	return
+}
+
+func (s *ServiceConfig) Delete(name, namespace string) (err error) {
+	err = s.service.Delete(name, namespace)
 	return
 }

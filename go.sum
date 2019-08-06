@@ -609,6 +609,8 @@ gotest.tools v2.2.0+incompatible/go.mod h1:DsYFclhRJ6vuDpmuTbkuFWG+y2sxOXAzmJt81
 grpc.go4.org v0.0.0-20170609214715-11d0a25b4919/go.mod h1:77eQGdRu53HpSqPFJFmuJdjuHRquDANNeA4x7B8WQ9o=
 hidevops.io/hiboot v0.0.0-20190430175208-4ee64b5d3cca h1:g+ZJcwtPVe4GKigwNkXNFDcVUn8PF/NZjMQnKg3yu/k=
 hidevops.io/hiboot v0.0.0-20190430175208-4ee64b5d3cca/go.mod h1:yEm4Do2Z8Mm3UXqcq/T2w1v+dYtFIlPodRaDdhnLj7c=
+hidevops.io/hiboot v0.0.0-20190806195322-e1bf1796fc56 h1:jYQU+fA4FhAYMFqPxDTtt6BzKt4+QDwUKx4dzardWXE=
+hidevops.io/hiboot v0.0.0-20190806195322-e1bf1796fc56/go.mod h1:UI2rQR2EB4OhovQs6dMXQWzK6j7XctvLoYkA4PlJSfI=
 hidevops.io/hiboot-data v1.0.0 h1:ZI9NeLsqVpHxMY610qAsm1IW9q1qlLsZC9Q9r2ZITkg=
 hidevops.io/hiboot-data v1.0.0/go.mod h1:EYHXATIvgKuzliHLkgAwzwYbAQAFBc1C/X+SundH5Ys=
 hidevops.io/hioak v0.0.0-20190428214818-11b277aa9e0d h1:Ai4s27CWO/Arp7d8akAnLrwQsKtvOnyyeel1HZQ/qJw=
@@ -616,6 +618,8 @@ hidevops.io/hioak v0.0.0-20190428214818-11b277aa9e0d/go.mod h1:SnsmNec1VvMfhOCle
 hidevops.io/hioak v0.0.0-20190428214818-312eebcdd715/go.mod h1:SnsmNec1VvMfhOCleQMc9cO4okE/X7K9N9cWE4SocAo=
 hidevops.io/hioak v0.0.0-20190623003423-09e2c8a621e9 h1:3gulzQRGdwpvDlWFL/KosnQqj1XFiT3vfEmZP8o8UN4=
 hidevops.io/hioak v0.0.0-20190623003423-09e2c8a621e9/go.mod h1:SnsmNec1VvMfhOCleQMc9cO4okE/X7K9N9cWE4SocAo=
+hidevops.io/hioak v0.0.0-20190806114342-63aad18dd1ef h1:LuyJuL9d/wl6/24sKQE5idsfA2kX8wMZM8mExnlTZRs=
+hidevops.io/hioak v0.0.0-20190806114342-63aad18dd1ef/go.mod h1:SnsmNec1VvMfhOCleQMc9cO4okE/X7K9N9cWE4SocAo=
 hidevops.io/viper v1.3.2 h1:V5S1yGjYbPwWlzg5SzSD7ghBoHLC7RpRjpef2yuHHwI=
 hidevops.io/viper v1.3.2/go.mod h1:B1gD8pJIYvmlHegqP6p/BKe8E9MMfOd4egl98vQbGtM=
 honnef.co/go/tools v0.0.0-20180728063816-88497007e858/go.mod h1:rf3lG4BRIbNafJWhAfAdb/ePZxsR/4RtNHQocxwk9r4=

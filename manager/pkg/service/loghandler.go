@@ -203,3 +203,14 @@ func LogFormatting(message string) string {
 
 	return message
 }
+
+
+// OnDisconnect is the websocket disconnection handler
+func (h *LogsHandler) OnPing() {
+	log.Debugf("Connection with ID: %v has been pinged!", h.connection.ID())
+}
+
+// OnDisconnect is the websocket disconnection handler
+func (h *LogsHandler) OnPong() {
+	log.Debugf("Connection with ID: %v has been ponged!", h.connection.ID())
+}

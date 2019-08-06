@@ -16,6 +16,7 @@ type BuildNode interface {
 	CreateServiceNode(node *command.ServiceNode) error
 	DeleteDeployment(name, namespace string) error
 	Update(name, namespace string) error
+	Delete(name, namespace string) (err error)
 }
 
 type BuildNodeImpl struct {
@@ -60,6 +61,32 @@ func (s *BuildNodeImpl) CreateServiceNode(node *command.ServiceNode) error {
 func (s *BuildNodeImpl) DeleteDeployment(name, namespace string) (err error) {
 	option := metav1.ListOptions{
 		LabelSelector: fmt.Sprintf("name=%s", name),
+	}
+	deploys, err := s.deployment.List(namespace, option)
+	opt := &metav1.DeleteOptions{}
+	for _, deploy := range deploys.Items {
+
+		err = s.deployment.Delete(deploy.Name, namespace, opt)
+	}
+	//TODO delete replica set
+
+	list, err := s.replicaSet.List(name, namespace, option)
+	if err != nil {
+		return
+	}
+	for _, rs := range list.Items {
+		err = s.replicaSet.Delete(rs.Name, namespace, opt)
+		if err != nil {
+			return
+		}
+	}
+	return
+
+}
+
+func (s *BuildNodeImpl) Delete(name, namespace string) (err error) {
+	option := metav1.ListOptions{
+		LabelSelector: fmt.Sprintf("app=%s", name),
 	}
 	deploys, err := s.deployment.List(namespace, option)
 	opt := &metav1.DeleteOptions{}

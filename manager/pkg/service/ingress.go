@@ -12,6 +12,7 @@ import (
 
 type IngressService interface {
 	CreateIngress(gatewayConfig *v1alpha1.GatewayConfig) (err error)
+	Delete(name, namespace string) (err error)
 }
 
 type Ingress struct {
@@ -35,8 +36,8 @@ func (i *Ingress) CreateIngress(gatewayConfig *v1alpha1.GatewayConfig) (err erro
 	ingress := &v1beta1.Ingress{
 		ObjectMeta: v1.ObjectMeta{
 			Annotations: gatewayConfig.ObjectMeta.Annotations,
-			Name:      gatewayConfig.Name,
-			Namespace: gatewayConfig.Namespace,
+			Name:        gatewayConfig.Name,
+			Namespace:   gatewayConfig.Namespace,
 		},
 		Spec: v1beta1.IngressSpec{
 			Rules: []v1beta1.IngressRule{
@@ -70,4 +71,12 @@ func (i *Ingress) CreateIngress(gatewayConfig *v1alpha1.GatewayConfig) (err erro
 	ing.Spec = ingress.Spec
 	_, err = i.ingress.Update(ingress)
 	return
+}
+
+func (i *Ingress) Delete(name, namespace string) (err error) {
+	log.Debugf("delete ingress")
+	options := &v1.DeleteOptions{
+
+	}
+	return i.ingress.Delete(namespace, name, options)
 }

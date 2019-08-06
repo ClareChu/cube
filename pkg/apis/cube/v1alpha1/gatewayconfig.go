@@ -39,6 +39,7 @@ type GatewaySpec struct {
 	HttpIfTerminated       bool     `json:"httpIfTerminated" protobuf:"bytes,12,opt,name=httpIfTerminated"`
 	KongAdminUrl           string   `json:"kongAdminUrl" protobuf:"bytes,13,opt,name=kongAdminUrl"`
 	EventType              []string `json:"eventType"  protobuf:"bytes,14,opt,name=eventType"`
+	RegexPath              string   `json:"regexPath" protobuf:"bytes,15,opt,name=regexPath"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

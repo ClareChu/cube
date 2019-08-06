@@ -1,0 +1,25 @@
+apiVersion: cube.io/v1alpha1
+kind: DeploymentConfig
+metadata:
+  generation: 1
+  name: ide
+  namespace: hidevopsio
+spec:
+  container:
+    ports:
+      - containerPort: 8443
+        name: http-8443
+        protocol: TCP
+  dockerRegistry: null
+  envType:
+    - remoteDeploy
+    - deploy
+  profile: dev
+  readinessProbe:
+    failureThreshold: 3
+    initialDelaySeconds: 10
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 1
+status:
+  lastVersion: 1

@@ -62,7 +62,6 @@ require (
 	github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5 // indirect
 	github.com/toqueteos/trie v1.0.0 // indirect
 	github.com/ugorji/go v1.1.4 // indirect
-	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/xanzy/go-gitlab v0.0.0-20170825130035-896163fa8f7a
 	github.com/xeipuuv/gojsonschema v0.0.0-20181112162635-ac52e6811b56 // indirect
 	github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2 // indirect
@@ -84,7 +83,7 @@ require (
 	gotest.tools v2.2.0+incompatible
 	hidevops.io/hiboot v1.1.0
 	hidevops.io/hiboot-data v1.0.0
-	hidevops.io/hioak v0.0.0-20190623003423-09e2c8a621e9
+	hidevops.io/hioak v0.0.0-20190806114342-63aad18dd1ef
 	k8s.io/api v0.0.0-20180601181742-8b7507fac302
 	k8s.io/apiextensions-apiserver v0.0.0-20180601203502-8e7f43002fec
 	k8s.io/apimachinery v0.0.0-20180601181227-17529ec7eadb
@@ -92,4 +91,4 @@ require (
 	k8s.io/code-generator v0.0.0-20190511023357-639c964206c2 // indirect
 )
 
-replace hidevops.io/hiboot => hidevops.io/hiboot v0.0.0-20190430175208-4ee64b5d3cca
+replace hidevops.io/hiboot => hidevops.io/hiboot v0.0.0-20190806195322-e1bf1796fc56

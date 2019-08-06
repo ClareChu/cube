@@ -42,6 +42,8 @@ type DeploymentConfigSpec struct {
 	Strategy         appsv1.DeploymentStrategy `json:"strategy,omitempty" protobuf:"bytes,14,opt,name=strategy"`
 	InitContainer    corev1.Container          `json:"initContainer" protobuf:"bytes,15,opt,name=initContainer"`
 	ForceUpdate      bool                      `json:"forceUpdate" protobuf:"bytes,16,opt,name=forceUpdate"`
+	ReadinessProbe   corev1.Probe              `json:"readinessProbe" protobuf:"bytes,17,opt,name=readinessProbe"`
+	LivenessProbe    corev1.Probe              `json:"livenessProbe"  protobuf:"bytes,18,opt,name=livenessProbe"`
 }
 
 type DeploymentConfigStatus struct {

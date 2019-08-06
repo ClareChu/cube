@@ -1,0 +1,24 @@
+apiVersion: cube.io/v1alpha1
+kind: PipelineConfig
+metadata:
+  generation: 1
+  name: ide
+  namespace: hidevopsio
+spec:
+  branch: master
+  events:
+    - eventTypes: imageStream
+      name: ide
+    - eventTypes: volume
+      name: ide
+    - eventTypes: deploy
+      name: ide
+    - eventTypes: service
+      name: ide
+    - eventTypes: gateway
+      name: ide
+    - eventTypes: callback
+      name: ide
+  profile: dev
+  version: v1
+status: {}
