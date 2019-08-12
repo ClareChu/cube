@@ -67,6 +67,7 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (gatewayConfig
 	gatewayConfig = new(v1alpha1.GatewayConfig)
 	template, err := s.gatewayConfigClient.Get(params.EventType, constant.TemplateDefaultNamespace)
 	if err != nil {
+		log.Errorf("get gateway config template err :%v", err)
 		return nil, err
 	}
 	template.Name = fmt.Sprintf("%s-%s", params.Namespace, params.Name)
@@ -85,7 +86,10 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (gatewayConfig
 	if params.Ingress.Domain != "" {
 		template.Spec.Hosts = []string{params.Ingress.Domain}
 	}
-	copier.Copy(gatewayConfig, template)
+	err = copier.Copy(gatewayConfig, template)
+	if err != nil {
+		return
+	}
 	gatewayConfig.TypeMeta = v1.TypeMeta{
 		Kind:       constant.GatewayConfigKind,
 		APIVersion: constant.GatewayConfigApiVersion,
@@ -100,7 +104,7 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (gatewayConfig
 	}
 	gateway, err := s.gatewayConfigClient.Get(params.Name, params.Namespace)
 	if template.Annotations != nil {
-		gateway.Annotations = template.Annotations
+		gatewayConfig.ObjectMeta.Annotations = template.Annotations
 	}
 	if err == nil {
 		gateway.Spec = template.Spec

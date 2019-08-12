@@ -47,3 +47,6 @@ func (c *PipelineConfigController) Post(cmd *command.PipelineStart, properties *
 	}
 	return
 }
+
+
+//TODO pipeline  controller && edit env command

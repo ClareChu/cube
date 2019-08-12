@@ -23,6 +23,7 @@ rules:
       - sourceconfigs
       - tests
       - testconfigs
+      - apps
     verbs:
       - get
       - list
@@ -33,6 +34,7 @@ rules:
       - ""
     resources:
       - secrets
+      - configmaps
     verbs:
       - get
       - list
