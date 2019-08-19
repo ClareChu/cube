@@ -11,12 +11,15 @@ import (
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/utils/copier"
 	"hidevops.io/hioak/starter/kube"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 type ServiceConfigAggregate interface {
 	Template(cmd *command.ServiceConfig) (serviceConfig *v1alpha1.ServiceConfig, err error)
 	Create(params *command.PipelineReqParams) (serviceConfig *v1alpha1.ServiceConfig, err error)
+	CreateServices(name, namespace string, sc []v1alpha1.Service) (err error)
 	DeleteService(name, namespace string) (err error)
 	Delete(name, namespace string) (err error)
 }
@@ -91,7 +94,12 @@ func (s *ServiceConfig) Create(params *command.PipelineReqParams) (serviceConfig
 	} else {
 		serviceConfig, err = s.serviceConfigClient.Create(serviceConfig)
 	}
-	err = s.CreateService(serviceConfig)
+	if len(params.Services) == 0 {
+		err = s.CreateService(serviceConfig)
+	} else {
+		err = s.CreateServices(params.Name, params.Namespace, params.Services)
+	}
+
 	if err != nil {
 		phase = constant.Fail
 		log.Errorf("create service name %v err : %v", params.Name, err)
@@ -104,6 +112,43 @@ func (s *ServiceConfig) Create(params *command.PipelineReqParams) (serviceConfig
 func (s *ServiceConfig) CreateService(serviceConfig *v1alpha1.ServiceConfig) (err error) {
 	err = s.service.CreateService(serviceConfig.Name, serviceConfig.Namespace, serviceConfig.Spec.Ports)
 	return
+}
+
+func (s *ServiceConfig) CreateServices(name, namespace string, sc []v1alpha1.Service) (err error) {
+	for _, svc := range sc {
+		sv, err := s.service.Get(svc.Name, namespace)
+		serviceSpec := &corev1.Service{
+			ObjectMeta: metav1.ObjectMeta{
+				Name: svc.Name,
+
+				Labels: map[string]string{
+					"app": name,
+				},
+			},
+			Spec: corev1.ServiceSpec{
+				Type:  corev1.ServiceTypeClusterIP,
+				Ports: svc.Ports,
+				Selector: map[string]string{
+					"app": name,
+				},
+			},
+		}
+		if err != nil {
+			_, err = s.service.CreateSvc(namespace, serviceSpec)
+			if err != nil {
+				return err
+			}
+		} else {
+			//TODO update svc
+			serviceSpec.ObjectMeta.ResourceVersion = sv.ObjectMeta.ResourceVersion
+			serviceSpec.Spec.ClusterIP = sv.Spec.ClusterIP
+			_, err = s.service.Update(namespace, serviceSpec)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 func (s *ServiceConfig) DeleteService(name, namespace string) (err error) {

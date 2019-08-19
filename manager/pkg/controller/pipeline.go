@@ -1,35 +1,42 @@
 package controller
 
 import (
-	"github.com/jinzhu/copier"
 	"hidevops.io/cube/manager/pkg/aggregate"
 	"hidevops.io/cube/manager/pkg/command"
-	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
+	"hidevops.io/cube/manager/pkg/constant"
 	"hidevops.io/hiboot/pkg/app"
+	"hidevops.io/hiboot/pkg/app/web/context"
 	"hidevops.io/hiboot/pkg/at"
+	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/model"
+	"hidevops.io/hiboot/pkg/starter/jwt"
 )
 
 type PipelineController struct {
 	at.RestController
 	pipelineAggregate aggregate.PipelineAggregate
+	startAggregate    aggregate.StartAggregate
 }
 
 func init() {
 	app.Register(newPipelineController)
 }
 
-func newPipelineController(pipelineAggregate aggregate.PipelineAggregate) *PipelineController {
+func newPipelineController(pipelineAggregate aggregate.PipelineAggregate, startAggregate aggregate.StartAggregate) *PipelineController {
 	return &PipelineController{
 		pipelineAggregate: pipelineAggregate,
+		startAggregate:    startAggregate,
 	}
 }
 
-func (p *PipelineController) Post(pipeline *command.PipelineConfigTemplate) (model.Response, error) {
-	response := new(model.BaseResponse)
-	pic := &v1alpha1.PipelineConfig{}
-	copier.Copy(pic, pipeline)
-	pc, err := p.pipelineAggregate.Create(pic, "")
-	response.SetData(pc)
-	return response, err
+func (p *PipelineController) Post(cmd *command.PipelineStart, properties *jwt.TokenProperties, ctx context.Context) (response model.Response, err error) {
+	log.Debugf("starter pipeline : %v", cmd)
+	response = new(model.BaseResponse)
+	jwtProps, ok := properties.Items()
+	if ok {
+		token := ctx.GetHeader(constant.Authorization)
+		cmd.Token = token
+		err = p.startAggregate.Init(cmd, jwtProps)
+	}
+	return
 }

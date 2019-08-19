@@ -66,6 +66,6 @@ func TestGatewayConfigCreate(t *testing.T) {
 		Version: "v1",
 		Profile: "dev",
 	}
-	_, err = gatewayAggregate.Create(param)
+	err = gatewayAggregate.Create(param)
 	assert.Equal(t, nil, err)
 }
