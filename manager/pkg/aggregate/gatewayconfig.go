@@ -16,7 +16,7 @@ import (
 
 type GatewayConfigAggregate interface {
 	Template(cmd *command.GatewayConfig) (gatewayConfig *v1alpha1.GatewayConfig, err error)
-	Create(params *command.PipelineReqParams) (gatewayConfig *v1alpha1.GatewayConfig, err error)
+	Create(params *command.PipelineReqParams) (err error)
 }
 
 type GatewayConfig struct {
@@ -60,52 +60,76 @@ func (s *GatewayConfig) Template(cmd *command.GatewayConfig) (gatewayConfig *v1a
 	return
 }
 
-func (s *GatewayConfig) Create(params *command.PipelineReqParams) (gatewayConfig *v1alpha1.GatewayConfig, err error) {
+func (s *GatewayConfig) Create(params *command.PipelineReqParams) (err error) {
 	log.Debugf("gateway config create name :%s, namespace : %s , sourceType : %s", params.Name, params.Namespace, params.EventType)
 	phase := constant.Success
-	project := params.Namespace
-	gatewayConfig = new(v1alpha1.GatewayConfig)
 	template, err := s.gatewayConfigClient.Get(params.EventType, constant.TemplateDefaultNamespace)
 	if err != nil {
 		log.Errorf("get gateway config template err :%v", err)
-		return nil, err
+		return err
 	}
-	template.Name = fmt.Sprintf("%s-%s", params.Namespace, params.Name)
-	template.Spec.UpstreamUrl = fmt.Sprintf("http://%s.%s.svc:8080", params.Name, params.Namespace)
-	uri := fmt.Sprintf("/%s/%s", project, params.Name)
-	if params.Ingress.Path != "" {
-		container := strings.Index(params.Ingress.Path, "/")
-		if container == -1 || container != 0 {
-			uri = fmt.Sprintf("/%s", params.Ingress.Path)
-		} else {
-			uri = params.Ingress.Path
+
+	if len(params.Ingress) != 0 {
+		for _, ing := range params.Ingress {
+			uri := ""
+			container := strings.Index(ing.Path, "/")
+			if container == -1 || container != 0 {
+				uri = fmt.Sprintf("/%s", ing.Path)
+			} else {
+				uri = ing.Path
+			}
+			uri = fmt.Sprintf("%s%s", uri, template.Spec.RegexPath)
+			gatewayConfig := &v1alpha1.GatewayConfig{
+				TypeMeta: v1.TypeMeta{
+					Kind:       constant.GatewayConfigKind,
+					APIVersion: constant.GatewayConfigApiVersion,
+				},
+				ObjectMeta: v1.ObjectMeta{
+					Name:        ing.Name,
+					Namespace:   params.Namespace,
+					Annotations: template.Annotations,
+					Labels: map[string]string{
+						constant.PipelineConfigName: ing.Name,
+						constant.Namespace:          params.Namespace,
+					},
+				},
+				Spec: v1alpha1.GatewaySpec{
+					Hosts: []string{ing.Domain},
+					Port:  ing.Port,
+					Uris:  []string{uri},
+				},
+			}
+			err = s.gatewayAggregate.Create(gatewayConfig)
+			if err != nil {
+				log.Errorf("create gateway err : %v", err)
+				phase = constant.Fail
+				break
+			}
 		}
-	}
-	uri = fmt.Sprintf("%s%s", uri, template.Spec.RegexPath)
-	template.Spec.Uris = []string{uri}
-	if params.Ingress.Domain != "" {
-		template.Spec.Hosts = []string{params.Ingress.Domain}
-	}
-	err = copier.Copy(gatewayConfig, template)
-	if err != nil {
+		err = s.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.Gateway, phase, "")
 		return
 	}
-	gatewayConfig.TypeMeta = v1.TypeMeta{
-		Kind:       constant.GatewayConfigKind,
-		APIVersion: constant.GatewayConfigApiVersion,
-	}
-	gatewayConfig.ObjectMeta = v1.ObjectMeta{
-		Name:      params.Name,
-		Namespace: params.Namespace,
-		Labels: map[string]string{
-			constant.PipelineConfigName: params.PipelineName,
-			constant.Namespace:          project,
+
+	template.Name = fmt.Sprintf("%s-%s", params.Namespace, params.Name)
+	uri := fmt.Sprintf("/%s/%s%s", params.Namespace, params.Name, template.Spec.RegexPath)
+	template.Spec.Uris = []string{uri}
+	gatewayConfig := &v1alpha1.GatewayConfig{
+		TypeMeta: v1.TypeMeta{
+			Kind:       constant.GatewayConfigKind,
+			APIVersion: constant.GatewayConfigApiVersion,
 		},
+		ObjectMeta: v1.ObjectMeta{
+			Name:        params.Name,
+			Namespace:   params.Namespace,
+			Annotations: template.Annotations,
+			Labels: map[string]string{
+				constant.PipelineConfigName: params.PipelineName,
+				constant.Namespace:          params.Namespace,
+			},
+		},
+		Spec: template.Spec,
 	}
 	gateway, err := s.gatewayConfigClient.Get(params.Name, params.Namespace)
-	if template.Annotations != nil {
-		gatewayConfig.ObjectMeta.Annotations = template.Annotations
-	}
 	if err == nil {
 		gateway.Spec = template.Spec
 		gatewayConfig, err = s.gatewayConfigClient.Update(params.Name, params.Namespace, gateway)
@@ -117,6 +141,6 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (gatewayConfig
 		log.Errorf("create gateway err : %v", err)
 		phase = constant.Fail
 	}
-	err = s.pipelineBuilder.Update(params.PipelineName, project, constant.Gateway, phase, "")
+	err = s.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.Gateway, phase, "")
 	return
 }

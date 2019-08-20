@@ -27,8 +27,7 @@ func newGatewayConfigController(gatewayConfigAggregate aggregate.GatewayConfigAg
 func (c *GatewayConfigController) PostCreate(cmd *command.DeployConfigType) (model.Response, error) {
 	log.Debugf("create deployment config template: %v", cmd)
 	param := &command.PipelineReqParams{}
-	deploy, err := c.gatewayConfigAggregate.Create(param)
+	err := c.gatewayConfigAggregate.Create(param)
 	response := new(model.BaseResponse)
-	response.SetData(deploy)
 	return response, err
 }

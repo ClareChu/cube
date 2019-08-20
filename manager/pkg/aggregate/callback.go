@@ -48,7 +48,7 @@ func (v *Callback) Create(params *command.PipelineReqParams) (err error) {
 	if !ready {
 		err = v.WatchPod(params.Name, params.Namespace)
 	}
-	url := params.Ingress.Domain + params.Ingress.Path
+	url := params.Ingress[0].Domain + params.Ingress[0].Path
 	err = v.Send(params.Callback, params.Name, params.Namespace, params.Token, err.Error(), url, params.Id)
 	if err != nil {
 		v.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.CallBack, constant.Fail, "")
