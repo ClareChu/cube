@@ -24,7 +24,7 @@ type PipelineStart struct {
 	Project string `json:"project" validate:"required"`
 	//gitUrl
 	Url           string             `json:"url"`
-	Ingress       v1alpha1.Ingress   `json:"ingress"`
+	Ingress       []v1alpha1.Ingress `json:"ingress"`
 	Container     corev1.Container   `json:"container"`
 	InitContainer corev1.Container   `json:"initContainer"`
 	Images        []string           `json:"images"`
@@ -75,7 +75,7 @@ type PipelineReqParams struct {
 	InitContainer corev1.Container   `json:"initContainer"`
 	Images        []string           `json:"images"`
 	Volumes       v1alpha1.Volumes   `json:"volumes"`
-	Ingress       v1alpha1.Ingress   `json:"ingress"`
+	Ingress       []v1alpha1.Ingress `json:"ingress"`
 	Callback      string             `json:"callback"`
 	Token         string             `json:"token"`
 	Services      []v1alpha1.Service `json:"services"`

@@ -69,14 +69,14 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (err error) {
 		return err
 	}
 
-	if len(params.Services) != 0 {
-		for _, svc := range params.Services {
+	if len(params.Ingress) != 0 {
+		for _, ing := range params.Ingress {
 			uri := ""
-			container := strings.Index(svc.Path, "/")
+			container := strings.Index(ing.Path, "/")
 			if container == -1 || container != 0 {
-				uri = fmt.Sprintf("/%s", svc.Path)
+				uri = fmt.Sprintf("/%s", ing.Path)
 			} else {
-				uri = svc.Path
+				uri = ing.Path
 			}
 			uri = fmt.Sprintf("%s%s", uri, template.Spec.RegexPath)
 			gatewayConfig := &v1alpha1.GatewayConfig{
@@ -85,17 +85,17 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (err error) {
 					APIVersion: constant.GatewayConfigApiVersion,
 				},
 				ObjectMeta: v1.ObjectMeta{
-					Name:        svc.Name,
+					Name:        ing.Name,
 					Namespace:   params.Namespace,
 					Annotations: template.Annotations,
 					Labels: map[string]string{
-						constant.PipelineConfigName: svc.Name,
+						constant.PipelineConfigName: ing.Name,
 						constant.Namespace:          params.Namespace,
 					},
 				},
 				Spec: v1alpha1.GatewaySpec{
-					Hosts: []string{svc.Domain},
-					Port:  svc.Port,
+					Hosts: []string{ing.Domain},
+					Port:  ing.Port,
 					Uris:  []string{uri},
 				},
 			}
@@ -111,20 +111,8 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (err error) {
 	}
 
 	template.Name = fmt.Sprintf("%s-%s", params.Namespace, params.Name)
-	uri := fmt.Sprintf("/%s/%s", params.Namespace, params.Name)
-	if params.Ingress.Path != "" {
-		container := strings.Index(params.Ingress.Path, "/")
-		if container == -1 || container != 0 {
-			uri = fmt.Sprintf("/%s", params.Ingress.Path)
-		} else {
-			uri = params.Ingress.Path
-		}
-	}
-	uri = fmt.Sprintf("%s%s", uri, template.Spec.RegexPath)
+	uri := fmt.Sprintf("/%s/%s%s", params.Namespace, params.Name, template.Spec.RegexPath)
 	template.Spec.Uris = []string{uri}
-	if params.Ingress.Domain != "" {
-		template.Spec.Hosts = []string{params.Ingress.Domain}
-	}
 	gatewayConfig := &v1alpha1.GatewayConfig{
 		TypeMeta: v1.TypeMeta{
 			Kind:       constant.GatewayConfigKind,

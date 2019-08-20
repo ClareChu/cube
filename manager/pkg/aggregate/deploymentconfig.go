@@ -163,7 +163,7 @@ func (d *DeploymentConfig) InitDeployConfig(deploy *v1alpha1.DeploymentConfig, t
 		}
 	}
 	if deploy.Spec.ReadinessProbe.InitialDelaySeconds != 0 {
-		url := param.Ingress.Domain + param.Ingress.Path
+		url := param.Ingress[0].Domain + param.Ingress[0].Path
 		deploy.Spec.ReadinessProbe.Exec = &corev1.ExecAction{
 			Command: []string{"curl", "-I", url},
 		}
@@ -171,7 +171,7 @@ func (d *DeploymentConfig) InitDeployConfig(deploy *v1alpha1.DeploymentConfig, t
 	}
 
 	if deploy.Spec.LivenessProbe.InitialDelaySeconds != 0 {
-		url := param.Ingress.Domain + param.Ingress.Path
+		url := param.Ingress[0].Domain + param.Ingress[0].Path
 		deploy.Spec.ReadinessProbe.Exec = &corev1.ExecAction{
 			Command: []string{"curl", "-I", url},
 		}
