@@ -47,17 +47,20 @@ type PipelineSpec struct {
 	Volumes       Volumes          `json:"volumes" protobuf:"bytes,11,opt,name=volumes"`
 	Domain        string           `json:"domain" protobuf:"bytes,12,opt,name=domain"`
 	Url           string           `json:"url" protobuf:"bytes,13,opt,name=url"`
-	Ingress       Ingress          `json:"ingress" protobuf:"bytes,14,opt,name=ingress"`
+	Ingress       []Ingress        `json:"ingress" protobuf:"bytes,14,opt,name=ingress"`
 	InitContainer corev1.Container `json:"initContainer" protobuf:"bytes,15,opt,name=initContainer"`
 	Callback      string           `json:"callback" protobuf:"bytes,16,opt,name=callback"`
 	Id            int              `json:"id" protobuf:"bytes,17,opt,name=id"`
 	Token         string           `json:"token" protobuf:"bytes,18,opt,name=token"`
 	ForceUpdate   bool             `json:"forceUpdate" protobuf:"bytes,19,opt,name=forceUpdate"`
+	Services      []Service        `json:"services" protobuf:"bytes,20,opt,name=services"`
 }
 
 type Ingress struct {
 	Path   string `json:"path" protobuf:"bytes,1,opt,name=path"`
 	Domain string `json:"domain" protobuf:"bytes,2,opt,name=domain"`
+	Name   string `json:"name" protobuf:"bytes,3,opt,name=name"`
+	Port   int32  `json:"port" protobuf:"bytes,4,opt,name=port"`
 }
 
 type Volumes struct {
@@ -94,4 +97,10 @@ type Stages struct {
 	Name                 string `json:"name" protobuf:"bytes,1,opt,name=name"`
 	StartTime            int64  `json:"startTime" protobuf:"bytes,2,opt,name=startTime"`
 	DurationMilliseconds int64  `json:"durationMilliseconds" protobuf:"bytes,3,opt,name=durationMilliseconds"`
+}
+
+type Service struct {
+	Name  string               `json:"name" protobuf:"bytes,1,opt,name=name"`
+	Ports []corev1.ServicePort `json:"ports" protobuf:"bytes,5,opt,name=ports"`
+	Type  string               `json:"type" protobuf:"bytes,6,opt,name=type"` // NodePort or ClusterIP or LoadBalancer or Headless CluserIP
 }

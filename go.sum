@@ -620,6 +620,10 @@ hidevops.io/hioak v0.0.0-20190623003423-09e2c8a621e9 h1:3gulzQRGdwpvDlWFL/KosnQq
 hidevops.io/hioak v0.0.0-20190623003423-09e2c8a621e9/go.mod h1:SnsmNec1VvMfhOCleQMc9cO4okE/X7K9N9cWE4SocAo=
 hidevops.io/hioak v0.0.0-20190806114342-63aad18dd1ef h1:LuyJuL9d/wl6/24sKQE5idsfA2kX8wMZM8mExnlTZRs=
 hidevops.io/hioak v0.0.0-20190806114342-63aad18dd1ef/go.mod h1:SnsmNec1VvMfhOCleQMc9cO4okE/X7K9N9cWE4SocAo=
+hidevops.io/hioak v0.0.0-20190818082436-a8d3231c4501 h1:DgEMYwL7l9qsMp5O30aDIZjnXlDEwYw9O0DS7V+SyIo=
+hidevops.io/hioak v0.0.0-20190818082436-a8d3231c4501/go.mod h1:SnsmNec1VvMfhOCleQMc9cO4okE/X7K9N9cWE4SocAo=
+hidevops.io/hioak v0.0.0-20190819053507-6f9e14e5d656 h1:5x4QxNkCvBv6LXuHt7VF2pAQcrjFcvg6bVeQYayjW1s=
+hidevops.io/hioak v0.0.0-20190819053507-6f9e14e5d656/go.mod h1:SnsmNec1VvMfhOCleQMc9cO4okE/X7K9N9cWE4SocAo=
 hidevops.io/viper v1.3.2 h1:V5S1yGjYbPwWlzg5SzSD7ghBoHLC7RpRjpef2yuHHwI=
 hidevops.io/viper v1.3.2/go.mod h1:B1gD8pJIYvmlHegqP6p/BKe8E9MMfOd4egl98vQbGtM=
 honnef.co/go/tools v0.0.0-20180728063816-88497007e858/go.mod h1:rf3lG4BRIbNafJWhAfAdb/ePZxsR/4RtNHQocxwk9r4=

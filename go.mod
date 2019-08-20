@@ -83,7 +83,7 @@ require (
 	gotest.tools v2.2.0+incompatible
 	hidevops.io/hiboot v1.1.0
 	hidevops.io/hiboot-data v1.0.0
-	hidevops.io/hioak v0.0.0-20190806114342-63aad18dd1ef
+	hidevops.io/hioak v0.0.0-20190819053507-6f9e14e5d656
 	k8s.io/api v0.0.0-20180601181742-8b7507fac302
 	k8s.io/apiextensions-apiserver v0.0.0-20180601203502-8e7f43002fec
 	k8s.io/apimachinery v0.0.0-20180601181227-17529ec7eadb
