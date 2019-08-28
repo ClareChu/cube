@@ -146,17 +146,8 @@ func (d *Deployment) Create(dd *command.DeployData) (*extensionsV1beta1.Deployme
 	log.Infof("*** deploy is exist *** %s", dd.ForceUpdate)
 	if err == nil {
 		dpm.ObjectMeta = dp.ObjectMeta
-
-		if dd.ForceUpdate {
-			log.Infof("****  update deploy app dpm  ***")
-			err = d.deployment.Update(dpm)
-			return nil, err
-		} else {
-			ready, _ := d.podBuilder.GetPod(dd.Name, dd.Namespace)
-			if !ready {
-				err = d.deployment.Update(dpm)
-			}
-		}
+		log.Infof("****  update deploy app dpm  ***")
+		err = d.deployment.Update(dpm)
 		return dp, err
 
 	}
