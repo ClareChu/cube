@@ -37,6 +37,19 @@ type AppSpec struct {
 	Project      string           `json:"project, omitempty" protobuf:"bytes,10,opt,name=project"`
 	Url          string           `json:"url, omitempty" protobuf:"bytes,11,opt,name=url"`
 	Container    corev1.Container `json:"container" protobuf:"bytes,12,opt,name=container"`
+
+	App           string           `json:"app"  protobuf:"bytes,13,opt,name=app"`
+	Events        []Events         `json:"events" protobuf:"bytes,14,opt,name=events"`
+	Images        []string         `json:"images" protobuf:"bytes,15,opt,name=images"`
+	Volumes       Volumes          `json:"volumes" protobuf:"bytes,16,opt,name=volumes"`
+	Domain        string           `json:"domain" protobuf:"bytes,17,opt,name=domain"`
+	Ingress       []Ingress        `json:"ingress" protobuf:"bytes,18,opt,name=ingress"`
+	InitContainer corev1.Container `json:"initContainer" protobuf:"bytes,19,opt,name=initContainer"`
+	Callback      string           `json:"callback" protobuf:"bytes,20,opt,name=callback"`
+	Id            int              `json:"id" protobuf:"bytes,21,opt,name=id"`
+	Token         string           `json:"token" protobuf:"bytes,22,opt,name=token"`
+	ForceUpdate   bool             `json:"forceUpdate" protobuf:"bytes,23,opt,name=forceUpdate"`
+	Services      []Service        `json:"services" protobuf:"bytes,24,opt,name=services"`
 }
 
 type AppStatus struct {

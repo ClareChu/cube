@@ -1,6 +1,7 @@
 package aggregate
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"hidevops.io/cube/manager/pkg/aggregate/mocks"
 	builder "hidevops.io/cube/manager/pkg/builder/mocks"
@@ -13,6 +14,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	kubeFake "k8s.io/client-go/kubernetes/fake"
+	"sort"
 	"testing"
 )
 
@@ -132,4 +134,10 @@ func TestDeploymentConfig(t *testing.T) {
 	assert.Equal(t, deploy.Spec.Container.Command[0], param.Container.Command[0])
 	assert.Equal(t, deploy.Spec.Container.Env[0].Name, template.Spec.Container.Env[0].Name)
 	assert.Equal(t, deploy.Spec.Container.Env[0].Value, template.Spec.Container.Env[0].Value)
+}
+
+func TestSort(t *testing.T)  {
+	s := []string{"a","c","s","d","w","b", "ac", "ab"}
+	sort.Strings(s)
+	fmt.Printf("%v", s)
 }

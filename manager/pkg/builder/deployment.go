@@ -136,7 +136,6 @@ func (d *Deployment) Create(dd *command.DeployData) (*extensionsV1beta1.Deployme
 
 					},
 					InitContainers: containers,
-
 					Volumes:        dd.Volumes,
 				},
 			},

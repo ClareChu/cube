@@ -13,6 +13,7 @@ import (
 	extensionsV1beta1 "k8s.io/api/extensions/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
+	"sort"
 )
 
 type DeploymentConfigAggregate interface {
@@ -119,11 +120,11 @@ func (d *DeploymentConfig) InitDeployConfig(deploy *v1alpha1.DeploymentConfig, t
 		deploy.Spec.Volumes = []corev1.Volume{
 			corev1.Volume{
 				Name: param.Volumes.Name,
-/*				VolumeSource: corev1.VolumeSource{
+				VolumeSource: corev1.VolumeSource{
 					PersistentVolumeClaim: &corev1.PersistentVolumeClaimVolumeSource{
 						ClaimName: param.Volumes.Name,
 					},
-				},*/
+				},
 			},
 		}
 		deploy.Spec.Container.VolumeMounts = []corev1.VolumeMount{
@@ -180,6 +181,23 @@ func (d *DeploymentConfig) InitDeployConfig(deploy *v1alpha1.DeploymentConfig, t
 	log.Debugf("=====  InitialDelaySeconds ===== %d", deploy.Spec.ReadinessProbe.InitialDelaySeconds)
 	deploy.Spec.ForceUpdate = param.ForceUpdate
 	deploy.Spec.Container.Name = param.Name
-	deploy.Spec.Container.Env = envVars
+	deploy.Spec.Container.Env = sortEnv(envVars)
 	deploy.Status.LastVersion = deploy.Status.LastVersion + 1
+}
+
+func sortEnv(envs []corev1.EnvVar) []corev1.EnvVar {
+	var s []string
+	var es []corev1.EnvVar
+	for _, env := range envs {
+		s = append(s, env.Name)
+	}
+	sort.Strings(s)
+	for _, d := range s {
+		for _, env := range envs {
+			if d == env.Name {
+				es = append(es, env)
+			}
+		}
+	}
+	return es
 }

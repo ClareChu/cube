@@ -161,11 +161,12 @@ func (p *Pipeline) Selector(pipeline *v1alpha1.Pipeline) (err error) {
 	log.Debugf("EventTypes : %v", eventType.EventTypes)
 	params := p.InitReqParams(pipeline, eventType.Name)
 	switch eventType.EventTypes {
+
 	case constant.BuildPipeline:
+		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.BuildPipeline, constant.Created, "")
 		go func() {
 			p.buildConfigAggregate.Create(params)
 		}()
-		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.BuildPipeline, constant.Created, "")
 		return
 	case constant.Deploy:
 		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.Deploy, constant.Created, "")
@@ -186,10 +187,10 @@ func (p *Pipeline) Selector(pipeline *v1alpha1.Pipeline) (err error) {
 		}()
 
 	case constant.ImageStream:
+		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.ImageStream, constant.Created, "")
 		go func() {
 			p.imageStreamAggregate.CreateImage(params)
 		}()
-		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.ImageStream, constant.Created, "")
 	case constant.Volume:
 		err = p.pipelineBuilder.Update(pipeline.Name, pipeline.Namespace, constant.Volume, constant.Created, "")
 		go func() {

@@ -70,12 +70,12 @@ func (p *PipelineConfig) StartPipelineConfig(cmd *command.PipelineStart) (pipeli
 	//TODO get pipeline template
 	pipelineConfigTemplate, err := p.pipelineConfigClient.Get(cmd.TemplateName, constant.TemplateDefaultNamespace)
 	if err != nil {
-		log.Errorf("PipelineConfig get template : %v", err)
+		log.Warnf("PipelineConfig get template : %v", err)
 		return
 	}
 	pipelineConfig, err = p.pipelineConfigClient.Get(cmd.Name, cmd.Namespace)
 	if err != nil {
-		log.Errorf("PipelineConfig get err : %v", err)
+		log.Warnf("PipelineConfig get err : %v", err)
 		pipelineConfig = new(v1alpha1.PipelineConfig)
 		copier.Copy(pipelineConfig, pipelineConfigTemplate)
 		pipelineConfig.Status.LastVersion = lastVersion

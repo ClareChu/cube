@@ -7,7 +7,6 @@ import (
 	"hidevops.io/cube/manager/pkg/service"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
-	"hidevops.io/hiboot/pkg/utils/copier"
 	"strings"
 )
 
@@ -25,6 +24,7 @@ type Start struct {
 	roleAggregate           RoleAggregate
 	roleBindingAggregate    RoleBindingAggregate
 	appService              service.AppService
+	callbackAggregate       CallbackAggregate
 }
 
 func init() {
@@ -36,7 +36,8 @@ func NewStartService(pipelineConfigAggregate PipelineConfigAggregate,
 	namespaceAggregate NamespaceAggregate,
 	roleAggregate RoleAggregate,
 	roleBindingAggregate RoleBindingAggregate,
-	appService service.AppService) StartAggregate {
+	appService service.AppService,
+	callbackAggregate CallbackAggregate) StartAggregate {
 	return &Start{
 		pipelineConfigAggregate: pipelineConfigAggregate,
 		secretAggregate:         secretAggregate,
@@ -44,29 +45,25 @@ func NewStartService(pipelineConfigAggregate PipelineConfigAggregate,
 		roleBindingAggregate:    roleBindingAggregate,
 		namespaceAggregate:      namespaceAggregate,
 		appService:              appService,
+		callbackAggregate:       callbackAggregate,
 	}
 }
 
 func (s *Start) Init(cmd *command.PipelineStart, propMap map[string]string) (err error) {
 	//TODO 获取cmd
-	app, err := s.appService.Get(fmt.Sprintf("%s-%s-%s", cmd.Project, cmd.AppRoot, cmd.Version), constant.TemplateDefaultNamespace)
-	if err == nil && !cmd.IsApp {
-		copier.Copy(cmd, app.Spec, copier.IgnoreEmptyValue)
+	flag, err := s.appService.Init(cmd)
+	if err != nil {
+		log.Errorf("init app err :%v", err)
+		return
 	}
-	log.Infof("get app : %s", err)
-	//todo 通过URL部署项目
-	/*	if cmd.Url != "" {
-			if strings.Contains(cmd.Url, "https://") || strings.Contains(cmd.Url, "http://") {
-				url := strings.Split(cmd.Url, "//")[1]
-				cmd.Project = strings.Split(url, "/")[1]
-				cmd.Namespace = strings.Split(url, "/")[2]
-			}
+	log.Debugf("******** flag : %v, update: %v", flag, cmd.ForceUpdate)
+	if flag && !cmd.ForceUpdate {
+		err = s.callbackAggregate.Call(cmd)
+		if err == nil {
+			return
 		}
-		langs := enry.GetLanguagesByFilename("Gemfile", []byte("<content>"), []string{})
-		log.Info(langs)*/
-	if cmd.AppRoot == "" {
-		cmd.AppRoot = cmd.Name
 	}
+
 	//TODO 获取Namespace的值
 	s.GetNamespace(cmd)
 	//TODO init profile   create k8s namespace  serviceAccount default create role and roleBinding
