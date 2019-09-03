@@ -8,7 +8,6 @@ import (
 	"hidevops.io/hiboot/pkg/app/web"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/utils/io"
-	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"net/http"
 	"testing"
@@ -38,16 +37,6 @@ func TestDeploymentConfig(t *testing.T) {
 			Labels: map[string]string{
 				"app":     "hello-world",
 				"version": "v1",
-			},
-			Port: []corev1.ContainerPort{
-				corev1.ContainerPort{
-					ContainerPort: 8080,
-					Protocol:      "TCP",
-				},
-				corev1.ContainerPort{
-					ContainerPort: 7575,
-					Protocol:      "TCP",
-				},
 			},
 		},
 	}

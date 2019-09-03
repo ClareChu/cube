@@ -19,7 +19,7 @@ func init() {
 
 func newCallbackController(podBuilder builder.PodBuilder) *CallbackController {
 	return &CallbackController{
-		podBuilder, podBuilder,
+		podBuilder: podBuilder,
 	}
 }
 

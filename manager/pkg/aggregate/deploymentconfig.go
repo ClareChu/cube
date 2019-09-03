@@ -120,11 +120,11 @@ func (d *DeploymentConfig) InitDeployConfig(deploy *v1alpha1.DeploymentConfig, t
 		deploy.Spec.Volumes = []corev1.Volume{
 			corev1.Volume{
 				Name: param.Volumes.Name,
-				VolumeSource: corev1.VolumeSource{
+/*				VolumeSource: corev1.VolumeSource{
 					PersistentVolumeClaim: &corev1.PersistentVolumeClaimVolumeSource{
 						ClaimName: param.Volumes.Name,
 					},
-				},
+				},*/
 			},
 		}
 		deploy.Spec.Container.VolumeMounts = []corev1.VolumeMount{

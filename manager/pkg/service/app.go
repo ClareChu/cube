@@ -36,6 +36,12 @@ func newAppCommand(appClient *cube.App) AppService {
 }
 
 func (a *AppServiceImpl) Create(cmd *command.PipelineStart) (app *v1alpha1.App, err error) {
+	if cmd.Name == "" {
+		cmd.Name = cmd.AppRoot
+	}
+	if cmd.Namespace == "" {
+		cmd.Namespace = cmd.Project
+	}
 	name := fmt.Sprintf("%s-%s-%s", cmd.Project, cmd.AppRoot, cmd.Version)
 	namespace := constant.TemplateDefaultNamespace
 	app1, err := a.Get(name, namespace)
@@ -86,18 +92,16 @@ func (a *AppServiceImpl) Compare(name string, oldApp, newApp v1alpha1.AppSpec) (
 //Init cmd value validate
 func (a *AppServiceImpl) Init(cmd *command.PipelineStart) (similarity bool, err error) {
 	//todo 通过URL部署项目
-	if cmd.AppRoot == "" {
-		cmd.AppRoot = cmd.Name
-	}
 	name := fmt.Sprintf("%s-%s-%s", cmd.Project, cmd.AppRoot, cmd.Version)
 	app, err := a.Get(name, constant.TemplateDefaultNamespace)
 	if err == nil {
 		//TODO 查看多次入参是否相似
 		var spec v1alpha1.AppSpec
 		err = copier.Copy(&spec, app.Spec)
-		err = copier.Copy(&app.Spec, cmd, copier.IgnoreEmptyValue)
+		err = copier.Copy(app.Spec, cmd, copier.IgnoreEmptyValue)
 		similarity, err := a.Compare(name, spec, app.Spec)
-		copier.Copy(cmd, app.Spec)
+		err = copier.Copy(cmd, app.Spec)
+
 		return similarity, err
 	} else {
 		// TODO create app

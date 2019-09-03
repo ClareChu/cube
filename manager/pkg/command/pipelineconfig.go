@@ -11,14 +11,14 @@ type PipelineStart struct {
 	model.RequestBody `json:"omitempty"`
 	Id                int      `json:"id"`
 	ForceUpdate       bool     `json:"forceUpdate" default:"true"`
-	Name              string   `json:"name" validate:"required"`
+	Name              string   `json:"name"`
 	Namespace         string   `json:"namespace"`
 	TemplateName      string   `json:"templateName"`
 	Version           string   `json:"version" default:"v1"`
 	Profile           string   `json:"profile"`
 	Branch            string   `json:"branch"`
 	Context           []string `json:"context"`
-	AppRoot           string   `json:"appRoot"`
+	AppRoot           string   `json:"appRoot" validate:"required"`
 	//获取path 的目录
 	Path    string `json:"path"`
 	Project string `json:"project" validate:"required"`
