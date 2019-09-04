@@ -98,10 +98,11 @@ func (a *AppServiceImpl) Init(cmd *command.PipelineStart) (similarity bool, err 
 		//TODO 查看多次入参是否相似
 		var spec v1alpha1.AppSpec
 		err = copier.Copy(&spec, app.Spec)
-		err = copier.Copy(app.Spec, cmd, copier.IgnoreEmptyValue)
+		err = copier.Copy(&app.Spec, cmd, copier.IgnoreEmptyValue)
+		//mergo.Merge(&app.Spec, cmd, mergo.WithOverride)
 		similarity, err := a.Compare(name, spec, app.Spec)
-		err = copier.Copy(cmd, app.Spec)
-
+		err = copier.Copy(cmd, &app.Spec)
+		//mergo.Merge(cmd, &app.Spec, mergo.WithOverride)
 		return similarity, err
 	} else {
 		// TODO create app
