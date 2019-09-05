@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	corev1 "k8s.io/api/core/v1"
 	"runtime"
 	"strings"
@@ -98,6 +99,20 @@ type PipelineRequest struct {
 	Container    corev1.Container `json:"container"`
 	EnvVar       []string         `json:"envVar"`
 	Ports        []string         `json:"ports"`
+
+	Id                int      `json:"id"`
+	ForceUpdate       bool     `json:"forceUpdate" default:"true"`
+	//获取path 的目录
+	Path    string `json:"path"`
+	//gitUrl
+	Url           string             `json:"url"`
+	Ingress       []v1alpha1.Ingress `json:"ingress"`
+	InitContainer corev1.Container   `json:"initContainer"`
+	Volumes       v1alpha1.Volumes   `json:"volumes"`
+	Callback      string             `json:"callback"`
+	IsApp         bool               `json:"isApp"`
+	Token         string             `json:"token"`
+	Services      []v1alpha1.Service `json:"services"`
 }
 
 type User struct {

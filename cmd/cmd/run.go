@@ -64,21 +64,22 @@ func (c *runCommand) Run(args []string) error {
 	if err != nil {
 		return err
 	}
-
-	if err := api.PipelineStart(user, &c.req); err != nil {
-		log.Error(err)
-		return err
-	}
-	fmt.Println("Pipeline is started ...")
 	if err := api.GetApp(user, &c.req); err != nil {
-		log.Error(err)
+		fmt.Println("[ERROR] get app err:", err)
 		return err
 	}
 	fmt.Println("get app ...", c.req)
+
+	if err := api.PipelineStart(user, &c.req); err != nil {
+		fmt.Println("[ERROR] run pipeline start err:", err)
+		return err
+	}
+	fmt.Println("Pipeline is started ...")
+
 	if !watch {
 		time.Sleep(time.Second * 3)
 		var url = fmt.Sprintf("%s?namespace=%s&name=%s&sourcecode=%s&verbose=%t", api.GetBuildLogApi(user.Server), c.req.Namespace, c.req.Name, c.req.TemplateName, c.req.Verbose)
-		fmt.Println("url :", url)
+		//fmt.Println("url :", url)
 		if err := api.ClientLoop(url, api.BuildLogOut); err != nil {
 			log.Error(err)
 			return err
@@ -87,7 +88,7 @@ func (c *runCommand) Run(args []string) error {
 		time.Sleep(time.Second * 1)
 		appUrl := fmt.Sprintf("%s?namespace=%s&name=%s&new=true&profile=%s&version=%s", api.GetAppLogApi(user.Server), c.req.Namespace, c.req.Name, c.req.Profile, c.req.Version)
 		fmt.Println("----------------------------------", url)
-		fmt.Println("appUrl :", appUrl)
+		//fmt.Println("appUrl :", appUrl)
 		if err := api.ClientLoop(appUrl, api.LogOut); err != nil {
 			log.Error(err)
 			return err

@@ -132,6 +132,7 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (err error) {
 	gateway, err := s.gatewayConfigClient.Get(params.Name, params.Namespace)
 	if err == nil {
 		gateway.Spec = template.Spec
+		gateway.ObjectMeta.Annotations = template.Annotations
 		gatewayConfig, err = s.gatewayConfigClient.Update(params.Name, params.Namespace, gateway)
 	} else {
 		gatewayConfig, err = s.gatewayConfigClient.Create(gatewayConfig)

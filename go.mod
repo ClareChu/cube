@@ -23,10 +23,12 @@ require (
 	github.com/golang/groupcache v0.0.0-20190129154638-5b532d6fd5ef // indirect
 	github.com/golang/mock v1.2.0
 	github.com/golang/protobuf v1.2.0
+	github.com/gorilla/websocket v1.4.0
 	github.com/gotestyourself/gotestyourself v2.2.0+incompatible // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.0.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0 // indirect
 	github.com/hashicorp/golang-lru v0.5.0 // indirect
+	github.com/inconshreveable/go-update v0.0.0-20160112193335-8152e7eb6ccf
 	github.com/iris-contrib/go.uuid v2.0.0+incompatible
 	github.com/jinzhu/copier v0.0.0-20180308034124-7e38e58719c3
 	github.com/jonboulle/clockwork v0.1.0 // indirect
@@ -38,6 +40,7 @@ require (
 	github.com/kevholditch/gokong v0.0.1
 	github.com/klauspost/compress v1.4.1 // indirect
 	github.com/klauspost/cpuid v1.2.0 // indirect
+	github.com/manifoldco/promptui v0.3.2
 	github.com/onsi/ginkgo v1.8.0 // indirect
 	github.com/onsi/gomega v1.5.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0-rc1 // indirect
@@ -68,6 +71,7 @@ require (
 	golang.org/x/net v0.0.0-20190311183353-d8887717615a
 	golang.org/x/sys v0.0.0-20190312061237-fead79001313 // indirect
 	google.golang.org/grpc v1.17.0
+	gopkg.in/alecthomas/kingpin.v3-unstable v3.0.0-20180810215634-df19058c872c // indirect
 	gopkg.in/ini.v1 v1.39.0 // indirect
 	gopkg.in/mgo.v2 v2.0.0-20180705113604-9856a29383ce // indirect
 	gopkg.in/ory-am/dockertest.v3 v3.3.4 // indirect
@@ -84,4 +88,4 @@ require (
 	k8s.io/client-go v7.0.0+incompatible
 )
 
-replace hidevops.io/hiboot => hidevops.io/hiboot v0.0.0-20190806195322-e1bf1796fc56
+replace hidevops.io/hiboot => hidevops.io/hiboot v1.2.1

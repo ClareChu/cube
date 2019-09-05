@@ -86,10 +86,6 @@ type BaResponse struct {
 //启动PipelineStart
 func PipelineStart(user *User, start *PipelineRequest) error {
 
-	if _, err := StartInit(user, start); err != nil {
-		return err
-	}
-
 	if err := Start(*start, GetPipelineStartApi(user.Server), user.Token); err != nil {
 		return err
 	}
@@ -98,6 +94,9 @@ func PipelineStart(user *User, start *PipelineRequest) error {
 
 //GetApp 获取app的资源
 func GetApp(user *User, start *PipelineRequest) error {
+	if _, err := StartInit(user, start); err != nil {
+		return err
+	}
 	url := GetAppApi(user.Server, fmt.Sprintf("%s-%s-%s", start.Project, start.AppRoot, start.Version))
 	client := &http.Client{Timeout: time.Second * 5}
 	req, _ := http.NewRequest("GET", url, nil)
@@ -106,9 +105,9 @@ func GetApp(user *User, start *PipelineRequest) error {
 	resp, err := client.Do(req)
 	if err != nil {
 		//隐藏登陆完整URL信息
+		fmt.Println("[ERROR] ", err)
 		errs := strings.Split(err.Error(), ":")
 		err = errors.New(errs[len(errs)-1])
-		fmt.Println("[ERROR] ", err)
 		os.Exit(0)
 	}
 	defer resp.Body.Close()
@@ -117,7 +116,8 @@ func GetApp(user *User, start *PipelineRequest) error {
 	if err := json.Unmarshal(byteResp, &resData); err != nil {
 		return err
 	}
-	copier.Copy(start, resData.Data)
+	err = copier.Copy(start, resData.Data)
+	fmt.Printf("get app: %v", start)
 	if start.Namespace == "" {
 		if start.Profile != "" {
 			start.Namespace = fmt.Sprintf("%s-%s", start.Project, start.Profile)
@@ -151,12 +151,12 @@ func StartInit(user *User, req *PipelineRequest) (pr *PipelineRequest, err error
 			return nil, err
 		}
 	}
-	if req.Name == "" {
+/*	if req.Name == "" {
 		req.Name = req.AppRoot
 	}
 	if req.Namespace == "" {
 		req.Namespace = req.Project
-	}
+	}*/
 	fmt.Println("app: ", req.AppRoot)
 	fmt.Println("project: ", req.Project)
 	for _, ctx := range req.Context {
