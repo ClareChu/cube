@@ -49,3 +49,4 @@ func (c *appCommand) Run(args []string) (err error) {
 	err = api.App(&c.Req, user.Server, user.Token)
 	return
 }
+

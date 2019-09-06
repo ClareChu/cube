@@ -10,6 +10,7 @@ import (
 	"github.com/inconshreveable/go-update"
 	"github.com/jinzhu/copier"
 	"github.com/manifoldco/promptui"
+	"github.com/parnurzeal/gorequest"
 	xwebsocket "golang.org/x/net/websocket"
 	"gopkg.in/src-d/go-git.v4"
 	"hidevops.io/hiboot/pkg/model"
@@ -98,25 +99,17 @@ func GetApp(user *User, start *PipelineRequest) error {
 		return err
 	}
 	url := GetAppApi(user.Server, fmt.Sprintf("%s-%s-%s", start.Project, start.AppRoot, start.Version))
-	client := &http.Client{Timeout: time.Second * 5}
-	req, _ := http.NewRequest("GET", url, nil)
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", user.Token))
-	resp, err := client.Do(req)
-	if err != nil {
+
+	_, body, errs := gorequest.New().Get(url).End()
+	if errs != nil {
 		//隐藏登陆完整URL信息
-		fmt.Println("[ERROR] ", err)
-		errs := strings.Split(err.Error(), ":")
-		err = errors.New(errs[len(errs)-1])
-		os.Exit(0)
+		fmt.Println("[ERROR] ", errs)
 	}
-	defer resp.Body.Close()
-	byteResp, _ := ioutil.ReadAll(resp.Body)
 	resData := BaResponse{}
-	if err := json.Unmarshal(byteResp, &resData); err != nil {
+	if err := json.Unmarshal([]byte(body), &resData); err != nil {
 		return err
 	}
-	err = copier.Copy(start, resData.Data)
+	copier.Copy(start, resData.Data)
 	fmt.Printf("get app: %v", start)
 	if start.Namespace == "" {
 		if start.Profile != "" {
