@@ -135,7 +135,6 @@ func (v *Callback) Send(callbackUrl, name, namespace, token, status, url string,
 			Url:       url,
 		},
 	}
-	time.Sleep(time.Second * 3)
 	_, body, errs := gorequest.New().Get(callbackUrl).Set(constant.Authorization, token).Send(rep).End()
 	log.Infof("response : %s", body)
 	if errs != nil {
