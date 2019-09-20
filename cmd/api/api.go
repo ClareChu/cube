@@ -98,8 +98,9 @@ func GetApp(user *User, start *PipelineRequest) error {
 	if _, err := StartInit(user, start); err != nil {
 		return err
 	}
-	url := GetAppApi(user.Server, fmt.Sprintf("%s-%s-%s", start.Project, start.AppRoot, start.Version))
-
+	app := fmt.Sprintf("%s-%s-%s", start.Project, start.AppRoot, start.Version)
+	url := GetAppApi(user.Server, app)
+	fmt.Printf("get app value: %v", app)
 	_, body, errs := gorequest.New().Get(url).End()
 	if errs != nil {
 		//隐藏登陆完整URL信息
@@ -109,7 +110,8 @@ func GetApp(user *User, start *PipelineRequest) error {
 	if err := json.Unmarshal([]byte(body), &resData); err != nil {
 		return err
 	}
-	copier.Copy(start, resData.Data)
+	err := copier.Copy(start, resData.Data)
+	fmt.Sprint(err)
 	fmt.Printf("get app: %v", start)
 	if start.Namespace == "" {
 		if start.Profile != "" {

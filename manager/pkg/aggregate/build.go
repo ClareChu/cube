@@ -155,9 +155,14 @@ func (b *Build) SourceCodePull(build *v1alpha1.Build) error {
 		log.Errorf("build get configMaps: %v", err)
 		return err
 	}
+	baseUrl := build.Spec.CloneConfig.Url
+	if baseUrl == "" {
+		baseUrl = configMaps.Data[constant.BaseUrl]
+	}
+	log.Debugf("baseUrl: %v", baseUrl)
 	command := &command.SourceCodePullCommand{
 		CloneType: build.Spec.CloneType,
-		Url:       fmt.Sprintf("%s/%s/%s.git", configMaps.Data[constant.BaseUrl], build.Spec.Project, build.Spec.AppRoot),
+		Url:       fmt.Sprintf("%s/%s/%s.git", baseUrl, build.Spec.Project, build.Spec.AppRoot),
 		Branch:    build.Spec.CloneConfig.Branch,
 		DstDir:    build.Spec.CloneConfig.DstDir,
 		Username:  build.Spec.CloneConfig.Username,

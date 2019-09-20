@@ -37,7 +37,7 @@ func newRunCommand() *runCommand {
 
 	pf := c.PersistentFlags()
 	pf.StringVarP(&c.req.Profile, "profile", "P", "", "--profile=dev")
-	pf.StringVarP(&c.req.Version, "version", "V", "v1", "--version=v1")
+	pf.StringVarP(&c.req.Version, "version", "v", "v1", "--version=v1")
 	pf.StringVarP(&c.req.Project, "project", "p", "", "--project=project-name")
 	pf.StringVarP(&c.req.Namespace, "namespace", "n", "", "--namespace=project-name-dev")
 	pf.StringVarP(&c.req.Name, "app", "a", "", "--app=my-app")
@@ -46,7 +46,6 @@ func newRunCommand() *runCommand {
 	pf.StringSliceVarP(&c.req.Context, "context", "C", nil, "--context=sub-module")
 	pf.StringVarP(&c.req.TemplateName, "template", "t", "", "--template=java")
 	pf.StringSliceVarP(&c.req.EnvVar, "env", "e", nil, "--env=your-app-env")
-	pf.BoolVarP(&c.req.Verbose, "verbose", "v", false, "--verbose")
 	pf.BoolVarP(&c.req.Watch, "watch", "w", false, "--watch")
 	pf.StringArrayVarP(&c.req.Container.Command, "cmd", "c", nil, "--cmd=your-cmd")
 	return c

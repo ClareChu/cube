@@ -89,8 +89,8 @@ func (d *DeploymentConfig) Create(param *command.PipelineReqParams, buildVersion
 		d.InitDeployConfig(deploymentConfig, template, param)
 		deploymentConfig, err = d.deploymentConfigClient.Create(deploymentConfig)
 	}
-	d.deploymentAggregate.Create(deploymentConfig, param.PipelineName, param.Version, buildVersion)
-	return
+	_, err = d.deploymentAggregate.Create(deploymentConfig, param.PipelineName, param.Version, buildVersion)
+	return nil, err
 }
 
 //TODO 初始化 init deploy config
@@ -163,6 +163,7 @@ func (d *DeploymentConfig) InitDeployConfig(deploy *v1alpha1.DeploymentConfig, t
 			},
 		}
 	}
+	log.Debugf("*********** InitialDelaySeconds: %v", deploy.Spec.ReadinessProbe)
 	if deploy.Spec.ReadinessProbe.InitialDelaySeconds != 0 {
 		deploy.Spec.Container.ReadinessProbe = &deploy.Spec.ReadinessProbe
 	}
@@ -170,7 +171,6 @@ func (d *DeploymentConfig) InitDeployConfig(deploy *v1alpha1.DeploymentConfig, t
 	if deploy.Spec.LivenessProbe.InitialDelaySeconds != 0 {
 		deploy.Spec.Container.LivenessProbe = &deploy.Spec.LivenessProbe
 	}
-	log.Debugf("=====  InitialDelaySeconds ===== %d", deploy.Spec.ReadinessProbe.InitialDelaySeconds)
 	deploy.Spec.ForceUpdate = param.ForceUpdate
 	deploy.Spec.Container.Name = param.Name
 	deploy.Spec.Container.Env = sortEnv(envVars)

@@ -52,6 +52,7 @@ type AuthConfig struct {
 	// RegistryToken is a bearer token to be sent to a registry
 	RegistryToken string `json:"registryToken,omitempty"`
 }
+
 type Task struct {
 	Name string `json:"name"`
 	Type string `json:"type"`
