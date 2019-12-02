@@ -2,6 +2,7 @@ package aggregate
 
 import (
 	"fmt"
+	"hidevops.io/cube/manager/pkg/aggregate/dispatch"
 	"hidevops.io/cube/manager/pkg/builder"
 	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/cube/manager/pkg/constant"
@@ -21,27 +22,40 @@ type GatewayConfigAggregate interface {
 
 type GatewayConfig struct {
 	GatewayConfigAggregate
-	gatewayConfigClient *cube.GatewayConfig
-	pipelineBuilder     builder.PipelineBuilder
-	gatewayAggregate    GatewayAggregate
+	gatewayConfigClient      *cube.GatewayConfig
+	pipelineBuilder          builder.PipelineBuilder
+	gatewayAggregate         GatewayAggregate
+	pipelineFactoryInterface dispatch.PipelineFactoryInterface
 }
+
+const GatewayEvent = "gateway"
 
 func init() {
 	app.Register(NewGatewayService)
 }
 
-func NewGatewayService(gatewayConfigClient *cube.GatewayConfig, pipelineBuilder builder.PipelineBuilder, gatewayAggregate GatewayAggregate) GatewayConfigAggregate {
-	return &GatewayConfig{
-		gatewayConfigClient: gatewayConfigClient,
-		pipelineBuilder:     pipelineBuilder,
-		gatewayAggregate:    gatewayAggregate,
+func NewGatewayService(gatewayConfigClient *cube.GatewayConfig,
+	pipelineBuilder builder.PipelineBuilder,
+	gatewayAggregate GatewayAggregate,
+	pipelineFactoryInterface dispatch.PipelineFactoryInterface) GatewayConfigAggregate {
+	gatewayConfig := &GatewayConfig{
+		gatewayConfigClient:      gatewayConfigClient,
+		pipelineBuilder:          pipelineBuilder,
+		gatewayAggregate:         gatewayAggregate,
+		pipelineFactoryInterface: pipelineFactoryInterface,
 	}
+	pipelineFactoryInterface.Add(GatewayEvent, gatewayConfig)
+	return gatewayConfig
 }
 
 func (s *GatewayConfig) Template(cmd *command.GatewayConfig) (gatewayConfig *v1alpha1.GatewayConfig, err error) {
 	log.Debug("build config templates create :%v", cmd)
 	gatewayConfig = new(v1alpha1.GatewayConfig)
-	copier.Copy(gatewayConfig, cmd)
+	err = copier.Copy(gatewayConfig, cmd)
+	if err != nil {
+		log.Errorf("copy is template error: %v", err)
+		return
+	}
 	gatewayConfig.TypeMeta = v1.TypeMeta{
 		Kind:       constant.GatewayConfigKind,
 		APIVersion: constant.GatewayConfigApiVersion,

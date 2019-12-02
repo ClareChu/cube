@@ -43,7 +43,7 @@ type Volumes struct {
 }
 
 func (i *ImageStreamController) Post(is *ImageStream) (rep model.Response, err error) {
-	err = i.imageStreamAggregate.Create(is.Name, is.Namespace, is.Images)
+	err = i.imageStreamAggregate.CreateImage(is.Name, is.Namespace, is.Images)
 	rep = new(model.BaseResponse)
 	return
 }

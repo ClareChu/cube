@@ -27,8 +27,7 @@ func newServiceConfigController(serviceConfigAggregate aggregate.ServiceConfigAg
 func (c *ServiceConfigController) PostCreate(cmd *command.DeployConfigType) (model.Response, error) {
 	log.Debugf("create deployment config template: %v", cmd)
 	param := &command.PipelineReqParams{}
-	deploy, err := c.serviceConfigAggregate.Create(param)
+	err := c.serviceConfigAggregate.Create(param)
 	response := new(model.BaseResponse)
-	response.SetData(deploy)
 	return response, err
 }

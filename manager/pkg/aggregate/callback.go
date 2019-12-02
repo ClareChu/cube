@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/parnurzeal/gorequest"
+	"hidevops.io/cube/manager/pkg/aggregate/dispatch"
 	"hidevops.io/cube/manager/pkg/builder"
 	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/cube/manager/pkg/constant"
@@ -27,21 +28,30 @@ type CallbackAggregate interface {
 
 type Callback struct {
 	CallbackAggregate
-	pipelineBuilder builder.PipelineBuilder
-	pod             *kube.Pod
-	podBuilder      builder.PodBuilder
+	pipelineBuilder          builder.PipelineBuilder
+	pod                      *kube.Pod
+	podBuilder               builder.PodBuilder
+	pipelineFactoryInterface dispatch.PipelineFactoryInterface
 }
+
+const CallBack = "callback"
 
 func init() {
 	app.Register(NewCallbackService)
 }
 
-func NewCallbackService(pipelineBuilder builder.PipelineBuilder, podBuilder builder.PodBuilder, pod *kube.Pod) CallbackAggregate {
-	return &Callback{
-		podBuilder:      podBuilder,
-		pipelineBuilder: pipelineBuilder,
-		pod:             pod,
+func NewCallbackService(pipelineBuilder builder.PipelineBuilder,
+	podBuilder builder.PodBuilder,
+	pod *kube.Pod,
+	pipelineFactoryInterface dispatch.PipelineFactoryInterface) CallbackAggregate {
+	callback := &Callback{
+		podBuilder:               podBuilder,
+		pipelineBuilder:          pipelineBuilder,
+		pod:                      pod,
+		pipelineFactoryInterface: pipelineFactoryInterface,
 	}
+	pipelineFactoryInterface.Add(CallBack, callback)
+	return callback
 }
 
 func (v *Callback) Create(params *command.PipelineReqParams) (err error) {
@@ -135,6 +145,7 @@ func (v *Callback) Send(callbackUrl, name, namespace, token, status, url string,
 			Url:       url,
 		},
 	}
+	time.Sleep(5 * time.Second)
 	_, body, errs := gorequest.New().Get(callbackUrl).Set(constant.Authorization, token).Send(rep).End()
 	log.Infof("response : %s", body)
 	if errs != nil {

@@ -1,0 +1,6 @@
+projectKey=pipeline-manager
+serverUrl=http://10.10.12.14:9100
+serverVersion=7.9.1.27448
+dashboardUrl=http://10.10.12.14:9100/dashboard?id=pipeline-manager
+ceTaskId=AW6sHrRvDqNlvR8QpDvw
+ceTaskUrl=http://10.10.12.14:9100/api/ce/task?id=AW6sHrRvDqNlvR8QpDvw

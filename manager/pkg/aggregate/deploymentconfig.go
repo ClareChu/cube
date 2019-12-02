@@ -1,6 +1,7 @@
 package aggregate
 
 import (
+	"hidevops.io/cube/manager/pkg/aggregate/dispatch"
 	"hidevops.io/cube/manager/pkg/builder"
 	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/cube/manager/pkg/constant"
@@ -18,27 +19,36 @@ import (
 
 type DeploymentConfigAggregate interface {
 	Template(cmd *command.DeploymentConfig) (deploymentConfig *v1alpha1.DeploymentConfig, err error)
-	Create(param *command.PipelineReqParams, buildVersion string) (deploymentConfig *v1alpha1.DeploymentConfig, err error)
+	Create(param *command.PipelineReqParams) (err error)
 	InitDeployConfig(deploy *v1alpha1.DeploymentConfig, template *v1alpha1.DeploymentConfig, param *command.PipelineReqParams)
 }
 
 type DeploymentConfig struct {
 	DeploymentConfigAggregate
-	deploymentConfigClient *cube.DeploymentConfig
-	pipelineBuilder        builder.PipelineBuilder
-	deploymentAggregate    DeploymentAggregate
+	deploymentConfigClient   *cube.DeploymentConfig
+	pipelineBuilder          builder.PipelineBuilder
+	deploymentAggregate      DeploymentAggregate
+	pipelineFactoryInterface dispatch.PipelineFactoryInterface
 }
+
+const Deploy = "deploy"
 
 func init() {
 	app.Register(NewDeploymentConfigService)
 }
 
-func NewDeploymentConfigService(deploymentConfigClient *cube.DeploymentConfig, pipelineBuilder builder.PipelineBuilder, deploymentAggregate DeploymentAggregate) DeploymentConfigAggregate {
-	return &DeploymentConfig{
-		deploymentConfigClient: deploymentConfigClient,
-		pipelineBuilder:        pipelineBuilder,
-		deploymentAggregate:    deploymentAggregate,
+func NewDeploymentConfigService(deploymentConfigClient *cube.DeploymentConfig,
+	pipelineBuilder builder.PipelineBuilder,
+	deploymentAggregate DeploymentAggregate,
+	pipelineFactoryInterface dispatch.PipelineFactoryInterface) DeploymentConfigAggregate {
+	deploymentConfig := &DeploymentConfig{
+		deploymentConfigClient:   deploymentConfigClient,
+		pipelineBuilder:          pipelineBuilder,
+		deploymentAggregate:      deploymentAggregate,
+		pipelineFactoryInterface: pipelineFactoryInterface,
 	}
+	pipelineFactoryInterface.Add(Deploy, deploymentConfig)
+	return deploymentConfig
 }
 
 func (d *DeploymentConfig) Template(cmd *command.DeploymentConfig) (deploymentConfig *v1alpha1.DeploymentConfig, err error) {
@@ -64,12 +74,12 @@ func (d *DeploymentConfig) Template(cmd *command.DeploymentConfig) (deploymentCo
 	return
 }
 
-func (d *DeploymentConfig) Create(param *command.PipelineReqParams, buildVersion string) (deploymentConfig *v1alpha1.DeploymentConfig, err error) {
+func (d *DeploymentConfig) Create(param *command.PipelineReqParams) (err error) {
 	log.Debugf("build config create name :%s, namespace : %s , sourceType : %s", param.Name, param.Namespace, param.EventType)
-	deploymentConfig = new(v1alpha1.DeploymentConfig)
+	deploymentConfig := new(v1alpha1.DeploymentConfig)
 	template, err := d.deploymentConfigClient.Get(param.EventType, constant.TemplateDefaultNamespace)
 	if err != nil {
-		return nil, err
+		return
 	}
 	deploymentConfig.TypeMeta = v1.TypeMeta{
 		Kind:       constant.DeploymentConfigKind,
@@ -89,8 +99,8 @@ func (d *DeploymentConfig) Create(param *command.PipelineReqParams, buildVersion
 		d.InitDeployConfig(deploymentConfig, template, param)
 		deploymentConfig, err = d.deploymentConfigClient.Create(deploymentConfig)
 	}
-	_, err = d.deploymentAggregate.Create(deploymentConfig, param.PipelineName, param.Version, buildVersion)
-	return nil, err
+	_, err = d.deploymentAggregate.Create(deploymentConfig, param.PipelineName, param.Version, param.BuildVersion)
+	return
 }
 
 //TODO 初始化 init deploy config
@@ -107,7 +117,7 @@ func (d *DeploymentConfig) InitDeployConfig(deploy *v1alpha1.DeploymentConfig, t
 	}
 	envs[constant.AppName] = param.Name
 	envs[constant.AppVersion] = param.Version
-	envVars := []corev1.EnvVar{}
+	var envVars []corev1.EnvVar
 	for k, v := range envs {
 		envVar := corev1.EnvVar{
 			Name:  k,
@@ -120,11 +130,11 @@ func (d *DeploymentConfig) InitDeployConfig(deploy *v1alpha1.DeploymentConfig, t
 		deploy.Spec.Volumes = []corev1.Volume{
 			corev1.Volume{
 				Name: param.Volumes.Name,
-				VolumeSource: corev1.VolumeSource{
-					PersistentVolumeClaim: &corev1.PersistentVolumeClaimVolumeSource{
-						ClaimName: param.Volumes.Name,
-					},
-				},
+				/*				VolumeSource: corev1.VolumeSource{
+								PersistentVolumeClaim: &corev1.PersistentVolumeClaimVolumeSource{
+									ClaimName: param.Volumes.Name,
+								},
+							},*/
 			},
 		}
 		deploy.Spec.Container.VolumeMounts = []corev1.VolumeMount{

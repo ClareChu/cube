@@ -2,6 +2,7 @@ package aggregate
 
 import (
 	"fmt"
+	"hidevops.io/cube/manager/pkg/aggregate/dispatch"
 	"hidevops.io/cube/manager/pkg/builder"
 	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/cube/manager/pkg/constant"
@@ -18,35 +19,48 @@ import (
 
 type ServiceConfigAggregate interface {
 	Template(cmd *command.ServiceConfig) (serviceConfig *v1alpha1.ServiceConfig, err error)
-	Create(params *command.PipelineReqParams) (serviceConfig *v1alpha1.ServiceConfig, err error)
+	Create(params *command.PipelineReqParams) (err error)
 	CreateServices(name, namespace string, sc []v1alpha1.Service) (err error)
 	DeleteService(name, namespace string) (err error)
 	Delete(name, namespace string) (err error)
 }
 
+const Service = "service"
+
 type ServiceConfig struct {
 	ServiceConfigAggregate
-	serviceConfigClient *cube.ServiceConfig
-	service             *kube.Service
-	pipelineBuilder     builder.PipelineBuilder
+	serviceConfigClient      *cube.ServiceConfig
+	service                  *kube.Service
+	pipelineBuilder          builder.PipelineBuilder
+	pipelineFactoryInterface dispatch.PipelineFactoryInterface
 }
 
 func init() {
 	app.Register(NewServiceConfigService)
 }
 
-func NewServiceConfigService(serviceConfigClient *cube.ServiceConfig, service *kube.Service, pipelineBuilder builder.PipelineBuilder) ServiceConfigAggregate {
-	return &ServiceConfig{
-		serviceConfigClient: serviceConfigClient,
-		service:             service,
-		pipelineBuilder:     pipelineBuilder,
+func NewServiceConfigService(serviceConfigClient *cube.ServiceConfig,
+	service *kube.Service,
+	pipelineBuilder builder.PipelineBuilder,
+	pipelineFactoryInterface dispatch.PipelineFactoryInterface) ServiceConfigAggregate {
+	serviceConfig := &ServiceConfig{
+		serviceConfigClient:      serviceConfigClient,
+		service:                  service,
+		pipelineBuilder:          pipelineBuilder,
+		pipelineFactoryInterface: pipelineFactoryInterface,
 	}
+	pipelineFactoryInterface.Add(Service, serviceConfig)
+	return serviceConfig
 }
 
 func (s *ServiceConfig) Template(cmd *command.ServiceConfig) (serviceConfig *v1alpha1.ServiceConfig, err error) {
 	log.Debug("build config templates create :%v", cmd)
 	serviceConfig = new(v1alpha1.ServiceConfig)
-	copier.Copy(serviceConfig, cmd)
+	err = copier.Copy(serviceConfig, cmd)
+	if err != nil {
+		log.Errorf("service config copy is error")
+		return
+	}
 	serviceConfig.TypeMeta = v1.TypeMeta{
 		Kind:       constant.ServiceConfigKind,
 		APIVersion: constant.ServiceConfigApiVersion,
@@ -66,14 +80,14 @@ func (s *ServiceConfig) Template(cmd *command.ServiceConfig) (serviceConfig *v1a
 	return
 }
 
-func (s *ServiceConfig) Create(params *command.PipelineReqParams) (serviceConfig *v1alpha1.ServiceConfig, err error) {
+func (s *ServiceConfig) Create(params *command.PipelineReqParams) (err error) {
 	log.Debugf("create service name :%s, namespace : %s , sourceType : %s", params.Name, params.Namespace, params.EventType)
 	phase := constant.Success
-	serviceConfig = new(v1alpha1.ServiceConfig)
+	serviceConfig := new(v1alpha1.ServiceConfig)
 	template, err := s.serviceConfigClient.Get(params.EventType, constant.TemplateDefaultNamespace)
 	if err != nil {
 		log.Infof("create service err : %v", err)
-		return nil, err
+		return err
 	}
 	copier.Copy(serviceConfig, template)
 	serviceConfig.TypeMeta = v1.TypeMeta{

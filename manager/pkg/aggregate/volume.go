@@ -1,6 +1,7 @@
 package aggregate
 
 import (
+	"hidevops.io/cube/manager/pkg/aggregate/dispatch"
 	"hidevops.io/cube/manager/pkg/builder"
 	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/cube/manager/pkg/constant"
@@ -21,22 +22,30 @@ type VolumeAggregate interface {
 }
 
 type volumeServiceImpl struct {
-	persistentVolumeClaim *kube.PersistentVolumeClaim
-	persistentVolume      *kube.PersistentVolume
-	pipelineBuilder       builder.PipelineBuilder
+	persistentVolumeClaim    *kube.PersistentVolumeClaim
+	persistentVolume         *kube.PersistentVolume
+	pipelineBuilder          builder.PipelineBuilder
+	pipelineFactoryInterface dispatch.PipelineFactoryInterface
 }
+
+const Volume = "volume"
 
 func init() {
 	app.Register(NewVolumeService)
 }
 
-func NewVolumeService(persistentVolumeClaim *kube.PersistentVolumeClaim, pipelineBuilder builder.PipelineBuilder,
-	persistentVolume *kube.PersistentVolume) VolumeAggregate {
-	return &volumeServiceImpl{
-		persistentVolumeClaim: persistentVolumeClaim,
-		pipelineBuilder:       pipelineBuilder,
-		persistentVolume:      persistentVolume,
+func NewVolumeService(persistentVolumeClaim *kube.PersistentVolumeClaim,
+	pipelineBuilder builder.PipelineBuilder,
+	persistentVolume *kube.PersistentVolume,
+	pipelineFactoryInterface dispatch.PipelineFactoryInterface) VolumeAggregate {
+	volumeAggregate := &volumeServiceImpl{
+		persistentVolumeClaim:    persistentVolumeClaim,
+		pipelineBuilder:          pipelineBuilder,
+		persistentVolume:         persistentVolume,
+		pipelineFactoryInterface: pipelineFactoryInterface,
 	}
+	pipelineFactoryInterface.Add(Volume, volumeAggregate)
+	return volumeAggregate
 }
 
 func (v *volumeServiceImpl) Create(params *command.PipelineReqParams) (err error) {

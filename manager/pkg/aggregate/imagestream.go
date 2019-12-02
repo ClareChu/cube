@@ -1,6 +1,7 @@
 package aggregate
 
 import (
+	"hidevops.io/cube/manager/pkg/aggregate/dispatch"
 	"hidevops.io/cube/manager/pkg/builder"
 	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/cube/manager/pkg/constant"
@@ -14,24 +15,32 @@ import (
 )
 
 type ImageStreamAggregate interface {
-	CreateImage(params *command.PipelineReqParams) error
-	Create(name, namespace string, images string) error
+	Create(params *command.PipelineReqParams) error
+	CreateImage(name, namespace string, images string) (err error)
 }
 
 type imageStreamServiceImpl struct {
-	imageStream     *cube.ImageStream
-	pipelineBuilder builder.PipelineBuilder
+	imageStream              *cube.ImageStream
+	pipelineBuilder          builder.PipelineBuilder
+	pipelineFactoryInterface dispatch.PipelineFactoryInterface
 }
+
+const ImageStream = "imageStream"
 
 func init() {
 	app.Register(NewImageStreamService)
 }
 
-func NewImageStreamService(imageStream *cube.ImageStream, pipelineBuilder builder.PipelineBuilder) ImageStreamAggregate {
-	return &imageStreamServiceImpl{
-		imageStream:     imageStream,
-		pipelineBuilder: pipelineBuilder,
+func NewImageStreamService(imageStream *cube.ImageStream,
+	pipelineBuilder builder.PipelineBuilder,
+	pipelineFactoryInterface dispatch.PipelineFactoryInterface) ImageStreamAggregate {
+	imageStreamAggregate := &imageStreamServiceImpl{
+		imageStream:              imageStream,
+		pipelineBuilder:          pipelineBuilder,
+		pipelineFactoryInterface: pipelineFactoryInterface,
 	}
+	pipelineFactoryInterface.Add(ImageStream, imageStreamAggregate)
+	return imageStreamAggregate
 }
 
 const (
@@ -39,17 +48,17 @@ const (
 	Generation = "1"
 )
 
-func (i *imageStreamServiceImpl) CreateImage(params *command.PipelineReqParams) error {
-	err := i.Create(params.Name, params.Namespace, params.Container.Image)
+func (i *imageStreamServiceImpl) Create(params *command.PipelineReqParams) error {
+	err := i.CreateImage(params.Name, params.Namespace, params.Container.Image)
 	if err != nil {
-		i.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.ImageStream, constant.Fail, "")
+		err = i.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.ImageStream, constant.Fail, "")
 		return err
 	}
 	err = i.pipelineBuilder.Update(params.PipelineName, params.Namespace, constant.ImageStream, constant.Success, "")
 	return err
 }
 
-func (i *imageStreamServiceImpl) Create(name, namespace string, images string) error {
+func (i *imageStreamServiceImpl) CreateImage(name, namespace string, images string) error {
 	tag := strings.Split(images, ":")[1]
 	t := time.Now()
 	image, err := i.imageStream.Get(name, namespace)

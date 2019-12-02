@@ -80,9 +80,8 @@ func (c *BuildConfigController) Post(template *command.BuildConfigTemplate) (mod
 	pipeline := new(v1alpha1.Pipeline)
 	copier.Copy(&pipeline, template)
 	params := &command.PipelineReqParams{}
-	build, err := c.buildConfigAggregate.Create(params)
+	err := c.buildConfigAggregate.Create(params)
 	base := new(model.BaseResponse)
-	base.SetData(build)
 	return base, err
 }
 

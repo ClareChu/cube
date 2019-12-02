@@ -70,6 +70,7 @@ type PipelineReqParams struct {
 	AppRoot       string             `json:"app_root"`
 	Profile       string             `json:"profile"`
 	Project       string             `json:"project"`
+	BuildVersion  string             `json:"buildVersion"`
 	Container     corev1.Container   `json:"container"`
 	InitContainer corev1.Container   `json:"initContainer"`
 	Volumes       v1alpha1.Volumes   `json:"volumes"`
