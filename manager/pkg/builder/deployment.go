@@ -157,7 +157,7 @@ func (d *Deployment) CreateDeployment(dd *command.DeployData, dpm *extensionsV1b
 				time.Sleep(10 * time.Second)
 				continue
 			}
-			return dp, err
+			return dp, nil
 
 		} else {
 			log.Infof("****  create deploy app dpm  ***")
@@ -167,7 +167,7 @@ func (d *Deployment) CreateDeployment(dd *command.DeployData, dpm *extensionsV1b
 				time.Sleep(10 * time.Second)
 				continue
 			}
-			return dp, err
+			return dp, nil
 		}
 	}
 	return dp, errors.New("create deployment and update deployment is error")
