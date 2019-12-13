@@ -25,10 +25,12 @@ type Selector struct {
 
 type SelectorInterface interface {
 	Handle(pipeline *v1alpha1.Pipeline) (err error)
+	HandleV2(pipeline *v1alpha1.Pipeline) (err error)
 }
 
 func init() {
 	app.Register(NewSelectorService)
+
 }
 
 func NewSelectorService(buildConfigAggregate BuildConfigAggregate,

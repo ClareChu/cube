@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/jinzhu/copier"
+	"hidevops.io/cube/manager/pkg/aggregate/dispatch"
 	"hidevops.io/cube/manager/pkg/builder"
 	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/cube/manager/pkg/constant"
@@ -48,13 +49,22 @@ type Build struct {
 	pipelineBuilder                builder.PipelineBuilder
 	replicationControllerAggregate ReplicationControllerAggregate
 	serviceConfigAggregate         ServiceConfigAggregate
+	buildPackInterface             dispatch.BuildPackInterface
 }
 
 func init() {
 	app.Register(NewBuildService)
 }
 
-func NewBuildService(configMaps *kube.ConfigMaps, buildClient *cube.Build, buildConfigService service.BuildConfigService, buildNode builder.BuildNode, pod *kube.Pod, pipelineBuilder builder.PipelineBuilder, replicationControllerAggregate ReplicationControllerAggregate, serviceConfigAggregate ServiceConfigAggregate) BuildAggregate {
+func NewBuildService(configMaps *kube.ConfigMaps,
+	buildClient *cube.Build,
+	buildConfigService service.BuildConfigService,
+	buildNode builder.BuildNode,
+	pod *kube.Pod,
+	pipelineBuilder builder.PipelineBuilder,
+	replicationControllerAggregate ReplicationControllerAggregate,
+	serviceConfigAggregate ServiceConfigAggregate,
+	buildPackInterface dispatch.BuildPackInterface) BuildAggregate {
 	return &Build{
 		configMaps:                     configMaps,
 		buildClient:                    buildClient,
@@ -64,6 +74,7 @@ func NewBuildService(configMaps *kube.ConfigMaps, buildClient *cube.Build, build
 		pipelineBuilder:                pipelineBuilder,
 		replicationControllerAggregate: replicationControllerAggregate,
 		serviceConfigAggregate:         serviceConfigAggregate,
+		buildPackInterface:             buildPackInterface,
 	}
 }
 
@@ -338,6 +349,27 @@ func (b *Build) Selector(build *v1alpha1.Build) (err error) {
 		log.Debug("build is ending")
 	default:
 
+	}
+	return
+}
+
+func (b *Build) SelectorV2(build *v1alpha1.Build) (err error) {
+	var tak v1alpha1.Task
+	if len(build.Status.Stages) == 0 {
+		if len(build.Spec.Tasks) == 0 {
+			err = fmt.Errorf("tasks is len equ 0")
+			return
+		}
+		tak = build.Spec.Tasks[0]
+	} else if build.Status.Phase == constant.Success && len(build.Status.Stages) != len(build.Spec.Tasks) {
+		tak = build.Spec.Tasks[len(build.Status.Stages)]
+		aggregate := b.buildPackInterface.Get(tak.Name)
+		err = aggregate.Handle(build)
+	} else if len(build.Status.Stages) == len(build.Spec.Tasks) {
+		err = b.Update(build, "", constant.Complete)
+		log.Info("update pipeline aggregate")
+		err = b.pipelineBuilder.Update(build.ObjectMeta.Labels[constant.PipelineName], build.Namespace, constant.BuildPipeline, constant.Success, build.ObjectMeta.Labels[constant.Number])
+		log.Debug("build is ending")
 	}
 	return
 }

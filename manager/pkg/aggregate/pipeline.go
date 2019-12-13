@@ -111,14 +111,14 @@ func (p *Pipeline) Watch(name, namespace string) (pipeline *v1alpha1.Pipeline, e
 			case watch.Added:
 				pipeline = event.Object.(*v1alpha1.Pipeline)
 				log.Infof("add event type :%v", pipeline.Status)
-				err = p.selectorInterface.Handle(pipeline)
+				err = p.selectorInterface.HandleV2(pipeline)
 				if err != nil {
 					return
 				}
 			case watch.Modified:
 				pipeline = event.Object.(*v1alpha1.Pipeline)
 				log.Infof("Modified event type :%v", pipeline.Status)
-				err = p.selectorInterface.Handle(pipeline)
+				err = p.selectorInterface.HandleV2(pipeline)
 				if err != nil {
 					return
 				}

@@ -1,6 +1,7 @@
 package builder
 
 import (
+	"errors"
 	"fmt"
 	"github.com/jinzhu/copier"
 	"hidevops.io/cube/manager/pkg/command"
@@ -77,7 +78,7 @@ func (d *Deployment) CreateApp(deploy *v1alpha1.Deployment) error {
 	}
 	deploy.Spec.Container.Image = i.Spec.Tags[constant.Latest].DockerImageReference
 	dd := &command.DeployData{}
-	copier.Copy(dd, &deploy.Spec)
+	err = copier.Copy(dd, &deploy.Spec)
 	dd.Name = deploy.Labels[constant.DeploymentConfig]
 	dd.Namespace = deploy.Namespace
 	_, err = d.Create(dd)
@@ -94,7 +95,7 @@ func int32Ptr(i int32) *int32 { return &i }
 
 func (d *Deployment) Create(dd *command.DeployData) (*extensionsV1beta1.Deployment, error) {
 	runAsRoot := false
-	containers := []corev1.Container{}
+	var containers []corev1.Container
 	if dd.InitContainer.Name != "" {
 		containers = append(containers, dd.InitContainer)
 	} else {
@@ -133,7 +134,6 @@ func (d *Deployment) Create(dd *command.DeployData) (*extensionsV1beta1.Deployme
 					NodeSelector: dd.NodeSelector,
 					Containers: []corev1.Container{
 						dd.Container,
-
 					},
 					InitContainers: containers,
 					Volumes:        dd.Volumes,
@@ -141,16 +141,34 @@ func (d *Deployment) Create(dd *command.DeployData) (*extensionsV1beta1.Deployme
 			},
 		},
 	}
+	return d.CreateDeployment(dd, dpm)
+}
 
+func (d *Deployment) CreateDeployment(dd *command.DeployData, dpm *extensionsV1beta1.Deployment) (*extensionsV1beta1.Deployment, error) {
 	dp, err := d.deployment.Get(fmt.Sprintf("%s-%s", dd.Name, dd.Version), dd.Namespace, metav1.GetOptions{})
 	log.Infof("*** deploy is exist *** %s", dd.ForceUpdate)
-	if err == nil {
-		dpm.ObjectMeta = dp.ObjectMeta
-		log.Infof("****  update deploy app dpm  ***")
-		err = d.deployment.Update(dpm)
-		return dp, err
+	for i := 0; i < 3; i++ {
+		if err == nil {
+			dpm.ObjectMeta = dp.ObjectMeta
+			log.Infof("****  update deploy app dpm  ***")
+			e := d.deployment.Update(dpm)
+			if e != nil {
+				log.Errorf("*** update deploy error: %v try again ***", err)
+				time.Sleep(10 * time.Second)
+				continue
+			}
+			return dp, err
 
+		} else {
+			log.Infof("****  create deploy app dpm  ***")
+			dp, e := d.deployment.Create(dpm)
+			if e != nil {
+				log.Errorf("*** create deploy error: %v try again ***", err)
+				time.Sleep(10 * time.Second)
+				continue
+			}
+			return dp, err
+		}
 	}
-	log.Infof("****  create deploy app dpm  ***")
-	return d.deployment.Create(dpm)
+	return dp, errors.New("create deployment and update deployment is error")
 }

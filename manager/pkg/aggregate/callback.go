@@ -124,14 +124,14 @@ func (v *Callback) WatchPod(name, namespace string) error {
 
 type Data struct {
 	model.RequestBody
-	Id        int    `json:"id"`
-	Name      string `json:"name"`
-	Namespace string `json:"namespace"`
-	Status    string `json:"status"`
-	Url       string `json:"url"`
+	Id        interface{} `json:"id"`
+	Name      string      `json:"name"`
+	Namespace string      `json:"namespace"`
+	Status    string      `json:"status"`
+	Url       string      `json:"url"`
 }
 
-func (v *Callback) Send(callbackUrl, name, namespace, token, status, url string, id int) error {
+func (v *Callback) Send(callbackUrl, name, namespace, token, status, url string, id interface{}) error {
 	log.Debugf("******************************************************************")
 	log.Debugf("callback url: %s", callbackUrl)
 	rep := &model.BaseResponse{

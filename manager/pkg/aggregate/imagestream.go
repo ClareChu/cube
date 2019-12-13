@@ -59,7 +59,12 @@ func (i *imageStreamServiceImpl) Create(params *command.PipelineReqParams) error
 }
 
 func (i *imageStreamServiceImpl) CreateImage(name, namespace string, images string) error {
-	tag := strings.Split(images, ":")[1]
+	tag := ""
+	if strings.Contains(images, ":") {
+		tag = strings.Split(images, ":")[1]
+	} else {
+		tag = "latest"
+	}
 	t := time.Now()
 	image, err := i.imageStream.Get(name, namespace)
 	stream := &v1alpha1.ImageStream{
