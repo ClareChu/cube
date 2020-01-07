@@ -11,6 +11,8 @@ ENV APP_ROOT=/opt/app-root \
 ADD certs /tmp/cert/
 
 RUN  mkdir -p ${APP_BIN} ${APP_ROOT} \
+     && sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories \
+     && mkdir -p ${APP_BIN} ${APP_ROOT} \
      && apk update \
      && apk upgrade \
      && apk --no-cache add ca-certificates iputils\
