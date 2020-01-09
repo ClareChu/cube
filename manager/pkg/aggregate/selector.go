@@ -56,7 +56,6 @@ func NewSelectorService(buildConfigAggregate BuildConfigAggregate,
 }
 
 func (s *Selector) HandleV2(pipeline *v1alpha1.Pipeline) (err error) {
-	log.Infof("pipeline selector : %v", pipeline)
 	eventType := v1alpha1.Events{}
 	if len(pipeline.Status.Stages) == 0 {
 		eventType = pipeline.Spec.Events[0]
@@ -78,7 +77,6 @@ func (s *Selector) HandleV2(pipeline *v1alpha1.Pipeline) (err error) {
 }
 
 func (s *Selector) Handle(pipeline *v1alpha1.Pipeline) (err error) {
-	log.Infof("pipeline selector : %v", pipeline)
 	eventType := v1alpha1.Events{}
 	if len(pipeline.Status.Stages) == 0 {
 		eventType = pipeline.Spec.Events[0]

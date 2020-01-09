@@ -93,7 +93,6 @@ func (d *DeploymentConfig) Create(param *command.PipelineReqParams) (err error) 
 	if err == nil {
 		d.InitDeployConfig(deploy, template, param)
 		deploymentConfig, err = d.deploymentConfigClient.Update(param.Name, param.Namespace, deploy)
-		log.Infof("update deployment configs deploy :%v", deploymentConfig)
 	} else {
 		deploymentConfig.Status.LastVersion = constant.InitLastVersion
 		d.InitDeployConfig(deploymentConfig, template, param)

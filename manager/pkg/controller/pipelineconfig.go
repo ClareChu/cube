@@ -7,7 +7,6 @@ import (
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/app/web/context"
 	"hidevops.io/hiboot/pkg/at"
-	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/model"
 	"hidevops.io/hiboot/pkg/starter/jwt"
 )
@@ -37,7 +36,6 @@ func (c *PipelineConfigController) GetByNameNamespace(name, namespace string) (m
 }
 
 func (c *PipelineConfigController) Post(cmd *command.PipelineStart, properties *jwt.TokenProperties, ctx context.Context) (response model.Response, err error) {
-	log.Debugf("starter pipeline : %v", cmd)
 	response = new(model.BaseResponse)
 	jwtProps, ok := properties.Items()
 	if ok {

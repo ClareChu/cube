@@ -74,8 +74,6 @@ func (a *AppServiceImpl) Compare(name string, oldApp, newApp v1alpha1.AppSpec) (
 	oldApp.Token = ""
 	newApp.Token = ""
 	if !reflect.DeepEqual(oldApp, newApp) {
-		log.Debugf("*** oldApp: %v", oldApp)
-		log.Debugf("*** newApp: %v", newApp)
 		log.Infof("update app")
 		var cmd command.PipelineStart
 		err = copier.Copy(&cmd, newApp)

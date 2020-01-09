@@ -50,7 +50,6 @@ func NewDeploymentService(deploymentClient *cube.Deployment, remoteAggregate Rem
 }
 
 func (d *Deployment) Create(deploymentConfig *v1alpha1.DeploymentConfig, pipelineName, version, buildVersion string) (deployment *v1alpha1.Deployment, err error) {
-	log.Debugf("deployment config create :%v", deploymentConfig)
 	number := fmt.Sprintf("%d", deploymentConfig.Status.LastVersion)
 	nameVersion := fmt.Sprintf("%s-%s", deploymentConfig.Name, number)
 	deployment = new(v1alpha1.Deployment)

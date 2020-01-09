@@ -13,25 +13,19 @@ type GatewayAggregate interface {
 type Gateway struct {
 	GatewayAggregate
 	ingressService service.IngressService
-	kongService    service.KongService
 }
 
 func init() {
 	app.Register(NewGateway)
 }
 
-func NewGateway(ingressService service.IngressService, kongService service.KongService) GatewayAggregate {
+func NewGateway(ingressService service.IngressService) GatewayAggregate {
 	return &Gateway{
 		ingressService: ingressService,
-		kongService:    kongService,
 	}
 }
 
 func (s *Gateway) Create(gatewayConfig *v1alpha1.GatewayConfig) (err error) {
-	if true {
-		err = s.ingressService.CreateIngress(gatewayConfig)
-		return
-	}
-	err = s.kongService.CreateKong(gatewayConfig)
+	err = s.ingressService.CreateIngress(gatewayConfig)
 	return
 }
