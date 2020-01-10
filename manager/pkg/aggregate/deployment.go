@@ -53,7 +53,7 @@ func (d *Deployment) Create(deploymentConfig *v1alpha1.DeploymentConfig, pipelin
 	number := fmt.Sprintf("%d", deploymentConfig.Status.LastVersion)
 	nameVersion := fmt.Sprintf("%s-%s", deploymentConfig.Name, number)
 	deployment = new(v1alpha1.Deployment)
-	copier.Copy(deployment, deploymentConfig)
+	err = copier.Copy(deployment, deploymentConfig)
 	deployment.TypeMeta = v1.TypeMeta{
 		Kind:       constant.BuildKind,
 		APIVersion: constant.BuildApiVersion,
@@ -151,12 +151,12 @@ func (d *Deployment) Selector(deploy *v1alpha1.Deployment) error {
 	switch eventType {
 	case constant.RemoteDeploy:
 		go func() {
-			d.tagAggregate.TagImage(deploy)
+			err = d.tagAggregate.TagImage(deploy)
 		}()
 		err = d.deploymentBuilder.Update(deploy.Name, deploy.Namespace, constant.RemoteDeploy, constant.Created)
 	case constant.Deploy:
 		go func() {
-			d.CreateDeployment(deploy)
+			err = d.CreateDeployment(deploy)
 		}()
 		err = d.deploymentBuilder.Update(deploy.Name, deploy.Namespace, constant.Deploy, constant.Created)
 	case constant.Ending:
@@ -169,10 +169,6 @@ func (d *Deployment) Selector(deploy *v1alpha1.Deployment) error {
 }
 
 func (d *Deployment) CreateDeployment(deploy *v1alpha1.Deployment) (err error) {
-	if os.Getenv("IS_OPENSHIFT") == "" {
-		err = d.deploymentBuilder.CreateApp(deploy)
-		return
-	}
-	err = d.deploymentConfigBuilder.CreateApp(deploy)
+	err = d.deploymentBuilder.CreateApp(deploy)
 	return
 }

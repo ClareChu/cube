@@ -46,7 +46,7 @@ type AppSpec struct {
 	Ingress       []Ingress        `json:"ingress" protobuf:"bytes,18,opt,name=ingress"`
 	InitContainer corev1.Container `json:"initContainer" protobuf:"bytes,19,opt,name=initContainer"`
 	Callback      string           `json:"callback" protobuf:"bytes,20,opt,name=callback"`
-	Id            int              `json:"id" protobuf:"bytes,21,opt,name=id"`
+	Id            interface{}      `json:"id" protobuf:"bytes,21,opt,name=id"`
 	Token         string           `json:"token" protobuf:"bytes,22,opt,name=token"`
 	ForceUpdate   bool             `json:"forceUpdate" protobuf:"bytes,23,opt,name=forceUpdate"`
 	Services      []Service        `json:"services" protobuf:"bytes,24,opt,name=services"`

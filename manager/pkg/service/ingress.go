@@ -41,12 +41,12 @@ func (i *Ingress) CreateIngress(gatewayConfig *v1alpha1.GatewayConfig) (err erro
 		},
 		Spec: v1beta1.IngressSpec{
 			Rules: []v1beta1.IngressRule{
-				v1beta1.IngressRule{
+				{
 					Host: gatewayConfig.Spec.Hosts[0],
 					IngressRuleValue: v1beta1.IngressRuleValue{
 						HTTP: &v1beta1.HTTPIngressRuleValue{
 							Paths: []v1beta1.HTTPIngressPath{
-								v1beta1.HTTPIngressPath{
+								{
 									Path: gatewayConfig.Spec.Uris[0],
 									Backend: v1beta1.IngressBackend{
 										ServiceName: gatewayConfig.Name,

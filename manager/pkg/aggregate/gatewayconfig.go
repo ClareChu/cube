@@ -6,12 +6,14 @@ import (
 	"hidevops.io/cube/manager/pkg/builder"
 	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/cube/manager/pkg/constant"
+	"hidevops.io/cube/manager/utils"
 	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hiboot/pkg/utils/copier"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	"regexp"
 	"strings"
 )
 
@@ -82,17 +84,33 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (err error) {
 		log.Errorf("get gateway config template err :%v", err)
 		return err
 	}
+	annotations := make(map[string]string)
+	for k, v := range template.Annotations {
+		log.Debugf("Annotations debug v:%v", v)
+		reg := regexp.MustCompile(`\$\{(.*?)\}`)
+		match := reg.MatchString(v)
+		log.Debugf("match debug v:%v", match)
+		if match {
+			value := utils.Regx(v, "${", "}", params)
+			log.Debugf("value debug v:%v", value)
+			annotations[k] = value
+		} else {
+			annotations[k] = v
+		}
+	}
 
 	if len(params.Ingress) != 0 {
 		for _, ing := range params.Ingress {
 			uri := ""
 			container := strings.Index(ing.Path, "/")
-			if container == -1 || container != 0 {
+			if container != 0 {
 				uri = fmt.Sprintf("/%s", ing.Path)
 			} else {
 				uri = ing.Path
 			}
 			uri = fmt.Sprintf("%s%s", uri, template.Spec.RegexPath)
+
+
 			gatewayConfig := &v1alpha1.GatewayConfig{
 				TypeMeta: v1.TypeMeta{
 					Kind:       constant.GatewayConfigKind,
@@ -135,7 +153,7 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (err error) {
 		ObjectMeta: v1.ObjectMeta{
 			Name:        params.Name,
 			Namespace:   params.Namespace,
-			Annotations: template.Annotations,
+			Annotations: annotations,
 			Labels: map[string]string{
 				constant.PipelineConfigName: params.PipelineName,
 				constant.Namespace:          params.Namespace,
@@ -146,7 +164,7 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (err error) {
 	gateway, err := s.gatewayConfigClient.Get(params.Name, params.Namespace)
 	if err == nil {
 		gateway.Spec = template.Spec
-		gateway.ObjectMeta.Annotations = template.Annotations
+		gateway.ObjectMeta.Annotations = annotations
 		gatewayConfig, err = s.gatewayConfigClient.Update(params.Name, params.Namespace, gateway)
 	} else {
 		gatewayConfig, err = s.gatewayConfigClient.Create(gatewayConfig)

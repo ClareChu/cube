@@ -1,0 +1,13 @@
+apiVersion: cube.io/v1alpha1
+kind: ServiceConfig
+metadata:
+  name: sonar
+  namespace: hidevopsio
+spec:
+  ports:
+    - name: http-8080
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector: null
+  type: NodePort

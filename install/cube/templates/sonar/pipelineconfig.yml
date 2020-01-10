@@ -1,0 +1,18 @@
+apiVersion: cube.io/v1alpha1
+kind: PipelineConfig
+metadata:
+  name: sonar
+  namespace: hidevopsio
+spec:
+  events:
+    - eventTypes: imageStream
+      name: sonar
+    - eventTypes: deploy
+      name: sonar
+    - eventTypes: service
+      name: sonar
+    - eventTypes: callback
+      name: sonar
+  profile: dev
+  version: v1
+status: {}

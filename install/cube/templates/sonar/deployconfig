@@ -1,0 +1,18 @@
+apiVersion: cube.io/v1alpha1
+kind: DeploymentConfig
+metadata:
+  name: sonar
+  namespace: hidevopsio
+spec:
+  container:
+    ports:
+      - containerPort: 8080
+        name: http-8080
+        protocol: TCP
+  dockerRegistry: null
+  envType:
+    - remoteDeploy
+    - deploy
+  profile: dev
+status:
+  lastVersion: 1

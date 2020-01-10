@@ -150,7 +150,7 @@ func (d *Deployment) CreateDeployment(dd *command.DeployData, dpm *extensionsV1b
 	for i := 0; i < 3; i++ {
 		if err == nil {
 			dpm.ObjectMeta = dp.ObjectMeta
-			log.Infof("****  update deploy app dpm  ***")
+			log.Infof("****  update deploy app deployment  ***")
 			e := d.deployment.Update(dpm)
 			if e != nil {
 				log.Errorf("*** update deploy error: %v try again ***", err)
@@ -160,7 +160,7 @@ func (d *Deployment) CreateDeployment(dd *command.DeployData, dpm *extensionsV1b
 			return dp, nil
 
 		} else {
-			log.Infof("****  create deploy app dpm  ***")
+			log.Infof("****  create deploy app deployment  ***")
 			dp, e := d.deployment.Create(dpm)
 			if e != nil {
 				log.Errorf("*** create deploy error: %v try again ***", err)

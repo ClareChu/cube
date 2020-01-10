@@ -49,7 +49,7 @@ type PipelineSpec struct {
 	Ingress       []Ingress        `json:"ingress" protobuf:"bytes,14,opt,name=ingress"`
 	InitContainer corev1.Container `json:"initContainer" protobuf:"bytes,15,opt,name=initContainer"`
 	Callback      string           `json:"callback" protobuf:"bytes,16,opt,name=callback"`
-	Id            int              `json:"id" protobuf:"bytes,17,opt,name=id"`
+	Id            interface{}      `json:"id" protobuf:"bytes,17,opt,name=id"`
 	Token         string           `json:"token" protobuf:"bytes,18,opt,name=token"`
 	ForceUpdate   bool             `json:"forceUpdate" protobuf:"bytes,19,opt,name=forceUpdate"`
 	Services      []Service        `json:"services" protobuf:"bytes,20,opt,name=services"`

@@ -100,10 +100,10 @@ type PipelineRequest struct {
 	EnvVar       []string         `json:"envVar"`
 	Ports        []string         `json:"ports"`
 
-	Id                int      `json:"id"`
-	ForceUpdate       bool     `json:"forceUpdate" default:"true"`
+	Id          interface{} `json:"id"`
+	ForceUpdate bool        `json:"forceUpdate" default:"true"`
 	//获取path 的目录
-	Path    string `json:"path"`
+	Path string `json:"path"`
 	//gitUrl
 	Url           string             `json:"url"`
 	Ingress       []v1alpha1.Ingress `json:"ingress"`
