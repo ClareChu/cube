@@ -67,7 +67,6 @@ func (c *runCommand) Run(args []string) error {
 		fmt.Println("[ERROR] get app err:", err)
 		return err
 	}
-	fmt.Println("get app ...", c.req)
 
 	if err := api.PipelineStart(user, &c.req); err != nil {
 		fmt.Println("[ERROR] run pipeline start err:", err)

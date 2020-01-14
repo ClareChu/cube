@@ -99,8 +99,8 @@ func GetApp(user *User, start *PipelineRequest) error {
 		return err
 	}
 	app := fmt.Sprintf("%s-%s-%s", start.Project, start.AppRoot, start.Version)
+	fmt.Println("run app : ", app)
 	url := GetAppApi(user.Server, app)
-	fmt.Printf("get app value: %v", app)
 	_, body, errs := gorequest.New().Get(url).End()
 	if errs != nil {
 		//隐藏登陆完整URL信息
@@ -111,8 +111,8 @@ func GetApp(user *User, start *PipelineRequest) error {
 		return err
 	}
 	err := copier.Copy(start, resData.Data)
-	fmt.Sprint(err)
-	fmt.Printf("get app: %v", start)
+	fmt.Println(err)
+	//fmt.Printf("get app: %v", start)
 	if start.Namespace == "" {
 		if start.Profile != "" {
 			start.Namespace = fmt.Sprintf("%s-%s", start.Project, start.Profile)
