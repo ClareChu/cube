@@ -153,7 +153,7 @@ func (d *Deployment) CreateDeployment(dd *command.DeployData, dpm *extensionsV1b
 			log.Infof("****  update deploy app deployment  ***")
 			e := d.deployment.Update(dpm)
 			if e != nil {
-				log.Errorf("*** update deploy error: %v try again ***", err)
+				log.Errorf("*** update deploy error: %v try again ***", e)
 				time.Sleep(10 * time.Second)
 				continue
 			}
@@ -163,7 +163,7 @@ func (d *Deployment) CreateDeployment(dd *command.DeployData, dpm *extensionsV1b
 			log.Infof("****  create deploy app deployment  ***")
 			dp, e := d.deployment.Create(dpm)
 			if e != nil {
-				log.Errorf("*** create deploy error: %v try again ***", err)
+				log.Errorf("*** create deploy error: %v try again ***", e)
 				time.Sleep(10 * time.Second)
 				continue
 			}
