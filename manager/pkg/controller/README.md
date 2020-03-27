@@ -17,17 +17,23 @@ dev环境: http://dev.apps.cloud2go.cn/cube/manager
 
  |字段名|注释|类型|描述|
  |:---:|:---:|:---:|:---:|
+ |id|id|int64|| 
  |name|名称|string||
  |namespace|组名|string||
+ |version|版本|string|默认版本v1|
  |replicas|副本数|int32||
+ |url|回调URL|string||
   
  请求参数试例
 
  ```json
 {
-	"name":"adsfsdf-205004-v1",
+    "id": 1,
+	"name":"293889241971163714-353535033",
+    "version":"v1",
 	"namespace":"testadm",
-	"replicas":1
+	"replicas":1,
+    "url": "http://www.baidu.com"
 }
 
 ```

@@ -22,9 +22,24 @@ func newReplicasController(deployService service.DeployService) *ReplicasControl
 	}
 }
 
+const DefaultVersion = "v1"
 
 func (r *ReplicasController) Put(replicasRequest *service.ReplicasRequest) (response model.Response, err error) {
 	response = new(model.BaseResponse)
+	if replicasRequest.Version == "" {
+		replicasRequest.Version = DefaultVersion
+	}
+	replicasRequest.App = replicasRequest.Name + "-" + replicasRequest.Version
+	err = r.deployService.Put(replicasRequest)
+	return response, err
+}
+
+func (r *ReplicasController) Update(replicasRequest *service.ReplicasRequest) (response model.Response, err error) {
+	response = new(model.BaseResponse)
+	if replicasRequest.Version == "" {
+		replicasRequest.Version = DefaultVersion
+	}
+	replicasRequest.Name = replicasRequest.Name + "-" + replicasRequest.Version
 	err = r.deployService.Update(replicasRequest)
 	return response, err
 }

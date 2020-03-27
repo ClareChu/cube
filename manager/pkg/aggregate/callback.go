@@ -146,7 +146,7 @@ func (v *Callback) Send(callbackUrl, name, namespace, token, status, url string,
 		},
 	}
 	time.Sleep(5 * time.Second)
-	_, body, errs := gorequest.New().Get(callbackUrl).Set(constant.Authorization, token).Send(rep).End()
+	_, body, errs := gorequest.New().Get(callbackUrl).Set(constant.Authorization, token).Send(rep).Timeout(5 * time.Second).End()
 	log.Infof("response : %s", body)
 	if errs != nil {
 		return errors.New("http get callback url")
@@ -171,7 +171,7 @@ func (v *Callback) Call(cmd *command.PipelineStart) error {
 			Url:       cmd.Ingress[0].Domain + cmd.Ingress[0].Path,
 		},
 	}
-	_, body, errs := gorequest.New().Get(cmd.Callback).Set(constant.Authorization, cmd.Token).Send(rep).End()
+	_, body, errs := gorequest.New().Get(cmd.Callback).Set(constant.Authorization, cmd.Token).Timeout(5 * time.Second).Send(rep).End()
 	log.Infof("response : %s", body)
 	if errs != nil {
 		return errors.New("http get callback url")
