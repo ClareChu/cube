@@ -83,7 +83,6 @@ func (a *DeployServiceImpl) Put(replicasRequest *ReplicasRequest) (err error) {
 			replicasRequest.Status = "success"
 		}
 		err = a.Send(replicasRequest)
-		log.Debugf("update replicas error:%v", err)
 	}()
 	return
 }
@@ -153,7 +152,7 @@ func (a *DeployServiceImpl) Send(replicas *ReplicasRequest) error {
 	}
 	time.Sleep(5 * time.Second)
 	_, body, errs := gorequest.New().Get(replicas.Url).
-		Set(constant.Authorization, replicas.Token).
+		//Set(constant.Authorization, replicas.Token).
 		Send(rep).
 		Timeout(5 * time.Second).
 		End()

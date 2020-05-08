@@ -10,8 +10,8 @@ dev环境: http://dev.apps.cloud2go.cn/cube/manager
 
 `Request Url`    : {{HOST}}/replicas
 
-`Headers`        :  Content-Type:application/json
-
+`Headers`        :  Content-Type:application/json </br>                 
+                    Authorization: Bearer {{token}}
 
 请求参数
 
@@ -42,7 +42,7 @@ dev环境: http://dev.apps.cloud2go.cn/cube/manager
 
  |字段名|注释|类型|描述|
  |:---:|:---:|:---:|:---:|
- |code|状态码|string||
+ |code|状态码|int32||
  |message|消息|string||
  |data|data|interface||
 
@@ -52,12 +52,28 @@ dev环境: http://dev.apps.cloud2go.cn/cube/manager
 {
     "code": 200,
     "message": "success",
-    "data": null
+    "data": {
+                "id": 1,
+            	"name":"293889241971163714-353535033",
+                "version":"v1",
+            	"namespace":"testadm",
+            	"replicas":1,
+                "url": "http://www.baidu.com"
+            }
 }
 
 ```
 
 `错误响应参数试例`
+
+```json
+{
+    "code": 500,
+    "message": "deployments.extensions \"adsfsdf-205004-v11\" not found",
+    "data": null
+}
+```
+
 
 ```json
 {
