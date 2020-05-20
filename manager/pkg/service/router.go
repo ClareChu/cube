@@ -16,7 +16,8 @@ import (
 )
 
 type RouterService interface {
-	CreateIngress(gatewayConfig *v1alpha1.GatewayConfig) (err error)
+	//CreateIngress(gatewayConfig *v1alpha1.GatewayConfig) (err error)
+	CreateRouter(gatewayConfig *v1alpha1.GatewayConfig) (err error)
 }
 
 type Router struct {
@@ -62,7 +63,8 @@ func (i *Router) CreateRouter(gatewayConfig *v1alpha1.GatewayConfig) (err error)
 				Kind: "Service",
 				Name: gatewayConfig.Name,
 			},
-			Path: gatewayConfig.Spec.Uris[0],
+			Host: gatewayConfig.Spec.Hosts[0],
+			//Path: gatewayConfig.Spec.Uris[0],
 			Port: &routeV1.RoutePort{
 				TargetPort: intstr.IntOrString{
 					IntVal: gatewayConfig.Spec.Port,

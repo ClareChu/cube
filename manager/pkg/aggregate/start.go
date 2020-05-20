@@ -12,7 +12,7 @@ import (
 
 type StartAggregate interface {
 	Init(cmd *command.PipelineStart, propMap map[string]string) (err error)
-	CreateProfile(namespace string) (err error)
+	CreateProfile(namespace string, tls bool) (err error)
 	CreateSecret(cmd *command.PipelineStart, propMap map[string]string) (err error)
 }
 
@@ -67,7 +67,7 @@ func (s *Start) Init(cmd *command.PipelineStart, propMap map[string]string) (err
 	//TODO 获取Namespace的值
 	s.GetNamespace(cmd)
 	//TODO init profile   create k8s namespace  serviceAccount default create role and roleBinding
-	err = s.CreateProfile(cmd.Namespace)
+	err = s.CreateProfile(cmd.Namespace, cmd.Tls)
 	if err != nil {
 		return
 	}
@@ -110,9 +110,9 @@ func (s *Start) GetNamespace(cmd *command.PipelineStart) {
 	}
 }
 
-func (s *Start) CreateProfile(namespace string) (err error) {
+func (s *Start) CreateProfile(namespace string, tls bool) (err error) {
 	//TODO CREATE NAMESPACE
-	err = s.namespaceAggregate.InitNamespace(namespace)
+	err = s.namespaceAggregate.InitNamespace(namespace, tls)
 	if err != nil {
 		return
 	}

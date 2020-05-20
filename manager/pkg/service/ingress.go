@@ -11,7 +11,7 @@ import (
 )
 
 type IngressService interface {
-	CreateIngress(gatewayConfig *v1alpha1.GatewayConfig) (err error)
+	CreateIngress(gatewayConfig *v1alpha1.GatewayConfig, tls bool) (err error)
 	Delete(name, namespace string) (err error)
 }
 
@@ -30,7 +30,7 @@ func NewIngress(ingress *kube.Ingress) IngressService {
 	}
 }
 
-func (i *Ingress) CreateIngress(gatewayConfig *v1alpha1.GatewayConfig) (err error) {
+func (i *Ingress) CreateIngress(gatewayConfig *v1alpha1.GatewayConfig, tls bool) (err error) {
 	log.Debugf("create ingress name: %v  namespace: %v", gatewayConfig.Name, gatewayConfig.Namespace)
 	ing, err := i.ingress.Get(gatewayConfig.Namespace, gatewayConfig.Name, v1.GetOptions{})
 	ingress := &v1beta1.Ingress{
@@ -61,6 +61,13 @@ func (i *Ingress) CreateIngress(gatewayConfig *v1alpha1.GatewayConfig) (err erro
 				},
 			},
 		},
+	}
+	if tls {
+		ingress.Spec.TLS = []v1beta1.IngressTLS{
+			{
+				SecretName: "traefik-cert",
+			},
+		}
 	}
 	if err != nil {
 		log.Errorf("get ingress err :%v", err)

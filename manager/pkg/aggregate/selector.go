@@ -145,5 +145,6 @@ func (s *Selector) InitReqParams(pipeline *v1alpha1.Pipeline, eventType string) 
 	params.PipelineName = pipeline.Name
 	params.Namespace = pipeline.Namespace
 	params.BuildVersion = pipeline.Labels[constant.BuildPipeline]
+	params.Tls = pipeline.Spec.Tls
 	return
 }

@@ -32,6 +32,7 @@ type PipelineStart struct {
 	IsApp         bool               `json:"isApp"`
 	Token         string             `json:"token"`
 	Services      []v1alpha1.Service `json:"services"`
+	Tls           bool               `json:"tls" default:"false"`
 }
 
 type PipelineConfigTemplate struct {
@@ -78,4 +79,5 @@ type PipelineReqParams struct {
 	Callback      string             `json:"callback"`
 	Token         string             `json:"token"`
 	Services      []v1alpha1.Service `json:"services"`
+	Tls           bool               `json:"tls"`
 }

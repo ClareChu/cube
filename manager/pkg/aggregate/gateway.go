@@ -4,11 +4,12 @@ import (
 	"hidevops.io/cube/manager/pkg/service"
 	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/hiboot/pkg/app"
+	"hidevops.io/hiboot/pkg/log"
 	"os"
 )
 
 type GatewayAggregate interface {
-	Create(gateway *v1alpha1.GatewayConfig) (err error)
+	Create(gateway *v1alpha1.GatewayConfig, tls bool) (err error)
 }
 
 type Gateway struct {
@@ -28,11 +29,12 @@ func NewGateway(ingressService service.IngressService, routerService service.Rou
 	}
 }
 
-func (s *Gateway) Create(gatewayConfig *v1alpha1.GatewayConfig) (err error) {
+func (s *Gateway) Create(gatewayConfig *v1alpha1.GatewayConfig, tls bool) (err error) {
+	log.Debugf("tls is :%v", tls)
 	if os.Getenv("OCP") == "openshift" {
-		err = s.routerService.CreateIngress(gatewayConfig)
+		err = s.routerService.CreateRouter(gatewayConfig)
 		return err
 	}
-	err = s.ingressService.CreateIngress(gatewayConfig)
+	err = s.ingressService.CreateIngress(gatewayConfig, tls)
 	return
 }

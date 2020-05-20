@@ -131,7 +131,7 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (err error) {
 					Uris:  []string{uri},
 				},
 			}
-			err = s.gatewayAggregate.Create(gatewayConfig)
+			err = s.gatewayAggregate.Create(gatewayConfig, params.Tls)
 			if err != nil {
 				log.Errorf("create gateway err : %v", err)
 				phase = constant.Fail
@@ -169,7 +169,7 @@ func (s *GatewayConfig) Create(params *command.PipelineReqParams) (err error) {
 	} else {
 		gatewayConfig, err = s.gatewayConfigClient.Create(gatewayConfig)
 	}
-	err = s.gatewayAggregate.Create(gatewayConfig)
+	err = s.gatewayAggregate.Create(gatewayConfig, params.Tls)
 	if err != nil {
 		log.Errorf("create gateway err : %v", err)
 		phase = constant.Fail
