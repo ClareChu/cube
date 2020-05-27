@@ -6,13 +6,15 @@ import (
 	"github.com/jinzhu/copier"
 	"hidevops.io/cube/manager/pkg/command"
 	"hidevops.io/cube/manager/pkg/constant"
+	v1 "hidevops.io/cube/manager/pkg/service/apps/v1"
+	"hidevops.io/cube/manager/pkg/service/client"
 	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
 	"hidevops.io/cube/pkg/starter/cube"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hioak/starter/kube"
+	appsV1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
-	extensionsV1beta1 "k8s.io/api/extensions/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"time"
 )
@@ -93,7 +95,7 @@ func (d *Deployment) CreateApp(deploy *v1alpha1.Deployment) error {
 
 func int32Ptr(i int32) *int32 { return &i }
 
-func (d *Deployment) Create(dd *command.DeployData) (*extensionsV1beta1.Deployment, error) {
+func (d *Deployment) Create(dd *command.DeployData) (*appsV1.Deployment, error) {
 	runAsRoot := false
 	var containers []corev1.Container
 	if dd.InitContainer.Name != "" {
@@ -101,11 +103,7 @@ func (d *Deployment) Create(dd *command.DeployData) (*extensionsV1beta1.Deployme
 	} else {
 		containers = nil
 	}
-	dpm := &extensionsV1beta1.Deployment{
-		TypeMeta: metav1.TypeMeta{
-			Kind:       "Deployment",
-			APIVersion: "extensions/v1beta1",
-		},
+	dpm := &appsV1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      fmt.Sprintf("%s-%s", dd.Name, dd.Version),
 			Namespace: dd.Namespace,
@@ -115,11 +113,18 @@ func (d *Deployment) Create(dd *command.DeployData) (*extensionsV1beta1.Deployme
 			},
 		},
 
-		Spec: extensionsV1beta1.DeploymentSpec{
+		Spec: appsV1.DeploymentSpec{
+			Selector: &metav1.LabelSelector{
+				MatchLabels: map[string]string{
+					"app":     dd.Name,
+					"version": dd.Version,
+				},
+			},
 			Replicas:             dd.Replicas,
 			Strategy:             dd.Strategy,
 			RevisionHistoryLimit: int32Ptr(10),
 			Template: corev1.PodTemplateSpec{
+
 				ObjectMeta: metav1.ObjectMeta{
 					Name: dd.Name,
 					Labels: map[string]string{
@@ -144,14 +149,19 @@ func (d *Deployment) Create(dd *command.DeployData) (*extensionsV1beta1.Deployme
 	return d.CreateDeployment(dd, dpm)
 }
 
-func (d *Deployment) CreateDeployment(dd *command.DeployData, dpm *extensionsV1beta1.Deployment) (*extensionsV1beta1.Deployment, error) {
-	dp, err := d.deployment.Get(fmt.Sprintf("%s-%s", dd.Name, dd.Version), dd.Namespace, metav1.GetOptions{})
+func (d *Deployment) CreateDeployment(dd *command.DeployData, dpm *appsV1.Deployment) (*appsV1.Deployment, error) {
+	clientSet, err := client.GetDefaultK8sClientSet()
+	deployment := v1.Deployment{
+		ClientSet: clientSet,
+	}
+	dp, err := deployment.Get(fmt.Sprintf("%s-%s", dd.Name, dd.Version), dd.Namespace, metav1.GetOptions{})
 	log.Infof("*** deploy is exist *** %s", dd.ForceUpdate)
 	for i := 0; i < 3; i++ {
 		if err == nil {
 			dpm.ObjectMeta = dp.ObjectMeta
 			log.Infof("****  update deploy app deployment  ***")
-			e := d.deployment.Update(dpm)
+
+			e := deployment.Update(dpm)
 			if e != nil {
 				log.Errorf("*** update deploy error: %v try again ***", e)
 				time.Sleep(10 * time.Second)
@@ -161,7 +171,7 @@ func (d *Deployment) CreateDeployment(dd *command.DeployData, dpm *extensionsV1b
 
 		} else {
 			log.Infof("****  create deploy app deployment  ***")
-			dp, e := d.deployment.Create(dpm)
+			dp, e := deployment.Create(dpm)
 			if e != nil {
 				log.Errorf("*** create deploy error: %v try again ***", e)
 				time.Sleep(10 * time.Second)
