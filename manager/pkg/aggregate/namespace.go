@@ -137,6 +137,7 @@ func (n *Namespace) CreateOcp(ns string) error {
 func (n *Namespace) HarborCreate(namespace string) error {
 	config, err := n.configMaps.Get(constant.DockerConstant, constant.TemplateDefaultNamespace)
 	if err != nil {
+		log.Errorf("docker config map not found :%v", err)
 		return err
 	}
 	auth := fmt.Sprintf("%s:%s", config.Data[constant.Username], config.Data[constant.Password])

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/parnurzeal/gorequest"
+	"hidevops.io/cube/manager/pkg/aggregate/client"
 	"hidevops.io/cube/manager/pkg/constant"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
@@ -54,27 +55,36 @@ func newDeployCommand(deployment *kube.Deployment, pod *kube.Pod) DeployService 
 }
 
 func (a *DeployServiceImpl) Update(replicasRequest *ReplicasRequest) (err error) {
+	clientSet, err := client.GetDefaultK8sClientSet()
+	if err != nil {
+		return err
+	}
 	option := metav1.GetOptions{}
-	res, err := a.deployment.Get(replicasRequest.Name, replicasRequest.Namespace, option)
+	res, err := clientSet.AppsV1().Deployments(replicasRequest.Namespace).Get(replicasRequest.Name, option)
 	if err != nil {
 		log.Errorf("get deployment error:%v", err)
 		return
 	}
 
 	res.Spec.Replicas = replicasRequest.Replicas
-	return a.deployment.Update(res)
+	_, err = clientSet.AppsV1().Deployments(replicasRequest.Namespace).Update(res)
+	return err
 }
 
 func (a *DeployServiceImpl) Put(replicasRequest *ReplicasRequest) (err error) {
+	clientSet, err := client.GetDefaultK8sClientSet()
+	if err != nil {
+		return err
+	}
 	option := metav1.GetOptions{}
-	res, err := a.deployment.Get(replicasRequest.App, replicasRequest.Namespace, option)
+	res, err := clientSet.AppsV1().Deployments(replicasRequest.Namespace).Get(replicasRequest.Name, option)
 	if err != nil {
 		log.Errorf("get deployment error:%v", err)
 		return
 	}
 	go func() {
 		res.Spec.Replicas = replicasRequest.Replicas
-		err = a.deployment.Update(res)
+		_, err = clientSet.AppsV1().Deployments(replicasRequest.Namespace).Update(res)
 		var condition corev1.PodPhase
 		if *replicasRequest.Replicas != 0 {
 			condition, _ = a.watch(replicasRequest.Name, replicasRequest.Namespace)
