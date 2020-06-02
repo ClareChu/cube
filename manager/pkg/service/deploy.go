@@ -77,7 +77,7 @@ func (a *DeployServiceImpl) Put(replicasRequest *ReplicasRequest) (err error) {
 		return err
 	}
 	option := metav1.GetOptions{}
-	res, err := clientSet.AppsV1().Deployments(replicasRequest.Namespace).Get(replicasRequest.Name, option)
+	res, err := clientSet.AppsV1().Deployments(replicasRequest.Namespace).Get(replicasRequest.App, option)
 	if err != nil {
 		log.Errorf("get deployment error:%v", err)
 		return

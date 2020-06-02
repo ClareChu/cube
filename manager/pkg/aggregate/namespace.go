@@ -153,11 +153,13 @@ func (n *Namespace) HarborCreate(namespace string) error {
 	if err != nil {
 		return err
 	}
-	res, err := httpclient.PostJson(fmt.Sprintf("http://%s/%s", config.Data[constant.DockerRegistry], HarborCreateNamespaceApi), b)
-	if err != nil {
-		return err
-	}
-	code := res.StatusCode
-	log.Infof("create harbor return code : %v", code)
+	go func() {
+		res, err := httpclient.PostJson(fmt.Sprintf("http://%s/%s", config.Data[constant.DockerRegistry], HarborCreateNamespaceApi), b)
+		if err != nil {
+			return
+		}
+		code := res.StatusCode
+		log.Infof("create harbor return code : %v", code)
+	}()
 	return nil
 }

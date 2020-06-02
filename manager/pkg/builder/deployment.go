@@ -45,11 +45,13 @@ func newDeploymentService(deploymentClient *cube.Deployment, deployment *kube.De
 	}
 }
 
+//todo 这里应该有点bug 应该优化一下了 有时间看看
 func (d *Deployment) Update(name, namespace, event, phase string) error {
 	deploy, err := d.deploymentClient.Get(name, namespace)
 	if err != nil {
 		return err
 	}
+	log.Debugf("** get deployment version :%v", deploy.ResourceVersion)
 	stage := v1alpha1.Stages{}
 	if deploy.Status.Phase == constant.Created {
 		stage = deploy.Status.Stages[len(deploy.Status.Stages)-1]
@@ -66,9 +68,10 @@ func (d *Deployment) Update(name, namespace, event, phase string) error {
 	deploy.Status.Phase = phase
 	_, err = d.deploymentClient.Update(name, namespace, deploy)
 	if err != nil {
-		log.Errorf("deployment update err :%v", err)
+		log.Errorf("deployment update err :%v, ** resourceVersion: %v", err, deploy.ResourceVersion)
+		err = d.Update(name, namespace, event, phase)
 	}
-	return err
+	return nil
 }
 
 func (d *Deployment) CreateApp(deploy *v1alpha1.Deployment) error {
