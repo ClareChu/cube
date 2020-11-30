@@ -19,6 +19,7 @@
 package main
 
 import (
+	"hidevops.io/cube/operator"
 	_ "hidevops.io/cube/srcd/pkg/protobuf"
 	_ "hidevops.io/cube/srcd/pkg/rpc"
 	_ "hidevops.io/cube/srcd/pkg/service"
@@ -28,6 +29,7 @@ import (
 
 // main
 func main() {
+	operator.Start()
 	// create new web application and run it
 	web.NewApplication().Run()
 }
