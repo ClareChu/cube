@@ -7,12 +7,9 @@ import (
 	"flag"
 	"fmt"
 	"github.com/gorilla/websocket"
-	"github.com/inconshreveable/go-update"
 	"github.com/jinzhu/copier"
-	"github.com/manifoldco/promptui"
 	"github.com/parnurzeal/gorequest"
 	xwebsocket "golang.org/x/net/websocket"
-	"gopkg.in/src-d/go-git.v4"
 	"hidevops.io/hiboot/pkg/model"
 	hiboot_io "hidevops.io/hiboot/pkg/utils/io"
 	"io/ioutil"
@@ -31,6 +28,7 @@ import (
 	"time"
 )
 
+/*
 func GetInput(label string) (userInput string) {
 
 	validate := func(input string) error {
@@ -64,7 +62,7 @@ func GetInput(label string) (userInput string) {
 		userInput, _ = u.Run()
 	}
 	return userInput
-}
+}*/
 
 //定义用户用以HTTP登陆的JSON对象
 type LoginAuth struct {
@@ -146,12 +144,12 @@ func StartInit(user *User, req *PipelineRequest) (pr *PipelineRequest, err error
 			return nil, err
 		}
 	}
-/*	if req.Name == "" {
-		req.Name = req.AppRoot
-	}
-	if req.Namespace == "" {
-		req.Namespace = req.Project
-	}*/
+	/*	if req.Name == "" {
+			req.Name = req.AppRoot
+		}
+		if req.Namespace == "" {
+			req.Namespace = req.Project
+		}*/
 	fmt.Println("app: ", req.AppRoot)
 	fmt.Println("project: ", req.Project)
 	for _, ctx := range req.Context {
@@ -720,18 +718,18 @@ func DoUpdate(url string) error {
 			fmt.Println("[ERROR] abnormal information acquisition.")
 			return errors.New("abnormal information acquisition")
 		}
-		isUpdate := GetInput("discover new version，Whether to upgrade. y/n ")
-		if isUpdate == "y" || isUpdate == "Y" {
+		/*		isUpdate := GetInput("discover new version，Whether to upgrade. y/n ")
+				if isUpdate == "y" || isUpdate == "Y" {
 
-			fmt.Println("upgrading...")
+					fmt.Println("upgrading...")
 
-			if err := _update(updateInfo["url"].(string), update.Options{}); err != nil {
-				fmt.Println("[ERROR]", err)
-			}
+					if err := _update(updateInfo["url"].(string), update.Options{}); err != nil {
+						fmt.Println("[ERROR]", err)
+					}
 
-			fmt.Println("update successed.")
-			os.Exit(0)
-		}
+					fmt.Println("update successed.")
+					os.Exit(0)
+				}*/
 	}
 
 	return nil

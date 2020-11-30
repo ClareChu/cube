@@ -1,18 +1,6 @@
 package aggregate
 
-import (
-	"errors"
-	"github.com/stretchr/testify/assert"
-	aggregate "hidevops.io/cube/manager/pkg/aggregate/mocks"
-	builder "hidevops.io/cube/manager/pkg/builder/mocks"
-	"hidevops.io/cube/manager/pkg/constant"
-	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
-	"hidevops.io/cube/pkg/client/clientset/versioned/fake"
-	"hidevops.io/cube/pkg/starter/cube"
-	"k8s.io/apimachinery/pkg/apis/meta/v1"
-	"testing"
-)
-
+/*
 func TestPipelineCreate(t *testing.T) {
 	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
 	pipelineClient := cube.NewPipeline(clientSet)
@@ -56,3 +44,4 @@ func TestPipelineSelector(t *testing.T) {
 	err := pipelineService.Selector(d)
 	assert.Equal(t, nil, err)
 }
+*/

@@ -13,7 +13,7 @@ import (
 
 type Client interface {
 	GetDefaultK8sClientSet() (clientset *kubernetes.Clientset, err error)
-	GetDefaultApiExtensionClientSet() (clientSet *apiextension.Clientset, err error)
+	GetDefaultApiExtensionClientSet() (clientSet apiextension.Interface, err error)
 	GetK8sClientSet(kConfig string) (clientset *kubernetes.Clientset, err error)
 	GetApiExtensionClientSet(kConfig string) (clientSet *apiextension.Clientset, err error)
 }
@@ -36,7 +36,7 @@ func GetDefaultK8sClientSet() (clientset *kubernetes.Clientset, err error) {
 	return
 }
 
-func GetDefaultApiExtensionClientSet() (clientSet *apiextension.Clientset, err error) {
+func GetDefaultApiExtensionClientSet() (clientSet apiextension.Interface, err error) {
 	var config *rest.Config
 	if os.Getenv("KUBERNETES_SERVICE_HOST") == "" {
 		kubeConfig := GetKubeConfig()

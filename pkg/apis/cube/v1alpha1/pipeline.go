@@ -52,7 +52,8 @@ type PipelineSpec struct {
 	Id            interface{}      `json:"id" protobuf:"bytes,17,opt,name=id"`
 	Token         string           `json:"token" protobuf:"bytes,18,opt,name=token"`
 	ForceUpdate   bool             `json:"forceUpdate" protobuf:"bytes,19,opt,name=forceUpdate"`
-	Services      []Service        `json:"services" protobuf:"bytes,20,opt,name=services"`
+	Tls           bool             `json:"tls" protobuf:"bytes,20,opt,name=tls"`
+	Services      []Service        `json:"services" protobuf:"bytes,21,opt,name=services"`
 }
 
 type Ingress struct {

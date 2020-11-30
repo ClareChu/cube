@@ -1,23 +1,6 @@
 package aggregate
 
-import (
-	"fmt"
-	"github.com/stretchr/testify/assert"
-	"hidevops.io/cube/manager/pkg/aggregate/mocks"
-	builder "hidevops.io/cube/manager/pkg/builder/mocks"
-	"hidevops.io/cube/manager/pkg/command"
-	"hidevops.io/cube/manager/pkg/constant"
-	"hidevops.io/cube/pkg/apis/cube/v1alpha1"
-	"hidevops.io/cube/pkg/client/clientset/versioned/fake"
-	"hidevops.io/cube/pkg/starter/cube"
-	"hidevops.io/hioak/starter/kube"
-	corev1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1"
-	kubeFake "k8s.io/client-go/kubernetes/fake"
-	"sort"
-	"testing"
-)
-
+/*
 func TestDeploymentConfigTemplate(t *testing.T) {
 	clientSet := fake.NewSimpleClientset().CubeV1alpha1()
 	deploymentConfig := cube.NewDeploymentConfig(clientSet)
@@ -140,4 +123,4 @@ func TestSort(t *testing.T)  {
 	s := []string{"a","c","s","d","w","b", "ac", "ab"}
 	sort.Strings(s)
 	fmt.Printf("%v", s)
-}
+}*/

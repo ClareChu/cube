@@ -3,11 +3,7 @@ module hidevops.io/cube
 go 1.12
 
 require (
-	github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78 // indirect
-	github.com/Nvveen/Gotty v0.0.0-20120604004816-cd527374f1e5 // indirect
 	github.com/Shopify/goreferrer v0.0.0-20181106222321-ec9c9a553398 // indirect
-	github.com/cenkalti/backoff v2.1.1+incompatible // indirect
-	github.com/containerd/continuity v0.0.0-20190426062206-aaeac12a7ffc // indirect
 	github.com/coreos/bbolt v1.3.2 // indirect
 	github.com/coreos/etcd v3.3.10+incompatible // indirect
 	github.com/coreos/go-semver v0.3.0 // indirect
@@ -21,11 +17,9 @@ require (
 	github.com/golang/mock v1.2.0
 	github.com/golang/protobuf v1.2.0
 	github.com/gorilla/websocket v1.4.0
-	github.com/gotestyourself/gotestyourself v2.2.0+incompatible // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.0.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0 // indirect
 	github.com/hashicorp/golang-lru v0.5.0 // indirect
-	github.com/inconshreveable/go-update v0.0.0-20160112193335-8152e7eb6ccf
 	github.com/iris-contrib/go.uuid v2.0.0+incompatible
 	github.com/jinzhu/copier v0.0.0-20180308034124-7e38e58719c3
 	github.com/jonboulle/clockwork v0.1.0 // indirect
@@ -33,20 +27,15 @@ require (
 	github.com/juju/loggo v0.0.0-20190212223446-d976af380377 // indirect
 	github.com/juju/testing v0.0.0-20190429233213-dfc56b8c09fc // indirect
 	github.com/kataras/iris v11.1.1+incompatible
-	github.com/kevholditch/gokong v0.0.1
 	github.com/klauspost/compress v1.4.1 // indirect
 	github.com/klauspost/cpuid v1.2.0 // indirect
 	github.com/magiconair/properties v1.8.0
-	github.com/manifoldco/promptui v0.3.2
 	github.com/onsi/ginkgo v1.8.0 // indirect
 	github.com/onsi/gomega v1.5.0 // indirect
-	github.com/opencontainers/go-digest v1.0.0-rc1 // indirect
-	github.com/opencontainers/image-spec v1.0.1 // indirect
-	github.com/opencontainers/runc v0.1.1 // indirect
-	github.com/ory/dockertest v3.3.4+incompatible // indirect
+	github.com/openshift/api v3.9.0+incompatible
+	github.com/openshift/client-go v3.9.0+incompatible
 	github.com/parnurzeal/gorequest v0.2.15
 	github.com/prometheus/common v0.0.0-20181126121408-4724e9255275 // indirect
-	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/smartystreets/goconvey v0.0.0-20190330032615-68dc04aab96a // indirect
 	github.com/soheilhy/cmux v0.1.4 // indirect
 	github.com/sony/sonyflake v0.0.0-20181109022403-6d5bd6181009 // indirect
@@ -65,12 +54,11 @@ require (
 	golang.org/x/net v0.0.0-20190311183353-d8887717615a
 	golang.org/x/sys v0.0.0-20190312061237-fead79001313 // indirect
 	google.golang.org/grpc v1.17.0
-	gopkg.in/alecthomas/kingpin.v3-unstable v3.0.0-20180810215634-df19058c872c // indirect
 	gopkg.in/ini.v1 v1.39.0 // indirect
-	gopkg.in/ory-am/dockertest.v3 v3.3.4 // indirect
 	gopkg.in/src-d/enry.v1 v1.7.3
 	gopkg.in/src-d/go-git.v4 v4.8.1
 	gopkg.in/toqueteos/substring.v1 v1.0.2 // indirect
+	gopkg.in/yaml.v2 v2.2.1
 	gotest.tools v2.2.0+incompatible
 	hidevops.io/hiboot v1.1.0
 	hidevops.io/hiboot-data v1.0.0
