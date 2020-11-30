@@ -123,14 +123,16 @@ func (n *Namespace) CreateOcp(ns string) error {
 		if err != nil {
 			log.Errorf("create namespace err :%v", err)
 		}
-		time.Sleep(10 * time.Second)
+		time.Sleep(5 * time.Second)
 		name, err := newNamespace.Get(ns)
 		if err != nil {
 			return err
 		}
 		name.ObjectMeta.Annotations["openshift.io/sa.scc.uid-range"] = "0/0"
 		err = newNamespace.Update(name)
+		return err
 	}
+	time.Sleep(7 * time.Second)
 	return err
 }
 
