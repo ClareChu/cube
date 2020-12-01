@@ -22,6 +22,7 @@ import (
 	_ "hidevops.io/cube/manager/pkg/controller"
 	_ "hidevops.io/cube/manager/pkg/rpc"
 	_ "hidevops.io/cube/manager/pkg/service"
+	"hidevops.io/cube/operator"
 	_ "hidevops.io/cube/pkg/auth/controller"
 	"hidevops.io/hiboot/pkg/app/web"
 	_ "hidevops.io/hiboot/pkg/starter/actuator"
@@ -31,5 +32,6 @@ import (
 // main
 func main() {
 	// create new web application and run it
+	operator.Start()
 	web.NewApplication().Run()
 }
