@@ -18,6 +18,7 @@ const (
 	SonarName              = "sonar"
 	IDEPATHName            = "ide-path"
 	Namespace              = "hidevopsio"
+	//Namespace              = "cloudtogo-system"
 )
 
 func NewPipelineConfig(clientSet versioned.Interface) CubeManagerInterface {

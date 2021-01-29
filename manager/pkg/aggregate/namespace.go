@@ -88,8 +88,7 @@ func (n *Namespace) Create(ns string) error {
 	namespace := &v1.Namespace{
 		ObjectMeta: meta_v1.ObjectMeta{Name: ns},
 		Spec: v1.NamespaceSpec{
-			Finalizers: []v1.FinalizerName{
-			},
+			Finalizers: []v1.FinalizerName{},
 		},
 	}
 	options := meta_v1.GetOptions{}
@@ -110,8 +109,7 @@ func (n *Namespace) CreateOcp(ns string) error {
 			Name: ns,
 		},
 		Spec: v1.NamespaceSpec{
-			Finalizers: []v1.FinalizerName{
-			},
+			Finalizers: []v1.FinalizerName{},
 		},
 	}
 	options := meta_v1.GetOptions{}
@@ -140,7 +138,7 @@ func (n *Namespace) HarborCreate(namespace string) error {
 	config, err := n.configMaps.Get(constant.DockerConstant, constant.TemplateDefaultNamespace)
 	if err != nil {
 		log.Errorf("docker config map not found :%v", err)
-		return err
+		return nil
 	}
 	auth := fmt.Sprintf("%s:%s", config.Data[constant.Username], config.Data[constant.Password])
 	basic := fmt.Sprintf("%s %s", constant.Basic, base64.EncodeToString(auth))

@@ -2,13 +2,18 @@ package builder
 
 import (
 	"fmt"
+	"github.com/jinzhu/copier"
 	"hidevops.io/cube/manager/pkg/command"
+	"hidevops.io/cube/manager/pkg/service/client"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
 	"hidevops.io/hioak/starter"
 	"hidevops.io/hioak/starter/kube"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/api/extensions/v1beta1"
+	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
 )
 
 type BuildNode interface {
@@ -53,9 +58,57 @@ func (s *BuildNodeImpl) CreateServiceNode(node *command.ServiceNode) error {
 			Port: int32(port),
 		})
 	}
-
-	err := s.service.Create(node.Name, node.App, node.NameSpace, ports)
+	clientSet, err := client.GetDefaultK8sClientSet()
+	if err != nil {
+		return err
+	}
+	err = Create(node.Name, node.App, node.NameSpace, ports, clientSet)
 	return err
+}
+
+func Create(name, app, namespace string, ports interface{}, clientSet kubernetes.Interface) error {
+
+	p := make([]corev1.ServicePort, 0)
+	copier.Copy(&p, ports)
+
+	// create service
+	serviceSpec := &corev1.Service{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: name,
+			Labels: map[string]string{
+				"app":  name,
+				"name": app,
+			},
+		},
+		Spec: corev1.ServiceSpec{
+			Type:  corev1.ServiceTypeNodePort,
+			Ports: p,
+			Selector: map[string]string{
+				"app": name,
+			},
+		},
+	}
+
+	svc, err := clientSet.CoreV1().Services(namespace).Get(name, metav1.GetOptions{})
+	switch {
+	case err == nil:
+		serviceSpec.ObjectMeta.ResourceVersion = svc.ObjectMeta.ResourceVersion
+		serviceSpec.Spec.ClusterIP = svc.Spec.ClusterIP
+		_, err = clientSet.CoreV1().Services(namespace).Update(serviceSpec)
+		if err != nil {
+			return fmt.Errorf("failed to update service: %s", err)
+		}
+		log.Info("service updated")
+	case errors.IsNotFound(err):
+		_, err = clientSet.CoreV1().Services(namespace).Create(serviceSpec)
+		if err != nil {
+			return fmt.Errorf("failed to create service")
+		}
+		log.Info("service created")
+	default:
+		return fmt.Errorf("upexected error: %s", err)
+	}
+	return nil
 }
 
 func (s *BuildNodeImpl) DeleteDeployment(name, namespace string) (err error) {

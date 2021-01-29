@@ -24,6 +24,7 @@ var definitionsInterface = []InitCustomResourceDefinitions{
 	NewGatewayConfig,
 	NewPipeline,
 	NewPipelineConfig,
+	NewImageStream,
 	NewServiceConfig,
 	NewSourceConfig,
 }

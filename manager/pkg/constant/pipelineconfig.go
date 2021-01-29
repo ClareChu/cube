@@ -2,6 +2,7 @@ package constant
 
 const (
 	TemplateDefaultNamespace = "hidevopsio"
+	//TemplateDefaultNamespace = "cloudtogo-system"
 	PipelineConfigKind       = "PipelineConfig"
 	PipelineConfigApiVersion = "PipelineConfig.cube.io/v1alpha1"
 	GitlabConstant           = "gitlab"
