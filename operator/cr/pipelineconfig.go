@@ -43,10 +43,10 @@ func (ap *PipelineConfig) create() {
 					EventTypes: "imageStream",
 					Name:       IDEName,
 				},
-				{
-					EventTypes: "volume",
-					Name:       IDEName,
-				},
+				/*		{
+						EventTypes: "volume",
+						Name:       IDEName,
+					},*/
 				{
 					EventTypes: "deploy",
 					Name:       IDEName,
